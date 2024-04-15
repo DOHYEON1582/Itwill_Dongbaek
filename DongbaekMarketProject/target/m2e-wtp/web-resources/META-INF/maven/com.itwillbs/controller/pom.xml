@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.itwillbs</groupId>
 	<artifactId>controller</artifactId>
-	<name>TranditionalMarketProject</name>
+	<name>InventoryControlSystem</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
@@ -114,9 +114,9 @@
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 			<scope>test</scope>
-		</dependency> 
+		</dependency>      
 		
-<!-- 외부 라이브러리 추가 영역 -->
+		<!-- 외부 라이브러리 추가 영역 -->
 		
 		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
 		<dependency>
@@ -212,10 +212,10 @@
 		    <version>4.0.3</version>
 		</dependency>
 		
-		
 
-<!-- 외부 라이브러리 추가 영역 -->
-		       
+		<!-- 외부 라이브러리 추가 영역 -->
+		
+		 
 	</dependencies>
     <build>
         <plugins>
