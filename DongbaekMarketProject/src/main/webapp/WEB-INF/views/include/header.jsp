@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>FoodMart - Free eCommerce Grocery Store HTML Website Template</title>
+    <title>DongBaekMarket</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -87,7 +87,7 @@
       <div class="offcanvas-body">
         <div class="order-md-last">
           <h4 class="d-flex justify-content-between align-items-center mb-3">
-            <span class="text-primary">Your cart</span>
+            <span class="text-primary"></span>
             <span class="badge bg-primary rounded-pill">3</span>
           </h4>
           <ul class="list-group mb-3">
@@ -239,7 +239,7 @@
               
                   <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
                     <li class="nav-item active">
-                      <a href="#women" class="nav-link">Women</a>
+                      <a href="#women" class="nav-link">동백 관리</a>
                     </li>
                     <li class="nav-item dropdown">
                       <a href="#men" class="nav-link">Men</a>

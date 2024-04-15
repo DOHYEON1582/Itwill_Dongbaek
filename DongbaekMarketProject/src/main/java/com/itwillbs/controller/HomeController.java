@@ -18,7 +18,7 @@ public class HomeController {
 
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
 	public void main()throws Exception {
-		logger.debug(" main() 호출 ");
+		logger.debug(" main() 호출 "); 
 
 
 	}
