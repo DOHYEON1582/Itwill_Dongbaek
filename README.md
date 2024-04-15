@@ -31,7 +31,9 @@
 <h2>기술 스택</h2>
 <ul>
 <li>Back-End</li>
+  Java11
   Spring
+  
 <li>Front-End</li>
 </ul>
 
