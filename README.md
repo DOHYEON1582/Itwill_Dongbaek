@@ -31,7 +31,7 @@
 <h2>기술 스택</h2>
 <ul>
 <li>Back-End</li>
-  *
+* Spring
 <li>Front-End</li>
 <li></li>
 
