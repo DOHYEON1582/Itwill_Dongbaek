@@ -29,11 +29,10 @@
 <li>물류창고에 근무중인 매니저 직원은 전통시장 특성상 애플리케이션 사용이 어려운 사장님들의 동백마켓 사용에 도움을 줄 수 있습니다.</li>
 </ul>
 <h2>기술 스택</h2>
-<ul>
-<li>Back-End</li>
-* Spring
-<li>Front-End</li>
-<li></li>
+*Back-End
+  *Spring
+*Front-End
 
-</ul>
+
+
 <hr>
