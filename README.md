@@ -30,12 +30,13 @@
 </ul>
 <h2>기술 스택</h2>
 <ul>
-<li>Back-End</li>
-  Java11
-  Spring
-  
-<li>Front-End</li>
+<li>Tools</li>
+  Java11<br>
+  Spring 4.3.8.RELEASE<br>
+  Junit 4.12<br>
+  MySQL<br>
+  MyBatis<br>
+<li>Server</li>
+  Apache Tomcat9.0<br>
 </ul>
-
-
 <hr>
