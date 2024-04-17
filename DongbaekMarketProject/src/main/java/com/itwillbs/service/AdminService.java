@@ -1,5 +1,8 @@
 package com.itwillbs.service;
 
-public class AdminService {
+public interface AdminService {
 
-}
+	
+
+	
+}//endService

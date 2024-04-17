@@ -8,14 +8,14 @@
 <!-- 내용 -->
 <div class="notice">
 	<div style="text-align: left; padding: 10px;">
-		<h2>회원정보조회</h2>
-			<div class="col-sm-6 offset-sm-2 offset-md-0 col-lg-5 d-none d-lg-block">
+		<h2>업체정산</h2>
+			<div class="col-sm-6 offset-sm-2 offset-md-0 col-lg-5 d-none d-lg-block" >
             <div class="search-bar row bg-light p-2 my-2 rounded-4">
               <div class="col-md-4 d-none d-md-block">
                 <select class="form-select border-0 bg-transparent">
-                  <option>아이디</option>
-                  <option>이름</option>
-                  <option>전화번호</option>
+                  <option>가게코드</option>
+                  <option>가게명</option>
+                  <option>상품명</option>
                 </select>
               </div>
               <div class="col-11 col-md-7">
@@ -28,6 +28,9 @@
 	                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z"></path></svg>
 	            </a>
 	          </div>
+	          <div style="margin-left: 10px;"> <!-- 날짜div -->
+          		시작일:<input type="date" id="inputDate" placeholder="시작일">종료일:<input type="date" id="inputDate" placeholder="종료일">
+              </div>
             </div>
           </div>
       </div>
@@ -36,23 +39,26 @@
 <table style="width: 99%; border-collapse: collapse; margin-left: 19px; background-color: white;">
     <thead>
         <tr>
-            <th>아이디</th>
-            <th>이름</th>
-            <th>전화번호</th>
-            <th>주소</th>
-            <th>회원가입일</th>
+            <th>가게코드</th>
+            <th>가게명</th>
+            <th>주문코드</th>
+            <th>판매일자</th>
+            <th>입금일자</th>
+            <th>정산</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>admin</td>
-            <td>이도현</td>
-            <td>01033461582</td>
-            <td>부산시</td>
+            <td>124572</td>
+            <td>아이티윌</td>
+            <td>23333423</td>
+            <td>2024-04-16</td>
             <td>2024-04-17</td>
+            <td>정산완료</td>
         </tr>
     </tbody>
 </table>    
+
 
 
 
@@ -73,7 +79,7 @@
 		<span aria-hidden="true">»</span>
 		</a>
 	</li>
-</ul>     
+</ul>   
     
 </div>
 

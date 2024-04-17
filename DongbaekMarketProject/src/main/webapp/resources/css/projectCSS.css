@@ -419,3 +419,12 @@ th {
 .notice{
 	margin-left: 19px;
 }
+
+#inputDate{
+	border:1px solid #f7f7f7;
+	border-radius:30px;
+	margin: 10px;
+}
+
+
+

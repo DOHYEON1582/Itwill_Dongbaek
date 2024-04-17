@@ -1,5 +1,5 @@
 package com.itwillbs.persistence;
 
-public class AdminDAO {
+public interface AdminDAO {
 
-}
+}//endDAO

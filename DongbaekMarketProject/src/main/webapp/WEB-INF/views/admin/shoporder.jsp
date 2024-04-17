@@ -8,7 +8,7 @@
 <!-- 내용 -->
 <div class="notice">
 	<div style="text-align: left; padding: 10px;">
-		<h2>업체주문내역</h2>
+		<h2>업체 주문&리뷰 내역</h2>
 			<div class="col-sm-6 offset-sm-2 offset-md-0 col-lg-5 d-none d-lg-block">
             <div class="search-bar row bg-light p-2 my-2 rounded-4">
               <div class="col-md-4 d-none d-md-block">
@@ -28,6 +28,9 @@
 	                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z"></path></svg>
 	            </a>
 	          </div>
+	          <div style="margin-left: 10px;"> <!-- 날짜div -->
+          		시작일:<input type="date" id="inputDate" placeholder="시작일">종료일:<input type="date" id="inputDate" placeholder="종료일">
+              </div>
             </div>
           </div>
       </div>
@@ -40,8 +43,9 @@
             <th>가게명</th>
             <th>업체종류</th>
             <th>등록상품</th>
-            <th>최대구매수량</th>
-            <th>단위</th>
+            <th>구매수량</th>
+            <th>리뷰</th>
+            <th>정산</th>
         </tr>
     </thead>
     <tbody>
@@ -51,7 +55,8 @@
             <td>농산</td>
             <td>(이미지)당근</td>
             <td>10</td>
-            <td>KG</td>
+            <td>맛있어요!</td>
+            <td>입금완료</td>
         </tr>
     </tbody>
 </table>    
@@ -61,7 +66,21 @@
 <!-- 내용 -->
 
 </div>
-    
+<ul class="pagination d-flex justify-content-center">
+	<li class="page-item disabled">
+		<a class="page-link bg-none border-0" href="#" aria-label="Previous">
+		<span aria-hidden="true">«</span>
+		</a>
+	</li>
+	<li class="page-item active" aria-current="page"><a class="page-link border-0" href="#">1</a></li>
+	<li class="page-item"><a class="page-link border-0" href="#">2</a></li>
+	<li class="page-item"><a class="page-link border-0" href="#">3</a></li>
+	<li class="page-item">
+		<a class="page-link border-0" href="#" aria-label="Next">
+		<span aria-hidden="true">»</span>
+		</a>
+	</li>
+</ul>   
     
 </div>
 

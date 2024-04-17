@@ -28,6 +28,9 @@
 	                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z"></path></svg>
 	            </a>
 	          </div>
+	          <div style="margin-left: 10px;"> <!-- 날짜div -->
+          		시작일:<input type="date" id="inputDate" placeholder="시작일">종료일:<input type="date" id="inputDate" placeholder="종료일">
+              </div>
             </div>
           </div>
       </div>
@@ -61,7 +64,21 @@
 <!-- 내용 -->
 
 </div>
-    
+<ul class="pagination d-flex justify-content-center">
+	<li class="page-item disabled">
+		<a class="page-link bg-none border-0" href="#" aria-label="Previous">
+		<span aria-hidden="true">«</span>
+		</a>
+	</li>
+	<li class="page-item active" aria-current="page"><a class="page-link border-0" href="#">1</a></li>
+	<li class="page-item"><a class="page-link border-0" href="#">2</a></li>
+	<li class="page-item"><a class="page-link border-0" href="#">3</a></li>
+	<li class="page-item">
+		<a class="page-link border-0" href="#" aria-label="Next">
+		<span aria-hidden="true">»</span>
+		</a>
+	</li>
+</ul>     
     
 </div>
 

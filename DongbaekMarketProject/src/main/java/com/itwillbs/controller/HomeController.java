@@ -72,6 +72,13 @@ public class HomeController {
 
 	}
 	
+	@RequestMapping(value = "/admin/shopcal", method = RequestMethod.GET)
+	public void shopCal()throws Exception {
+		logger.debug(" shopCal() 호출 "); 
+		
+		
+	}
+	
 	
 	
 	
