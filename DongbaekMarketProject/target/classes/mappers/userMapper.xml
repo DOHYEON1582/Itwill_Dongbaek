@@ -6,8 +6,16 @@
   
 <mapper namespace="com.itwillbs.mapper.userMapper">
 	
+	<!-- 회원가입 -->
+	<insert id="insertUser">
+		insert into user(user_id, user_pw, salt, phone, user_name, addr1, addr2, regdate) 
+		values (#{user_id}, #{user_pw}, #{salt}, #{phone}, #{user_name}, #{addr1}, #{addr2}, now())
+	</insert>
 	
-	
+	<select id="getSalt" resultType="string">
+		select salt from user 
+		where user_id = #{user_id}
+	</select>
 	
 	
 </mapper>
