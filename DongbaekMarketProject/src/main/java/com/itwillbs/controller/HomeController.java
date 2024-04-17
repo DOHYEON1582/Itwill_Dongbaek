@@ -24,17 +24,55 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/admin/main", method = RequestMethod.GET)
-	public void mainAdmin()throws Exception {
-		logger.debug(" mainAdmin() 호출 "); 
+	public void adminMain()throws Exception {
+		logger.debug(" adminMain() 호출 "); 
 
 
 	}
 	
 	@RequestMapping(value = "/admin/notice", method = RequestMethod.GET)
-	public void mainNotice()throws Exception {
-		logger.debug(" mainNotice() 호출 "); 
+	public void adminNotice()throws Exception {
+		logger.debug(" adminNotice() 호출 "); 
 
 
 	}
+	
+	@RequestMapping(value = "/admin/customer", method = RequestMethod.GET)
+	public void adminCustomer()throws Exception {
+		logger.debug(" adminCustomer() 호출 "); 
+
+
+	}
+	
+	@RequestMapping(value = "/admin/customerorder", method = RequestMethod.GET)
+	public void customerOrder()throws Exception {
+		logger.debug(" customerOrder() 호출 "); 
+
+
+	}
+	
+	@RequestMapping(value = "/admin/customerreview", method = RequestMethod.GET)
+	public void customerReview()throws Exception {
+		logger.debug(" customerReview() 호출 "); 
+
+
+	}
+	
+	@RequestMapping(value = "/admin/shop", method = RequestMethod.GET)
+	public void shop()throws Exception {
+		logger.debug(" shop() 호출 "); 
+
+
+	}
+
+	@RequestMapping(value = "/admin/shoporder", method = RequestMethod.GET)
+	public void shopOrder()throws Exception {
+		logger.debug(" shopOrder() 호출 "); 
+
+
+	}
+	
+	
+	
 	
 }//endController

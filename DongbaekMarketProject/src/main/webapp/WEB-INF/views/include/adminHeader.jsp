@@ -78,17 +78,17 @@
 
 	<aside class="side-bar">
 		<div>
-			<img id="mainImg" src="/resources/images/logo1.png">
+			<a href="/admin/main"><img id="mainImg" src="/resources/images/logo1.png"></a>
 		</div>
 		<div id="sideBar">
 			<ul class="side-menu">
 			
 				<li class="menu-item">
 					<a class="sideBtn" href="/admin/main"> <img class="sideIcon" src="https://cdn-icons-png.flaticon.com/128/88/88282.png">
-						<div class="sideBarList">동백마켓</div>
+						<div class="sideBarList">동백장터</div>
 					</a>
 					<ul class="dropdown">
-                        <li style="line-height:300%;"><a href="/admin/main" class="dropdown-item">동백마켓현황</a></li>
+                        <li style="line-height:300%;"><a href="/admin/main" class="dropdown-item">동백장터현황</a></li>
                         <li style="line-height:300%;"><a href="/admin/notice" class="dropdown-item">공지사항</a></li>
                     </ul>
 				</li>
@@ -99,8 +99,8 @@
 					</a>
 					<ul class="dropdown">
                         <li style="line-height:300%;"><a href="/admin/customer" class="dropdown-item">회원정보조회</a></li>
-                        <li style="line-height:300%;"><a href="/admin/customer/order" class="dropdown-item">회원주문내역</a></li>
-                        <li style="line-height:300%;"><a href="/admin/customer/review" class="dropdown-item">회원리뷰조회</a></li>
+                        <li style="line-height:300%;"><a href="/admin/customerorder" class="dropdown-item">회원주문내역</a></li>
+                        <li style="line-height:300%;"><a href="/admin/customerreview" class="dropdown-item">회원리뷰조회</a></li>
                     </ul>
 				</li>
 				
@@ -110,9 +110,9 @@
 					</a>
 					<ul class="dropdown">
                         <li style="line-height:300%;"><a href="/admin/shop" class="dropdown-item">업체정보조회</a></li>
-                        <li style="line-height:300%;"><a href="/admin/shop/order" class="dropdown-item">업체주문내역</a></li>
-                        <li style="line-height:300%;"><a href="/admin/shop/review" class="dropdown-item">업체리뷰조회</a></li>
-                        <li style="line-height:300%;"><a href="/admin/shop/cal" class="dropdown-item">업체정산</a></li>
+                        <li style="line-height:300%;"><a href="/admin/shoporder" class="dropdown-item">업체주문내역</a></li>
+                        <li style="line-height:300%;"><a href="/admin/shopreview" class="dropdown-item">업체리뷰조회</a></li>
+                        <li style="line-height:300%;"><a href="/admin/shopcal" class="dropdown-item">업체정산</a></li>
                     </ul>
 				</li>
 				
@@ -122,8 +122,8 @@
 					</a>
 					<ul class="dropdown">
                         <li style="line-height:300%;"><a href="/admin/sub" class="dropdown-item">구독정보조회</a></li>
-                        <li style="line-height:300%;"><a href="/admin/sub/order" class="dropdown-item">구독주문내역</a></li>
-                        <li style="line-height:300%;"><a href="/admin/sub/list" class="dropdown-item">구독물품조회</a></li>
+                        <li style="line-height:300%;"><a href="/admin/suborder" class="dropdown-item">구독주문내역</a></li>
+                        <li style="line-height:300%;"><a href="/admin/sublist" class="dropdown-item">구독물품조회</a></li>
                     </ul>
 				</li>
 				
@@ -141,28 +141,3 @@
 
 
 	</aside>
-
-<div id="main">
-
-<div id="main-first">
-<!-- 내용 -->
-
-
-
-
-<!-- 내용 -->
-
-</div>
-    
-    
-</div>
-
-	
-
-
-
-
-
-
-</body>
-</html>
