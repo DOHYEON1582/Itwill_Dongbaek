@@ -23,4 +23,11 @@ public class HomeController {
 
 	}
 	
-}
+	@RequestMapping(value = "/admin/main", method = RequestMethod.GET)
+	public void mainAdmin()throws Exception {
+		logger.debug(" main() 호출 "); 
+
+
+	}
+	
+}//endController
