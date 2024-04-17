@@ -41,7 +41,7 @@
 <li>물류창고에 근무중인 매니저 직원은 전통시장 특성상 애플리케이션 사용이 어려운 사장님들의 동백마켓 사용에 도움을 줄 수 있습니다.</li>
 </ul>
 <h2>ERD</h2>
-![스크린샷 2024-04-17 092844](https://github.com/DOHYEON1582/Itwill_Dongbaek/assets/156985029/c2cd4aa9-6167-46c6-92b0-43878722e95a)
+<img src="![스크린샷 2024-04-17 092844](https://github.com/DOHYEON1582/Itwill_Dongbaek/assets/156985029/c2cd4aa9-6167-46c6-92b0-43878722e95a)">
 <h2>주요기능 명세</h2>
 -
 <hr>
