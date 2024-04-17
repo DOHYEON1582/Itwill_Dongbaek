@@ -51,7 +51,7 @@
     <div class="row justify-content-center" id="r">
         <div class="col-lg-2 col-md-4 col-sm-4" style="padding: 0;">
             <div class="footer-menu">
-                <img class="mylogo" src="images/mylogo2.png" alt="logo">
+                <img class="mylogo" src="${pageContext.request.contextPath }/resources/images/mylogo2.png" alt="logo">
             </div>
         </div>
 
