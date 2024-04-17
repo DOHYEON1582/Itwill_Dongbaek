@@ -25,7 +25,14 @@ public class HomeController {
 	
 	@RequestMapping(value = "/admin/main", method = RequestMethod.GET)
 	public void mainAdmin()throws Exception {
-		logger.debug(" main() 호출 "); 
+		logger.debug(" mainAdmin() 호출 "); 
+
+
+	}
+	
+	@RequestMapping(value = "/admin/notice", method = RequestMethod.GET)
+	public void mainNotice()throws Exception {
+		logger.debug(" mainNotice() 호출 "); 
 
 
 	}
