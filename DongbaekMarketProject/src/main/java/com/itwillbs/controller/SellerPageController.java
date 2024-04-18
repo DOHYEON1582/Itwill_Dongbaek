@@ -13,6 +13,7 @@ public class SellerPageController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(SellerPageController.class);
 	
+    //	http://localhost:8088/seller/sellermain
 	@RequestMapping(value = "/sellermain",method = RequestMethod.GET)
 	public void main() throws Exception{
 		logger.debug(" main() 실행 ");

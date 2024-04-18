@@ -27,18 +27,21 @@
 
 </head>
 <style>
+
+
 .mylogo {
-	width: 200px;
-	height: 70px;
+	width: 200px; 
+ 	height: 70px;  
 }
 
 .footer-menu {
-	width: 200px;
-	height: 110px;
-	font-family: 'Hahmlet', sans-serif; /* 햄릿(Hahmlet) 글꼴 적용 */
-	font-size: 15px;
-	padding: 15px;
-}
+ 	width: 200px; 
+	height: 110px; 
+ 	font-family: 'Hahmlet', sans-serif; /* 햄릿(Hahmlet) 글꼴 적용 */ 
+ 	font-size: 15px; 
+	padding: 15px; 
+
+} 
 
 #r {
 	height: 100px;
@@ -184,7 +187,7 @@
 			<div class="row py-3 border-bottom">
 				<div class="col-sm-4 col-lg-3 text-center text-sm-start">
 					<div class="main-logo">
-						<a href="index.html"> <img src="images/mylogo2.png" alt="logo" class="mylogo2">
+						<a href="/seller/sellermain"> <img src="/resources/images/logo2.png" alt="logo" class="mylogo2">
 						</a>
 					</div>
 				</div>
@@ -206,7 +209,7 @@
 				<div class="col-sm-8 col-lg-3 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
 				    <div>
 				        <div class="align-items-center">			           
-				            <a href="#" class="join">회원가입</a>
+				            <a href="#" class="join">로그아웃</a>
 				            <a href="#" class="service">고객센터</a>
 				        </div>
 				        <ul class="d-flex justify-content-end list-unstyled m-3">
@@ -235,18 +238,13 @@
 	                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 	                    </div>
 	                    <div class="offcanvas-body">
-	                        <select class="filter-categories border-0 mb-0 me-5">
-	                            <option>시장</option>
-	                            <option>구포시장</option>
-	                            <option>자갈치시장</option>
-	                        </select>
 	                        <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
-	                            <li class="nav-item active"><a href="#women" class="nav-link">시장소개</a></li>
-	                            <li class="nav-item dropdown"><a href="#men" class="nav-link">제철음식</a></li>
-	                            <li class="nav-item"><a href="#kids" class="nav-link">인기음식</a></li>
-	                            <li class="nav-item"><a href="#accessories" class="nav-link">알뜰쇼핑</a></li>
-	                            <li class="nav-item"><a href="#brand" class="nav-link">특가/혜택</a></li>
-	                            <li class="nav-item"><a href="#brand" class="nav-link">구독상품</a></li>
+	                            <li class="nav-item active"><a href="#women" class="nav-link">상품관리</a></li>
+	                            <li class="nav-item dropdown"><a href="#men" class="nav-link">주문관리</a></li>
+	                            <li class="nav-item"><a href="#kids" class="nav-link">배송관리</a></li>
+	                            <li class="nav-item"><a href="#brand" class="nav-link">리뷰관리</a></li>
+	                            <li class="nav-item"><a href="#brand" class="nav-link">매출정산</a></li>
+	                            <li class="nav-item"><a href="#brand" class="nav-link">문의</a></li>
 	                        </ul>
 	                    </div>
 	                </div>
@@ -257,12 +255,29 @@
 
 	</header>
 	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	<footer style="font-family: 'Roboto', sans-serif; padding-bottom: 0;">
 
     <div class="row justify-content-center" id="r">
         <div class="col-lg-2 col-md-4 col-sm-4" style="padding: 0;">
             <div class="footer-menu">
-                <img class="mylogo" src="images/mylogo2.png" alt="logo">
+                <img class="mylogo" src="/resources/images/logo2.png" alt="logo">
             </div>
         </div>
 
