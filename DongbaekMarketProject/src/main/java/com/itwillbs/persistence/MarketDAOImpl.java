@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.MarketVO;
+import com.itwillbs.domain.StoreVO;
 
 
 @Repository
@@ -24,6 +25,11 @@ public class MarketDAOImpl implements MarketDAO{
 	@Override
 	public List<MarketVO> getMarketList() throws Exception {
 		return sqlSession.selectList(NAMESPACE + ".marketList");
+	}
+
+	@Override
+	public List<StoreVO> getStoreList() throws Exception {
+		return sqlSession.selectList(NAMESPACE + ".storeList");
 	}
 	
 	

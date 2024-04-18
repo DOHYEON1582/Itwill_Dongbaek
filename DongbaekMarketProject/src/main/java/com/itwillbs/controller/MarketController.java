@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.itwillbs.domain.MarketVO;
+import com.itwillbs.domain.StoreVO;
 import com.itwillbs.service.MarketService;
 
 @Controller
@@ -31,8 +32,10 @@ public class MarketController {
 	public void marketMain(Model model) throws Exception{
 		logger.info(" marketMain 호출 ");
 		List<MarketVO> marketList = mService.getMarketList();
+		List<StoreVO> storeList = mService.getStoreList();
 		logger.info(" marketList : " + marketList.size());
 		model.addAttribute("marketList", marketList);
+		model.addAttribute("storeList", storeList);
 	}
 	
 	

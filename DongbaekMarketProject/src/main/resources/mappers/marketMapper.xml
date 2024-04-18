@@ -11,7 +11,11 @@
   	select * from market
   </select>
   
-  
+  <!-- 가게 조회 -->
+  <select id="storeList" resultType="StoreVO">
+  	select * from store
+  	<!-- where market_code = #{market_code} -->
+  </select>
   
   
   
