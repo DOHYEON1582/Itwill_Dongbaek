@@ -95,7 +95,14 @@ public class UserDAOImple implements UserDAO {
 		
 		return  sql.selectOne(NAMESPACE+".getSalt", uvo);
 	}
-	
+
+	@Override
+	public UserVO loginUser(UserVO uvo) throws Exception {
+		logger.debug(" loginUser(UserVO uvo) 호출 ");
+		
+		return sql.selectOne(NAMESPACE + ".loginUser", uvo);
+	}
+
 	
 	
 }

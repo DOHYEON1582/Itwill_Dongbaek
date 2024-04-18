@@ -16,7 +16,6 @@
 		이름 : <input type="text" id="user_name" name="user_name"> <br>
 		주소 : <input type="text" id="addr1" name="addr1"> <br>
 		상세주소 : <input type="text" id="addr2" name="addr2"> <br>
-		<input type="hidden" id="regdate" name="regdate">
 		
 		<input type="submit" value="회원가입">
 	</form>

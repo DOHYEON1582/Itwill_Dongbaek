@@ -14,4 +14,6 @@ public interface UserDAO {
 	
 	public String getSalt(UserVO uvo) throws Exception;
 	
+	public UserVO loginUser(UserVO uvo) throws Exception;
+	
 }

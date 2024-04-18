@@ -17,5 +17,9 @@
 		where user_id = #{user_id}
 	</select>
 	
+	<select id="loginUser" resultType="com.itwillbs.domain.UserVO">
+		select * from user 
+		where user_id = #{user_id}, user_pw = #{user_pw}
+	</select>
 	
 </mapper>

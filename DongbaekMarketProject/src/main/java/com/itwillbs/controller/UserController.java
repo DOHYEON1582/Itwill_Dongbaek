@@ -20,12 +20,6 @@ public class UserController {
 	@Inject
 	private UserService uService;
 	
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String loginGET() throws Exception{
-		logger.debug(" loginGET() 호출");
-		
-		return "login";
-	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public void registerGET() throws Exception{
@@ -39,7 +33,20 @@ public class UserController {
 		logger.debug(" 회원가입 정보 : " + uvo);
 		
 		uService.userInsert(uvo);
-		return "redirect:/login";
+		return "redirect:/member/login";
+	}
+	
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public void loginGET() throws Exception{
+		logger.debug(" loginGET() 호출");
+		
+	}
+	
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public String loginPOST() throws Exception{
+		logger.debug(" loginPOST() 호출 ");
+		
+		return "";
 	}
 	
 	
