@@ -8,7 +8,7 @@
 <!-- 내용 -->
 <div class="notice">
 	<div style="text-align: left; padding: 10px;">
-		<h2>공지사항</h2>
+		<h2>공지사항<button type="button" class="btn btn-dark rounded-pill" style="margin-left: 30px;">글 작성</button></h2>
 			<div class="search-bar row bg-light p-2 my-2 rounded-4" style="width: 300px; border: 1px solid #dddddd;">
 		              <div class="col-11 col-md-7">
 		                <form id="search-form" class="text-center" action="index.html" method="post" style="width: 200px;">
@@ -43,6 +43,21 @@
         </tr>
     </tbody>
 </table>    
+<ul class="pagination d-flex justify-content-center">
+	<li class="page-item disabled">
+		<a class="page-link bg-none border-0" href="#" aria-label="Previous">
+		<span aria-hidden="true">«</span>
+		</a>
+	</li>
+	<li class="page-item active" aria-current="page"><a class="page-link border-0" href="#">1</a></li>
+	<li class="page-item"><a class="page-link border-0" href="#">2</a></li>
+	<li class="page-item"><a class="page-link border-0" href="#">3</a></li>
+	<li class="page-item">
+		<a class="page-link border-0" href="#" aria-label="Next">
+		<span aria-hidden="true">»</span>
+		</a>
+	</li>
+</ul> 
 
 </div>	
 

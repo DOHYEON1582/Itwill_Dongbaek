@@ -102,7 +102,7 @@
 <div class="notice">
 
 <div style="text-align: left; padding: 10px;">
-	<h2>공지사항</h2>
+	<h2 style="margin: 10px;">공지사항</h2>
 </div>
 
 
