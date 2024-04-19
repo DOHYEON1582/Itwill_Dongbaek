@@ -5,6 +5,24 @@
   
 <mapper namespace="com.itwillbs.mapper.AdminMapper">
 
+<!-- 회원정보 조회 -->
+<select id="getUser" resultType="com.itwillbs.domain.UserVO">
+	SELECT * FROM user   
+	<choose>
+		<when test="user_id != null and user_id != ''">
+			WHERE user_id = #{user_id}
+		</when>
+		<when test="user_name != null and user_name != ''">
+			WHERE user_name = #{user_name}
+		</when>
+		<when test="phone != null and phone != ''">
+			WHERE phone = #{phone}
+		</when>
+	</choose>
+	
+
+</select>
+
 	
 	
 </mapper>

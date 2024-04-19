@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * Handles requests for the application home page.
  */
 @Controller
-public class HomeController {
+public class AdminController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 	
 
 	@RequestMapping(value = "/main", method = RequestMethod.GET)

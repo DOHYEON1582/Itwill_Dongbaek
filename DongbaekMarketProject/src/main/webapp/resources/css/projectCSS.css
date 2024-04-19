@@ -425,6 +425,22 @@ th {
 	border-radius:30px;
 	margin: 10px;
 }
+.modal-table{
+	width: 100%; 
+	border-collapse: collapse; 
+	background-color: white;
+	text-align: center;
+}
+.modal-table tr{
+	border: 1px solid #dddddd;
+	border-collapse : collapse;
+	text-align: center;
+}
 
+.modal-table td{
+	border: 1px solid #dddddd;
+	border-collapse : collapse;
+	text-align: center;
+}
 
 
