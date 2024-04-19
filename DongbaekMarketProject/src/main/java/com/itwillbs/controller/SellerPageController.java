@@ -18,4 +18,10 @@ public class SellerPageController {
 	public void main() throws Exception{
 		logger.debug(" main() 실행 ");
 	}
+	
+	//	http://localhost:8088/seller/product
+	@RequestMapping(value = "/product",method = RequestMethod.GET)
+	public void product() throws Exception{
+		logger.debug(" product() 실행 ");
+	}
 }

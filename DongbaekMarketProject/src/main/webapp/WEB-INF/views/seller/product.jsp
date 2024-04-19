@@ -27,36 +27,84 @@
 
 </head>
 <style>
+/* 노멀라이즈 시작 */
+body, ul, li {
+  margin: 0;
+  padding: 0;
+  list-style: none;   /* 해당 태그의 list-style을 none으로 하는 것으로 ●을 제거한다 */
+}
+
+a{
+	text-decoration: none;
+}
+/* 2차 이상의 메뉴를 숨기기 */
+.side-bar > ul ul {
+  display: none;
+}
+
+/* 사이트의 높이를 5000px로 만들어 스크롤 생성 */
+body {
+  height: 5000px;
+}
+
+/* 사이드바의 너비와 높이를 변수를 통해 통제 */
+:root {
+  --side-bar-width: 270px;
+  --side-bar-height: 90vh;
+}
+
+.side-bar {
+  position: fixed;    /* 스크롤을 따라오도록 지정 */
+  background-color: #E7E7E7;
+  width: var(--side-bar-width);
+  min-height: var(-side-bar-height);   /* 사이드바의 높이를 전체 화면 높이의 90%로 지정 */
+  margin-top: calc((100vh - var(-side-bar-height)) / 2);    /* 사이드바 위와 아래의 마진을 동일하게 지정 */
+}
+
+/* 모든 메뉴의 a에 속성값 부여 */
+.side-bar ul > li > a {
+  display: block;
+  color: #000;
+  font-size: 1.4rem;
+  font-weight: bold;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 50px;
+}
+/* 자식의 position이 absolute일 때 자식을 영역 안에 가두어 준다 */
+.side-bar > ul > li {
+  position: relative;
+}
+
+/* 모든 메뉴가 마우스 인식 시 반응 */
+.side-bar ul > li:hover > a {
+  background-color: #BBBBBB;
+
+}
+
+/* 1차 메뉴의 항목이 마우스 인식 시에 2차 메뉴 등장 */
+.side-bar > ul > li:hover > ul {
+  display: block;
+  position: absolute;
+  background-color: #ccc;
+  top: 0;         /* 2차 메뉴의 상단을 1차 메뉴의 상단에 고정 */
+  left: 100%;     /* 2차 메뉴를 1차 메뉴의 너비만큼 이동 */
+  width: 100%;    /* 1차 메뉴의 너비를 상속 */
+}
+/* 사이드바 너비의 80%만큼 왼쪽으로 이동 */
+.side-bar {
+  border-radius: 20px;
+  transform: translate(calc(var(--side-bar-width) * -0.8), 0);  /* X축 이동, Y축 고정 */
+  transition: .5s;
+}
+
+/* 마우스 인식 시 원래의 위치로 이동 */
+.side-bar:hover {
+  transform: translate(-20px, 0);   /* 둥근 모서리의 너비만큼 X축 이동, Y축 고정 */
+}
+/* 출처: https://me-in-journey.com/entry/HTMLCSS-사이드바-메뉴-만들기-나타나는-2차-메뉴-만들기-feat-transform-translate [내 코딩 여정:티스토리] */
 
 
-#order {
-  width: 400px; /* 원하는 너비로 조정하세요 */
-  margin: 0 auto; /* 가운데 정렬 */
-  border: 1px solid #ccc; /* 테두리 스타일 */
-  border-radius: 5px; /* 테두리 모서리 둥글게 */
-  padding: 20px; /* 내부 여백 */
-}
-#dilivery {
-  width: 400px; /* 원하는 너비로 조정하세요 */
-  margin: 0 auto; /* 가운데 정렬 */
-  border: 1px solid #ccc; /* 테두리 스타일 */
-  border-radius: 5px; /* 테두리 모서리 둥글게 */
-  padding: 20px; /* 내부 여백 */
-}
-#review {
-  width: 400px; /* 원하는 너비로 조정하세요 */
-  margin: 0 auto; /* 가운데 정렬 */
-  border: 1px solid #ccc; /* 테두리 스타일 */
-  border-radius: 5px; /* 테두리 모서리 둥글게 */
-  padding: 20px; /* 내부 여백 */
-}
-#question {
-  width: 400px; /* 원하는 너비로 조정하세요 */
-  margin: 0 auto; /* 가운데 정렬 */
-  border: 1px solid #ccc; /* 테두리 스타일 */
-  border-radius: 5px; /* 테두리 모서리 둥글게 */
-  padding: 20px; /* 내부 여백 */
-}
 .mylogo {
 	width: 200px;
 	height: 70px;
@@ -131,7 +179,6 @@
 	padding: 0 auto;
 	margin: 0 auto;
 }
-
 
 </style>
 
@@ -245,9 +292,9 @@
 				            <li><a href="#" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
 				                        <use xlink:href="#user"></use></svg>
 				                </a></li>
-<!-- 				            <li><a href="#" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
+				        <!--    <li><a href="#" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
 				                        <use xlink:href="#heart"></use></svg>
- 				                </a></li> -->
+				                </a></li>-->
 				        </ul>
 				    </div>
 				
@@ -284,93 +331,100 @@
 
 	</header>
 	</div>
+	
+<!-- 사이드바 -->	
+	<aside class="side-bar">
+  <section class="side-bar__icon-box">
+    <section class="side-bar__icon-1">
+      <div></div>
+      <div></div>
+      <div></div>
+    </section>
+  </section>
+  <ul>
+    <li>
+      <a href="#">상품 관리 </a>
+      <ul>
+        <li><a href="#">상품 목록</a></li>
+        <li><a href="#">상품 등록</a></li>
+        <li><a href="#">상품 수정</a></li>
+        <li><a href="#">상품 삭제</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#">주문 관리</a>
+      <ul>
+        <li><a href="#">주문 목록</a></li>
+        <li><a href="#"></a></li>
+        <li><a href="#">text3</a></li>
+        <li><a href="#">text4</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#">배송 관리</a>
+      <ul>
+        <li><a href="#">text1</a></li>
+        <li><a href="#">text2</a></li>
+        <li><a href="#">text3</a></li>
+        <li><a href="#">text4</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#">리뷰 관리</a>
+      <ul>
+        <li><a href="#">text1</a></li>
+        <li><a href="#">text2</a></li>
+        <li><a href="#">text3</a></li>
+        <li><a href="#">text4</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#">매출 정산</a>
+      <ul>
+        <li><a href="#">text1</a></li>
+        <li><a href="#">text2</a></li>
+        <li><a href="#">text3</a></li>
+        <li><a href="#">text4</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#">문의</a>
+      <ul>
+        <li><a href="#">text1</a></li>
+        <li><a href="#">text2</a></li>
+        <li><a href="#">text3</a></li>
+        <li><a href="#">text4</a></li>
+      </ul>
+    </li>
+  </ul>
+</aside>
 
-
-
-
-
-
-	<div style="overflow: auto; margin-bottom: 40px; max-width: 1200px; margin-left: auto; margin-right: auto;">
-		<div style="float: left; width: 38%; margin-right: 2%;">
-			<!-- 첫 번째 섹션 -->
-			<div style="text-align: left; background-color: #EAE9E8; margin-bottom: 20px;" id="order">
-				<form>
-					<fieldset style="border: none;">
-						<legend style="text-align: center; border: thin;">주문 현황</legend>
-						<ul style="list-style: none; margin: 0; padding: 0;">
-							<li style="padding: 15px; background-color: #fff; margin-bottom: 10px;"><label><a style="margin-right: 160px; text-decoration: none; color: #000; font-size: 18px;" href="#">신규 주문</a>0건</label></li>
-							<li style="padding: 15px; background-color: #fff; margin-bottom: 10px;"><label><a style="margin-right: 160px; text-decoration: none; color: #000; font-size: 18px;" href="#">구매 확정</a>0건</label></li>
-							<li style="padding: 15px; background-color: #fff; margin-bottom: 10px;"><label><a style="margin-right: 160px; text-decoration: none; color: #000; font-size: 18px;" href="#">취소 요청</a>0건</label></li>
-							<li style="padding: 15px; background-color: #fff; margin-bottom: 0;"><label><a style="margin-right: 160px; text-decoration: none; color: #000; font-size: 18px;" href="#">환불 요청</a>0건</label></li>
-						</ul>
-					</fieldset>
-				</form>
-			</div>
-		</div>
-
-		<div style="float: right; width: 60%;">
-			<!-- 두 번째 섹션 -->
-			<div style="text-align: left; background-color: #EAE9E8; margin-bottom: 20px;" id="dilivery">
-				<form>
-					<fieldset style="border: none;">
-						<legend style="text-align: center; border: thin;">배송 현황</legend>
-						<ul style="list-style: none; margin: 0; padding: 0;">
-							<li style="padding: 15px; background-color: #fff; margin-bottom: 29px;"><label><a style="margin-right: 178px; text-decoration: none; color: #000; font-size: 18px;" href="#">배송 전</a>0건</label></li>
-							<li style="padding: 15px; background-color: #fff; margin-bottom: 29px;"><label><a style="margin-right: 178px; text-decoration: none; color: #000; font-size: 18px;" href="#">배송 중</a>0건</label></li>
-							<li style="padding: 15px; background-color: #fff; margin-bottom: 29px;"><label><a style="margin-right: 160px; text-decoration: none; color: #000; font-size: 18px;" href="#">배송 완료</a>0건</label></li>
-						</ul>
-					</fieldset>
-				</form>
-			</div>
-		</div>
-	</div>
-
-	<div style="overflow: auto; max-width: 1200px; margin-left: auto; margin-right: auto;">
-		<div style="float: left; width: 38%; margin-right: 2%;">
-			<!-- 세 번째 섹션 -->
-			<div style="text-align: left; background-color: #EAE9E8; margin-bottom: 20px;" id="review">
-				<form>
-					<fieldset style="border: none;">
-						<legend style="text-align: center; border: thin;">리뷰 현황</legend>
-						<ul style="list-style: none; margin: 0; padding: 0;">
-							<li style="padding: 15px; background-color: #fff; margin-bottom: 40px;"><label><a style="margin-right: 160px; text-decoration: none; color: #000; font-size: 18px;" href="#">신규 리뷰</a>0건</label></li>
-							<li style="padding: 15px; background-color: #fff; margin-bottom: 40px;"><label><a style="margin-right: 142px; text-decoration: none; color: #000; font-size: 18px;" href="#">답글한 리뷰</a>0건</label></li>
-						</ul>
-					</fieldset>
-				</form>
-			</div>
-		</div>
-
-		<div style="float: right; width: 60%;">
-			<!-- 네 번째 섹션 -->
-			<div style="text-align: left; background-color: #EAE9E8; margin-bottom: 20px;" id="question">
-				<form>
-					<fieldset style="border: none;">
-						<legend style="text-align: center; border: thin;">문의 현황</legend>
-						<ul style="list-style: none; margin: 0; padding: 0;">
-							<li style="padding: 15px; background-color: #fff; margin-bottom: 40px;"><label><a style="margin-right: 160px; text-decoration: none; color: #000; font-size: 18px;" href="#">신규 문의</a>0건</label></li>
-							<li style="padding: 15px; background-color: #fff; margin-bottom: 40px;"><label><a style="margin-right: 142px; text-decoration: none; color: #000; font-size: 18px;" href="#">답글한 문의</a>0건</label></li>
-						</ul>
-					</fieldset>
-				</form>
-			</div>
-		</div>
-	</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	<footer style="font-family: 'Roboto', sans-serif; padding-bottom: 0;">
 
     <div class="row justify-content-center" id="r">
@@ -425,5 +479,4 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 <script src="js/plugins.js"></script>
 <script src="js/script.js"></script>
-</body>
 </html>
