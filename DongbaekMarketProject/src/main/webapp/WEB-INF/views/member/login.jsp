@@ -7,9 +7,14 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1> login.jsp </h1>
-
-
-
+	<h1> login.jsp </h1>
+	
+	<form action="" method="post">
+		아이디 : <input type="text" name="user_id" > <br>
+		비밀번호 : <input type="password" name="user_pw" > <br>
+		<button type="submit">Login</button>
+	</form>
+	
+	<a href="/"> 메인으로 </a>
 </body>
 </html>

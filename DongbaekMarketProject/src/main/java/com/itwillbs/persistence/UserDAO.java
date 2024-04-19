@@ -1,5 +1,6 @@
 package com.itwillbs.persistence;
 
+import com.itwillbs.domain.AuthVO;
 import com.itwillbs.domain.UserVO;
 
 public interface UserDAO {
@@ -14,6 +15,8 @@ public interface UserDAO {
 	
 	public String getSalt(UserVO uvo) throws Exception;
 	
-	public UserVO loginUser(UserVO uvo) throws Exception;
+	public UserVO getUser(UserVO uvo) throws Exception;
+	
+	public AuthVO getAuth(String user_id) throws Exception;
 	
 }

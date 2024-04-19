@@ -17,5 +17,5 @@ public class UserVO {
 	private String point;
 	private String identity;
 	private Timestamp regdate;
-	
+	private String auth;
 }

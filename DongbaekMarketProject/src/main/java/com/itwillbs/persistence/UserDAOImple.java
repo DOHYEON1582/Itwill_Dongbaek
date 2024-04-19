@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.itwillbs.domain.AuthVO;
 import com.itwillbs.domain.UserVO;
 
 @Repository
@@ -20,7 +21,7 @@ public class UserDAOImple implements UserDAO {
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserDAOImple.class);
 	
-	private static final String NAMESPACE = "com.itwillbs.mapper.userMapper";
+	private static final String NAMESPACE = "com.itwillbs.mapper.UserMapper";
 	
 	@Override
 	public void insertUser(UserVO uvo) throws Exception {
@@ -97,10 +98,17 @@ public class UserDAOImple implements UserDAO {
 	}
 
 	@Override
-	public UserVO loginUser(UserVO uvo) throws Exception {
-		logger.debug(" loginUser(UserVO uvo) 호출 ");
+	public UserVO getUser(UserVO uvo) throws Exception {
+		logger.debug(" getUser(UserVO uvo) 호출 ");
+		logger.debug(" daoImpl uvo " + uvo);
+		return sql.selectOne(NAMESPACE + ".getUser", uvo);
+	}
+
+	@Override
+	public AuthVO getAuth(String user_id) throws Exception {
+		logger.debug(" getAuth(String user_id) 호출 ");
 		
-		return sql.selectOne(NAMESPACE + ".loginUser", uvo);
+		return sql.selectOne(NAMESPACE + ".getAuth", user_id);
 	}
 
 	

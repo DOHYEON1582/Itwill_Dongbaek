@@ -1,13 +1,16 @@
 package com.itwillbs.controller;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.itwillbs.domain.AuthVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.UserService;
 
@@ -43,11 +46,38 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String loginPOST() throws Exception{
+	public String loginPOST(UserVO uvo, HttpSession session) throws Exception{
 		logger.debug(" loginPOST() 호출 ");
+		AuthVO authVO = uService.loginUser(uvo);
+		logger.debug(" 로그인 정보 : " + authVO);
 		
-		return "";
+		try {
+			if(!authVO.getAuth().isEmpty()) {
+				session.setAttribute("authVO", authVO);
+				
+				return "redirect:/";
+			}
+		}catch(Exception e) {}
+		logger.debug(" 로그인 실패 ");
+		
+		return "/member/login";
 	}
+	
+	@GetMapping(value = "/logout")
+	public String logoutGET(HttpSession session) throws Exception{
+		logger.debug(" logoutGET(HttpSession session) 실행 ");
+		session.invalidate();
+		return "redirect:/member/login";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }

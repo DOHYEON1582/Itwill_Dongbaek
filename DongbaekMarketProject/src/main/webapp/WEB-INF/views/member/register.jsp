@@ -11,7 +11,7 @@
 
 	<form action="" method="post">
 		아이디 <input type="text" id="user_id" name="user_id"> <br>
-		비밀번호 <input type="text" id="user_pw" name="user_pw"> <br>
+		비밀번호 <input type="password" id="user_pw" name="user_pw"> <br>
 		전화번호 <input type="text" id="phone" name="phone"> <br>
 		이름 : <input type="text" id="user_name" name="user_name"> <br>
 		주소 : <input type="text" id="addr1" name="addr1"> <br>
