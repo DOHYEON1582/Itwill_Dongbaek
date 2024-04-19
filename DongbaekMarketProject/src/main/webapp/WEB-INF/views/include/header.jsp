@@ -14,8 +14,8 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-<link rel="stylesheet" type="text/css" href="resources/css/vendor.css">
-<link rel="stylesheet" type="text/css" href="style.css">
+<link rel="stylesheet" type="text/css" href="./resources/css/vendor.css">
+<link rel="stylesheet" type="text/css" href="./resources/css/style.css">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,6 +24,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Hahmlet&display=swap" rel="stylesheet">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" >
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
 
 </head>
 <style>
@@ -83,7 +91,25 @@
 	margin: 0 auto;
 }
 
+.mylogo {
+	width: 200px;
+	height: 70px;
+}
+
+.footer-menu {
+	width: 200px;
+	height: 110px;
+	font-family: 'Hahmlet', sans-serif; /* 햄릿(Hahmlet) 글꼴 적용 */
+	font-size: 15px;
+	padding: 15px;
+}
+
+#r {
+	height: 100px;
+	margin: 0 auto;
+}
 </style>
+
 
 <body>
 
@@ -200,7 +226,7 @@
 			<div class="row py-3 border-bottom">
 				<div class="col-sm-4 col-lg-3 text-center text-sm-start">
 					<div class="main-logo">
-						<a href="index.html"> <img src="images/mylogo2.png" alt="logo" class="mylogo2">
+						<a href="index.html"> <img src="${pageContext.request.contextPath }/resources/images/mylogo2.png" alt="logo" class="mylogo2">
 						</a>
 					</div>
 				</div>
@@ -257,11 +283,12 @@
 	                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 	                    </div>
 	                    <div class="offcanvas-body">
-	                        <select class="filter-categories border-0 mb-0 me-5">
-	                            <option>시장</option>
-	                            <option>구포시장</option>
-	                            <option>자갈치시장</option>
-	                        </select>
+	                    	<form id="marketForm" action="/market/marketMain" method="post">
+		                        <select id="market_code" class="filter-categories border-0 mb-0 me-5" class="market_codeOption">
+		                            <option value="0">구포시장</option>
+		                            <option value="1">자갈치시장</option>
+		                        </select>
+	                        </form>
 	                        <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
 	                            <li class="nav-item active"><a href="#women" class="nav-link">시장소개</a></li>
 	                            <li class="nav-item dropdown"><a href="#men" class="nav-link">제철음식</a></li>
@@ -279,4 +306,29 @@
 
 	</header>
 	</div>
-</html>
+	
+	<script>
+	$(document).ready(function(){
+		
+		console.log($('#market_code').val());
+		$('#market_code').change(function(){
+			console.log($('#market_code').val());
+			var number = {
+					"market_code" : $('#market_code').val()
+					};
+			$.ajax({
+				type: 'POST',
+				url: '/market/marketMain',
+				data : JSON.stringify(number),
+				contentType : "application/json; charset=UTF-8",
+				success: function(response){
+					alert("!!!!!!!!!!!");
+					console.log(response);
+				}
+				
+			});
+		});
+		
+	});
+	
+	</script>

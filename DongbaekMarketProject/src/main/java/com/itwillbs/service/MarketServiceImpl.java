@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.MarketVO;
+import com.itwillbs.domain.ProductVO;
+import com.itwillbs.domain.StoreVO;
 import com.itwillbs.persistence.MarketDAO;
 
 @Service
@@ -20,8 +22,23 @@ public class MarketServiceImpl implements MarketService{
 	private MarketDAO mdao;
 
 	@Override
-	public List<MarketVO> getMarketList() throws Exception {
+	public MarketVO getMarketList() throws Exception {
 		return mdao.getMarketList();
+	}
+
+	@Override
+	public List<StoreVO> getStoreList() throws Exception {
+		return mdao.getStoreList();
+	}
+
+	@Override
+	public List<MarketVO> getMarketListCode(int market_code) throws Exception {
+		return mdao.getMarketListCode(market_code);
+	}
+
+	@Override
+	public List<ProductVO> getProductList() throws Exception {
+		return mdao.getProductList();
 	}
 	
 }
