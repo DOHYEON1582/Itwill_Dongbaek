@@ -4,13 +4,15 @@ import lombok.Data;
 
 @Data
 public class StoreVO {
-	private String store_code;
-	private String market_code;
+	private int store_code;
+	private int market_code;
 	private String seller_id;
 	private String store_name;
 	private String store_value;
 	private String store_explain;
-	private String img;
+	private String img1;
+	private String img2;
+	private String img3;
 	private String phone;
 	private String store_addr1;
 	private String store_addr2;

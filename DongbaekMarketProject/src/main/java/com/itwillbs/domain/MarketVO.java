@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class MarketVO {
 
-	private String market_code;
+	private int market_code;
 	private String name;
 	private String phone;
 	private String build;
@@ -13,5 +13,7 @@ public class MarketVO {
 	private String explain;
 	private String market_addr1;
 	private String market_addr2;
-	
+	private String img1;
+	private String img2;
+	private String img3;
 }
