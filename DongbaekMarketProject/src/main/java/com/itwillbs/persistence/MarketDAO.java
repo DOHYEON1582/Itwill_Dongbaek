@@ -8,7 +8,7 @@ import com.itwillbs.domain.StoreVO;
 
 public interface MarketDAO {
 
-	public List<MarketVO> getMarketList() throws Exception;
+	public MarketVO getMarketList() throws Exception;
 	
 	public List<StoreVO> getStoreList() throws Exception;
 	

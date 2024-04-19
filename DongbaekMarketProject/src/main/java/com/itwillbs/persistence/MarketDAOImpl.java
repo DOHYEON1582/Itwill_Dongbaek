@@ -24,8 +24,8 @@ public class MarketDAOImpl implements MarketDAO{
 	private static final String NAMESPACE = "com.itwillbs.mapper.MarketMapper";
 
 	@Override
-	public List<MarketVO> getMarketList() throws Exception {
-		return sqlSession.selectList(NAMESPACE + ".marketList");
+	public MarketVO getMarketList() throws Exception {
+		return sqlSession.selectOne(NAMESPACE + ".marketList");
 	}
 
 	@Override

@@ -9,7 +9,7 @@ import com.itwillbs.domain.StoreVO;
 public interface MarketService {
 	
 	// 시장 정보 가져오기
-	public List<MarketVO> getMarketList() throws Exception;
+	public MarketVO getMarketList() throws Exception;
 	
 	// 가게 정보 가져오기
 	public List<StoreVO> getStoreList() throws Exception;

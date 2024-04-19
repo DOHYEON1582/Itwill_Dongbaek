@@ -22,7 +22,7 @@ public class MarketServiceImpl implements MarketService{
 	private MarketDAO mdao;
 
 	@Override
-	public List<MarketVO> getMarketList() throws Exception {
+	public MarketVO getMarketList() throws Exception {
 		return mdao.getMarketList();
 	}
 

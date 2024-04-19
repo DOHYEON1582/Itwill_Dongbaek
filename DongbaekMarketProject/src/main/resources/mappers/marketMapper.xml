@@ -9,7 +9,7 @@
   <!-- 시장 조회 -->
   <select id="marketList" resultType="MarketVO">
   	select * from market
-  	where market_code = #{market_code}
+  	where market_code = 0
   </select>
   
   <!-- 가게 조회 -->
@@ -21,7 +21,7 @@
   <!-- marekt_code에 따른 시장 조회 -->
   <select id="marketListCode" resultType="MarketVO">
   	select * from market
-  	where market_code = #{market_code}
+  	where market_code = 1
   </select>
   
   <!-- 메인 페이지 인기상품 정렬 -->

@@ -21,44 +21,7 @@
 	        adaptiveHeight: true, // 높이를 자동 조정하여 일관된 높이 유지
 	        pager: false
 	    });
-	
-	/* $('.market_codeOption').change(function(){
-			var market_code = $(this).val();
-			
-			$.ajax({
-				type: 'POST',
-				url: '/marketMain',
-				data: {market_code : 0},
-				success: function(response){
-					updateMarketInfo(response);
-				},
-				error: function(xhr, status, error){
-					console.error("오류");
-				}
-			});
-		});
-	
-		function updateMarketInfo(data){
-			var market_code = $('.market_codeOption').val();
-			var marketList = null;
-			
-			for (var i=0; i< data.length; i++){
-				if(data[i].market_code === parseInt(market_code)){
-					market = data[i];
-					break;
-				}
-			}
-			if (marketList != null){
-		        $('.sij_name').text('▶ ' + marketList.name);
-		        $('.sij_sub_name').text(marketList.explain);
-		        $('#market_addr').text(marketList.market_addr1);
-		        $('#phone').text(marketList.phone);
-		        $('#build').text(marketList.build);
-		        $('#traffic').text(marketList.traffic);
-			} else {
-				console.error("해당하는 시장 정보를 찾을 수 없습니다.")
-			}
-		} */
+
 	}); 
 	
 
@@ -220,29 +183,29 @@
 	</div>
 	<div id="sijang_text" style="display: inline-block; vertical-align: top;">
 		<div class="tit">
-			<div class="sij_name" style="font-size: 30px; font-weight: bold;">▶ ${marketList[0].name }</div>
-			<div class="sij_sub_name" style="font-size: 25px;">${marketList[i].explain }</div>
+			<div class="sij_name" style="font-size: 30px; font-weight: bold;">▶ ${marketList.name }</div>
+			<div class="sij_sub_name" style="font-size: 25px;">${marketList.explain }</div>
 		</div>
 		<table>
 			<tbody>
 				<tr>
 					<th>주소</th>
-					<td style="padding-left: 10px;">${market.market_addr1 }</td>
+					<td style="padding-left: 10px;">${marketList.market_addr1 }</td>
 				</tr>
 				
 				<tr>
 					<th>전화</th>
-					<td style="padding-left: 10px;">${market.phone }</td>
+					<td style="padding-left: 10px;">${marketList.phone }</td>
 				</tr>
 
 				<tr>
 					<th>개설주기(장날)</th>
-					<td style="padding-left: 10px;">${market.build }</td>
+					<td style="padding-left: 10px;">${marketList.build }</td>
 				</tr>
 
 				<tr>
 					<th>교통</th>
-					<td style="padding-left: 10px;">${market.traffic }</td>
+					<td style="padding-left: 10px;">${marketList.traffic }</td>
 				</tr>
 			</tbody>
 		</table>
