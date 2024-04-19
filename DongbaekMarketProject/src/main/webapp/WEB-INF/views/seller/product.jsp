@@ -105,6 +105,9 @@ body {
 /* 출처: https://me-in-journey.com/entry/HTMLCSS-사이드바-메뉴-만들기-나타나는-2차-메뉴-만들기-feat-transform-translate [내 코딩 여정:티스토리] */
 
 
+/* form태그 */
+
+
 .mylogo {
 	width: 200px;
 	height: 70px;
@@ -355,45 +358,38 @@ body {
       <a href="#">주문 관리</a>
       <ul>
         <li><a href="#">주문 목록</a></li>
-        <li><a href="#"></a></li>
-        <li><a href="#">text3</a></li>
-        <li><a href="#">text4</a></li>
+        <li><a href="#">신규 주문</a></li>
+        <li><a href="#">구매 확정</a></li>
+        <li><a href="#">취소/환불 요청</a></li>
       </ul>
     </li>
     <li>
       <a href="#">배송 관리</a>
       <ul>
-        <li><a href="#">text1</a></li>
-        <li><a href="#">text2</a></li>
-        <li><a href="#">text3</a></li>
-        <li><a href="#">text4</a></li>
+        <li><a href="#">배송전</a></li>
+        <li><a href="#">배송중</a></li>
+        <li><a href="#">배송후</a></li>
       </ul>
     </li>
     <li>
       <a href="#">리뷰 관리</a>
       <ul>
-        <li><a href="#">text1</a></li>
-        <li><a href="#">text2</a></li>
-        <li><a href="#">text3</a></li>
-        <li><a href="#">text4</a></li>
+        <li><a href="#">리뷰 목록</a></li>
+        <li><a href="#">답글한 리뷰</a></li>
       </ul>
     </li>
     <li>
       <a href="#">매출 정산</a>
       <ul>
-        <li><a href="#">text1</a></li>
-        <li><a href="#">text2</a></li>
-        <li><a href="#">text3</a></li>
-        <li><a href="#">text4</a></li>
+        <li><a href="#">매출 현황</a></li>
+        <li><a href="#">매출 그래프</a></li>
       </ul>
     </li>
     <li>
       <a href="#">문의</a>
       <ul>
-        <li><a href="#">text1</a></li>
-        <li><a href="#">text2</a></li>
-        <li><a href="#">text3</a></li>
-        <li><a href="#">text4</a></li>
+        <li><a href="#">문의 목록</a></li>
+        <li><a href="#">답변한 문의</a></li>
       </ul>
     </li>
   </ul>
@@ -402,9 +398,17 @@ body {
 	
 	
 	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
 	
 	
 	
