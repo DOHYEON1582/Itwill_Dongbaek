@@ -83,8 +83,8 @@
     }
     table {
         border-collapse: separate;
-        border-spacing: 0 50px; /* 상하로 30px 간격 지정 */
-        margin-top: 20px; /* 테이블 위쪽에 20px 간격 추가 */
+        border-spacing: 0 20px; /* 상하로 30px 간격 지정 */
+        margin-top: 10px; /* 테이블 위쪽에 20px 간격 추가 */
     }
     th, td {
         padding-left: 8px; /* 셀 내부 왼쪽 간격 지정 */
