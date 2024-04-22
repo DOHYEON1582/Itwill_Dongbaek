@@ -36,52 +36,42 @@ public class MarketController {
 
 	
 	// http://localhost:8088/market/marketMain
-	@RequestMapping(value = "/marketMain", method = RequestMethod.GET) 
-	public void marketMain(Model model) throws Exception {
+	@RequestMapping(value = "/marketMain", method = {RequestMethod.GET, RequestMethod.POST}) 
+	public void marketMain(Model model,@RequestParam(defaultValue = "0") int market_code) throws Exception {
 	    logger.debug(" marketMain 호출 ");
+	    
+	    	if(market_code == 0) {
 	        MarketVO marketList = mService.getMarketList();
 	        List<StoreVO> storeList = mService.getStoreList();
-	        List<ProductVO> productList = mService.getProductList();
-	        
+	        List<ProductVO> productList = mService.getProductList();    
 	        model.addAttribute("marketList", marketList);
 	        model.addAttribute("storeList", storeList);
 	        model.addAttribute("productList", productList);
-	       logger.debug(" productList : " + productList.size());
+	        logger.debug(" marketList : " + marketList);
+	        logger.debug(" storeList : " + storeList);
+	    	} else if(market_code == 1) {
+	    		MarketVO marketList = mService.getMarketListCode();
+		        List<StoreVO> storeList = mService.getStoreList();
+		        List<ProductVO> productList = mService.getProductList1();  
+		        model.addAttribute("marketList", marketList);
+		        model.addAttribute("storeList", storeList);
+		        model.addAttribute("productList", productList);
+	    		logger.debug(" marketList : " + marketList);
+	    		logger.debug(" storeList : " + storeList);
+	    	}
+		    
 	    }
 	
+	// http://localhost:8088/market/storeMain
+	// 가게 메인페이지
+	@RequestMapping(value = "/storeMain", method = RequestMethod.GET)
+	public void storeMain(@RequestParam("store_code") int store_code, Model model) throws Exception{
+		logger.debug(" storeMain() 호출 ");
+		StoreVO store = mService.selectStore(store_code);
+		model.addAttribute("store", store);
+		List<ProductVO> product = mService.productOnStore(store_code);
+		model.addAttribute("product", product);
+	}
 
-//	@RequestMapping(value = "/marketMain", method = RequestMethod.POST)
-//	public void marketMainPost(Model model, @RequestParam(value = "market_code") int market_code) throws Exception{
-//		logger.debug(" marketMain POST 호출 ");
-//		
-//        List<MarketVO> marketList = mService.getMarketListCode(market_code);
-//        model.addAttribute("marketList", marketList);
-//	}
-	 	
-	public ResponseEntity<Map<String, Object>> marketMain(@RequestParam(value = "market_code", required = false) Integer market_code) throws Exception {
-	      logger.info("marketMain 호출");
-	      logger.info("market_code " + market_code);
-	       if (market_code != null) {
-	           // market_code에 해당하는 시장 정보를 가져와서 JSON 형태로 반환
-	           MarketVO marketInfo = (MarketVO) mService.getMarketList();
-	           logger.info("market_code " + market_code);
-	           if (marketInfo != null) {
-	               return ResponseEntity.ok(Collections.singletonMap("marketInfo", marketInfo));
-	           } else {
-	               return ResponseEntity.notFound().build();
-	           }
-	      } else {
-	         // 전체 시장 및 가게 목록을 가져와서 페이지에 렌더링
-	         logger.info("market_code " + market_code);
-	         MarketVO marketList = mService.getMarketList();
-	         List<StoreVO> storeList = mService.getStoreList();
-	        
-	         Map<String, Object> responseData = new HashMap<>();
-	         responseData.put("marketList", marketList);
-	         responseData.put("storeList", storeList);
-	         return ResponseEntity.ok(responseData);
-	      }
-	   }
-	
 
 }

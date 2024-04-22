@@ -28,20 +28,38 @@ public class MarketDAOImpl implements MarketDAO{
 		return sqlSession.selectOne(NAMESPACE + ".marketList");
 	}
 
+	// 전체 가게 리스트
 	@Override
 	public List<StoreVO> getStoreList() throws Exception {
 		return sqlSession.selectList(NAMESPACE + ".storeList");
 	}
 
+	// 각 가게정보
 	@Override
-	public List<MarketVO> getMarketListCode(int market_code) throws Exception {
-		return sqlSession.selectList(NAMESPACE + ".marketListCode", market_code);
+	public StoreVO selectStore(int store_code) throws Exception {
+		return sqlSession.selectOne(NAMESPACE + ".selectStore", store_code);
+	}
+	
+	@Override
+	public MarketVO getMarketListCode() throws Exception {
+		return sqlSession.selectOne(NAMESPACE + ".marketListCode");
 	}
 
 	@Override
 	public List<ProductVO> getProductList() throws Exception {
 		return sqlSession.selectList(NAMESPACE + ".selectProduct");
 	}
+
+	@Override
+	public List<ProductVO> getProductList1() throws Exception {
+		return sqlSession.selectList(NAMESPACE + ".selectProduct1");
+	}
+
+	@Override
+	public List<ProductVO> productOnStore(int store_code) throws Exception {
+		return sqlSession.selectList(NAMESPACE + ".productOnStore", store_code);
+	}
+
 	
 	
 }

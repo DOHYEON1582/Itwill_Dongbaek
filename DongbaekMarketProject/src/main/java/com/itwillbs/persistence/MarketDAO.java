@@ -12,8 +12,13 @@ public interface MarketDAO {
 	
 	public List<StoreVO> getStoreList() throws Exception;
 	
-	public List<MarketVO> getMarketListCode(int market_code) throws Exception;
+	public StoreVO selectStore(int store_code) throws Exception;
+	
+	public MarketVO getMarketListCode() throws Exception;
 	
 	public List<ProductVO> getProductList() throws Exception;
 	
+	public List<ProductVO> getProductList1() throws Exception;
+	
+	public List<ProductVO> productOnStore(int store_code) throws Exception;
 }

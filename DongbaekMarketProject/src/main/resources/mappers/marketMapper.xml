@@ -12,12 +12,6 @@
   	where market_code = 0
   </select>
   
-  <!-- 가게 조회 -->
-  <select id="storeList" resultType="StoreVO">
-  	select * from store
-  	<!-- where market_code = #{market_code} -->
-  </select>
-  
   <!-- marekt_code에 따른 시장 조회 -->
   <select id="marketListCode" resultType="MarketVO">
   	select * from market
@@ -27,9 +21,37 @@
   <!-- 메인 페이지 인기상품 정렬 -->
   <select id="selectProduct" resultType="ProductVO">
   	select * from product
-  	<!-- where market_code = #{market_code} -->
+  	where market_code = 0
   	order by viewcnt desc 
   	limit 0,10
+  </select>
+  
+  <!-- 메인 페이지 인기상품 정렬 -->
+  <select id="selectProduct1" resultType="ProductVO">
+  	select * from product
+  	where market_code = 1
+  	order by viewcnt desc 
+  	limit 0,10
+  </select>
+  
+  <!-- 전체 가게 조회 -->
+  <select id="storeList" resultType="StoreVO">
+  	select * from store
+  	<!-- where market_code = #{market_code} -->
+  	order by viewcnt desc
+  	limit 0, 10
+  </select>
+  
+  <!-- 각 가게 정보 조회 -->
+  <select id="selectStore" resultType="StoreVO">
+  	select * from store
+  	where store_code = #{store_code}
+  </select>
+  
+  <!-- 가게별 상품 조회 -->
+  <select id="productOnStore" resultType="ProductVO">
+  	select * from product
+  	where store_code = #{store_code}
   </select>
   
   

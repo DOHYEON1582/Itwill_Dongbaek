@@ -284,10 +284,11 @@
 	                    </div>
 	                    <div class="offcanvas-body">
 	                    	<form id="marketForm" action="/market/marketMain" method="post">
-		                        <select id="market_code" class="filter-categories border-0 mb-0 me-5" class="market_codeOption">
+		                        <select id="market_code" name="market_code" class="filter-categories border-0 mb-0 me-5" class="market_codeOption">
 		                            <option value="0">구포시장</option>
 		                            <option value="1">자갈치시장</option>
 		                        </select>
+		                        <input type="submit" value="이동">
 	                        </form>
 	                        <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
 	                            <li class="nav-item active"><a href="#women" class="nav-link">시장소개</a></li>
@@ -330,5 +331,6 @@
 		});
 		
 	});
+
 	
 	</script>

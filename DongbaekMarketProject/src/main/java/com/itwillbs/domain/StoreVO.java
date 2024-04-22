@@ -19,5 +19,5 @@ public class StoreVO {
 	private String min_price;
 	private String time;
 	private String status;
-
+	private int viewcnt;
 }

@@ -22,7 +22,7 @@
             pager: false,
             touchEnabled: false
         });
-        // 수량 증가
+        
         $(".quantity-right-plus").click(function(e){
         	var quantity = parseInt($(this).parent().prev().val());
         	$(this).parent().prev().val(quantity + 1);
@@ -174,7 +174,28 @@
     font-family: 'Gowun Dodum', sans-serif;
     font-weight: bold;
 	}
+    .button-follow {
+       padding: 5px 10px; /* 내부 여백(padding)을 조정하여 버튼의 크기 조절 */
+       font-size: 15px;
+       background-color: #FF69B4; /* 분홍색 배경색 */
+       color: #FFF; /* 텍스트 색상 */
+       border: 1px solid #FF69B4; /* 테두리 선 색상 */
+       padding: 8px 16px; /* 내부 여백(padding) 설정 */
+       border-radius: 10px; /* 버튼 모서리 둥글게 */
+       cursor: pointer; /* 포인터 모양으로 변경 */
+    }
+  .button-follow:hover {
+        background-color: #FF1493; /* 마우스 오버시 배경색 변경 */
+    }
 
+    .button-follow img {
+        vertical-align: middle; /* 아이콘 세로 가운데 정렬 */
+        margin-right: 6px; /* 아이콘과 텍스트 사이 간격 */
+    }
+
+    .button-follow .text {
+        font-weight: bold; /* 텍스트 굵게 설정 */
+    }
 </style>
 <!-- 시장정보 -->
 <section class="py-2 mb-1" style="background: url(${pageContext.request.contextPath}/resources/images/background-pattern.jpg);">
@@ -182,10 +203,10 @@
 <div id="sijamg_top">
 	<div class="bxslider" style="display: inline-block;">
 		<div>
-			<img src="${pageContext.request.contextPath }/resources/images/gupo.png" />
+			<img src="${pageContext.request.contextPath }/resources/images/도현상회.jpg" />
 		</div>
 		<div>
-			<img src="${pageContext.request.contextPath }/resources/images/gupo2.png" />
+			<img src="${pageContext.request.contextPath }/resources/images/현진상회.jpg" />
 		</div>
 		<div>
 			<img src="${pageContext.request.contextPath }/resources/images/gupo3.png" />
@@ -193,53 +214,51 @@
 	</div>
 	<div id="sijang_text" style="display: inline-block; vertical-align: top;">
 		<div class="tit">
-			<div class="sij_name" style="font-size: 30px; font-weight: bold;">▶ ${marketList.name }</div>
-			<div class="sij_sub_name" style="font-size: 25px;">${marketList.explain }</div>
+			<div class="sij_name" style="font-size: 30px; font-weight: bold;">▶ ${store.store_name }
+		        <button class="clear-button button button-follow" style="margin-left: 10px;">
+		            <span class="content">
+		                <div class="inner-container">
+		                    <img src="https://front.coupangcdn.com/coupang-store-display/20240415182517/img/ic_heart_dark_outline.ebe809a.svg" width="12" alt="">
+		                    <span class="text">판매자샵 찜하기</span>
+		                </div>
+		            </span>
+		        </button>
+		    </div>
 		</div>
+			<div class="sij_sub_name" style="font-size: 25px;">${store.store_explain }</div>
 		<table>
 			<tbody>
 				<tr>
 					<th>주소</th>
-					<td style="padding-left: 10px;">${marketList.market_addr1 }</td>
+					<td style="padding-left: 10px;">${store.store_addr1 }</td>
 				</tr>
 				
 				<tr>
 					<th>전화</th>
-					<td style="padding-left: 10px;">${marketList.phone }</td>
+					<td style="padding-left: 10px;">${store.phone }</td>
 				</tr>
 
 				<tr>
-					<th>개설주기(장날)</th>
-					<td style="padding-left: 10px;">${marketList.build }</td>
+					<th>판매자</th>
+					<td style="padding-left: 10px;">${store.seller_id }</td>
 				</tr>
 
 				<tr>
-					<th>교통</th>
-					<td style="padding-left: 10px;">${marketList.traffic }</td>
+					<th>운영 상태</th>
+					<td style="padding-left: 10px;">${store.status }</td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
 </div>
 </section>
-	<h3>인기 상점</h3>
-	<div class="slider-container">
-		<div class="slider5">
-		<c:forEach var="store" items="${storeList }" >
-	    <div class="slide">
-	    <img src="${pageContext.request.contextPath}/resources/images/도현상회.jpg">
-	    <a href="storeMain?store_code=${store.store_code} ">
-	    <p>${store.store_name } 바로가기</p>
-	    </a>
-	    </div>
-	  	<</c:forEach>
-	  </div>
-	</div>
+
+${product }
 <div class="bootstrap-tabs product-tabs">
-    <h3>인기 상품</h3>
+    <h3>가게 인기 상품</h3>
     <div class="container">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-6 justify-content-center gap-3">
-            <c:forEach items="${productList}" var="product">
+            <c:forEach items="${product}" var="product">
                 <div class="col" style="width: 19%;">
                     <div class="product-item">
                         <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
@@ -274,7 +293,5 @@
     </div>
 </div>
 
-              
-  
-${marketList }
+
 <%@ include file="../include/footer.jsp"%>

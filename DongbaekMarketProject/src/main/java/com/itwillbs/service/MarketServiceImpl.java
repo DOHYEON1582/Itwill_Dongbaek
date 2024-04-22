@@ -32,13 +32,28 @@ public class MarketServiceImpl implements MarketService{
 	}
 
 	@Override
-	public List<MarketVO> getMarketListCode(int market_code) throws Exception {
-		return mdao.getMarketListCode(market_code);
+	public StoreVO selectStore(int store_code) throws Exception {
+		return mdao.selectStore(store_code);
+	}
+	
+	@Override
+	public MarketVO getMarketListCode() throws Exception {
+		return mdao.getMarketListCode();
 	}
 
 	@Override
 	public List<ProductVO> getProductList() throws Exception {
 		return mdao.getProductList();
 	}
-	
+
+	@Override
+	public List<ProductVO> getProductList1() throws Exception {
+		return mdao.getProductList1();
+	}
+
+	@Override
+	public List<ProductVO> productOnStore(int store_code) throws Exception {
+		return mdao.productOnStore(store_code);
+	}
+
 }
