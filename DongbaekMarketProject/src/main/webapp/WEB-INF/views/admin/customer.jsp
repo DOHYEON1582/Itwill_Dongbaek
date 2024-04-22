@@ -46,12 +46,13 @@
 			
 		});// 검색 이벤트
 		
-		$('#list-tbody').mouseover(function(){
-			$(this).css('background-color','rgb(250,250,250)');
-		});
-		$('#list-tbody').mouseout(function(){
-			$(this).css('background-color','white');
-		});// 리스트 선택 이벤트
+		$('#list-tbody').on('mouseover', 'tr', function() {
+	        $(this).css('background-color','rgb(250,250,250)');
+	    });
+		
+	    $('#list-tbody').on('mouseout', 'tr', function() {
+	        $(this).css('background-color','white');
+	    });// 리스트 선택 이벤트
 		
 		$('#list-tbody').click(function(){
 			$('#chocolat-content-0').attr('class','chocolat-wrapper chocolat-visible');
@@ -110,6 +111,7 @@
 		});// 모달 오픈
 		
 		$('.chocolat-close').click(function(){
+			$('.modal-table').empty();
 			$('#chocolat-content-0').attr('class','chocolat-wrapper');
 			$('#second').attr('class','chocolat-overlay');
 		});// 모달 클로즈
@@ -132,9 +134,6 @@
 					<h1>회원상세정보</h1>
 					<div style="border: 1px solid black; width: 100%; height: 100%;">
 						<table class="modal-table">
-							<tr>
-								<td colspan="6" style="background-color: rgb(245,247,250);">주문내역</td>
-							</tr>
 
 						</table>
 					</div>

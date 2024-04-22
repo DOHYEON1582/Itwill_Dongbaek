@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 
 import lombok.Data;
 
+
 @Data
 public class UserVO {
 	private String user_id;
@@ -17,5 +18,9 @@ public class UserVO {
 	private String point;
 	private String identity;
 	private Timestamp regdate;
+	private String order_code;
+	
+	private String startDate;
+	private String endDate;
 
 }
