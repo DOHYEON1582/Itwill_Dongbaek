@@ -54,6 +54,13 @@
   	where store_code = #{store_code}
   </select>
   
+  <!-- 가게 조회수 증가 -->
+  <update id="updateViewcnt">
+  	update store set viewcnt = viewcnt + 1
+  	where store_code = #{store_code}
+  </update>
+  
+  
   
   
   </mapper>

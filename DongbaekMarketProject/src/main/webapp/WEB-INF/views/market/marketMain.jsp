@@ -174,7 +174,17 @@
     font-family: 'Gowun Dodum', sans-serif;
     font-weight: bold;
 	}
+    .store-link {
+        text-decoration: none; /* 밑줄 제거 */
+        color: #333; /* 링크 색상 */
+        font-size: 16px; /* 글자 크기 */
+        font-weight: bold; /* 글자 굵기 */
+        font-family: 'Gowun Dodum', sans-serif;
+    }
 
+    .store-link:hover {
+        color: purple; /* 마우스 오버시 텍스트 색상 */
+    }
 </style>
 <!-- 시장정보 -->
 <section class="py-2 mb-1" style="background: url(${pageContext.request.contextPath}/resources/images/background-pattern.jpg);">
@@ -228,8 +238,8 @@
 		<c:forEach var="store" items="${storeList }" >
 	    <div class="slide">
 	    <img src="${pageContext.request.contextPath}/resources/images/도현상회.jpg">
-	    <a href="storeMain?store_code=${store.store_code} ">
-	    <p>${store.store_name } 바로가기</p>
+	    <a href="storeMain?store_code=${store.store_code}" class="store-link">
+	    <p style="margin: 0;">${store.store_name } 바로가기</p>
 	    </a>
 	    </div>
 	  	<</c:forEach>
@@ -274,7 +284,4 @@
     </div>
 </div>
 
-              
-  
-${marketList }
 <%@ include file="../include/footer.jsp"%>

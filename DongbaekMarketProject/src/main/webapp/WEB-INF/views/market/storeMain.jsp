@@ -253,9 +253,9 @@
 </div>
 </section>
 
-${product }
+
 <div class="bootstrap-tabs product-tabs">
-    <h3>가게 인기 상품</h3>
+    <h3>가게 상품</h3>
     <div class="container">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-6 justify-content-center gap-3">
             <c:forEach items="${product}" var="product">

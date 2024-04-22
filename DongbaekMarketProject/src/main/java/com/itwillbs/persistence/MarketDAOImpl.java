@@ -60,6 +60,12 @@ public class MarketDAOImpl implements MarketDAO{
 		return sqlSession.selectList(NAMESPACE + ".productOnStore", store_code);
 	}
 
+	@Override
+	public void storeViewcntUpdate(int store_code) throws Exception {
+		sqlSession.update(NAMESPACE + ".updateViewcnt", store_code);
+		
+	}
+
 	
 	
 }

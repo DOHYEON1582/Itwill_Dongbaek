@@ -56,4 +56,10 @@ public class MarketServiceImpl implements MarketService{
 		return mdao.productOnStore(store_code);
 	}
 
+	@Override
+	public void updateViewcnt(int store_code) throws Exception {
+		mdao.storeViewcntUpdate(store_code);
+		
+	}
+
 }

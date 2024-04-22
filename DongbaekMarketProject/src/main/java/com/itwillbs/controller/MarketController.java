@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,12 +66,14 @@ public class MarketController {
 	// http://localhost:8088/market/storeMain
 	// 가게 메인페이지
 	@RequestMapping(value = "/storeMain", method = RequestMethod.GET)
-	public void storeMain(@RequestParam("store_code") int store_code, Model model) throws Exception{
+	public void storeMain(@RequestParam("store_code") int store_code, Model model, HttpSession session) throws Exception{
 		logger.debug(" storeMain() 호출 ");
 		StoreVO store = mService.selectStore(store_code);
 		model.addAttribute("store", store);
 		List<ProductVO> product = mService.productOnStore(store_code);
 		model.addAttribute("product", product);
+		
+		session.setAttribute("viewUpdateStatus", 1);
 	}
 
 
