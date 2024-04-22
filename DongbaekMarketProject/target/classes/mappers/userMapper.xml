@@ -59,4 +59,19 @@
 		where u.user_id = #{user_id}
 	</select>
 	
+	
+	<!-- 시장정보 가져오기(메인) -->
+	<select id="getMarket" resultType="com.itwillbs.domain.MarketVO">
+		select * from market
+	</select>
+	
+	<select id="getMarketCode" resultType="com.itwillbs.domain.MarketVO">
+		select * from market where market_code = #{market_code}
+	</select>
+	
+	
+	
+	
+	
+	
 </mapper>

@@ -3,91 +3,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>동백마켓</title>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="format-detection" content="telephone=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="author" content="">
-<meta name="keywords" content="">
-<meta name="description" content="">
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-<link rel="stylesheet" type="text/css" href="resources/css/vendor.css">
-<link rel="stylesheet" type="text/css" href="style.css">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Hahmlet&display=swap" rel="stylesheet">
-
+	<title>동백마켓</title>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="author" content="">
+	<meta name="keywords" content="">
+	<meta name="description" content="">
+	
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="resources/css/vendor.css">
+	<link rel="stylesheet" type="text/css" href="style.css">
+	
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+	
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Hahmlet&display=swap" rel="stylesheet">
+	
 </head>
 <style>
-.c {
-	margin: 10px 100px;
-}
-.container-fluid2 {
-	padding-left: 100px;
-	padding-right: auto;
-}
-.search1{
-	margin-left: 10px;
-}
-.search-bar input[type="text"] {
-	border: none;
-	border-radius: 20px;
-	padding: 10px auto;
-}
-.search-bar{
-	padding: 10px auto;
-}
-.main-menu .menu-list .nav-item {
-	margin-right: 15px;
-}
-
-@media ( max-width : 767px) {
-	.main-menu .menu-list .nav-item:last-child {
-		margin-right: 0;
+	.c {
+		margin: 10px 100px;
 	}
-	.main-menu .navbar-toggler {
+	.container-fluid2 {
+		padding-left: 100px;
+		padding-right: auto;
+	}
+	.search1{
+		margin-left: 10px;
+	}
+	.search-bar input[type="text"] {
+		border: none;
+		border-radius: 20px;
+		padding: 10px auto;
+	}
+	.search-bar{
+		padding: 10px auto;
+	}
+	.main-menu .menu-list .nav-item {
 		margin-right: 15px;
 	}
-}
-
-.offcanvas-body, .text-center {
-	font-family: 'Hahmlet', sans-serif; /* 햄릿(Hahmlet) 글꼴 적용 */
-	font-size: 20px;
-}
-
-.main-logo{
-	width: 300px;
-	height: 100px;
-	font-size: 20px;
-	padding-left: 70px; /* 왼쪽 여백 추가 */
-}
-.mylogo2 {
-	width: 300px;
-	height: 100px;
-}
-
-.login, .join, .service {
-	text-decoration-line: none;
-	font-family: 'Hahmlet', sans-serif; /* 햄릿(Hahmlet) 글꼴 적용 */
-}
-#ct{
-	padding: 0 auto;
-	margin: 0 auto;
-}
-
+	
+	@media ( max-width : 767px) {
+		.main-menu .menu-list .nav-item:last-child {
+			margin-right: 0;
+		}
+		.main-menu .navbar-toggler {
+			margin-right: 15px;
+		}
+	}
+	
+	.offcanvas-body, .text-center {
+		font-family: 'Hahmlet', sans-serif; /* 햄릿(Hahmlet) 글꼴 적용 */
+		font-size: 20px;
+	}
+	
+	.main-logo{
+		width: 300px;
+		height: 100px;
+		font-size: 20px;
+		padding-left: 70px; /* 왼쪽 여백 추가 */
+	}
+	.mylogo2 {
+		width: 300px;
+		height: 100px;
+	}
+	
+	.login, .join, .service {
+		text-decoration-line: none;
+		font-family: 'Hahmlet', sans-serif; /* 햄릿(Hahmlet) 글꼴 적용 */
+	}
+	#ct{
+		padding: 0 auto;
+		margin: 0 auto;
+	}
+	
+	.mylogo {
+		width: 200px;
+		height: 70px;
+	}
+	.footer-menu {
+		width: 200px;
+		height: 110px;
+		font-family: 'Hahmlet', sans-serif; /* 햄릿(Hahmlet) 글꼴 적용 */
+		font-size: 15px;
+		padding: 15px;
+	}
+	
+	#r {
+		height: 100px;
+		margin: 0 auto;
+	}
 </style>
-
 <body>
-
 	<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
       <defs>
         <symbol xmlns="http://www.w3.org/2000/svg" id="link" viewBox="0 0 24 24">
@@ -178,48 +192,39 @@
 		</div>
 	</div>
 
-	<div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasSearch" aria-labelledby="Search">
-		<div class="offcanvas-header justify-content-center">
-			<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-		</div>
-		<div class="offcanvas-body">
-			<div class="order-md-last">
-				<h4 class="d-flex justify-content-between align-items-center mb-3">
-					<span class="text-primary">Search</span>
-				</h4>
-				<form role="search" action="index.html" method="get" class="d-flex mt-3 gap-0">
-					<input class="form-control rounded-start rounded-0 bg-light" type="email" placeholder="What are you looking for?" aria-label="What are you looking for?">
-					<button class="btn btn-dark rounded-end rounded-0" type="submit">Search</button>
-				</form>
-			</div>
-		</div>
-	</div>
-
 	<div class="c">
 	<header>
 		<div class="container-fluid">
 			<div class="row py-3 border-bottom">
 				<div class="col-sm-4 col-lg-3 text-center text-sm-start">
 					<div class="main-logo">
-						<a href="index.html"> <img src="resources/images/mylogo2.png" alt="logo" class="mylogo2">
+						<a href="/"> <img src="resources/images/mylogo2.png" alt="logo" class="mylogo2">
 						</a>
 					</div>
 				</div>
 
-				<div class="col-sm-4 offset-sm-2 offset-md-0 col-lg-5 d-none d-lg-block" class="search1">
-					<div class="search-bar row bg-light p-2 my-4 rounded-4">
-						<div class="col-9 col-md-8 align-self-center">
-							<form id="search-form" class="text-center" action="search.html" method="post">
-								<input type="text" class="form-control border-0 bg-transparent" placeholder="찾고 싶은 음식, 시장을 검색해보세요!" />
-							</form>
-						</div>
-						<div class="col-3 col-md-4 align-self-center text-end">
-							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-               					<path fill="currentColor" d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z" />
-							</svg>
-						</div>
-					</div>
+				<div class="col-sm-4 offset-sm-2 offset-md-0 col-lg-5 d-none d-lg-block">
+				    <div class="search-bar row bg-light p-2 my-4 rounded-4">
+				        <div class="col-9 col-md-8 align-self-center">
+				            <form id="search-form" class="text-center" action="" method="get">
+				                <div class="input-group">
+				                    <div class="input-group-prepend">
+				                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">검색 유형</button>
+				                        <ul class="dropdown-menu">
+				                            <li><a class="dropdown-item" data-value="name">시장</a></li>
+				                            <li><a class="dropdown-item" data-value="product_name">음식</a></li>
+				                        </ul>
+				                    </div>
+				                    <input type="text" class="form-control border-0 bg-transparent" placeholder="찾고 싶은 음식, 시장을 검색해보세요!" name="query" />
+				                </div>
+				            </form>
+				        </div>
+				        <div class="col-3 col-md-4 align-self-center text-end">
+				            <button type="submit" form="search-form" class="btn btn-sm btn-primary">검색</button>
+				        </div>
+				    </div>
 				</div>
+
 				<div class="col-sm-8 col-lg-3 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
 				    <div>
 				    	<c:if test="${sessionScope.authVO.id == null }">
@@ -237,7 +242,7 @@
 					        </div>
 				    	</c:if>
 				        <ul class="d-flex justify-content-end list-unstyled m-3">
-				            <li><a href="#" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
+				            <li><a href="/member/info" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
 				                        <use xlink:href="#user"></use></svg>
 				                </a></li>
 				            <li><a href="#" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
@@ -266,11 +271,12 @@
 	                    <div class="offcanvas-header justify-content-center">
 	                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 	                    </div>
+	                    
 	                    <div class="offcanvas-body">
-	                        <select class="filter-categories border-0 mb-0 me-5">
-	                            <option>시장</option>
-	                            <option>구포시장</option>
-	                            <option>자갈치시장</option>
+                	        <select class="filter-categories border-0 mb-0 me-5">
+            	                <option>시장</option>
+        	                    <option>구포시장</option>
+    	                        <option>자갈치시장</option>
 	                        </select>
 	                        <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
 	                            <li class="nav-item active"><a href="#women" class="nav-link">시장소개</a></li>
@@ -286,7 +292,5 @@
 	        </div>
 	    </div>
 	</div>
-
 	</header>
 	</div>
-</html>
