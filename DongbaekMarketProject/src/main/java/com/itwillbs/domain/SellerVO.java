@@ -6,15 +6,15 @@ import lombok.Data;
 
 @Data
 public class SellerVO {
-	private String seller_id;
-	private String store_code;
-	private String salt;
-	private String seller_phone;
-	private String seller_name;
-	private String store_addr1;
-	private String store_addr2;
-	private String bank;
-	private String account;
+	private String seller_id; //판매자 아이디
+	private String store_code; //가게 코드
+	private String salt; //인증코드
+	private String seller_phone; //판매자 폰번호
+	private String seller_name; //판매자 이름
+	private String store_addr1; //가게 주소1
+	private String store_addr2; //가게 주소2
+	private String bank; //은행
+	private String account; //계좌
 	private String store_number;
 	private String mos_number;
 	private Timestamp regdate;
