@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="en">
 <head>
 <title>동백마켓</title>
@@ -104,7 +105,9 @@ body {
 }
 /* 출처: https://me-in-journey.com/entry/HTMLCSS-사이드바-메뉴-만들기-나타나는-2차-메뉴-만들기-feat-transform-translate [내 코딩 여정:티스토리] */
 
-
+.buy-btn:hover {
+            background-color: #0056b3;
+        }
 /* form태그 */
 
 
@@ -318,12 +321,12 @@ body {
 	                    </div>
 	                    <div class="offcanvas-body">
 	                        <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
-	                            <li class="nav-item active"><a href="#women" class="nav-link">상품관리</a></li>
-	                            <li class="nav-item dropdown"><a href="#men" class="nav-link">주문관리</a></li>
-	                            <li class="nav-item"><a href="#kids" class="nav-link">배송관리</a></li>
-	                            <li class="nav-item"><a href="#brand" class="nav-link">리뷰관리</a></li>
-	                            <li class="nav-item"><a href="#brand" class="nav-link">매출정산</a></li>
-	                            <li class="nav-item"><a href="#brand" class="nav-link">문의</a></li>
+	                            <li class="nav-item active"><a href="/seller/product" class="nav-link">상품관리</a></li>
+	                            <li class="nav-item dropdown"><a href="/seller/orderlist" class="nav-link">주문관리</a></li>
+	                            <li class="nav-item"><a href="/seller/dilivery" class="nav-link">배송관리</a></li>
+	                            <li class="nav-item"><a href="/seller/review" class="nav-link">리뷰관리</a></li>
+	                            <li class="nav-item"><a href="/seller/sales" class="nav-link">매출정산</a></li>
+	                            <li class="nav-item"><a href="/seller/question" class="nav-link">문의</a></li>
 	                        </ul>
 	                    </div>
 	                </div>
@@ -346,62 +349,241 @@ body {
   </section>
   <ul>
     <li>
-      <a href="#">상품 관리 </a>
+      <a href="/seller/product">상품 관리 </a>
       <ul>
-        <li><a href="#">상품 목록</a></li>
-        <li><a href="#">상품 등록</a></li>
-        <li><a href="#">상품 수정</a></li>
-        <li><a href="#">상품 삭제</a></li>
+        <li><a href="/seller/product">상품 목록</a></li>
+        <li><a href="/seller/productregist">상품 등록</a></li>
+        <li><a href="/seller/productmodify">상품 수정</a></li>
       </ul>
     </li>
     <li>
-      <a href="#">주문 관리</a>
+      <a href="/seller/orderlist">주문 관리</a>
       <ul>
-        <li><a href="#">주문 목록</a></li>
-        <li><a href="#">신규 주문</a></li>
-        <li><a href="#">구매 확정</a></li>
-        <li><a href="#">취소/환불 요청</a></li>
+        <li><a href="/seller/orderlist">주문 목록</a></li>
+        <li><a href="/seller/neworder">신규 주문</a></li>
+        <li><a href="/seller/orderconfirm">구매 확정</a></li>
+        <li><a href="/seller/ordercancel">취소/환불 요청</a></li>
       </ul>
     </li>
     <li>
-      <a href="#">배송 관리</a>
+      <a href="/seller/dilivery">배송 관리</a>
+    </li>
+    <li>
+      <a href="/seller/review">리뷰 관리</a>
+    </li>
+    <li>
+      <a href="/seller/sales">매출 정산</a>
       <ul>
-        <li><a href="#">배송전</a></li>
-        <li><a href="#">배송중</a></li>
-        <li><a href="#">배송후</a></li>
+        <li><a href="/seller/sales">매출 현황</a></li>
+        <li><a href="/seller/salesgraph">매출 그래프</a></li>
       </ul>
     </li>
     <li>
-      <a href="#">리뷰 관리</a>
-      <ul>
-        <li><a href="#">리뷰 목록</a></li>
-        <li><a href="#">답글한 리뷰</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#">매출 정산</a>
-      <ul>
-        <li><a href="#">매출 현황</a></li>
-        <li><a href="#">매출 그래프</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#">문의</a>
-      <ul>
-        <li><a href="#">문의 목록</a></li>
-        <li><a href="#">답변한 문의</a></li>
-      </ul>
+      <a href="/seller/question">문의</a>
     </li>
   </ul>
 </aside>
 
-	
-	
-	
+	<div style="overflow: auto; margin-bottom: 40px; max-width: 1200px; margin-left: auto; margin-right: auto;">
+    <div style="float: left; width: 30%; margin-right: 2%;">
+        <div class="container" style="max-width: 220px; margin: 0 auto; padding: 20px;">
+            <!-- 첫 번째 상품 정보 -->
+            <div class="product" style="border: 1px solid #ccc; padding: 20px; margin-bottom: 20px;">
+                <img src="/resources/images/product-thumb-1.png" alt="상품 이미지" style="max-width: 100%; height: 100px;">
+                <h2 class="product-title" style="font-size: 24px; margin-bottom: 10px;">상품 제목</h2>
+                <p class="product-price" style="font-size: 18; color: #007bff; margin-bottom: 10px;">상품 가격: $99.99</p>
+                <div style="display: flex; justify-content: space-between;">
+                <div style="margin-right: 10px;">
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;">수정하기</button>
+                </div>
+                <div>
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;" >삭제하기</button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="float: left; width: 30%; margin-right: 2%;">
+        <div class="container" style="max-width: 220px; margin: 0 auto; padding: 20px;">
+            <!-- 두 번째 상품 정보 -->
+            <div class="product" style="border: 1px solid #ccc; padding: 20px; margin-bottom: 20px;">
+                <img src="/resources/images/product-thumb-2.png" alt="상품 이미지" style="max-width: 100%; height: 100px;">
+                <h2 class="product-title" style="font-size: 24px; margin-bottom: 10px;">상품 제목</h2>
+                <p class="product-price" style="font-size: 18; color: #007bff; margin-bottom: 10px;">상품 가격: $99.99</p>
+                <div style="display: flex; justify-content: space-between;">
+                <div style="margin-right: 10px;">
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;">수정하기</button>
+                </div>
+                <div>
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;" >삭제하기</button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="float: left; width: 30%;">
+        <div class="container" style="max-width: 220px; margin: 0 auto; padding: 20px;">
+            <!-- 세 번째 상품 정보 -->
+            <div class="product" style="border: 1px solid #ccc; padding: 20px; margin-bottom: 20px;">
+                <img src="/resources/images/product-thumb-11.jpg" alt="상품 이미지" style="max-width: 100%; height: 100px;">
+                <h2 class="product-title" style="font-size: 24px; margin-bottom: 10px;">상품 제목</h2>
+                <p class="product-price" style="font-size: 18; color: #007bff; margin-bottom: 10px;">상품 가격: $99.99</p>
+                <div style="display: flex; justify-content: space-between;">
+                <div style="margin-right: 10px;">
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;">수정하기</button>
+                </div>
+                <div>
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;" >삭제하기</button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+	<div style="overflow: auto; margin-bottom: 40px; max-width: 1200px; margin-left: auto; margin-right: auto;">
+    <div style="float: left; width: 30%; margin-right: 2%;">
+        <div class="container" style="max-width: 220px; margin: 0 auto; padding: 20px;">
+            <!-- 첫 번째 상품 정보 -->
+            <div class="product" style="border: 1px solid #ccc; padding: 20px; margin-bottom: 20px;">
+                <img src="/resources/images/product-thumb-1.png" alt="상품 이미지" style="max-width: 100%; height: 100px;">
+                <h2 class="product-title" style="font-size: 24px; margin-bottom: 10px;">상품 제목</h2>
+                <p class="product-price" style="font-size: 18; color: #007bff; margin-bottom: 10px;">상품 가격: $99.99</p>
+                <div style="display: flex; justify-content: space-between;">
+                <div style="margin-right: 10px;">
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;">수정하기</button>
+                </div>
+                <div>
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;" >삭제하기</button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="float: left; width: 30%; margin-right: 2%;">
+        <div class="container" style="max-width: 220px; margin: 0 auto; padding: 20px;">
+            <!-- 두 번째 상품 정보 -->
+            <div class="product" style="border: 1px solid #ccc; padding: 20px; margin-bottom: 20px;">
+                <img src="/resources/images/product-thumb-2.png" alt="상품 이미지" style="max-width: 100%; height: 100px;">
+                <h2 class="product-title" style="font-size: 24px; margin-bottom: 10px;">상품 제목</h2>
+                <p class="product-price" style="font-size: 18; color: #007bff; margin-bottom: 10px;">상품 가격: $99.99</p>
+                <div style="display: flex; justify-content: space-between;">
+                <div style="margin-right: 10px;">
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;">수정하기</button>
+                </div>
+                <div>
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;" >삭제하기</button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="float: left; width: 30%;">
+        <div class="container" style="max-width: 220px; margin: 0 auto; padding: 20px;">
+            <!-- 세 번째 상품 정보 -->
+            <div class="product" style="border: 1px solid #ccc; padding: 20px; margin-bottom: 20px;">
+                <img src="/resources/images/product-thumb-11.jpg" alt="상품 이미지" style="max-width: 100%; height: 100px;">
+                <h2 class="product-title" style="font-size: 24px; margin-bottom: 10px;">상품 제목</h2>
+                <p class="product-price" style="font-size: 18; color: #007bff; margin-bottom: 10px;">상품 가격: $99.99</p>
+                <div style="display: flex; justify-content: space-between;">
+                <div style="margin-right: 10px;">
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;">수정하기</button>
+                </div>
+                <div>
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;" >삭제하기</button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+	<div style="overflow: auto; margin-bottom: 40px; max-width: 1200px; margin-left: auto; margin-right: auto;">
+    <div style="float: left; width: 30%; margin-right: 2%;">
+        <div class="container" style="max-width: 220px; margin: 0 auto; padding: 20px;">
+            <!-- 첫 번째 상품 정보 -->
+            <div class="product" style="border: 1px solid #ccc; padding: 20px; margin-bottom: 20px;">
+                <img src="/resources/images/product-thumb-1.png" alt="상품 이미지" style="max-width: 100%; height: 100px;">
+                <h2 class="product-title" style="font-size: 24px; margin-bottom: 10px;">상품 제목</h2>
+                <p class="product-price" style="font-size: 18; color: #007bff; margin-bottom: 10px;">상품 가격: $99.99</p>
+                <div style="display: flex; justify-content: space-between;">
+                <div style="margin-right: 10px;">
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;">수정하기</button>
+                </div>
+                <div>
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;" >삭제하기</button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="float: left; width: 30%; margin-right: 2%;">
+        <div class="container" style="max-width: 220px; margin: 0 auto; padding: 20px;">
+            <!-- 두 번째 상품 정보 -->
+            <div class="product" style="border: 1px solid #ccc; padding: 20px; margin-bottom: 20px;">
+                <img src="/resources/images/product-thumb-2.png" alt="상품 이미지" style="max-width: 100%; height: 100px;">
+                <h2 class="product-title" style="font-size: 24px; margin-bottom: 10px;">상품 제목</h2>
+                <p class="product-price" style="font-size: 18; color: #007bff; margin-bottom: 10px;">상품 가격: $99.99</p>
+                <div style="display: flex; justify-content: space-between;">
+                <div style="margin-right: 10px;">
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;">수정하기</button>
+                </div>
+                <div>
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;" >삭제하기</button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="float: left; width: 30%;">
+        <div class="container" style="max-width: 220px; margin: 0 auto; padding: 20px;">
+            <!-- 세 번째 상품 정보 -->
+            <div class="product" style="border: 1px solid #ccc; padding: 20px; margin-bottom: 20px;">
+                <img src="/resources/images/product-thumb-11.jpg" alt="상품 이미지" style="max-width: 100%; height: 100px;">
+                <h2 class="product-title" style="font-size: 24px; margin-bottom: 10px;">상품 제목</h2>
+                <p class="product-price" style="font-size: 18; color: #007bff; margin-bottom: 10px;">상품 가격: $99.99</p>
+                <div style="display: flex; justify-content: space-between;">
+                <div style="margin-right: 10px;">
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;">수정하기</button>
+                </div>
+                <div>
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;" >삭제하기</button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
 
 
 
 
+<div>
+			<ul>
+				
+				<c:if test="${pageVO.prev }">
+					<li><a href="/board/listCri?page=${pageVO.startPage - 1 }">«</a></li>
+				</c:if>
+				
+				<c:forEach var="idx" begin="${pageVO.startPage }" 
+				           end="${pageVO.endPage }" step="1">
+					<li ${pageVO.cri.page == idx? "class='active'":""}>
+						<a href="/board/listCri?page=${idx }">${idx }</a>
+					</li>
+				</c:forEach>
+				
+				<c:if test="${pageVO.next }">
+					<li><a href="/board/listCri?page=${pageVO.endPage + 1 }">»</a></li>
+				</c:if>
+				
+			</ul>
+</div>
 
 
 
@@ -478,7 +660,7 @@ body {
 </footer>
 
 
-<script src="js/jquery-1.11.0.min.js"></script>
+<script src="js/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 <script src="js/plugins.js"></script>
