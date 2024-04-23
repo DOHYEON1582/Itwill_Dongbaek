@@ -38,7 +38,7 @@ public class MarketController {
 	
 	// http://localhost:8088/market/marketMain
 	@RequestMapping(value = "/marketMain", method = {RequestMethod.GET, RequestMethod.POST}) 
-	public void marketMain(Model model,@RequestParam(defaultValue = "0") int market_code) throws Exception {
+	public void marketMain(Model model,@RequestParam(defaultValue = "0") int market_code, HttpSession session) throws Exception {
 	    logger.debug(" marketMain 호출 ");
 	    
 	    	if(market_code == 0) {
@@ -59,7 +59,9 @@ public class MarketController {
 		        model.addAttribute("productList", productList);
 	    		logger.debug(" marketList : " + marketList);
 	    		logger.debug(" storeList : " + storeList);
+	    		
 	    	}
+	    	session.setAttribute("viewUpdateStatus", 1);
 		    
 	    }
 	
@@ -72,8 +74,14 @@ public class MarketController {
 		model.addAttribute("store", store);
 		List<ProductVO> product = mService.productOnStore(store_code);
 		model.addAttribute("product", product);
+		int status = (Integer)session.getAttribute("viewUpdateStatus");
+		if(status == 1) {
+			// 글 조회수 1 증가
+			mService.updateViewcnt(store_code);
+			// 조회수 상태 0으로 만들기
+			session.setAttribute("viewUpdateStatus", 0);
+		}
 		
-		session.setAttribute("viewUpdateStatus", 1);
 	}
 
 

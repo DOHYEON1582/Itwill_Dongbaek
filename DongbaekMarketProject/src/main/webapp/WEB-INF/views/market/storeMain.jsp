@@ -37,165 +37,207 @@
 </script>
 
 <style>
+.bxslider {
+	display: inline-block;
+	margin-right: 20px; /* 이미지 슬라이더 오른쪽에 공간 추가 */
+}
 
-	.bxslider{
- 		display: inline-block;
-        margin-right: 20px; /* 이미지 슬라이더 오른쪽에 공간 추가 */
-	}
-    #sijang_text {
-        display: inline-block;
-        vertical-align: top;
-        margin-left: 50px; /* 시장 정보 왼쪽에 공간 추가 */
-        font-family: 'Gowun Dodum', sans-serif;
-        font-size: 25px;
-    }
-    #sijamg_top {
-        display: flex;
-        justify-content: center; /* 페이지 가운데 정렬 */
-        align-items: flex-start; /* 시장 정보 컨테이너를 상단에 정렬 */
-    }
-    table {
-        border-collapse: separate;
-        border-spacing: 0 20px; /* 상하로 30px 간격 지정 */
-        margin-top: 10px; /* 테이블 위쪽에 20px 간격 추가 */
-    }
-    th, td {
-        padding-left: 8px; /* 셀 내부 왼쪽 간격 지정 */
-    }
-	.slider-container {
-	    display: flex;
-	    justify-content: center;
-	}
-	.product-item {
-	  position: relative;
-	  padding: 16px;
-	  background: #FFFFFF;
-	  border: 1px solid #FBFBFB;
-	  box-shadow: 0px 5px 22px rgba(0, 0, 0, 0.04);
-	  border-radius: 16px;
-	  margin-bottom: 30px;
-	  transition: box-shadow 0.3s ease-out;
-	}
-	.product-item:hover {
-	  box-shadow: 0px 21px 44px rgba(0, 0, 0, 0.08);
-	}
-	.product-item h3 {
-	  display: block;
-	  width: 100%;
-	  font-weight: 600;
-	  font-size: 18px;
-	  line-height: 25px;
-	  text-transform: capitalize;
-	  color: #333333;
-	  margin: 0;
-	}
-	.product-item figure {
-	  background: #F9F9F9;
-	  border-radius: 12px;
-	  text-align: center;
-	}
-	.product-item figure img {
-	  max-height: 210px;
-	  height: auto;
-	}
-	.product-item .btn-wishlist {
-	  position: absolute;
-	  top: 20px;
-	  right: 20px;
-	  width: 40px;
-	  height: 40px;
-	  border-radius: 50px;
-	  display: flex;
-	  align-items: center;
-	  justify-content: center;
-	  background: #fff;
-	  border: 1px solid #d8d8d8;
-	  transition: all 0.3s ease-out;
-	}
-	.product-item .btn-wishlist:hover {
-	  background: rgb(240, 56, 56);
-	  color: #fff;
-	}
-	.product-item .qty {
-	  font-weight: 400;
-	  font-size: 13px;
-	  line-height: 18px;
-	  letter-spacing: 0.02em;
-	  text-transform: uppercase;
-	  color: #9D9D9D;
-	}
-	.product-item .rating {
-	  font-weight: 600;
-	  font-size: 13px;
-	  line-height: 18px;
-	  text-transform: capitalize;
-	  color: #222222;
-	}
-	.product-item .rating iconify-icon {
-	  color: #FFC43F;
-	}
-	.product-item .price {
-	  display: block;
-	  width: 100%;
-	  font-weight: 600;
-	  font-size: 22px;
-	  line-height: 30px;
-	  text-transform: capitalize;
-	  color: #222222;
-	}
-	.product-item .product-qty {
-	  width: 85px;
-	}
-	.product-item .btn-link {
-	  text-decoration: none;
-	}
-	.product-item #quantity {
-	  height: auto;
-	  width: 28px;
-	  text-align: center;
-	  border: none;
-	  margin: 0;
-	  padding: 0;
-	}
-	.product-item .btn-number {
-	  width: 26px;
-	  height: 26px;
-	  line-height: 1;
-	  text-align: center;
-	  background: #FFFFFF;
-	  border: 1px solid #E2E2E2;
-	  border-radius: 6px;
-	  color: #222;
-	  padding: 0;
-	}
-	
-	h3 {
-    padding-left: 320px; /* 왼쪽 여백을 20px로 설정 */
-    font-family: 'Gowun Dodum', sans-serif;
-    font-weight: bold;
-	}
-    .button-follow {
-       padding: 5px 10px; /* 내부 여백(padding)을 조정하여 버튼의 크기 조절 */
-       font-size: 15px;
-       background-color: #FF69B4; /* 분홍색 배경색 */
-       color: #FFF; /* 텍스트 색상 */
-       border: 1px solid #FF69B4; /* 테두리 선 색상 */
-       padding: 8px 16px; /* 내부 여백(padding) 설정 */
-       border-radius: 10px; /* 버튼 모서리 둥글게 */
-       cursor: pointer; /* 포인터 모양으로 변경 */
-    }
-  .button-follow:hover {
-        background-color: #FF1493; /* 마우스 오버시 배경색 변경 */
-    }
+#sijang_text {
+	display: inline-block;
+	vertical-align: top;
+	margin-left: 50px; /* 시장 정보 왼쪽에 공간 추가 */
+	font-family: 'Gowun Dodum', sans-serif;
+	font-size: 25px;
+}
 
-    .button-follow img {
-        vertical-align: middle; /* 아이콘 세로 가운데 정렬 */
-        margin-right: 6px; /* 아이콘과 텍스트 사이 간격 */
-    }
+#sijamg_top {
+	display: flex;
+	justify-content: center; /* 페이지 가운데 정렬 */
+	align-items: flex-start; /* 시장 정보 컨테이너를 상단에 정렬 */
+}
 
-    .button-follow .text {
-        font-weight: bold; /* 텍스트 굵게 설정 */
-    }
+table {
+	border-collapse: separate;
+	border-spacing: 0 20px; /* 상하로 30px 간격 지정 */
+	margin-top: 10px; /* 테이블 위쪽에 20px 간격 추가 */
+}
+
+th, td {
+	padding-left: 8px; /* 셀 내부 왼쪽 간격 지정 */
+}
+
+.slider-container {
+	display: flex;
+	justify-content: center;
+}
+
+.product-item {
+	position: relative;
+	padding: 16px;
+	background: #FFFFFF;
+	border: 1px solid #FBFBFB;
+	box-shadow: 0px 5px 22px rgba(0, 0, 0, 0.04);
+	border-radius: 16px;
+	margin-bottom: 30px;
+	transition: box-shadow 0.3s ease-out;
+}
+
+.product-item:hover {
+	box-shadow: 0px 21px 44px rgba(0, 0, 0, 0.08);
+}
+
+.product-item h3 {
+	display: block;
+	width: 100%;
+	font-weight: 600;
+	font-size: 18px;
+	line-height: 25px;
+	text-transform: capitalize;
+	color: #333333;
+	margin: 0;
+}
+
+.product-item figure {
+	background: #F9F9F9;
+	border-radius: 12px;
+	text-align: center;
+}
+
+.product-item figure img {
+	max-height: 210px;
+	height: auto;
+}
+
+.product-item .btn-wishlist {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	width: 40px;
+	height: 40px;
+	border-radius: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #fff;
+	border: 1px solid #d8d8d8;
+	transition: all 0.3s ease-out;
+}
+
+.product-item .btn-wishlist:hover {
+	background: rgb(240, 56, 56);
+	color: #fff;
+}
+
+.product-item .qty {
+	font-weight: 400;
+	font-size: 13px;
+	line-height: 18px;
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+	color: #9D9D9D;
+}
+
+.product-item .rating {
+	font-weight: 600;
+	font-size: 13px;
+	line-height: 18px;
+	text-transform: capitalize;
+	color: #222222;
+}
+
+.product-item .rating iconify-icon {
+	color: #FFC43F;
+}
+
+.product-item .price {
+	display: block;
+	width: 100%;
+	font-weight: 600;
+	font-size: 22px;
+	line-height: 30px;
+	text-transform: capitalize;
+	color: #222222;
+}
+
+.product-item .product-qty {
+	width: 85px;
+}
+
+.product-item .btn-link {
+	text-decoration: none;
+}
+
+.product-item #quantity {
+	height: auto;
+	width: 28px;
+	text-align: center;
+	border: none;
+	margin: 0;
+	padding: 0;
+}
+
+.product-item .btn-number {
+	width: 26px;
+	height: 26px;
+	line-height: 1;
+	text-align: center;
+	background: #FFFFFF;
+	border: 1px solid #E2E2E2;
+	border-radius: 6px;
+	color: #222;
+	padding: 0;
+}
+
+h3 {
+	padding-left: 320px; /* 왼쪽 여백을 20px로 설정 */
+	font-family: 'Gowun Dodum', sans-serif;
+	font-weight: bold;
+}
+
+.button-follow {
+	padding: 5px 10px; /* 내부 여백(padding)을 조정하여 버튼의 크기 조절 */
+	font-size: 15px;
+	background-color: #FF69B4; /* 분홍색 배경색 */
+	color: #FFF; /* 텍스트 색상 */
+	border: 1px solid #FF69B4; /* 테두리 선 색상 */
+	padding: 8px 16px; /* 내부 여백(padding) 설정 */
+	border-radius: 10px; /* 버튼 모서리 둥글게 */
+	cursor: pointer; /* 포인터 모양으로 변경 */
+}
+
+.button-follow:hover {
+	background-color: #FF1493; /* 마우스 오버시 배경색 변경 */
+}
+
+.button-follow img {
+	vertical-align: middle; /* 아이콘 세로 가운데 정렬 */
+	margin-right: 6px; /* 아이콘과 텍스트 사이 간격 */
+}
+
+.button-follow .text {
+	font-weight: bold; /* 텍스트 굵게 설정 */
+}
+
+.sort-filter[data-v-467c170f] {
+	display: block;
+	width: 100%;
+}
+ button {
+    width: 100px;
+    padding: 5px;
+    margin: 5px;
+    border: none;
+    background-color: lightyellow;
+    cursor: pointer;
+  }
+.shop {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+	}
+}
 </style>
 <!-- 시장정보 -->
 <section class="py-2 mb-1" style="background: url(${pageContext.request.contextPath}/resources/images/background-pattern.jpg);">
@@ -256,7 +298,15 @@
 
 <div class="bootstrap-tabs product-tabs">
     <h3>가게 상품</h3>
-    <div class="container">
+	<section class="shop">
+    <div class="shop__buttonContainer">
+            <button class="shop__basicBtn">최신순</button>
+            <button class="shop__mostsell">인기순</button>
+            <button class="shop__lowPriceBtn">낮은 가격순</button>
+            <button class="shop__highPriceBtn">높은 가격순</button>
+    </div>
+	</section>
+	<div class="container">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-6 justify-content-center gap-3">
             <c:forEach items="${product}" var="product">
                 <div class="col" style="width: 19%;">
