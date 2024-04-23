@@ -1,9 +1,5 @@
 package com.itwillbs.controller;
 
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
@@ -21,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.itwillbs.domain.AuthVO;
 import com.itwillbs.domain.MarketVO;
 import com.itwillbs.domain.UserVO;
+import com.itwillbs.persistence.UserDAO;
 import com.itwillbs.service.MainService;
 import com.itwillbs.service.UserService;
 
@@ -33,6 +30,8 @@ public class UserController {
 	private UserService uService;
 	@Inject
 	private MainService mService;
+	@Inject
+	private UserDAO udao;
 	
 	// http://localhost:8088/
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -103,6 +102,108 @@ public class UserController {
 		session.invalidate();
 		return "redirect:/member/login";
 	}
+	
+	@RequestMapping(value = "member/info", method = RequestMethod.GET)
+	public void infoGET(Model model, HttpSession session) throws Exception {
+		logger.debug(" infoGET() 실행 ");
+		AuthVO authVO = (AuthVO)session.getAttribute("authVO");
+		String user_id = authVO.getId();
+		logger.debug(" id : " + user_id);
+		model.addAttribute("userinfo", uService.userInfo(user_id));
+	}
+	
+	@RequestMapping(value = "member/update", method = RequestMethod.GET)
+	public void userUpdateGET(Model model, HttpSession session) throws Exception {
+		logger.debug(" userUpdateGET() 실행 ");
+		AuthVO authVO = (AuthVO)session.getAttribute("authVO");
+		String user_id = authVO.getId();
+		logger.debug(" id : " + user_id);
+		model.addAttribute("userinfo", uService.userInfo(user_id));
+	}
+	
+//	@RequestMapping(value = "member/update", method = RequestMethod.POST)
+//	public String userUpdatePOST(UserVO uvo) throws Exception {
+//		logger.debug(" userUpdatePOST(UserVO uvo) 실행 ");
+//		logger.debug(" 수정할 정보 : " + uvo);
+//		
+//		int result = uService.userUpdate(uvo);
+//		if(result == 1) {
+//			logger.debug(" 수정완료!! ");
+//			return "redirect:/";
+//		}
+//		logger.debug(" 수정실패!! ");
+//		return "redirect:/member/update";
+//	}
+	@RequestMapping(value = "member/update", method = RequestMethod.POST)
+	public String userUpdatePOST(UserVO uvo, Model model) throws Exception {
+		// 입력된 비밀번호를 가져와서 해싱합니다.
+		String inputPassword = uvo.getUser_pw();
+		String salt = udao.getSalt(uvo);
+		String hashedPassword = udao.hashPass(inputPassword, salt);
+		
+		// 데이터베이스에서 현재 사용자의 비밀번호를 가져옵니다.
+		String currentPassword = uService.getPass(uvo.getUser_id());
+		logger.debug("inputPassword : " + inputPassword);
+		logger.debug("salt " + salt);
+		logger.debug("hashedPassword : " + hashedPassword);
+		logger.debug("currentPassword : " + currentPassword);
+		logger.debug("uvo : " + uvo);
+		// 입력된 비밀번호와 데이터베이스에 저장된 비밀번호를 비교하여 일치하는지 확인합니다.
+		if (hashedPassword.equals(currentPassword)) {
+		    // 비밀번호가 일치하면 회원 정보를 업데이트합니다.
+			logger.debug("비밀번호 일치");
+		    int result = uService.userUpdate(uvo);
+		    logger.debug("Inuvo : " + uvo);
+		    logger.debug("result : " + result);
+		    if (result == 1) {
+		        logger.debug(" 회원 정보 수정 완료 ");
+		        return "redirect:/";
+		    } else {
+		        logger.debug(" 회원 정보 수정 실패 ");
+		        model.addAttribute("error", "회원 정보 수정에 실패하였습니다.");
+		        return "member/update";
+		    }
+		} else {
+		    // 비밀번호가 일치하지 않을 경우, 다시 회원 정보 수정 페이지로 이동합니다.
+		    logger.debug(" 비밀번호가 일치하지 않습니다. ");
+		    model.addAttribute("error", "비밀번호가 일치하지 않습니다.");
+		    return "member/update";
+		}
+	}
+	
+	
+	//회원정보 삭제
+	@RequestMapping(value = "/member/delete", method = RequestMethod.GET)
+	public String deleteUserGET() throws Exception {
+		logger.debug(" deleteUserGET() 호출 ");
+		
+		return "/member/delete";
+	}
+	@RequestMapping(value = "/member/delete", method = RequestMethod.POST)
+	public String deleteUserPOST(UserVO uvo, HttpSession session) throws Exception {
+		logger.debug(" deleteUserPOST() 호출 ");
+		logger.debug(" 삭제할 정보 : " + uvo);
+		int result = uService.deleteUser(uvo);
+		if(result == 1) {
+			session.invalidate();
+			return "redirect:/";
+		}
+		logger.debug(" 비밀번호 오류 ");
+		return "redirect:/member/delete";
+	}
+	
+	@RequestMapping(value = "/member/cart", method = RequestMethod.GET)
+	public void cart() throws Exception {
+		logger.debug(" cart() 호출 ");
+		
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

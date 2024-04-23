@@ -53,6 +53,32 @@ public class UserServiceImpl implements UserService {
 		return null;
 	}
 
+	@Override
+	public UserVO userInfo(String user_id) throws Exception {
+		logger.debug(" userInfo(String user_id) 실행 ");
+		
+		return udao.userInfo(user_id);
+	}
+
+	@Override
+	public int userUpdate(UserVO uvo) throws Exception {
+		logger.debug(" userUpdate(UserVO uvo) 실행 ");
+		logger.debug("service uvo " + uvo);
+		return udao.updateUser(uvo);
+	}
+
+	@Override
+	public String getPass(String user_id) throws Exception {
+		logger.debug(" getPass(String user_id) 실행 ");
+		return udao.getPass(user_id);
+	}
+
+	@Override
+	public int deleteUser(UserVO uvo) throws Exception {
+		logger.debug(" deleteUser(UserVO uvo) 실행 ");
+		return udao.deleteUser(uvo);
+	}
+
 	
 
 	

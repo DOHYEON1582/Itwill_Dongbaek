@@ -42,23 +42,22 @@
 	</select>
 	
 	<insert id="authUser">
-		insert into user_auth (id, auth) 
-		value (#{id}, 'ROLE_USER')
+		insert into user_auth (user_id, auth) 
+		value (#{user_id}, 'ROLE_USER')
 	</insert>
 	
 	<select id="getAuth" resultMap="authMap">
 		select * from user_auth 
-		where id = #{id}
+		where user_id = #{user_id}
 	</select>
 	
 	<select id="getUser" resultMap="userMap">
 		select u.user_id, u.user_pw, u.phone, u.user_name, u.addr1, u.addr2, u.point, u.identity, u.regdate, a.auth 
 		from user u
 		left join user_auth a 
-		on u.user_id = a.id 
+		on u.user_id = a.user_id 
 		where u.user_id = #{user_id}
 	</select>
-	
 	
 	<!-- 시장정보 가져오기(메인) -->
 	<select id="getMarket" resultType="com.itwillbs.domain.MarketVO">
@@ -68,6 +67,28 @@
 	<select id="getMarketCode" resultType="com.itwillbs.domain.MarketVO">
 		select * from market where market_code = #{market_code}
 	</select>
+	
+	<!-- 회원정보 조회-->
+	<select id="userInfo" resultType="com.itwillbs.domain.UserVO">
+		select * from user 
+		where user_id = #{user_id}
+	</select>
+	<!-- 회원정보 수정 -->
+	<update id="updateUser">
+		update user set phone=#{phone}, user_name=#{user_name}, addr1=#{addr1}, addr2=#{addr2}, update_date=now() 
+		where user_id=#{user_id} and user_pw=#{user_pw}
+	</update>
+	<!-- 회원 비밀번호 조회 -->
+	<select id="getPass" resultType="string">
+		select user_pw from user 
+		where user_id = #{user_id}
+	</select>
+	<!-- 회원정보 삭제 -->
+	<delete id="deleteUser">
+		delete from user 
+		where user_id = #{user_id} and user_pw = #{user_pw}
+	</delete>
+	
 	
 	
 	

@@ -31,6 +31,13 @@ public class UserDAOImple implements UserDAO {
 	}
 
 	@Override
+	public void authUser(UserVO uvo) throws Exception {
+		logger.debug(" authUser(String user_id) 호출 ");
+		sql.insert(NAMESPACE +".authUser", uvo);
+	}
+
+
+	@Override
 	public String createSalt() throws Exception {
 		logger.debug(" createSalt() 호출 ");
 		// 랜덤 값 생성
@@ -109,6 +116,32 @@ public class UserDAOImple implements UserDAO {
 		logger.debug(" getAuth(String user_id) 호출 ");
 		
 		return sql.selectOne(NAMESPACE + ".getAuth", user_id);
+	}
+
+	@Override
+	public UserVO userInfo(String user_id) throws Exception {
+		logger.debug(" userInfo(String user_id) 호출 ");
+		
+		return sql.selectOne(NAMESPACE + ".userInfo", user_id);
+	}
+
+	@Override
+	public int updateUser(UserVO uvo) throws Exception {
+		logger.debug(" updateUser(UserVO uvo) 호출 ");
+		logger.debug(" dao uvo " + uvo);
+		return sql.update(NAMESPACE + ".updateUser", uvo);
+	}
+
+	@Override
+	public String getPass(String user_id) throws Exception {
+		logger.debug(" getPass(String user_id) 호출 ");
+		return sql.selectOne(NAMESPACE + ".getPass", user_id);
+	}
+
+	@Override
+	public int deleteUser(UserVO uvo) throws Exception {
+		logger.debug(" deleteUser(UserVO uvo) 호출 ");
+		return sql.delete(NAMESPACE+ ".deleteUser", uvo);
 	}
 
 	
