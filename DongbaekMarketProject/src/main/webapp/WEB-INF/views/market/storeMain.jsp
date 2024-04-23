@@ -34,6 +34,59 @@
             }
         });
     });
+    
+    document.addEventListener("DOMContentLoaded", function(){
+    	const btnLatest = document.querySelector(".shop__basicBtn");
+        const btnMostSell = document.querySelector(".shop__mostsell");
+        const btnLowPrice = document.querySelector(".shop__lowPriceBtn");
+        const btnHighPrice = document.querySelector(".shop__highPriceBtn");
+    	
+        btnLatest.addEventListener("click", function() {
+            getProductList("latest");
+        });
+
+        btnMostSell.addEventListener("click", function() {
+            getProductList("mostsell");
+        });
+
+        btnLowPrice.addEventListener("click", function() {
+            getProductList("lowprice");
+        });
+
+        btnHighPrice.addEventListener("click", function() {
+            getProductList("highprice");
+        });
+    
+        function getProductList(sortType){
+        	var xhr = new XMLHttpRequest();
+//         	var url = "http://localhost:8088/product/sortProduct";
+        	xhr.open("POST", "/product/sortProduct", true);
+        	xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        	
+        	xhr.onload = function(){
+        		if(xhr.status === 200){
+        			var productList = JSON.parse(xhr.responseText);
+        			updateProductList(productList);
+        		} else {
+        			console.error("실패 @@");
+        		}
+        	};
+			xhr.onerror = function(){
+				console.error("네트워크 오류")
+			};
+			var data = {
+				sortType : sortType	
+			};
+			xhr.send(JSON.stringify(data));
+        }
+        
+        function updateProductList(productList) {
+            // 받아온 productList를 이용하여 화면 업데이트
+            // 예시: productList를 이용해 상품 목록을 동적으로 생성하여 페이지에 출력
+        }
+       
+    });
+    
 </script>
 
 <style>
@@ -223,7 +276,7 @@ h3 {
 	width: 100%;
 }
  button {
-    width: 100px;
+    width: 120px;
     padding: 5px;
     margin: 5px;
     border: none;
@@ -261,7 +314,7 @@ h3 {
 		            <span class="content">
 		                <div class="inner-container">
 		                    <img src="https://front.coupangcdn.com/coupang-store-display/20240415182517/img/ic_heart_dark_outline.ebe809a.svg" width="12" alt="">
-		                    <span class="text">판매자샵 찜하기</span>
+		                    <span class="text">즐겨찾기</span>
 		                </div>
 		            </span>
 		        </button>
