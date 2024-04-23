@@ -1,15 +1,26 @@
 package com.itwillbs.controller;
 
+import java.util.List;
+
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.itwillbs.domain.ProductVO;
+import com.itwillbs.service.ProductService;
 
 @Controller
 @RequestMapping(value = "/seller/*")
 public class SellerPageController {//판매자 페이지 컨트롤러
 
+	@Inject
+	private ProductService pService; //서비스 가져오기
 	
 	private static final Logger logger = LoggerFactory.getLogger(SellerPageController.class);
 	
@@ -23,10 +34,18 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	// 판매자 상품페이지(상품목록)
 	//	http://localhost:8088/seller/product
 	@RequestMapping(value = "/product",method = RequestMethod.GET)
-	public void product() throws Exception{
+	public void product(Model model, @RequestParam(value = "page", defaultValue = "1") int page) throws Exception{
 		logger.debug(" product() 실행 ");
+		int perPageNum = 9; //페이지당 보여줄 상품 수 설정
+		int startRow = (page - 1) * perPageNum; //시작행 계산
+		
+		List<ProductVO> productList = pService.productList("seller_id", startRow, perPageNum);
+		
+		 model.addAttribute("productList", productList);
+		
+		
 	}
-	
+		
 	// 판매자 상품페이지(상품등록)
 	//	http://localhost:8088/seller/productregist
 	@RequestMapping(value = "/productregist",method = RequestMethod.GET)

@@ -384,7 +384,7 @@ body {
   </ul>
 </aside>
 
-	<div style="overflow: auto; margin-bottom: 40px; max-width: 1200px; margin-left: auto; margin-right: auto;">
+<div style="overflow: auto; margin-bottom: 40px; max-width: 1200px; margin-left: auto; margin-right: auto;">
     <div style="float: left; width: 30%; margin-right: 2%;">
         <div class="container" style="max-width: 220px; margin: 0 auto; padding: 20px;">
             <!-- 첫 번째 상품 정보 -->
@@ -442,7 +442,7 @@ body {
         </div>
     </div>
 </div>
-	<div style="overflow: auto; margin-bottom: 40px; max-width: 1200px; margin-left: auto; margin-right: auto;">
+<div style="overflow: auto; margin-bottom: 40px; max-width: 1200px; margin-left: auto; margin-right: auto;">
     <div style="float: left; width: 30%; margin-right: 2%;">
         <div class="container" style="max-width: 220px; margin: 0 auto; padding: 20px;">
             <!-- 첫 번째 상품 정보 -->
@@ -499,8 +499,7 @@ body {
             </div>
         </div>
     </div>
-</div>
-	<div style="overflow: auto; margin-bottom: 40px; max-width: 1200px; margin-left: auto; margin-right: auto;">
+</div><div style="overflow: auto; margin-bottom: 40px; max-width: 1200px; margin-left: auto; margin-right: auto;">
     <div style="float: left; width: 30%; margin-right: 2%;">
         <div class="container" style="max-width: 220px; margin: 0 auto; padding: 20px;">
             <!-- 첫 번째 상품 정보 -->
@@ -557,33 +556,197 @@ body {
             </div>
         </div>
     </div>
-</div>
+</div><div style="overflow: auto; margin-bottom: 40px; max-width: 1200px; margin-left: auto; margin-right: auto;">
+    <div style="float: left; width: 30%; margin-right: 2%;">
+        <div class="container" style="max-width: 220px; margin: 0 auto; padding: 20px;">
+            <!-- 첫 번째 상품 정보 -->
+            <div class="product" style="border: 1px solid #ccc; padding: 20px; margin-bottom: 20px;">
+                <img src="/resources/images/product-thumb-1.png" alt="상품 이미지" style="max-width: 100%; height: 100px;">
+                <h2 class="product-title" style="font-size: 24px; margin-bottom: 10px;">상품 제목</h2>
+                <p class="product-price" style="font-size: 18; color: #007bff; margin-bottom: 10px;">상품 가격: $99.99</p>
+                <div style="display: flex; justify-content: space-between;">
+                <div style="margin-right: 10px;">
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;">수정하기</button>
+                </div>
+                <div>
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;" >삭제하기</button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    
+    <div style="float: left; width: 30%; margin-right: 2%;">
+        <div class="container" style="max-width: 220px; margin: 0 auto; padding: 20px;">
+            <!-- 두 번째 상품 정보 -->
+            <div class="product" style="border: 1px solid #ccc; padding: 20px; margin-bottom: 20px;">
+                <img src="/resources/images/product-thumb-2.png" alt="상품 이미지" style="max-width: 100%; height: 100px;">
+                <h2 class="product-title" style="font-size: 24px; margin-bottom: 10px;">상품 제목</h2>
+                <p class="product-price" style="font-size: 18; color: #007bff; margin-bottom: 10px;">상품 가격: $99.99</p>
+                <div style="display: flex; justify-content: space-between;">
+                <div style="margin-right: 10px;">
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;">수정하기</button>
+                </div>
+                <div>
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;" >삭제하기</button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="float: left; width: 30%;">
+        <div class="container" style="max-width: 220px; margin: 0 auto; padding: 20px;">
+            <!-- 세 번째 상품 정보 -->
+            <div class="product" style="border: 1px solid #ccc; padding: 20px; margin-bottom: 20px;">
+                <img src="/resources/images/product-thumb-11.jpg" alt="상품 이미지" style="max-width: 100%; height: 100px;">
+                <h2 class="product-title" style="font-size: 24px; margin-bottom: 10px;">상품 제목</h2>
+                <p class="product-price" style="font-size: 18; color: #007bff; margin-bottom: 10px;">상품 가격: $99.99</p>
+                <div style="display: flex; justify-content: space-between;">
+                <div style="margin-right: 10px;">
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;">수정하기</button>
+                </div>
+                <div>
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;" >삭제하기</button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div><div style="overflow: auto; margin-bottom: 40px; max-width: 1200px; margin-left: auto; margin-right: auto;">
+    <div style="float: left; width: 30%; margin-right: 2%;">
+        <div class="container" style="max-width: 220px; margin: 0 auto; padding: 20px;">
+            <!-- 첫 번째 상품 정보 -->
+            <div class="product" style="border: 1px solid #ccc; padding: 20px; margin-bottom: 20px;">
+                <img src="/resources/images/product-thumb-1.png" alt="상품 이미지" style="max-width: 100%; height: 100px;">
+                <h2 class="product-title" style="font-size: 24px; margin-bottom: 10px;">상품 제목</h2>
+                <p class="product-price" style="font-size: 18; color: #007bff; margin-bottom: 10px;">상품 가격: $99.99</p>
+                <div style="display: flex; justify-content: space-between;">
+                <div style="margin-right: 10px;">
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;">수정하기</button>
+                </div>
+                <div>
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;" >삭제하기</button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="float: left; width: 30%; margin-right: 2%;">
+        <div class="container" style="max-width: 220px; margin: 0 auto; padding: 20px;">
+            <!-- 두 번째 상품 정보 -->
+            <div class="product" style="border: 1px solid #ccc; padding: 20px; margin-bottom: 20px;">
+                <img src="/resources/images/product-thumb-2.png" alt="상품 이미지" style="max-width: 100%; height: 100px;">
+                <h2 class="product-title" style="font-size: 24px; margin-bottom: 10px;">상품 제목</h2>
+                <p class="product-price" style="font-size: 18; color: #007bff; margin-bottom: 10px;">상품 가격: $99.99</p>
+                <div style="display: flex; justify-content: space-between;">
+                <div style="margin-right: 10px;">
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;">수정하기</button>
+                </div>
+                <div>
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;" >삭제하기</button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="float: left; width: 30%;">
+        <div class="container" style="max-width: 220px; margin: 0 auto; padding: 20px;">
+            <!-- 세 번째 상품 정보 -->
+            <div class="product" style="border: 1px solid #ccc; padding: 20px; margin-bottom: 20px;">
+                <img src="/resources/images/product-thumb-11.jpg" alt="상품 이미지" style="max-width: 100%; height: 100px;">
+                <h2 class="product-title" style="font-size: 24px; margin-bottom: 10px;">상품 제목</h2>
+                <p class="product-price" style="font-size: 18; color: #007bff; margin-bottom: 10px;">상품 가격: $99.99</p>
+                <div style="display: flex; justify-content: space-between;">
+                <div style="margin-right: 10px;">
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;">수정하기</button>
+                </div>
+                <div>
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;" >삭제하기</button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div><div style="overflow: auto; margin-bottom: 40px; max-width: 1200px; margin-left: auto; margin-right: auto;">
+    <div style="float: left; width: 30%; margin-right: 2%;">
+        <div class="container" style="max-width: 220px; margin: 0 auto; padding: 20px;">
+            <!-- 첫 번째 상품 정보 -->
+            <div class="product" style="border: 1px solid #ccc; padding: 20px; margin-bottom: 20px;">
+                <img src="/resources/images/product-thumb-1.png" alt="상품 이미지" style="max-width: 100%; height: 100px;">
+                <h2 class="product-title" style="font-size: 24px; margin-bottom: 10px;">상품 제목</h2>
+                <p class="product-price" style="font-size: 18; color: #007bff; margin-bottom: 10px;">상품 가격: $99.99</p>
+                <div style="display: flex; justify-content: space-between;">
+                <div style="margin-right: 10px;">
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;">수정하기</button>
+                </div>
+                <div>
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;" >삭제하기</button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="float: left; width: 30%; margin-right: 2%;">
+        <div class="container" style="max-width: 220px; margin: 0 auto; padding: 20px;">
+            <!-- 두 번째 상품 정보 -->
+            <div class="product" style="border: 1px solid #ccc; padding: 20px; margin-bottom: 20px;">
+                <img src="/resources/images/product-thumb-2.png" alt="상품 이미지" style="max-width: 100%; height: 100px;">
+                <h2 class="product-title" style="font-size: 24px; margin-bottom: 10px;">상품 제목</h2>
+                <p class="product-price" style="font-size: 18; color: #007bff; margin-bottom: 10px;">상품 가격: $99.99</p>
+                <div style="display: flex; justify-content: space-between;">
+                <div style="margin-right: 10px;">
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;">수정하기</button>
+                </div>
+                <div>
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;" >삭제하기</button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="float: left; width: 30%;">
+        <div class="container" style="max-width: 220px; margin: 0 auto; padding: 20px;">
+            <!-- 세 번째 상품 정보 -->
+            <div class="product" style="border: 1px solid #ccc; padding: 20px; margin-bottom: 20px;">
+                <img src="/resources/images/product-thumb-11.jpg" alt="상품 이미지" style="max-width: 100%; height: 100px;">
+                <h2 class="product-title" style="font-size: 24px; margin-bottom: 10px;">상품 제목</h2>
+                <p class="product-price" style="font-size: 18; color: #007bff; margin-bottom: 10px;">상품 가격: $99.99</p>
+                <div style="display: flex; justify-content: space-between;">
+                <div style="margin-right: 10px;">
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;">수정하기</button>
+                </div>
+                <div>
+                    <button class="buy-btn" style="background-color: #007bff; color: #fff; padding: 4px; border: none; cursor: pointer; font-size: 14px;" >삭제하기</button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>	
 
 
 
 
-<div>
-			<ul>
-				
-				<c:if test="${pageVO.prev }">
-					<li><a href="/board/listCri?page=${pageVO.startPage - 1 }">«</a></li>
-				</c:if>
-				
-				<c:forEach var="idx" begin="${pageVO.startPage }" 
-				           end="${pageVO.endPage }" step="1">
-					<li ${pageVO.cri.page == idx? "class='active'":""}>
-						<a href="/board/listCri?page=${idx }">${idx }</a>
-					</li>
-				</c:forEach>
-				
-				<c:if test="${pageVO.next }">
-					<li><a href="/board/listCri?page=${pageVO.endPage + 1 }">»</a></li>
-				</c:if>
-				
-			</ul>
-</div>
+
+
+			<!-- 페이지 링크 추가 -->
+	<div>
+		<ul>
+
+			<c:if test="${page > 1}">
+				<a href="?page=${page - 1}">이전 페이지</a>
+			</c:if>
+			<c:if test="${not empty productList}">
+				<a href="?page=${page + 1}">다음 페이지</a>
+			</c:if>
+
+		</ul>
+	</div>
 
 
 
@@ -591,26 +754,26 @@ body {
 
 
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	<footer style="font-family: 'Roboto', sans-serif; padding-bottom: 0;">
 
     <div class="row justify-content-center" id="r">
