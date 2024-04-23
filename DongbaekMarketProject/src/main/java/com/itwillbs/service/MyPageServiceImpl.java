@@ -52,6 +52,7 @@ public class MyPageServiceImpl implements MyPageService {
 	public void deleteCartAllProduct(CartVO vo) throws Exception {
 		logger.debug(" === S : deleteCartAllProduct(CartVO vo) 실행 === ");
 		mdao.deleteCartAllProduct(vo);
+
 	}
 	
 	

@@ -21,6 +21,7 @@ public interface MyPageService {
 	
 	// 장바구니 비우기
 	public void deleteCartAllProduct(CartVO vo) throws Exception;
+
 	
 	
 	
