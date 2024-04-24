@@ -20,10 +20,6 @@ public interface MyPageDAO {
 	public void deleteCartProduct(int cart_code) throws Exception;
 	
 	// 장바구니 비우기
-	public void deleteCartAllProduct(CartVO vo) throws Exception;
-
-	
-	
-	 
+	public void deleteCartAllProduct(CartVO vo) throws Exception;	 
 	
 }

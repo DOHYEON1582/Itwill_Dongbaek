@@ -55,11 +55,11 @@ public class MyPageController {
 		List<CartVO> cartList = mService.selectCartList(cvo);
 		logger.debug("cartList : " + cartList);
 
+
 		PageMaker pageMaker = new PageMaker();
 
 		pageMaker.setCri(cri);
 		pageMaker.setTotalCount(mService.selectCountCart(cvo));
-
 
 		logger.debug("pageMaker : " + pageMaker);
 		logger.debug("cri : " + cri);
@@ -79,13 +79,13 @@ public class MyPageController {
 			checkList[i] = Integer.parseInt(strCheckList[i]);
 			logger.debug(" checkList " + checkList[i]);
 			mService.deleteCartProduct(checkList[i]);
-
 		}
 		return "redirect:/mypage/cart";
 	}
 
 	// 장바구니 상품 전체 삭제
 	@GetMapping(value = "/cart/deleteAll")
+
 	public String deleteAllCartProducts(HttpSession session, 
 										HttpServletRequest request, 
 										HttpServletResponse response) throws Exception {
