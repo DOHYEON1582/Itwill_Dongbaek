@@ -47,6 +47,13 @@ public class MyPageServiceImpl implements MyPageService {
 		mdao.deleteCartProduct(cart_code);
 	}
 	
+	// 장바구니 비우기
+	@Override
+	public void deleteCartAllProduct(CartVO vo) throws Exception {
+		logger.debug(" === S : deleteCartAllProduct(CartVO vo) 실행 === ");
+		mdao.deleteCartAllProduct(vo);
+	}
+	
 	
 
 }
