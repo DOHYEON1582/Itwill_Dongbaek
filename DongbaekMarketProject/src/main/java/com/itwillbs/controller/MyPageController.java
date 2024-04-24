@@ -129,6 +129,7 @@ public class MyPageController {
 		
 		return "redirect:/mypage/cart";
 
+
 	}
 
 }

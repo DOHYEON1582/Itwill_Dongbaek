@@ -40,6 +40,7 @@ public class MyPageDAOImpl implements MyPageDAO {
 	public void updateProductCount(CartVO vo) throws Exception {
 		logger.debug(" === D : updateProductCount(int cart_code) ===");
 		sqlSession.update(NAMESPACE+".updateProductCount",vo);
+
 	}
 
 	// 장바구니 상품 선택 삭제

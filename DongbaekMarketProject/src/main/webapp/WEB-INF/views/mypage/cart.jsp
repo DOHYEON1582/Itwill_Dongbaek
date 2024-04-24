@@ -153,6 +153,7 @@
  
 <script>
 <<<<<<< Upstream, based on origin/feat-15-cart
+<<<<<<< Upstream, based on origin/feat-15-cart
 document.addEventListener('DOMContentLoaded', function() {
 
 	// 전체 선택, 해제
@@ -381,7 +382,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 });
-
 
 </script>
  
