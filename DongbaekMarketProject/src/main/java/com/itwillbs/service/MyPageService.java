@@ -6,17 +6,18 @@ import com.itwillbs.domain.CartVO;
 
 public interface MyPageService {
 
+	/* 장바구니 */
 	// 장바구니에 담긴 상품 수 세어오기
-	public int getCartNum(CartVO vo) throws Exception;
+	public int selectCountCart(CartVO vo) throws Exception;
 	
 	// 장바구니 목록 가져오기
-	public List<CartVO> getCartList(CartVO vo) throws Exception;
+	public List<CartVO> selectCartList(CartVO vo) throws Exception;
 	
 	// 장바구니 상품 수량 변경
-	public void modifyProductCount(int cart_code) throws Exception;
+	public void updateProductCount(int cart_code) throws Exception;
 		
-	// 장바구니 상품 삭제
-	public void removeCartProduct(int cart_code) throws Exception;
+	// 장바구니 상품 선택 삭제
+	public void deleteCartProduct(int cart_code) throws Exception;
 	
 	
 	
