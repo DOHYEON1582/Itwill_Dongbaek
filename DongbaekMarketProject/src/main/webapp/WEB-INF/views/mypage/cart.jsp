@@ -39,6 +39,7 @@
 		</thead>
 		<tbody>
 			<c:set var="num" value="${pageMaker.totalCount - (pageMaker.cri.page - 1) * pageMaker.cri.perPageNum }" />
+<<<<<<< Upstream, based on origin/feat-15-cart
 			
 			<c:choose>
 				<c:when test="${empty cartList}">
@@ -71,6 +72,28 @@
 			
 			
 			
+=======
+			<c:forEach var="list" items="${cartList }">
+			<tr>
+				<td id="cart_code${list.cart_code }"><input type="checkbox" id="ap_check" name="ap_check" class="ap_check" value="${list.cart_code }"></td>
+				<td><img alt="" src="">경로확인 후 값 넣기</td>
+				<td>${list.store_name}<br>${list.product_name}</td><!-- 가게명, 상품명 -->
+				<td>${list.price }</td>
+				<td>
+					<input type="number" id="count" name="count" value="${list.count }">
+					<button type="button" id="countUpdate">변경</button>
+				</td>
+				<c:set var="total" value="${list.price * list.count }"/>
+				<td>${total}</td>
+				<td>
+					<button type="button" id="orderProduct">주문하기(주문하기 페이지로)</button><br> 
+					<button type="button" id="addWish">관심상품등록(위시리스트로)</button><br> 
+					<button type="button" id="deleteProduct">삭제(삭제)</button><br> 
+				</td>
+			</tr>
+			<c:set var="num" value="${number -1 }"/>
+			</c:forEach>
+>>>>>>> 2216004 cart.jsp 삭제 추가
 		</tbody>
 	</table>
 	
@@ -96,8 +119,13 @@
 	</table>
 	<!-- 금액 보여주기 끝 -->
 	
+<<<<<<< Upstream, based on origin/feat-15-cart
 	<button type="button" id="orderAll">전체주문하기</button>
 	<button type="button" id="orderChecked">선택주문하기</button>
+=======
+	<button type="button">전체주문하기</button>
+	<button type="button">선택주문하기</button>
+>>>>>>> 2216004 cart.jsp 삭제 추가
 
 	<!-- 페이징 시작 -->
 	<table border=1>
@@ -124,6 +152,7 @@
 <%--  <%@ include file="../include/footer.jsp"%> --%>
  
 <script>
+<<<<<<< Upstream, based on origin/feat-15-cart
 document.addEventListener('DOMContentLoaded', function() {
 
 	// 전체 선택, 해제

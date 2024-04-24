@@ -60,6 +60,7 @@ public class MyPageController {
 		pageMaker.setCri(cri);
 		pageMaker.setTotalCount(mService.selectCountCart(cvo));
 
+
 		logger.debug("pageMaker : " + pageMaker);
 		logger.debug("cri : " + cri);
 		model.addAttribute("cartList", cartList);
@@ -78,6 +79,7 @@ public class MyPageController {
 			checkList[i] = Integer.parseInt(strCheckList[i]);
 			logger.debug(" checkList " + checkList[i]);
 			mService.deleteCartProduct(checkList[i]);
+
 		}
 		return "redirect:/mypage/cart";
 	}
@@ -126,6 +128,7 @@ public class MyPageController {
 		mService.updateProductCount(cvo);
 		
 		return "redirect:/mypage/cart";
+
 	}
 
 }
