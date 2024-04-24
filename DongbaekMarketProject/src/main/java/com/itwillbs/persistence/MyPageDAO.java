@@ -14,7 +14,7 @@ public interface MyPageDAO {
 	public List<CartVO> selectCartList(CartVO vo) throws Exception;
 	
 	// 장바구니 상품 수량 변경
-	public void updateProductCount(int cart_code) throws Exception;
+	public void updateProductCount(CartVO vo) throws Exception;
 		
 	// 장바구니 상품 선택 삭제
 	public void deleteCartProduct(int cart_code) throws Exception;

@@ -65,14 +65,6 @@ public class MyPageController {
 		return "/mypage/cart";
 	}
 
-	// 장바구니 상품 수량 변경
-	@PostMapping(value = "/cart/modify")
-	public String modifyProductCount() throws Exception {
-		logger.debug(" === modifyProductCount() 실행 ===");
-
-		return "redirect:/mypage/cart";
-	}
-
 	// 장바구니 상품 선택 삭제
 	@PostMapping(value = "/cart/deleteChecked")
 	public String deleteCheckedCartProducts(@RequestParam("checkList") String[] strCheckList) throws Exception {
@@ -117,4 +109,18 @@ public class MyPageController {
 		return "redirect:/mypage/cart";
 	}
 
+	// 장바구니 상품 수량 변경
+	@PostMapping(value = "/cart/updateCount")
+	public String updateCartProductsCount(@RequestParam("cartCode") int cartCode, 
+											@RequestParam("newCount") int newCount) throws Exception {
+		logger.debug(" === updateCartProductsCount() 실행 ===");
+		
+		CartVO cvo = new CartVO();
+		cvo.setCart_code(cartCode);
+		cvo.setCount(newCount);
+		
+		mService.updateProductCount(cvo);
+		
+		return "redirect:/mypage/cart";
+	}
 }
