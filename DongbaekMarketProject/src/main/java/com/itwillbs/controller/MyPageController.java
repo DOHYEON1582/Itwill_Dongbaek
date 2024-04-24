@@ -31,14 +31,11 @@ public class MyPageController {
 	@Inject
 	private MyPageService cService;
 
+	/* 장바구니 */
 	// 장바구니 상품 목록
 	@GetMapping(value = "/cart")
-	public String cartListGET(HttpSession session, 
-							  HttpServletRequest request, 
-							  HttpServletResponse response,
-							  @ModelAttribute("cri") Criteria cri,
-							  Model model)
-			throws Exception {
+	public String cartListGET(HttpSession session, HttpServletRequest request, HttpServletResponse response,
+			@ModelAttribute("cri") Criteria cri, Model model) throws Exception {
 		logger.debug(" === cartListGET() 실행 ===");
 
 		CartVO cvo = new CartVO();
@@ -53,44 +50,55 @@ public class MyPageController {
 		cvo.setBundle_code(bundleCode);
 
 		// 장바구니 리스트
-		List<CartVO> cartList = cService.getCartList(cvo);
-		
+		List<CartVO> cartList = cService.selectCartList(cvo);
+
 		PageMaker pageMaker = new PageMaker();
-		
+
 		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(cService.getCartNum(cvo));
+		pageMaker.setTotalCount(cService.selectCountCart(cvo));
 
 		logger.debug("pageMaker : " + pageMaker);
 		logger.debug("cri : " + cri);
 		model.addAttribute("cartList", cartList);
-		model.addAttribute("pageMaker",pageMaker); 
-		
+		model.addAttribute("pageMaker", pageMaker);
+
 		return "/mypage/cart";
 	}
-	
+
 	// 장바구니 상품 수량 변경
-	@PostMapping(value="/cart/modify")
+	@PostMapping(value = "/cart/modify")
 	public String modifyProductCount() throws Exception {
 		logger.debug(" === modifyProductCount() 실행 ===");
-		
-		
+
 		return "redirect:/mypage/cart";
 	}
-	
+
 	// 장바구니 상품 선택 삭제
-	@PostMapping(value="/cart/remove")
-	public String cartRemovePOST(@RequestParam("checkList") String[] strCheckList) throws Exception{
-		logger.debug(" === cartRemovePOST() 실행 ===");
-		
+	@PostMapping(value = "/cart/deleteChecked")
+	public String deleteCheckedCartProducts(@RequestParam("checkList") String[] strCheckList) throws Exception {
+		logger.debug(" === deleteCheckedCartProducts() 실행 ===");
+
 		int[] checkList = new int[strCheckList.length];
 		for (int i = 0; i < strCheckList.length; i++) {
 			checkList[i] = Integer.parseInt(strCheckList[i]);
 			logger.debug(" checkList " + checkList[i]);
-			cService.removeCartProduct(checkList[i]);
+			cService.deleteCartProduct(checkList[i]);
 		}
-		
 		return "redirect:/mypage/cart";
 	}
-	
+
+	// 장바구니 상품 전체 삭제
+	@PostMapping(value = "/cart/deleteAll")
+	public String deleteAllCartProducts() throws Exception {
+		logger.debug(" === deleteAllCartProducts() 실행 ===");
+
+		return "redirect:/mypage/cart";
+	}
+
+	// 장바구니 상품 개별 삭제
+	@PostMapping(value = "/cart/delete")
+	public String deleteCartProducts() throws Exception {
+		return null;
+	}
 
 }
