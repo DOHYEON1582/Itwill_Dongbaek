@@ -72,13 +72,13 @@ public class UserController {
 		return "redirect:/member/login";
 	}
 	
-	@RequestMapping(value = "member/login", method = RequestMethod.GET)
+	@RequestMapping(value = "/member/login", method = RequestMethod.GET)
 	public void loginGET() throws Exception{
 		logger.debug(" loginGET() 호출");
 		
 	}
 	
-	@RequestMapping(value = "member/login", method = RequestMethod.POST)
+	@RequestMapping(value = "/member/login", method = RequestMethod.POST)
 	public String loginPOST(UserVO uvo, HttpSession session) throws Exception{
 		logger.debug(" loginPOST() 호출 ");
 		AuthVO authVO = uService.loginUser(uvo);
@@ -107,7 +107,7 @@ public class UserController {
 	public void infoGET(Model model, HttpSession session) throws Exception {
 		logger.debug(" infoGET() 실행 ");
 		AuthVO authVO = (AuthVO)session.getAttribute("authVO");
-		String user_id = authVO.getId();
+		String user_id = authVO.getUser_id();
 		logger.debug(" id : " + user_id);
 		model.addAttribute("userinfo", uService.userInfo(user_id));
 	}
@@ -116,61 +116,17 @@ public class UserController {
 	public void userUpdateGET(Model model, HttpSession session) throws Exception {
 		logger.debug(" userUpdateGET() 실행 ");
 		AuthVO authVO = (AuthVO)session.getAttribute("authVO");
-		String user_id = authVO.getId();
+		String user_id = authVO.getUser_id();
 		logger.debug(" id : " + user_id);
 		model.addAttribute("userinfo", uService.userInfo(user_id));
 	}
-	
-//	@RequestMapping(value = "member/update", method = RequestMethod.POST)
-//	public String userUpdatePOST(UserVO uvo) throws Exception {
-//		logger.debug(" userUpdatePOST(UserVO uvo) 실행 ");
-//		logger.debug(" 수정할 정보 : " + uvo);
-//		
-//		int result = uService.userUpdate(uvo);
-//		if(result == 1) {
-//			logger.debug(" 수정완료!! ");
-//			return "redirect:/";
-//		}
-//		logger.debug(" 수정실패!! ");
-//		return "redirect:/member/update";
-//	}
-	@RequestMapping(value = "member/update", method = RequestMethod.POST)
-	public String userUpdatePOST(UserVO uvo, Model model) throws Exception {
-		// 입력된 비밀번호를 가져와서 해싱합니다.
-		String inputPassword = uvo.getUser_pw();
-		String salt = udao.getSalt(uvo);
-		String hashedPassword = udao.hashPass(inputPassword, salt);
+	@RequestMapping(value = "/member/update", method = RequestMethod.POST)
+	public String userUpdatePOST(UserVO uvo) throws Exception {
+		logger.debug(" userUpdatePOST(UserVO uvo) 호출 ");
+		uService.userUpdate(uvo);
 		
-		// 데이터베이스에서 현재 사용자의 비밀번호를 가져옵니다.
-		String currentPassword = uService.getPass(uvo.getUser_id());
-		logger.debug("inputPassword : " + inputPassword);
-		logger.debug("salt " + salt);
-		logger.debug("hashedPassword : " + hashedPassword);
-		logger.debug("currentPassword : " + currentPassword);
-		logger.debug("uvo : " + uvo);
-		// 입력된 비밀번호와 데이터베이스에 저장된 비밀번호를 비교하여 일치하는지 확인합니다.
-		if (hashedPassword.equals(currentPassword)) {
-		    // 비밀번호가 일치하면 회원 정보를 업데이트합니다.
-			logger.debug("비밀번호 일치");
-		    int result = uService.userUpdate(uvo);
-		    logger.debug("Inuvo : " + uvo);
-		    logger.debug("result : " + result);
-		    if (result == 1) {
-		        logger.debug(" 회원 정보 수정 완료 ");
-		        return "redirect:/";
-		    } else {
-		        logger.debug(" 회원 정보 수정 실패 ");
-		        model.addAttribute("error", "회원 정보 수정에 실패하였습니다.");
-		        return "member/update";
-		    }
-		} else {
-		    // 비밀번호가 일치하지 않을 경우, 다시 회원 정보 수정 페이지로 이동합니다.
-		    logger.debug(" 비밀번호가 일치하지 않습니다. ");
-		    model.addAttribute("error", "비밀번호가 일치하지 않습니다.");
-		    return "member/update";
-		}
+		return "redirect:/";
 	}
-	
 	
 	//회원정보 삭제
 	@RequestMapping(value = "/member/delete", method = RequestMethod.GET)
@@ -183,7 +139,16 @@ public class UserController {
 	public String deleteUserPOST(UserVO uvo, HttpSession session) throws Exception {
 		logger.debug(" deleteUserPOST() 호출 ");
 		logger.debug(" 삭제할 정보 : " + uvo);
+		
+		
+		
+		
+		
+		
+		
+		
 		int result = uService.deleteUser(uvo);
+		logger.debug("result : " + result);
 		if(result == 1) {
 			session.invalidate();
 			return "redirect:/";

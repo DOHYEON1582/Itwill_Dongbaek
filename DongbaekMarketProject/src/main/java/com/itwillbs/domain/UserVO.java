@@ -1,6 +1,7 @@
 package com.itwillbs.domain;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import lombok.Data;
 
@@ -19,4 +20,7 @@ public class UserVO {
 	private Timestamp regdate;
 	private Timestamp update_date;
 	private String auth;
+	
+	// 인증정보 여러개 사용 가능
+	private List<AuthVO> authList;
 }

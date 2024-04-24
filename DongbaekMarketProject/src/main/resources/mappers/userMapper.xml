@@ -18,10 +18,11 @@
 		<result property="identity" column="identity"/>
 		<result property="regdate" column="regdate"/>
 		<result property="auth" column="auth"/>
+		<collection property="authList" resultMap="authMap"></collection>
 	</resultMap>
 
 	<resultMap type="com.itwillbs.domain.AuthVO" id="authMap">
-		<result property="id" column="id"/>
+		<result property="user_id" column="user_id"/>
 		<result property="auth" column="auth"/>
 	</resultMap>
 	
@@ -29,6 +30,11 @@
 	<insert id="insertUser">
 		insert into user(user_id, user_pw, salt, phone, user_name, addr1, addr2, regdate) 
 		values (#{user_id}, #{user_pw}, #{salt}, #{phone}, #{user_name}, #{addr1}, #{addr2}, now())
+	</insert>
+
+	<insert id="authUser">
+		insert into user_auth (user_id, auth) 
+		value (#{user_id}, 'ROLE_USER')
 	</insert>
 	
 	<select id="getSalt" resultType="string">
@@ -40,11 +46,6 @@
 		select * from user 
 		where user_id = #{user_id} and user_pw = #{user_pw}
 	</select>
-	
-	<insert id="authUser">
-		insert into user_auth (user_id, auth) 
-		value (#{user_id}, 'ROLE_USER')
-	</insert>
 	
 	<select id="getAuth" resultMap="authMap">
 		select * from user_auth 
@@ -75,8 +76,9 @@
 	</select>
 	<!-- 회원정보 수정 -->
 	<update id="updateUser">
-		update user set phone=#{phone}, user_name=#{user_name}, addr1=#{addr1}, addr2=#{addr2}, update_date=now() 
-		where user_id=#{user_id} and user_pw=#{user_pw}
+		update user u, user_auth a 
+		set u.phone=#{phone}, u.user_name=#{user_name}, u.addr1=#{addr1}, u.addr2=#{addr2}, u.update_date=now() 
+		where u.user_id=#{user_id} and a.user_id=#{user_id}
 	</update>
 	<!-- 회원 비밀번호 조회 -->
 	<select id="getPass" resultType="string">
@@ -84,6 +86,7 @@
 		where user_id = #{user_id}
 	</select>
 	<!-- 회원정보 삭제 -->
+	<!-- 삭제할때 auth정보랑 같이 삭제, join 써서 user_id가 같은 사람, 해시 값으로 변환? -->
 	<delete id="deleteUser">
 		delete from user 
 		where user_id = #{user_id} and user_pw = #{user_pw}

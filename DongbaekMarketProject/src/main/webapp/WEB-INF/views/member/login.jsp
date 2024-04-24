@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1> login.jsp </h1>
+	<h1> customLogin.jsp </h1>
 	
 	<form action="" method="post">
 		아이디 : <input type="text" name="user_id" > <br>

@@ -227,16 +227,16 @@
 
 				<div class="col-sm-8 col-lg-3 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
 				    <div>
-				    	<c:if test="${sessionScope.authVO.id == null }">
+				    	<c:if test="${sessionScope.authVO.user_id == null }">
 					        <div class="align-items-center">
 					            <a href="/member/login" class="login">로그인</a>
 					            <a href="/member/register" class="join">회원가입</a>
 					            <a href="#" class="service">고객센터</a>
 					        </div>
 				    	</c:if>
-				    	<c:if test="${sessionScope.authVO.id != null }">
+				    	<c:if test="${sessionScope.authVO.user_id != null }">
 					        <div class="align-items-center">
-					            로그인 id : ${sessionScope.authVO.id }
+					            로그인 id : ${sessionScope.authVO.user_id }
 					            <a href="#" class="service">고객센터</a>
 					            <input type="button" value="로그아웃" onclick="location.href='/member/logout';">
 					        </div>
