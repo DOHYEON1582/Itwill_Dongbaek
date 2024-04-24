@@ -35,9 +35,9 @@ public class MyPageServiceImpl implements MyPageService {
 
 	// 장바구니 상품 수량 변경
 	@Override
-	public void updateProductCount(int cart_code) throws Exception {
+	public void updateProductCount(CartVO vo) throws Exception {
 		logger.debug(" === S : updateProductCount(int cart_code) 실행 === ");
-		mdao.updateProductCount(cart_code);
+		mdao.updateProductCount(vo);
 	}
 		
 	// 장바구니 상품 삭제
