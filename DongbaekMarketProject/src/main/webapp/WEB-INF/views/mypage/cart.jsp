@@ -179,6 +179,25 @@
 				});
 			}
 		});
-	});// 제이쿼리 끝 
+		
+		// 상품 수량 변경
+	  $('#productList').on('click', '#countUpdate', function() {
+	        var cartCode = $(this).closest('tr').find('.ap_check').val(); // 상품 코드 가져오기
+	        var newCount = $(this).closest('tr').find('#count').val(); // 변경된 수량 가져오기
+
+	        $.ajax({
+	            url: '/mypage/cart/updateCount', 
+	            type: 'POST',
+	            data: {"cartCode": cartCode, "newCount": newCount}, 
+	            success: function() {
+	                alert("상품 수량이 변경되었습니다.");
+	            },
+	            error: function() {
+	                
+	            }
+	        });
+	    });
+		
+	});//끝 
 </script>
  
