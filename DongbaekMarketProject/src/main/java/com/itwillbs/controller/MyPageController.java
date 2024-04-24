@@ -29,7 +29,7 @@ public class MyPageController {
 	private static final Logger logger = LoggerFactory.getLogger(MyPageController.class);
 
 	@Inject
-	private MyPageService cService;
+	private MyPageService mService;
 
 	/* 장바구니 */
 	// 장바구니 상품 목록
@@ -50,12 +50,12 @@ public class MyPageController {
 		cvo.setBundle_code(bundleCode);
 
 		// 장바구니 리스트
-		List<CartVO> cartList = cService.selectCartList(cvo);
+		List<CartVO> cartList = mService.selectCartList(cvo);
 
 		PageMaker pageMaker = new PageMaker();
 
 		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(cService.selectCountCart(cvo));
+		pageMaker.setTotalCount(mService.selectCountCart(cvo));
 
 		logger.debug("pageMaker : " + pageMaker);
 		logger.debug("cri : " + cri);
@@ -82,23 +82,39 @@ public class MyPageController {
 		for (int i = 0; i < strCheckList.length; i++) {
 			checkList[i] = Integer.parseInt(strCheckList[i]);
 			logger.debug(" checkList " + checkList[i]);
-			cService.deleteCartProduct(checkList[i]);
+			mService.deleteCartProduct(checkList[i]);
 		}
 		return "redirect:/mypage/cart";
 	}
 
 	// 장바구니 상품 전체 삭제
 	@PostMapping(value = "/cart/deleteAll")
-	public String deleteAllCartProducts() throws Exception {
+	public String deleteAllCartProducts(HttpSession session, 
+										HttpServletRequest request, 
+										HttpServletResponse response) throws Exception {
 		logger.debug(" === deleteAllCartProducts() 실행 ===");
+		
+		CartVO cvo = new CartVO();
+		// 세션 가져오기
+		String userid = (String) session.getAttribute("user_id");
+		String bundleCode = (String) session.getAttribute("cart");
 
+		cvo.setUser_id(userid);
+		cvo.setBundle_code(bundleCode);
+		
+		mService.deleteCartAllProduct(cvo);
+		
 		return "redirect:/mypage/cart";
 	}
 
 	// 장바구니 상품 개별 삭제
 	@PostMapping(value = "/cart/delete")
-	public String deleteCartProducts() throws Exception {
-		return null;
+	public String deleteCartProducts(@RequestParam("ap_check") String cart_code ) throws Exception {
+		logger.debug(" === deleteCartProducts() 실행 ===");
+		
+		mService.deleteCartProduct(Integer.parseInt(cart_code));
+		
+		return "redirect:/mypage/cart";
 	}
 
 }
