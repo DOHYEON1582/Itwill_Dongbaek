@@ -25,16 +25,14 @@ public class MyPageDAOImpl implements MyPageDAO {
 	@Override
 	public int selectCountCart(CartVO vo) throws Exception {
 		logger.debug(" === D : selectCountCart(CartVO vo) === ");
-		int result = sqlSession.selectOne(NAMESPACE+".selectCountCart",vo);
-		return result;
+		return sqlSession.selectOne(NAMESPACE+".selectCountCart",vo);
 	}
 
 	// 장바구니 목록 가져오기
 	@Override
 	public List<CartVO> selectCartList(CartVO vo) throws Exception {
 		logger.debug(" === D : selectCartList(CartVO vo) ===");
-		List<CartVO> list = sqlSession.selectList(NAMESPACE+".selectCartList",vo);
-		return list;
+		return sqlSession.selectList(NAMESPACE+".selectCartList",vo);
 	}
 	
 	// 장바구니 상품 수량 변경
@@ -48,11 +46,14 @@ public class MyPageDAOImpl implements MyPageDAO {
 	@Override
 	public void deleteCartProduct(int cart_code) throws Exception {
 		logger.debug(" === D : deleteCartProduct(int cart_code) ===");
-		sqlSession.delete(NAMESPACE+".deleteCartProduct", cart_code);
-		
+		sqlSession.delete(NAMESPACE+".deleteCartProduct", cart_code);	
 	}
 
-	
-
+	// 장바구니 비우기
+	@Override
+	public void deleteCartAllProduct(CartVO vo) throws Exception {
+		logger.debug(" === D : deleteCartAllProduct(CartVO vo) === ");
+		sqlSession.delete(NAMESPACE+".deleteCart",vo);	
+	}
 	
 }
