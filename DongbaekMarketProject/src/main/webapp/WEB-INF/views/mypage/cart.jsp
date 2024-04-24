@@ -22,13 +22,11 @@
 	<h2>(o゜▽゜)o☆</h2>
 	<%-- page:${cri.page}
 	page:${pageMaker.cri.page } --%>
-	
-	<form method="POST" id="cartList" name="cartList">
-	<input type="hidden" id="checkList" name="checkList">
+
 	<table id="productList" class="productList" border=1>
 		<thead>
 			<tr>
-				<th><input type="checkbox" id="allCheck" name="allCheck" onclick="checkAll()"></td>
+				<th><input type="checkbox" id="allCheck" name="allCheck" class="allCheck"></td>
 				<th colspan="2">상품정보</th>
 				<th>판매가</th>
 				<th>수량</th>
@@ -40,34 +38,35 @@
 			<c:set var="num" value="${pageMaker.totalCount - (pageMaker.cri.page - 1) * pageMaker.cri.perPageNum }" />
 			<c:forEach var="list" items="${cartList }">
 			<tr>
-				<td><input type="checkbox" id="ap_check" name="ap_check" value="${list.cart_code }"></td>
+				<td id="cart_code${list.cart_code }"><input type="checkbox" id="ap_check" name="ap_check" class="ap_check" value="${list.cart_code }"></td>
 				<td><img alt="" src="">경로확인 후 값 넣기</td>
 				<td>${list.store_name}<br>${list.product_name}</td><!-- 가게명, 상품명 -->
 				<td>${list.price }</td>
 				<td>
 					<input type="number" id="count" name="count" value="${list.count }">
-					<button id="countUpdate" name="countUpdate">변경</button>
+					<button type="button" id="countUpdate">변경</button>
 				</td>
 				<c:set var="total" value="${list.price * list.count }"/>
 				<td>${total}</td>
 				<td>
-					<button type="button" id="orderProduct" onclick="orderProduct(this)">주문하기(주문하기 페이지로)</button><br> 
-					<button type="button" id="addWish" onclick="addWish(this)">관심상품등록(위시리스트로)</button><br> 
-					<button type="button" id="deleteProduct" onclick="deleteProduct(this)">삭제(삭제)</button><br> 
+					<button type="button" id="orderProduct">주문하기(주문하기 페이지로)</button><br> 
+					<button type="button" id="addWish">관심상품등록(위시리스트로)</button><br> 
+					<button type="button" id="deleteProduct">삭제(삭제)</button><br> 
 				</td>
 			</tr>
 			<c:set var="num" value="${number -1 }"/>
 			</c:forEach>
 		</tbody>
 	</table>
+	
 	<table>
 		<tr>
-			<td><button onclick="locaion.href='/mypage/cartDeleteAll'">장바구니 비우기</button></td>
-			<td><button onclick="deleteChecked()">선택삭제</button></td>
+			<td><button type="button" id="deleteAll">장바구니 비우기</button></td>
+			<td><button type="button" id="deleteChecked">선택삭제</button></td>
 		</tr>
 	</table>
 	
-	
+	<!-- 금액 보여주기 시작 -->
 	<table border=1>
 		<tr>
 			<td>총 상품금액</td>
@@ -80,13 +79,11 @@
 			<td></td>
 		</tr>
 	</table>
+	<!-- 금액 보여주기 끝 -->
 	
-	<button onclick="locaion.href='/order/orderForm'">전체주문하기</button>
-	<button >선택주문하기</button>
-	
-	
-	</form>
-	
+	<button type="button">전체주문하기</button>
+	<button type="button">선택주문하기</button>
+
 	<!-- 페이징 시작 -->
 	<table border=1>
 		<tr>
@@ -102,8 +99,7 @@
 			</c:forEach>
 			<c:if test="${pageMaker.next && pageMaker.endPage > 0}">
 				<td><a href="cart${pageMaker.makeQuery(pageMaker.endPage +1)}">&raquo;</a></td>
-			</c:if>
-			
+			</c:if>	
 		</tr>
 	</table>
 	<!-- 페이징 끝 -->
@@ -112,66 +108,77 @@
 	
  <%@ include file="../include/footer.jsp"%>
  
- <script>
- 	// 체크박스 전체 선택, 해제
- 	function checkAll(){
- 		if(cartList.allCheck.checked){
- 			for(i = 1; i < (document.cartList.length); i++){
- 				document.cartList.elements[i].checked = true;
- 			}
- 		} else {
- 			for(i = 1; i < (document.cartList.length); i++){
- 				document.cartList.elements[i].checked = false;
- 			}
- 		}
- 	}
- 	
- 	// 체크된 상품삭제
-	function deleteChecked() { // 선택된 상품 삭제
-		var checkboxes = document.getElementsByName("ap_check");
-		var checkList = []; // 체크박스 전체 수
-
-		for (var i = 0; i < checkboxes.length; i++) {
-			if (checkboxes[i].checked) {
-				checkList.push(checkboxes[i].value);
-			}
-		}
-
-		if (checkboxes.length === 0) { // 선택된 행이 없을 때
-			alert("선택된 상품이 없습니다.");
-			return;
-		}
-
-		// 확인 창 
-		var confirmMsg = "삭제하시겠습니까?";
-		if (confirm(confirmMsg)) {
-			document.getElementById("checkList").value = checkList.join(",");
-			document.getElementById("cartList").action = "/mypage/cartDelete";
-			document.getElementById("cartList").submit();
-		}
-
-	}
-
-	// 선택된 상품의 총 가격 계산
-	function calculateTotalPrice() {
-		var totalPrice = 0;
-		var checkboxes = document.getElementsByName("ap_check");
+<script>
+	$(document).ready(function(){
 		
-		for (var i = 0; i < checkboxes.length; i++) {
-			if (checkboxes[i].checked) {
-				var row = checkboxes[i].parentNode.parentNode; // 체크된 체크박스의 부모 행
-				var price = parseFloat(row.cells[5].innerText); // 행의 6번째 셀(가격)에서 가격 정보를 가져옴
-				totalPrice += price; // 총 가격에 가격을 더함
-			}
-		}
-
-		// 총 가격을 페이지에 표시
-		document.getElementById("totalPrice").innerText = totalPrice.toLocaleString(); // 원화 형식으로 변환하여 표시
-	}
-	
-	// 상품 주문하기
-	function orderProduct(button){
+		// 전체 선택, 해제
+		$('#allCheck').change(function(){
+			$('.ap_check').prop('checked',$(this).prop('checked'));
+		});
 		
-	}
+		// 선택된 상품 삭제
+		$('#deleteChecked').click(function(){
+			var checkList = $('.ap_check:checked').map(function(){
+				return $(this).val();
+			}).get();
+			
+			if(checkList.length === 0){
+				alert("선택된 상품이 없습니다.");
+				return;
+			}
+			
+			if(confirm("삭제하시겠습니까?")){
+				$.ajax({
+					url: '/mypage/cart/deleteChecked',
+					type: 'POST',
+					data: {"checkList":checkList},
+					success: function(){
+						alert("삭제되었습니다.");
+					},
+					error: function(){
+						
+					}
+				});
+			}
+			
+		});
+		
+		// 전체 상품 삭제
+		$('#deleteAll').click(function(){
+			if(confirm("장바구니를 비우시겠습니까?")){
+				$.ajax({
+					url: '/mypage/cart/deleteAll',
+					type: 'POST',
+					success: function(){
+						alert("모든 상품이 삭제되었습니다.");
+					},
+					error: function(){
+						
+					}
+				});
+			}
+		});
+		
+		// 개별 상품 삭제
+		$('#productList').on('click','#deleteProduct',function(){
+			var row = $(this).closest('tr');
+			var cartCode = row.find('.ap_check').val();
+			
+			if(confirm("해당 상품을 삭제하시겠습니까?")){
+				$.ajax({
+					url: '/mypage/cart/delete',
+					type: 'POST',
+					data: {"cartCode":cartCode},
+					success: function(){
+						row.remove();
+						alert("모든 상품이 삭제되었습니다.");
+					},
+					error: function(){
+						
+					}
+				});
+			}
+		});
+	});// 제이쿼리 끝 
 </script>
  
