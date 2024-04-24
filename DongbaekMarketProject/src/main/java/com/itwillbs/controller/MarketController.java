@@ -85,4 +85,14 @@ public class MarketController {
 	}
 
 
+	// 상품 메인페이지
+	@RequestMapping(value = "/productMain", method = RequestMethod.GET)
+	public void productMain(@RequestParam("product_code") int product_code, Model model, HttpSession session) throws Exception{
+		logger.debug(" productMain() 호출 ");
+		ProductVO product = mService.eachProduct(product_code);
+		model.addAttribute("product", product);
+		
+		
+	}
+	
 }

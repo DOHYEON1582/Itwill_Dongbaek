@@ -30,4 +30,8 @@ public interface MarketService {
 	// 가게 조회수 1 증가
 	public void updateViewcnt(int store_code) throws Exception;
 	
+	// 각 상품 정보 들고오기
+	public ProductVO eachProduct(int product_code) throws Exception;
+	
+	
 }

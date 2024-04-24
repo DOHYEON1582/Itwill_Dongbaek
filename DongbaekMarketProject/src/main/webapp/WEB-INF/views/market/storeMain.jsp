@@ -290,6 +290,7 @@ h3 {
   align-items: center;
   width: 100%;
 	}
+                                                                                                                                                                                         
 }
 </style>
 <!-- 시장정보 -->
@@ -366,7 +367,7 @@ h3 {
                     <div class="product-item">
                         <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
                         <figure>
-                            <a href="" title="Product Title">
+                            <a href="productMain?product_code=${product.product_code }" title="Product Title">
                                 <img src="${pageContext.request.contextPath}/resources/images/carrot.jpg" alt="Product Thumbnail" class="tab-image" style="width : 180px">
                             </a>
                         </figure>

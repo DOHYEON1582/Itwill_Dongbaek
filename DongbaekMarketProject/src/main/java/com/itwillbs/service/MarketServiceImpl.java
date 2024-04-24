@@ -62,4 +62,10 @@ public class MarketServiceImpl implements MarketService{
 		
 	}
 
+	@Override
+	public ProductVO eachProduct(int product_code) throws Exception {
+		return mdao.eachProduct(product_code);
+	
+	}
+
 }

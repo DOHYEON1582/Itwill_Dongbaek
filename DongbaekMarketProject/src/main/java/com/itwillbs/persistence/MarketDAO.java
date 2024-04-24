@@ -25,7 +25,8 @@ public interface MarketDAO {
 	// 가게 조회수 1증가
 	public void storeViewcntUpdate(int store_code) throws Exception;
 	
-	
+	// 각 상품 조회
+	public ProductVO eachProduct(int product_code) throws Exception;
 	
 	
 	

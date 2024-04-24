@@ -60,7 +60,10 @@
   	where store_code = #{store_code}
   </update>
   
-  
-  
+  <!-- 각 상품 불러오기 -->
+  <select id="eachProduct" resultType="ProductVO">
+  	select * from product
+  	where product_code = #{product_code}
+  </select>
   
   </mapper>
