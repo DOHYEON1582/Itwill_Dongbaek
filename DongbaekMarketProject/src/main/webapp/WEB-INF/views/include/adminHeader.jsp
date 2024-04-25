@@ -107,7 +107,7 @@
 					</a>
 					<ul class="dropdown">
                         <li style="line-height:300%;"><a href="/admin/shop" class="dropdown-item">업체정보조회</a></li>
-                        <li style="line-height:300%;"><a href="/admin/shoporder" class="dropdown-item">업체주문&리뷰</a></li>
+                        <li style="line-height:300%;"><a href="/admin/shoporder" class="dropdown-item">업체주문</a></li>
                         <li style="line-height:300%;"><a href="/admin/shopcal" class="dropdown-item">업체정산</a></li>
                     </ul>
 				</li>

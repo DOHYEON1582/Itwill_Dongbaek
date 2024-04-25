@@ -44,13 +44,19 @@ public class ProjectTest {
 		logger.info(" 결과 : "+dao.getUserOrder(vo).size());
 	}
 	
-	@Test
+	//@Test
 	public void 상세주문테스트()throws Exception{
 		int order_code = 1;
 		
 		logger.info("@@@@@@@@@@@"+dao.getUserCart(order_code));
 	}
 	
+	@Test
+	public void 주문리스트테스트()throws Exception{
+		dao.getOrderList("store_name", "아이티윌", "", "");
+		
+		logger.debug("!!!!!!!!"+dao.getOrderList("store_name", "아이티윌", "", ""));
+	}	
 	
 	
 	

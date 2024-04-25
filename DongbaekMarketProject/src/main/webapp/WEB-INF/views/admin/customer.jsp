@@ -48,31 +48,25 @@
 		
 		$('#list-tbody').on('mouseover', 'tr', function() {
 	        $(this).css('background-color','rgb(250,250,250)');
+	        $(this).css('cursor','pointer');
 	    });
 		
 	    $('#list-tbody').on('mouseout', 'tr', function() {
 	        $(this).css('background-color','white');
 	    });// 리스트 선택 이벤트
 		
-		$('#list-tbody').click(function(){
+	    $('#list-tbody').on('click', 'tr', function() {
+	    	
 			$('#chocolat-content-0').attr('class','chocolat-wrapper chocolat-visible');
 			$('#second').attr('class','chocolat-overlay chocolat-visible');
-			var title = $('#selectBox option:selected').val();
-			var value = $('#searchText').val();
 			
-			if(title == "user_id"){
+			var value = $(this).find('td:eq(0)').text();
+			
 				var user = {
 						"user_id" : value
 				};
-			}else if(title == "user_name"){
-				var user = {
-						"user_name" : value
-				};
-			}else{
-				var user = {
-						"phone" : value
-				};
-			}
+			
+			
 			
 			$.ajax({
 				url : "/admin/customer",
@@ -81,27 +75,27 @@
 				contentType : "application/json; charset=UTF-8",
 				success : function(data){
 						$('.modal-table').append(`<tr>
-						<td style="background-color: rgb(245,247,250);">아이디</td>
+						<td style="background-color: rgb(245,247,250);"><h6>아이디</h6></td>
 						<td>`+data.user_id+ `</td>
-						<td style="background-color: rgb(245,247,250);">이름</td>
+						<td style="background-color: rgb(245,247,250);"><h6>이름</h6></td>
 						<td>`+data.user_name+`</td>
-						<td style="background-color: rgb(245,247,250);">휴대폰</td>
+						<td style="background-color: rgb(245,247,250);"><h6>휴대폰</h6></td>
 						<td>`+data.phone+`</td>
 					</tr>
 					<tr>
-						<td style="background-color: rgb(245,247,250);">주소</td>
+						<td style="background-color: rgb(245,247,250);"><h6>주소</h6></td>
 						<td colspan="5">`+data.addr1+data.addr2+`</td>
 					</tr>
 					<tr>
-						<td style="background-color: rgb(245,247,250);">이메일</td>
+						<td style="background-color: rgb(245,247,250);"><h6>이메일</h6></td>
 						<td colspan="5">`+data.sns_email+`</td>
 					</tr>
 					<tr>
-						<td style="background-color: rgb(245,247,250);">잔여포인트</td>
+						<td style="background-color: rgb(245,247,250);"><h6>잔여포인트</h6></td>
 						<td>`+data.point+`</td>
-						<td style="background-color: rgb(245,247,250);">성인인증</td>
+						<td style="background-color: rgb(245,247,250);"><h6>성인인증</h6></td>
 						<td>`+data.identity+`</td>
-						<td style="background-color: rgb(245,247,250);">가입일</td>
+						<td style="background-color: rgb(245,247,250);"><h6>가입일</h6></td>
 						<td>`+data.regdate+`</td>
 					</tr>`);					
 					
@@ -116,6 +110,9 @@
 			$('#second').attr('class','chocolat-overlay');
 		});// 모달 클로즈
 		
+		$('.col-1').on('mouseover',function() {
+	        $(this).css('cursor','pointer');
+	    });
 	
 	});//document
 </script>
@@ -130,9 +127,9 @@
 		</div>
 		<div class="chocolat-center">
 			<div class="chocolat-image-canvas chocolat-visible" >
-				<div class="chocolat-image-wrapper" style="width: 868px; height: 868px; background-color: white; text-align: center; color: black; padding: 20px;">
+				<div class="chocolat-image-wrapper" style="width: 868px; height: 868px; background-image:url(/resources/images/modal_back.jpg); text-align: center; color: black; padding: 20px;">
 					<h1>회원상세정보</h1>
-					<div style="border: 1px solid black; width: 100%; height: 100%;">
+					<div style="width: 100%; height: 100%; height: 750px; overflow: scroll; overflow-x:hidden; ">
 						<table class="modal-table">
 
 						</table>
@@ -181,11 +178,11 @@
 <table style="width: 99%; border-collapse: collapse; margin-left: 19px; background-color: white;">
     <thead>
         <tr>
-            <th>아이디</th>
-            <th>이름</th>
-            <th>전화번호</th>
-            <th>주소</th>
-            <th>회원가입일</th>
+            <th><h6>아이디</h6></th>
+            <th><h6>이름</h6></th>
+            <th><h6>전화번호</h6></th>
+            <th><h6>주소</h6></th>
+            <th><h6>회원가입일</h6></th>
         </tr>
     </thead>
     <tbody id="list-tbody">

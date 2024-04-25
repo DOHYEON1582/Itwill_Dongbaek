@@ -18,7 +18,7 @@ public class UserVO {
 	private String point;
 	private String identity;
 	private Timestamp regdate;
-	private String order_code;
+	private int order_code;
 	
 	private String startDate;
 	private String endDate;

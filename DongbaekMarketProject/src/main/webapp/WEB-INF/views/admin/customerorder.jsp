@@ -29,9 +29,6 @@
 						"endDate" : $('#end-date').val()
 				};
 			}
- 			
- 			
-			console.log(user);
 			
  			$.ajax({
 				url : "/admin/customerorder",
@@ -39,7 +36,6 @@
 				data : JSON.stringify(user),
 				contentType : "application/json; charset=UTF-8",
 				success : function(data){
-					console.log(data);
 					if(data == ''){
 						alert("주문정보가 없습니다!");
 					}else{
@@ -61,6 +57,7 @@
 	
 		$('#list-tbody').on('mouseover', 'tr', function() {
 	        $(this).css('background-color','rgb(250,250,250)');
+	        $(this).css('cursor','pointer');
 	    });
 		
 	    $('#list-tbody').on('mouseout', 'tr', function() {
@@ -75,17 +72,93 @@
 				url : "/admin/orderlist/"+order_code,
 				type : "GET",
 				success : function(data){
-					console.log(data);				
+					//console.log(data.orderList);
+					//console.log(data.cartList);
+					var orderList = data.orderList[0];
+					var cartList = data.cartList;
+					
+					console.log(orderList);
+					console.log(cartList);
+					
+					$('#modal-table1 tbody').append(
+								`<tr>
+									<td style="background-color: rgb(245,247,250);"><h6>아이디</h6></td>
+									<td>`+orderList.user_id+ `</td>
+									<td style="background-color: rgb(245,247,250);"><h6>이름</h6></td>
+									<td>`+orderList.rcv_name+`</td>
+									<td style="background-color: rgb(245,247,250);"><h6>주문일</h6></td>
+									<td colspan="2">`+orderList.ordr_date+`</td>
+								</tr>
+								<tr>
+									<td style="background-color: rgb(245,247,250);"><h6>주소</h6></td>
+									<td colspan="6">`+orderList.rcv_addr1+orderList.rcv_addr2+`</td>
+								</tr>
+								<tr>
+									<td style="background-color: rgb(245,247,250);"><h6>휴대폰</h6></td>
+									<td>`+orderList.rcv_phone+`</td>
+									<td style="background-color: rgb(245,247,250);"><h6>결제수단</h6></td>
+									<td>`+orderList.pay_method+`</td>
+									<td style="background-color: rgb(245,247,250);"><h6>결제금액</h6></td>
+									<td colspan="2">`+orderList.total_price+`원</td>
+								</tr>
+								<tr>
+									<td style="background-color: rgb(245,247,250);"><h6>적립포인트</h6></td>
+									<td>`+orderList.add_point+`</td>
+									<td style="background-color: rgb(245,247,250);"><h6>사용포인트</h6></td>
+									<td>`+orderList.reduce_point+`</td>
+									<td style="background-color: rgb(245,247,250);"><h6>주문업체</h6></td>
+									<td colspan="2">`+orderList.store_code+`</td>
+								</tr>`
+							
+							);
+					
+					$('#modal-table2 thead').append(
+							`
+							<tr>
+								<th colspan="7" style="background-color: white; text-align: center;"><h6>주문상품</h6></th>
+							</tr>
+							<tr style="background-color: rgb(245,247,250); text-align: center;">
+								<td><h6>상품코드</h6></td>
+								<td><h6>상품명</h6></td>
+								<td><h6>이미지</h6></td>
+								<td><h6>원산지</h6></td>
+								<td><h6>판매자아이디</h6></td>
+								<td><h6>가격</h6></td>
+								<td><h6>수량</h6></td>
+							</tr>`
+							);
+					
+					$(cartList).each(function(i,cartList){
+						
+								var ProductVO = cartList.AdminProductVO[0];
+								console.log(ProductVO);
+								
+								$('#modal-table2 tbody').append(
+										`<tr>
+											<td>`+ProductVO.product_code+ `</td>
+											<td>`+ProductVO.product_name+ `</td>
+											<td>`+ProductVO.img1+ `</td>
+											<td>`+ProductVO.country+`</td>
+											<td>`+ProductVO.seller_id+`</td>
+											<td>`+cartList.price+`</td>
+											<td>`+cartList.count+`</td>
+										</tr>`
+									)
+					});
+							
+					
 					$('#chocolat-content-0').attr('class','chocolat-wrapper chocolat-visible');
 					$('#second').attr('class','chocolat-overlay chocolat-visible');
-					
 				}
 			});
 			
 		});// 모달 오픈
 		
 		$('.chocolat-close').click(function(){
-			$('.modal-table tbody').empty();
+			$('#modal-table1 tbody').empty();
+			$('#modal-table1 tfoot').empty();
+			$('#modal-table2 thead').empty();
+			$('#modal-table2 tbody').empty();
 			$('#chocolat-content-0').attr('class','chocolat-wrapper');
 			$('#second').attr('class','chocolat-overlay');
 		});// 모달 클로즈
@@ -93,13 +166,16 @@
 		$('#end-date').change(function(){
 			var startDate = $('#start-date').val();
 			var endDate = $('#end-date').val();
-			if(startDate >= endDate){
+			if(startDate > endDate){
 				alert('시작일이 종료일보다 작아야 합니다!');
 				$('#start-date').val("");
 				$('#end-date').val("");
 			}
 		});
 		
+		$('.col-1').on('mouseover',function() {
+	        $(this).css('cursor','pointer');
+	    });
 	
 	});//document
 </script>
@@ -114,19 +190,26 @@
 		</div>
 		<div class="chocolat-center">
 			<div class="chocolat-image-canvas chocolat-visible" >
-				<div class="chocolat-image-wrapper" style="width: 868px; height: 868px; background-color: white; text-align: center; color: black; padding: 20px;">
+				<div class="chocolat-image-wrapper" style="width: 868px; height: 868px; background-image:url(/resources/images/modal_back.jpg); text-align: center; color: black; padding: 20px;">
 					<h1>주문상세정보</h1>
-					<div style="border: 1px solid black; width: 100%; height: 100%;">
-						<table class="modal-table">
+					<div style="width: 100%; height: 100%; height: 750px; overflow: scroll; overflow-x:hidden; ">
+						<table id="modal-table1" class="modal-table">
 							<thead>
 								<tr>
-									<th colspan="6" style="background-color: rgb(245,247,250); text-align: center;">주문내역</th>
+									<th colspan="7" style="background-color: white; text-align: center;">주문내역</th>
 								</tr>
 							</thead>
 							<tbody>
-							
 							</tbody>
-
+							<tfoot>
+							</tfoot>
+						</table>
+						
+						<table id="modal-table2" class="modal-table" style="margin-top: 30px;">
+							<thead>
+							</thead>
+							<tbody>
+							</tbody>
 						</table>
 					</div>
 				</div>

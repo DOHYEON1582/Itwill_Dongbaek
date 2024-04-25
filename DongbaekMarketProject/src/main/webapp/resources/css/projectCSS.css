@@ -59,7 +59,7 @@ body{
 }
 
 .side-bar {
-	position: absolute;
+	position: fixed;
 	margin:0px;
     width: 300px; 
     border-right:1px solid #dddddd;
@@ -431,6 +431,8 @@ th {
 	background-color: white;
 	text-align: center;
 }
+
+
 .modal-table tr{
 	border: 1px solid #dddddd;
 	border-collapse : collapse;
@@ -443,4 +445,14 @@ th {
 	text-align: center;
 }
 
+.modal-table th{
+	border: 1px solid #dddddd;
+	border-collapse : collapse;
+	text-align: center;
+}
+
+#modal-table2 td{
+	border-collapse : collapse;
+	text-align: center;
+}
 

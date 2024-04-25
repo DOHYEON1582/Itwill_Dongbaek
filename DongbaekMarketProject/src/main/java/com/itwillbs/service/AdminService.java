@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.itwillbs.domain.AdminCartVO;
 import com.itwillbs.domain.AdminOrderVO;
+import com.itwillbs.domain.AdminReviewVO;
+import com.itwillbs.domain.AdminStoreVO;
+import com.itwillbs.domain.SchedulerVO;
 import com.itwillbs.domain.UserVO;
 
 public interface AdminService {
@@ -17,6 +20,21 @@ public interface AdminService {
 	//고객 선택주문 가져오기
 	public List<AdminCartVO> getUserCart(int order_code)throws Exception;
 	
-
+	// 고객 리뷰(list) 가져오기
+	public List<AdminReviewVO> getReviewList(UserVO vo)throws Exception;
 	
+	// 고객 선택한 리뷰 가져오기
+	public AdminReviewVO getReview(int review_code)throws Exception;
+	
+	// 업체 정보(list) 가져오기
+	public List<AdminStoreVO> getStoreList(AdminStoreVO vo)throws Exception;
+	
+	// 업체 정보 가져오기
+	public AdminStoreVO getStore(String store_number)throws Exception;
+	
+	// 업체 주문 정보(list)가져오기
+	public List<AdminOrderVO> getOrderList(String con, String search,String startDate,String endDate)throws Exception;
+	
+	// 시간 자동 정산 스케줄러 
+	public void calCheck(SchedulerVO svo)throws Exception;
 }//endService
