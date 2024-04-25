@@ -1,8 +1,15 @@
 package com.itwillbs.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.service.ProductService;
@@ -52,6 +60,63 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	public void productregist() throws Exception{
 		logger.debug(" productregist() 실행 ");
 	}
+	
+	// 판매자 상품페이지(상품등록)
+	// http://localhost:8088/seller/productregist
+	@RequestMapping(value = "/productregist", method = RequestMethod.POST)
+	public String productregistSubmit(ProductVO product, MultipartFile[] imageFiles,HttpServletRequest request) {
+	    try {
+
+	        // 상품 등록 서비스 호출
+	        pService.productRegist(product);
+	        
+	        // 이미지 저장 코드
+	        // 이미지 저장 경로 설정
+	        String uploadDir = "/resources/images/";
+
+	        // 상품 코드별 폴더 생성
+	        String productDirPath = uploadDir + product.getProduct_code();
+	        File productDir = new File(productDirPath);
+	        if (!productDir.exists()) {
+	            productDir.mkdirs(); // 상품 코드별 폴더 생성
+	        }
+
+	        // 이미지 저장
+	        for (int i = 0; i < imageFiles.length; i++) {
+	            MultipartFile imageFile = imageFiles[i];
+	            if (imageFile != null && !imageFile.isEmpty()) {
+	                String originalFileName = imageFile.getOriginalFilename();
+	                String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+	                String savedFileName = UUID.randomUUID().toString() + fileExtension; // 파일명 중복 방지를 위한 UUID 생성
+
+	                Path path = Paths.get(productDirPath + File.separator + savedFileName);
+	                try {
+	                    // 이미지 파일 저장
+	                    Files.write(path, imageFile.getBytes());
+	                    logger.debug(" 이미지 저장 성공 ");
+	                } catch (IOException e) {
+	                    e.printStackTrace();
+	                    logger.debug(" 이미지 저장 실패 ");
+	                    // 이미지 저장 실패 처리
+	                    // 예외 처리 등을 진행할 수 있습니다.
+	                }
+	            }
+	        }
+	        logger.debug(" 상품 등록 성공 ");
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        // 예외 처리
+	        logger.debug("상품 등록에 실패함");
+	        return "redirect:/seller/productregist";
+	    }
+	    return "redirect:/seller/product"; // 등록 후 상품 목록 페이지로 리다이렉트
+	}
+
+	
+	
+	
+	
+	
 	
 	// 판매자 상품페이지(상품수정)
 	//	http://localhost:8088/seller/productmodify

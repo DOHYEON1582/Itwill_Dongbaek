@@ -31,6 +31,14 @@ public class ProductDAOImpl implements ProductDAO {
 	    paramMap.put("perPageNum", perPageNum);
 	    return sqlSession.selectList(NAMESPACE + ".productList", paramMap);
 	}
+
+	@Override
+	public void productRegist(ProductVO product) throws Exception {
+		logger.debug(" productregist(ProductVO product) 실행 ");
+		sqlSession.insert(NAMESPACE+".productRegist",product);
+		
+	}
+	
 	
 	
 }

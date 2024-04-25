@@ -8,7 +8,7 @@ public interface ProductDAO {
 	
 	public List<ProductVO> productList(String seller_id, int startRow, int perPageNum) throws Exception; //상품 목록 불러오기
 	
-	
+	public void productRegist(ProductVO product) throws Exception; //상품 등록
 	
 	
 }

@@ -45,7 +45,7 @@ a{
 
 /* 사이트의 높이를 5000px로 만들어 스크롤 생성 */
 body {
-  height: 5000px;
+  height: 1800px;
 }
 
 /* 사이드바의 너비와 높이를 변수를 통해 통제 */
@@ -379,84 +379,145 @@ body {
   </ul>
 </aside>
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+	<div id="productregist" style="text-align: center; font-size: 24px; margin-bottom: 20px;">상품 등록</div>
+	<div style="background-color: white; padding: 20px; max-width: 400px; margin: 0 auto; border: 1px solid #ccc;">
+		<form action="/seller/productregist" method="post" enctype="multipart/form-data" style="max-width: 400px; margin: 0 auto;">
+			<div style="margin-bottom: 10px;">
+				<label for="category" style="display: block; margin-bottom: 5px;">카테고리:</label>
+				 <select id="category" name="category" style="width: 100%; padding: 8px;">
+					<option value="" selected disabled>카테고리를 선택하세요</option>
+					<option value="vegetable">채소</option>
+					<option value="meat">고기</option>
+					<option value="fish">생선</option>
+					<!-- 필요한 만큼 옵션을 추가할 수 있습니다 -->
+				</select>
+			</div>
+			<div style="margin-bottom: 10px;">
+				<label for="product_name" style="display: block; margin-bottom: 5px;">상품명:</label> 
+				<input type="text" id="product_name" name="product_name" style="width: 100%; padding: 8px;">
+			</div>
+			<div style="margin-bottom: 10px;">
+				<label for="unit" style="display: block; margin-bottom: 5px;">단위:</label> 
+				<input type="text" id="unit" name="unit" style="width: 100%; padding: 8px;">
+			</div>
+			<div style="margin-bottom: 10px;">
+				<label for="price" style="display: block; margin-bottom: 5px;">판매가:</label> 
+				<input type="text" id="price" name="price" style="width: 100%; padding: 8px;">
+			</div>
+			<div style="margin-bottom: 10px;">
+				<label for="image1" style="display: block; margin-bottom: 5px;">이미지1:</label>
+			    <input type="file" id="image1" name="imageFiles1" style="width: 100%; padding: 8px;">
+			</div>
+			<div style="margin-bottom: 10px;">
+				<label for="image2" style="display: block; margin-bottom: 5px;">이미지2:</label> 
+				<input type="file" id="image2" name="imageFiles2" style="width: 100%; padding: 8px;">
+			</div>
+			<div style="margin-bottom: 10px;">
+				<label for="image3" style="display: block; margin-bottom: 5px;">이미지3:</label> 
+				<input type="file" id="image3" name="imageFiles3" style="width: 100%; padding: 8px;">
+			</div>
+			<div style="margin-bottom: 10px;">
+				<label for="product_explain" style="display: block; margin-bottom: 5px;">상세 설명:</label>
+				<textarea id="product_explain" name="product_explain" rows="4" style="width: 100%; padding: 8px;"></textarea>
+			</div>
+			<div style="margin-bottom: 10px;">
+				<label for="country" style="display: block; margin-bottom: 5px;">원산지</label> 
+				<input type="text" id="country" name="country" style="width: 100%; padding: 8px;">
+			</div>
+			<div style="margin-bottom: 10px;">
+				<label for="seller_id" style="display: block; margin-bottom: 5px;">판매자</label> 
+				<input type="text" id="seller_id" name="seller_id" style="width: 100%; padding: 8px;">
+			</div>
+			<div style="margin-bottom: 10px;">
+				<label for="store_code" style="display: block; margin-bottom: 5px;">사업자등록번호</label> 
+				<input type="text" id="store_code" name="store_code" style="width: 100%; padding: 8px;">
+			</div>
+
+			<input type="submit" value="등록" style="width: 100%; padding: 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">
+		</form>
+	</div>
+<script type="text/javascript">
+document.getElementById("category").addEventListener("change", function() {
+    var selectedCategory = this.value;
+    console.log("선택된 카테고리:", selectedCategory);
+    // 선택된 카테고리 값을 서버로 전송하거나 다른 작업을 수행할 수 있습니다.
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	<footer style="font-family: 'Roboto', sans-serif; padding-bottom: 0;">
 
-    <div class="row justify-content-center" id="r">
-        <div class="col-lg-2 col-md-4 col-sm-4" style="padding: 0;">
-            <div class="footer-menu">
-                <img class="mylogo" src="/resources/images/logo2.png" alt="logo">
-            </div>
-        </div>
+		<div class="row justify-content-center" id="r">
+			<div class="col-lg-2 col-md-4 col-sm-4" style="padding: 0;">
+				<div class="footer-menu">
+					<img class="mylogo" src="/resources/images/logo2.png" alt="logo">
+				</div>
+			</div>
 
-        <div class="col-md-1 col-sm-4" style="padding: 0;">
-            <div class="footer-menu">
-                <h5 class="widget-title">소개</h5>
-                <ul class="menu-list list-unstyled">
-                    <li class="menu-item"><a href="#" class="nav-link">▶ 동백장터 소개</a></li>
-                    <li class="menu-item"><a href="#" class="nav-link">▶ 동백팀 소개</a></li>
-                </ul>
-            </div>
-        </div>
+			<div class="col-md-1 col-sm-4" style="padding: 0;">
+				<div class="footer-menu">
+					<h5 class="widget-title">소개</h5>
+					<ul class="menu-list list-unstyled">
+						<li class="menu-item"><a href="#" class="nav-link">▶ 동백장터 소개</a></li>
+						<li class="menu-item"><a href="#" class="nav-link">▶ 동백팀 소개</a></li>
+					</ul>
+				</div>
+			</div>
 
-        <div class="col-md-1 col-sm-4" style="padding: 0;">
-            <div class="footer-menu">
-                <h5 class="widget-title">고객 문의</h5>
-                <ul class="menu-list list-unstyled">
-                    <li class="menu-item"><a href="#" class="nav-link">▶ FAQ</a></li>
-                </ul>
-            </div>
-        </div>
+			<div class="col-md-1 col-sm-4" style="padding: 0;">
+				<div class="footer-menu">
+					<h5 class="widget-title">고객 문의</h5>
+					<ul class="menu-list list-unstyled">
+						<li class="menu-item"><a href="#" class="nav-link">▶ FAQ</a></li>
+					</ul>
+				</div>
+			</div>
 
-        <div class="col-md-1 col-sm-4" style="padding: 0;">
-            <div class="footer-menu">
-                <h5 class="widget-title">개인정보</h5>
-                <ul class="menu-list list-unstyled">
-                    <li class="menu-item"><a href="#" class="nav-link">▶ 약관확인</a></li>
-                </ul>
-            </div>
-        </div>
+			<div class="col-md-1 col-sm-4" style="padding: 0;">
+				<div class="footer-menu">
+					<h5 class="widget-title">개인정보</h5>
+					<ul class="menu-list list-unstyled">
+						<li class="menu-item"><a href="#" class="nav-link">▶ 약관확인</a></li>
+					</ul>
+				</div>
+			</div>
 
-        <div class="col-lg-2 col-md-6 col-sm-4" style="padding: 0;">
-            <div class="footer-menu">
-                <h5 class="widget-title">Global Site</h5>
-                <ul class="menu-list list-unstyled">
-                    <li class="menu-item"><a href="#" class="nav-link">▶ English</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</footer>
+			<div class="col-lg-2 col-md-6 col-sm-4" style="padding: 0;">
+				<div class="footer-menu">
+					<h5 class="widget-title">Global Site</h5>
+					<ul class="menu-list list-unstyled">
+						<li class="menu-item"><a href="#" class="nav-link">▶ English</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</footer>
 
 
-<script src="js/jquery-3.7.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-<script src="js/plugins.js"></script>
-<script src="js/script.js"></script>
-</html>
+	<script src="js/jquery-3.7.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+	<script src="js/plugins.js"></script>
+	<script src="js/script.js"></script></html>

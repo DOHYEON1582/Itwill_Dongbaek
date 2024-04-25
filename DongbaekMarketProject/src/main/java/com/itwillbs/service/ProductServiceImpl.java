@@ -23,8 +23,16 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public List<ProductVO> productList(String seller_id, int startRow, int perPageNum) throws Exception{
-		logger.debug(" productList(String seller_id) 호출 ");
+		logger.debug(" productList(String seller_id, int startRow, int perPageNum) 호출 ");
 		return pdao.productList(seller_id, startRow, perPageNum);
+	}
+
+
+	@Override
+	public void productRegist(ProductVO product) throws Exception {
+		logger.debug(" productRegist(ProductVO product) 호출 ");
+		pdao.productRegist(product);
+		
 	}
 
 	

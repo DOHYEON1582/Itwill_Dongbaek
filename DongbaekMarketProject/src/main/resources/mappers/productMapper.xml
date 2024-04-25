@@ -28,6 +28,12 @@
 	    ORDER BY product_code
     	LIMIT #{startRow}, #{perPageNum}
 	</select>
+	
+	<!-- 상품 등록 -->
+	<insert id="productRegist" parameterType="ProductVO">
+		INSERT INTO product (store_code, category, product_name, unit, price, img1, img2, img3, product_explain, seller_id, max_account, country)
+        VALUES (#{store_code}, #{category}, #{product_name}, #{unit}, #{price}, #{img1}, #{img2}, #{img3}, #{product_explain}, #{seller_id}, #{max_account}, #{country})
+	</insert>
 
 
 </mapper>
