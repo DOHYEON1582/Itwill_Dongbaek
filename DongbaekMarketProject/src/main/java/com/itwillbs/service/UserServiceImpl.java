@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.AuthVO;
@@ -15,43 +16,39 @@ public class UserServiceImpl implements UserService {
 	
 	@Inject
 	private UserDAO udao;
+	@Inject
+	private PasswordEncoder pwEncoder;
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 	
-	@Override
+	// 회원가입
 	public void userInsert(UserVO uvo) throws Exception {
-		logger.debug(" userInsert(UserVO uvo) 호출 ");
-		
-		uvo.setSalt(udao.createSalt());
-		
-		uvo.setUser_pw(udao.hashPass(uvo.getUser_pw(), uvo.getSalt()));
-		
-		udao.insertUser(uvo);
-		
-		logger.debug(" 회원가입 완료! ");
+	    logger.debug(" userInsert(UserVO uvo) 호출 ");
+	    
+	    // 비밀번호 암호화
+	    String encodedPassword = pwEncoder.encode(uvo.getUser_pw());
+	    uvo.setUser_pw(encodedPassword);
+	    
+	    udao.insertUser(uvo);
+	    udao.authUser(uvo);
+	    logger.debug(" 회원가입 완료! ");
 	}
 
 	@Override
-	public AuthVO loginUser(UserVO uvo) throws Exception {
-		logger.debug(" loginUser(UserVO uvo) 호출 ");
-		
-		uvo.setSalt(udao.getSalt(uvo));
-		logger.debug(" salt 정보 : " + uvo.getSalt());
-		
-		String pass = udao.hashPass(uvo);
-		logger.debug(" 입력한 비밀번호 해싱값 : " + pass);
-		
-		uvo = udao.getUser(uvo);
-		
-		logger.debug(" @@@@@@@ : " + uvo);
-		
-		if(pass.equals(uvo.getUser_pw())) {
-			logger.debug(" 비밀번호 일치 ");
-			return udao.getAuth(uvo.getUser_id());
-		} else logger.debug(" 비밀번호 불일치 ");
-		
-		return null;
-	}
+    public AuthVO loginUser(UserVO uvo) throws Exception {
+        String userId = uvo.getUser_id();
+        String inputPassword = uvo.getUser_pw();
+        
+        UserVO user = udao.getUser(uvo);
+        if (user != null) {
+            String encodedPassword = user.getUser_pw(); // DB에 저장된 암호화된 비밀번호
+            if (pwEncoder.matches(inputPassword, encodedPassword)) {
+                // 비밀번호가 일치하는 경우
+                return udao.getAuth(userId);
+            }
+        }
+        return null; // 인증 실패
+    }
 
 	@Override
 	public UserVO userInfo(String user_id) throws Exception {
@@ -70,6 +67,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public String getPass(String user_id) throws Exception {
 		logger.debug(" getPass(String user_id) 실행 ");
+		
 		return udao.getPass(user_id);
 	}
 

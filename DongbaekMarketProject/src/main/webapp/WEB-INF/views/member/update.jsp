@@ -13,7 +13,6 @@
 		<legend>회원정보 수정</legend>
 		<form action="" method="post">
 			아이디 : <input type="text" name="user_id" value="${userinfo.user_id }" readonly="readonly"> <br>
-			비밀번호 : <input type="password" name="user_pw"> <br>
 			전화번호 : <input type="text" name="phone" value="${userinfo.phone }"> <br>
 			이름 : <input type="text" name="user_name" value="${userinfo.user_name }"> <br>
 			주소 : <input type="text" name="addr1" value="${userinfo.addr1 }"> <br>
@@ -21,5 +20,8 @@
 			<input type="submit" value="회원정보 수정">
 		</form>
 	</fieldset>
+
+
+
 </body>
 </html>

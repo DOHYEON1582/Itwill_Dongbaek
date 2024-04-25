@@ -18,7 +18,6 @@
 		<result property="identity" column="identity"/>
 		<result property="regdate" column="regdate"/>
 		<result property="auth" column="auth"/>
-		<collection property="authList" resultMap="authMap"></collection>
 	</resultMap>
 
 	<resultMap type="com.itwillbs.domain.AuthVO" id="authMap">
@@ -28,19 +27,14 @@
 	
 	<!-- 회원가입 -->
 	<insert id="insertUser">
-		insert into user(user_id, user_pw, salt, phone, user_name, addr1, addr2, regdate) 
-		values (#{user_id}, #{user_pw}, #{salt}, #{phone}, #{user_name}, #{addr1}, #{addr2}, now())
+		insert into user(user_id, user_pw, phone, user_name, addr1, addr2, regdate) 
+		values (#{user_id}, #{user_pw}, #{phone}, #{user_name}, #{addr1}, #{addr2}, now())
 	</insert>
-
+	<!-- 회원가입 하면서 권한주기 -->
 	<insert id="authUser">
 		insert into user_auth (user_id, auth) 
 		value (#{user_id}, 'ROLE_USER')
 	</insert>
-	
-	<select id="getSalt" resultType="string">
-		select salt from user 
-		where user_id = #{user_id}
-	</select>
 	
 	<select id="loginUser" resultType="com.itwillbs.domain.UserVO">
 		select * from user 

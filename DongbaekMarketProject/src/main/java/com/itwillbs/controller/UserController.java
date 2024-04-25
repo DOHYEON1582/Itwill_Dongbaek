@@ -5,6 +5,11 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.itwillbs.domain.AuthVO;
 import com.itwillbs.domain.MarketVO;
 import com.itwillbs.domain.UserVO;
-import com.itwillbs.persistence.UserDAO;
 import com.itwillbs.service.MainService;
 import com.itwillbs.service.UserService;
 
@@ -31,7 +35,7 @@ public class UserController {
 	@Inject
 	private MainService mService;
 	@Inject
-	private UserDAO udao;
+	private PasswordEncoder pwEncoder;
 	
 	// http://localhost:8088/
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -84,16 +88,12 @@ public class UserController {
 		AuthVO authVO = uService.loginUser(uvo);
 		logger.debug(" 로그인 정보 : " + authVO);
 		
-		try {
-			if(!authVO.getAuth().isEmpty()) {
-				session.setAttribute("authVO", authVO);
-				
-				return "redirect:/";
-			}
-		}catch(Exception e) {}
-		logger.debug(" 로그인 실패 ");
-		
-		return "/member/login";
+		if (authVO != null) {
+            session.setAttribute("authVO", authVO);
+            return "redirect:/";
+        } else {
+            return "/member/login";
+        }
 	}
 	
 	@GetMapping(value = "member/logout")
@@ -123,9 +123,14 @@ public class UserController {
 	@RequestMapping(value = "/member/update", method = RequestMethod.POST)
 	public String userUpdatePOST(UserVO uvo) throws Exception {
 		logger.debug(" userUpdatePOST(UserVO uvo) 호출 ");
-		uService.userUpdate(uvo);
-		
-		return "redirect:/";
+		logger.debug("uvo : " + uvo);
+		int result = uService.userUpdate(uvo);
+		if(result == 1) {
+			logger.debug(" 수정완료! ");
+			return "redirect:/";
+		}
+		logger.debug(" 수정실패! ");
+		return "redirect:/member/update";
 	}
 	
 	//회원정보 삭제
@@ -139,14 +144,6 @@ public class UserController {
 	public String deleteUserPOST(UserVO uvo, HttpSession session) throws Exception {
 		logger.debug(" deleteUserPOST() 호출 ");
 		logger.debug(" 삭제할 정보 : " + uvo);
-		
-		
-		
-		
-		
-		
-		
-		
 		int result = uService.deleteUser(uvo);
 		logger.debug("result : " + result);
 		if(result == 1) {
@@ -163,6 +160,55 @@ public class UserController {
 		
 	}
 	
+	// 회원정보 수정시 비밀번호 확인
+	@RequestMapping(value = "/checkPassword", method = RequestMethod.POST)
+	public String checkPassPost(@RequestParam("user_pw") String user_pw, Authentication authentication) throws Exception {
+	    logger.debug("checkPassPost() 실행");
+
+	    // 사용자 인증 확인
+	    if (authentication == null || !authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken) {
+	        logger.debug("인증되지 않은 사용자");
+	        return "redirect:/login"; // 로그인 페이지로 이동
+	    }
+
+	    // 사용자 ID 가져오기
+	    String user_id = authentication.getName();
+	    if (user_id == null) {
+	        logger.debug("ID가 없습니다.");
+	        return "redirect:/";
+	    }
+
+	    // 사용자의 저장된 비밀번호 가져오기
+	    String storedPw = uService.getPass(user_id);
+
+	    // 입력된 비밀번호와 저장된 비밀번호를 암호화하여 비교합니다.
+	    if (pwEncoder.matches(user_pw, storedPw)) {
+	        logger.debug("비밀번호 일치");
+	        return "redirect:/modifyPage"; // 수정 페이지로 이동
+	    } else {
+	        logger.debug("비밀번호 불일치");
+	        return "redirect:/incorrectPassword"; // 비밀번호가 일치하지 않을 때의 페이지로 이동
+	    }
+
+		
+//		AuthVO authVO = (AuthVO)session.getAttribute("authVO");
+//		String user_id = authVO.getUser_id();
+//		if(user_id == null) {
+//			logger.debug(" id가 없다.");
+//			return "redirect:/";
+//		}
+//		String storedPw = uService.getPass(user_id);
+	    
+		// 입력된 비밀번호와 저장된 비밀번호를 암호화하여 비교합니다.
+//		if(pwEncoder.matches(user_pw, storedPw)) {
+//			logger.debug(" user_pw : " + user_pw);
+//			logger.debug(" 비밀번호 일치 : " + storedPw);
+//			return "success";
+//		}
+//		logger.debug(" user_pw : " + user_pw);
+//		logger.debug(" 비밀번호 일치 하지 않음 : " + storedPw);
+//		return "false";
+	}	
 	
 	
 	
