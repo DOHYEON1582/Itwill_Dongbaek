@@ -50,7 +50,7 @@
 				<td>${total}</td>
 				<td>
 					<button type="button" id="orderProduct">주문하기(주문하기 페이지로)</button><br> 
-					<button type="button" id="addWish">관심상품등록(위시리스트로)</button><br> 
+					<!-- <button type="button" id="addWish">관심상품등록(위시리스트로)</button><br>  -->
 					<button type="button" id="deleteProduct">삭제(삭제)</button><br> 
 				</td>
 			</tr>
@@ -74,15 +74,15 @@
 			<td>결제예정금액</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
+			<td id="totalPrice"></td>
+			<td id="deliveryFee"></td>
+			<td id="payAmount"></td>
 		</tr>
 	</table>
 	<!-- 금액 보여주기 끝 -->
 	
-	<button type="button">전체주문하기</button>
-	<button type="button">선택주문하기</button>
+	<button type="button" id="orderAll">전체주문하기</button>
+	<button type="button" id="orderChecked">선택주문하기</button>
 
 	<!-- 페이징 시작 -->
 	<table border=1>
@@ -132,11 +132,12 @@
 					url: '/mypage/cart/deleteChecked',
 					type: 'POST',
 					data: {"checkList":checkList},
-					success: function(){
+					success: function(data){
 						alert("삭제되었습니다.");
+						// 새로고침 해야하나... 
 					},
 					error: function(){
-						
+						alert("오류가 발생했습니다.");
 					}
 				});
 			}
@@ -149,7 +150,7 @@
 				$.ajax({
 					url: '/mypage/cart/deleteAll',
 					type: 'POST',
-					success: function(){
+					success: function(data){
 						alert("모든 상품이 삭제되었습니다.");
 					},
 					error: function(){
@@ -169,7 +170,7 @@
 					url: '/mypage/cart/delete',
 					type: 'POST',
 					data: {"cartCode":cartCode},
-					success: function(){
+					success: function(data){
 						row.remove();
 						alert("모든 상품이 삭제되었습니다.");
 					},
@@ -189,7 +190,7 @@
 	            url: '/mypage/cart/updateCount', 
 	            type: 'POST',
 	            data: {"cartCode": cartCode, "newCount": newCount}, 
-	            success: function() {
+	            success: function(data) {
 	                alert("상품 수량이 변경되었습니다.");
 	            },
 	            error: function() {
@@ -197,6 +198,97 @@
 	            }
 	        });
 	    });
+		
+		// 선택된 상품 가격의 합
+		$('#totalPrice').text(function(){
+			/* var checkList = $('.ap_check:checked').map(function(){
+				return $(this).val();
+			}).get(); */
+			
+			var totalPrice = 0;
+			$('.ap_check:checked').each(function(){
+				var price = parseInt($(this).closest('tr').find('td:eq(3)').text());
+				totalPrice += price;
+			});
+			return totalPrice;
+		});
+		
+		// 배송비 처리
+		$('#deliveryFee').text(function(){
+			var totalPrice = $('#totalPrice').val();
+			var deliveryFee = 0;
+			if(totalPrice > 50000){ // 5만원 이상시 배달비 무료.. ㅠ? 각 가게별로 count... 
+				deliveryFee = 0;
+			} else if(totalPrice < 50000){ // 5만원 미만 배달비 2500원 배달비는 2500원으로 고정
+				deliveryFee = 2500; 
+			}
+			return deliveryFee;
+		});
+		
+		// 결제예정금액
+		$('#payAmount').text(function(){
+			var totalPrice = $('#totalPrice').val();
+			var deliveryFee = $('#deliveryFee').val();
+			var payAmount = totalPrice + deliveryFee;
+			
+			return payAmount;
+		});
+		
+		// 선택 주문
+		$('#orderChecked').click(function(){
+			var checkList = $('.ap_check:checked').map(function(){
+				return $(this).val();
+			}).get();
+			
+			if(checkList.length === 0){
+				alert("선택된 상품이 없습니다.");
+				return;
+			}else {
+				$.ajax({
+					url: '/order/orderChecked', // 주소 수정 필요! 
+					type: 'POST',
+					data: {"checkList":checkList},
+					success: function(data){
+						
+					},
+					error: function(){
+						
+					}
+				});
+			}	
+		});
+		
+		// 전체 주문
+		$('#orderAll').click(function(){
+			$.ajax({
+				url: '/order/orderAll',
+				type: 'POST',
+				success: function(data){
+					
+				},
+				error: function(){
+					
+				}
+			});
+		});
+		
+		// 개별 주문
+		$('#productList').on('click','#orderProduct',function(){
+			var row = $(this).closest('tr');
+			var cartCode = row.find('.ap_check').val();
+			
+			$.ajax({
+				url: '/order/orderProduct',
+				type: 'POST',
+				data: {"cartCode":cartCode},
+				success: function(data){
+					
+				},
+				error: function(){
+					
+				}
+			});
+		});
 		
 	});//끝 
 </script>
