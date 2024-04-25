@@ -409,15 +409,15 @@ body {
 			</div>
 			<div style="margin-bottom: 10px;">
 				<label for="image1" style="display: block; margin-bottom: 5px;">이미지1:</label>
-			    <input type="file" id="image1" name="imageFiles1" style="width: 100%; padding: 8px;">
+			    <input type="file" id="image1" name="imageFiles" style="width: 100%; padding: 8px;">
 			</div>
 			<div style="margin-bottom: 10px;">
 				<label for="image2" style="display: block; margin-bottom: 5px;">이미지2:</label> 
-				<input type="file" id="image2" name="imageFiles2" style="width: 100%; padding: 8px;">
+				<input type="file" id="image2" name="imageFiles" style="width: 100%; padding: 8px;">
 			</div>
 			<div style="margin-bottom: 10px;">
 				<label for="image3" style="display: block; margin-bottom: 5px;">이미지3:</label> 
-				<input type="file" id="image3" name="imageFiles3" style="width: 100%; padding: 8px;">
+				<input type="file" id="image3" name="imageFiles" style="width: 100%; padding: 8px;">
 			</div>
 			<div style="margin-bottom: 10px;">
 				<label for="product_explain" style="display: block; margin-bottom: 5px;">상세 설명:</label>
