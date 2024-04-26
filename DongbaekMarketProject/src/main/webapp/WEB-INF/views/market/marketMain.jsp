@@ -36,8 +36,7 @@
     });
 </script>
 
-<style>
-
+<style> 
 	.bxslider{
  		display: inline-block;
         margin-right: 20px; /* 이미지 슬라이더 오른쪽에 공간 추가 */
@@ -254,7 +253,7 @@
                     <div class="product-item">
                         <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
                         <figure>
-                            <a href="" title="Product Title">
+                            <a href="productMain?product_code=${product.product_code }" title="Product Title">
                                 <img src="${pageContext.request.contextPath}/resources/images/carrot.jpg" alt="Product Thumbnail" class="tab-image" style="width : 180px">
                             </a>
                         </figure>

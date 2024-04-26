@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.itwillbs.domain.MarketVO;
 import com.itwillbs.domain.ProductVO;
+import com.itwillbs.domain.QuestionVO;
+import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
 
 public interface MarketDAO {
@@ -28,9 +30,11 @@ public interface MarketDAO {
 	// 각 상품 조회
 	public ProductVO eachProduct(int product_code) throws Exception;
 	
+	// 각 상품 리뷰 불러오기
+	public List<ReviewVO> reviewList(int product_code) throws Exception;
 	
-	
-	
+	// 문의 작성하기
+	public void writeQuestion(QuestionVO qvo) throws Exception;
 	
 	
 	

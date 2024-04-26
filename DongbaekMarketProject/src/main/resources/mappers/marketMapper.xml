@@ -66,4 +66,33 @@
   	where product_code = #{product_code}
   </select>
   
+  <!-- 상품별 리뷰 불러오기  -->
+  <select id="productReview" resultType="ReviewVO">
+  	select * from review 
+  	where product_code = #{prouct_code}
+  </select>
+  
+  <!-- 문의 작성하기 -->
+  <insert id="writeQuestion">
+  	insert into question(user_id, user_name,title,content,q_type,product_code)
+  	values(#{user_id},#{user_name},#{title},#{content},#{q_type},#{product_code})
+  </insert>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   </mapper>

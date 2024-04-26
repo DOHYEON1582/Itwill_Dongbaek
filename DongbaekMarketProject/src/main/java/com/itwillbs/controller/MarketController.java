@@ -23,6 +23,8 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 
 import com.itwillbs.domain.MarketVO;
 import com.itwillbs.domain.ProductVO;
+import com.itwillbs.domain.QuestionVO;
+import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
 import com.itwillbs.service.MarketService;
 
@@ -91,8 +93,16 @@ public class MarketController {
 		logger.debug(" productMain() 호출 ");
 		ProductVO product = mService.eachProduct(product_code);
 		model.addAttribute("product", product);
-		
-		
+		List<ReviewVO> review = mService.productReview(product_code);
+		model.addAttribute("review", review);
+	}
+	
+	
+	// 상품 POST 페이지
+	@RequestMapping(value = "/productMain", method = RequestMethod.POST)
+	public void productMainPOST(@RequestParam("product_code") int product_code, Model model, HttpSession session, QuestionVO qvo) throws Exception{
+		logger.debug(" productMainPOST() 호출 ");
+		//mService.writeQuestion(qvo);
 	}
 	
 }

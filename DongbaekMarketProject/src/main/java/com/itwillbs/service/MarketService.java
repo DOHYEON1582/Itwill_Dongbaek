@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.itwillbs.domain.MarketVO;
 import com.itwillbs.domain.ProductVO;
+import com.itwillbs.domain.QuestionVO;
+import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
 
 public interface MarketService {
@@ -32,6 +34,24 @@ public interface MarketService {
 	
 	// 각 상품 정보 들고오기
 	public ProductVO eachProduct(int product_code) throws Exception;
+	
+	// 각 상품 리뷰 정보 들고오기
+	public List<ReviewVO> productReview(int product_code) throws Exception;
+	
+	// 문의 글 작성 
+	public void writeQuestion(QuestionVO qvo) throws Exception;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }

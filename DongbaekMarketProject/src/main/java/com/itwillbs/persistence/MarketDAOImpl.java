@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.MarketVO;
 import com.itwillbs.domain.ProductVO;
+import com.itwillbs.domain.QuestionVO;
+import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
 
 
@@ -68,6 +70,16 @@ public class MarketDAOImpl implements MarketDAO{
 	@Override
 	public ProductVO eachProduct(int product_code) throws Exception {
 		return sqlSession.selectOne(NAMESPACE + ".eachProduct", product_code);
+	}
+
+	@Override
+	public List<ReviewVO> reviewList(int product_code) throws Exception {
+		return sqlSession.selectList(NAMESPACE + ".productReview", product_code);
+	}
+
+	@Override
+	public void writeQuestion(QuestionVO qvo) throws Exception {
+		sqlSession.insert(NAMESPACE + ".writeQuestion", qvo);
 	}
 
 	

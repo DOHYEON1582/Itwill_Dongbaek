@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.MarketVO;
 import com.itwillbs.domain.ProductVO;
+import com.itwillbs.domain.QuestionVO;
+import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
 import com.itwillbs.persistence.MarketDAO;
 
@@ -67,5 +69,16 @@ public class MarketServiceImpl implements MarketService{
 		return mdao.eachProduct(product_code);
 	
 	}
+
+	@Override
+	public List<ReviewVO> productReview(int product_code) throws Exception {
+		return mdao.reviewList(product_code);
+	}
+
+	@Override
+	public void writeQuestion(QuestionVO qvo) throws Exception {
+		mdao.writeQuestion(qvo);
+	}
+
 
 }

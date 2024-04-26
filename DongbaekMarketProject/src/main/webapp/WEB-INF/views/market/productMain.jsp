@@ -16,106 +16,314 @@
     <link href="css/styles.css" rel="stylesheet" />
     
 <style>
-        .nav-tabs {
-            border-bottom: 1px solid #dee2e6;
-        }
+    .nav-tabs {
+        border-bottom: 1px solid #dee2e6;
+    }
 
-        .nav-tabs li {
-            padding: 20px 30px;
-            margin-right: 20px;
-            cursor: pointer;
-            list-style: none;
-            display: inline-block;
-            font-size: 18px;
-        }
+    .nav-tabs li {
+        padding: 20px 30px;
+        margin-right: 20px;
+        cursor: pointer;
+        list-style: none;
+        display: inline-block;
+        font-size: 18px;
+    }
 
-        .nav-tabs li:hover {
-            background-color: #e9ecef;
-        }
+    .nav-tabs li:hover {
+        background-color: #e9ecef;
+    }
 
-        .nav-tabs li.active {
-            font-weight: bold;
-            color: #007bff;
-        }
+    .nav-tabs li.active {
+        font-weight: bold;
+        color: #007bff;
+    }
 
-        #middle_nav {
-            text-align: center;
-        }
-        .product-image {
-            width: 500px;
-            height: 500px;
-            object-fit: cover; 
-            margin-bottom: 20px;
-        }     
+    #middle_nav {
+        text-align: center;
+    }
+    
+    .product-image {
+        width: 500px;
+        height: 500px;
+        object-fit: cover; 
+        margin-bottom: 20px;
+    }
+    
+    .about_product img {
+        width: 400px;
+        height: 400px;
+        margin: 10px;
+    }
+    
+    .reviews .panel {
+        margin-bottom: 20px;
+    }
+    
+    .qnas {
+        margin-top: 80px;
+    }
+  #scrollToTopBtn {
+    display: none; /* 초기에는 숨김 */
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 99;
+    width: 100px; /* 버튼 크기 조정 */
+    height: 100px; /* 버튼 크기 조정 */
+    border: none;
+    outline: none;
+    background-color: transparent;
+    cursor: pointer;
+    border-radius: 50%; /* 원형 버튼을 위한 테두리 반경 설정 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+  }
+
+  #scrollToTopBtn i {
+    color: #007bff;
+  }
+
+  #scrollToTopBtn:hover i {
+    color: #0056b3;
+  }
+  .product-qty input.form-control1 {
+    width: 30px !important;
+    
+  }
+
+
+.ask-button {
+  /* 버튼의 스타일을 설정합니다. */
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 16px; /* 크기 조절 */
+  font-size: 20px; /* 폰트 크기 조절 */
+  cursor: pointer;
+  border-radius: 5px;
+}
+.modal {
+    display: none; /* 모달 초기에는 숨김 상태 */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4); /* 배경에 흐린 효과 */
+}
+
+/* 모달 콘텐츠 스타일 */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 모달이 수직으로 중앙에 오도록 설정 */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+}
+
+/* 모달 닫기 버튼 스타일 */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+.form-group {
+    text-align: left;
+    font-size: 20px;
+}
 </style>
+<script>
+$(document).on("click", ".quantity-right-plus", function(e){
+    // + 버튼을 클릭하면 수량 증가
+    var $quantityInput = $(this).parent().find(".input-number");
+    var quantity = parseInt($quantityInput.val());
+    if (quantity < 20) { // 최대 수량은 20
+        $quantityInput.val(quantity + 1);
+    }
+});
+
+$(document).on("click", ".quantity-left-minus", function(e){
+    // - 버튼을 클릭하면 수량 감소
+    var $quantityInput = $(this).parent().find(".input-number");
+    var quantity = parseInt($quantityInput.val());
+    if(quantity > 1){
+        $quantityInput.val(quantity - 1);
+    }
+});
+// 스크롤 위치를 감지하여 버튼을 표시하거나 숨김
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    document.getElementById("scrollToTopBtn").style.display = "block";
+  } else {
+    document.getElementById("scrollToTopBtn").style.display = "none";
+  }
+}
+
+// 맨 위로 스크롤되도록 설정
+function topFunction() {
+  document.body.scrollTop = 0; // For Safari
+  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+}
+
+//모달 열기 함수
+function openModal() {
+    document.getElementById('myModal').style.display = 'block';
+}
+
+// 모달 닫기 함수
+function closeModal() {
+    document.getElementById('myModal').style.display = 'none';
+}
+
+// 모달 창 외부를 클릭하여 모달 닫기
+window.onclick = function(event) {
+    var modal = document.getElementById('myModal');
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
 </head>
 
 <body>
-        <section class="py-0">
-            <div class="container px-4 px-lg-5 my-5">
-                <div class="row gx-4 gx-lg-5 align-items-center">
-                    <div class="col-md-6"><img class="product-image" src="${pageContext.request.contextPath}/resources/images/${product.img1}" alt="..." /></div>
-                    <div class="col-md-6">
-                        <div class="small mb-1">카테고리 : ${product.category }</div>
-                        <h1 class="display-5 fw-bolder">${product.product_name }</h1>
-                        <div class="fs-5 mb-5">
-                            <span>${product.price }원</span>
-                        </div>
-                        <p class="lead">${product.product_explain } 대충 상품 설명</p>
-                        <div class="d-flex">
-                            <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" />
-                            <button class="btn btn-outline-dark flex-shrink-0" type="button">
-                                <i class="bi-cart-fill me-1"></i>
-                                장바구니에 담기
-                            </button>
-                        </div>
-                    </div>
+<section class="py-0">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="row gx-4 gx-lg-5 align-items-center">
+            <div class="col-md-6"><img class="product-image" src="${pageContext.request.contextPath}/resources/images/${product.img1}" alt="..." /></div>
+            <div class="col-md-6">
+                <div class="small mb-1">카테고리 : ${product.category }</div>
+                <h1 class="display-5 fw-bolder">${product.product_name }</h1>
+                <div class="fs-5 mb-5">
+                    <span>${product.price }원</span>
                 </div>
-            </div>
-        </section>
-
-		<div class="container">
-			<div class="row nav">
-				<nav id="middle_nav">
-					<ul class="nav nav-tabs nav-justified">
-						<li id = "about"><a href="#about1">상품 상세</a></li>
-						<li id = "review"><a href="#review1">리뷰</a></li>
-						<li id = "qna"><a href="#qna1">상품 문의</a></li>
-					</ul>
-				</nav>
-			</div>
-		</div>
-		<div class="row" style="margin: 50px 0;">
-			<h1 class="jumbotron">
-				<div class="container1">
-					<small>This is product page.</small>
+                <p class="lead">${product.product_explain } 대충 상품 설명</p>
+					<div class="d-flex align-items-center ">
+						<div class="input-group product-qty" style="width: 200px">
+							<span class="input-group-btn">
+								<button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+									<svg width="16" height="16">
+										<use xlink:href="#minus"></use></svg>
+								</button>
+							<input type="text" name="quantity" class="form-control1 input-number quantity" value="1" style="width: 20px;"> 
+								<button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+									<svg width="16" height="16">
+										<use xlink:href="#plus"></use></svg>
+								</button>
+							</span> 
+						</div>
+						<a href="#" class="nav-link">장바구니<svg width="18" height="18">
+						<use xlink:href="#cart"></use></svg></a>
+					</div>
 				</div>
-			</h1>
-		</div>
-		
-		<div class="row about_product" style="text-align: center;">
-			<h1 class="page-header" id="about1">상품 상세</h1>
+        </div>
+    </div>
+</section>
 
-		</div>
-		<div class="row reviews" style="text-align: center; margin: 80px 0;">
-			<h1 class="page-header" style="margin-bottom: 50px;" id="review1">Review</h1>
-			<c:forEach begin="1" end="5">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">Panel title</h3>
+<div class="container">
+    <div class="row nav">
+        <nav id="middle_nav">
+            <ul class="nav nav-tabs nav-justified">
+                <li id="about"><a href="#about1">상품 상세</a></li>
+                <li id="review"><a href="#review1">리뷰</a></li>
+                <li id="qna"><a href="#qna1">상품 문의</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<div class="row" style="margin: 50px 0;">
+    <h1 class="jumbotron">
+        <div class="container1">
+            <small>This is product page.</small>
+        </div>
+    </h1>
+</div>
+
+<div class="row about_product" style="text-align: center;">
+    <h1 class="page-header" id="about1">상품 상세</h1>
+    <div style="text-align: center; margin: 0 auto;">
+    <img class="product-img2" src="${pageContext.request.contextPath}/resources/images/${product.img2}" style="width: 400px; height: 400px; margin: 10px; display: inline-block;"/>
+    <img class="product-img3" src="${pageContext.request.contextPath}/resources/images/${product.img3}" style="width: 400px; height: 400px; margin: 10px; display: inline-block;"/>
+	</div>
+</div>
+<div class="row reviews" style="text-align: center;">
+    <h1 class="page-header" style="margin-bottom: 50px;" id="review1">Review</h1>
+    ${review }
+    <table class="table table-bordered">
+    	<tbody>
+    		<tr>
+				<th>Title</th>
+				<th>Writer</th>
+				<th>Content</th>
+				<th>Regdate</th>
+				<th>Star</th>
+				<th>img1</th>
+    		</tr>
+		<c:forEach var="review" items="${review }">
+			<tr>
+				<td>${review.title }</td>
+				<td>${review.user_id }</td>
+				<td>${review.content }</td>
+				<td><fmt:formatDate value="${review.regdate }"/></td>
+				<td>${review.star }</td>
+				<td>${review.img1 }</td>
+			</tr>
+		</c:forEach>    		
+    	</tbody>
+    </table>
+</div>
+
+<div style="text-align: center; height: 700px;">
+    <h1 class="page-header" id="qna1">상품 Q&A</h1>
+    <button type="button" class="ask-button" onclick="openModal()">문의하기</button>
+    <!-- 모달 -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <!-- 문의할 수 있는 양식 등을 추가합니다. -->
+            <h2>문의하기</h2>
+            <form role="form" method="post">
+            <input type="hidden" id="product_code" name="product_code" value="${product.product_code }">
+				<div class="box-body">
+					<div class="form-group" style="margin-bottom: 20px;">
+						<label for="exampleInputPassword1">문의 유형</label> 
+							<select class="form-control" id="q_type" name="q_type">
+								<option value="delivery">배송 문의</option>
+								<option value="product">상품 문의</option>
+							</select>
+						</div>
+					<div class="form-group" style="margin-bottom: 20px;">
+						<label for="exampleInputEmail1">문의 제목</label> <input type="text" class="form-control" id="title" placeholder="문의 유형" name="title">
+					</div>
+					<div class="form-group" style="margin-bottom: 20px;">
+						<label>내 용</label>
+						<textarea class="form-control" rows="3" id="content" placeholder="문의 내용을 입력하세요" name="content"></textarea>
+					</div>
 				</div>
-				<div class="panel-body">Panel content</div>
-			</div>
-			</c:forEach>
-		</div>
-
-		<div class="row qnas" style="text-align: center; height: 700px;">
-			<h1 class="page-header" id="qna1">상품 Q&A</h1>
-            /* Q&A 테이블 */
-		</div>
-
+				<br>
+				<div class="box-footer">
+					<button type="submit" class="btn btn-primary">글 쓰기</button>
+				</div>
+			</form>
+        </div>
+    </div>
+</div>
 
 
+<!-- Scroll to Top button -->
+<button onclick="topFunction()" id="scrollToTopBtn" title="맨 위로 이동">
+  <i class="bi bi-arrow-up-circle-fill" style="font-size: 24px;"></i>
+</button>
 
-</body>
 <%@ include file="../include/footer.jsp"%>
