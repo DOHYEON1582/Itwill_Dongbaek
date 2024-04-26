@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+
 <%@ include file="../include/header.jsp"%>
 <style>
 	.productList {
@@ -14,8 +18,6 @@
 		border: 1px solid black;
 	}
 </style>
-<!-- 제이쿼리 -->
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 
 <div class="container">
 
@@ -26,7 +28,7 @@
 	<table id="productList" class="productList" border=1>
 		<thead>
 			<tr>
-				<th><input type="checkbox" id="allCheck" name="allCheck" class="allCheck"></td>
+				<th><input type="checkbox" id="allCheck" name="allCheck" class="allCheck"></th>
 				<th colspan="2">상품정보</th>
 				<th>판매가</th>
 				<th>수량</th>
@@ -108,6 +110,8 @@
 	
  <%@ include file="../include/footer.jsp"%>
  
+<!-- 제이쿼리 -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script>
 	$(document).ready(function(){
 		
@@ -245,7 +249,7 @@
 				return;
 			}else {
 				$.ajax({
-					url: '/order/orderChecked', // 주소 수정 필요! 
+					url: '/order/orderform',
 					type: 'POST',
 					data: {"checkList":checkList},
 					success: function(data){
@@ -258,7 +262,7 @@
 			}	
 		});
 		
-		// 전체 주문
+		// 전체 주문 (그냥 주소 이동 하면 될 거 같은데...)
 		$('#orderAll').click(function(){
 			$.ajax({
 				url: '/order/orderAll',
@@ -278,7 +282,7 @@
 			var cartCode = row.find('.ap_check').val();
 			
 			$.ajax({
-				url: '/order/orderProduct',
+				url: '/order/orderform',
 				type: 'POST',
 				data: {"cartCode":cartCode},
 				success: function(data){
