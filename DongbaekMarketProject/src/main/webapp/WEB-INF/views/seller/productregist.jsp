@@ -432,6 +432,10 @@ body {
 				<input type="text" id="seller_id" name="seller_id" style="width: 100%; padding: 8px;">
 			</div>
 			<div style="margin-bottom: 10px;">
+				<label for="max_account" style="display: block; margin-bottom: 5px;">최대 구매 수량</label> 
+				<input type="text" id="max_account" name="max_account" style="width: 100%; padding: 8px;">
+			</div>
+			<div style="margin-bottom: 10px;">
 				<label for="store_code" style="display: block; margin-bottom: 5px;">사업자등록번호</label> 
 				<input type="text" id="store_code" name="store_code" style="width: 100%; padding: 8px;">
 			</div>
