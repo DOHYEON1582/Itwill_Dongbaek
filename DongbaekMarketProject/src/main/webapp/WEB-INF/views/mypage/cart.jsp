@@ -4,6 +4,7 @@
 
 
 <%-- <%@ include file="../include/header.jsp"%> --%>
+
 <style>
 	.productList {
 		width: 1300px;
@@ -17,8 +18,6 @@
 		border: 1px solid black;
 	}
 </style>
-<!-- 제이쿼리 -->
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 
 <div class="container">
 
@@ -29,7 +28,7 @@
 	<table id="productList" class="productList" border=1>
 		<thead>
 			<tr>
-				<th><input type="checkbox" id="allCheck" name="allCheck" class="allCheck"></td>
+				<th><input type="checkbox" id="allCheck" name="allCheck" class="allCheck"></th>
 				<th colspan="2">상품정보</th>
 				<th>판매가</th>
 				<th>수량</th>
@@ -119,9 +118,10 @@
 	
 <%--  <%@ include file="../include/footer.jsp"%> --%>
  
+<!-- 제이쿼리 -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-
 	// 전체 선택, 해제
     document.getElementById('allCheck').addEventListener('change', function() {
         var checkboxes = document.querySelectorAll('.ap_check');
@@ -348,5 +348,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 });
+
 </script>
  
