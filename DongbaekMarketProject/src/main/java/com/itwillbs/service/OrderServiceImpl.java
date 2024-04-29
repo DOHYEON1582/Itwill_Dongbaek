@@ -1,5 +1,7 @@
 package com.itwillbs.service;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -16,7 +18,14 @@ public class OrderServiceImpl implements OrderDAO {
 	
 	@Inject
 	private OrderDAO odao;
-
+	
+	// 장바구니 목록 가져오기
+	@Override
+	public List<CartVO> selectCartList(CartVO vo) throws Exception {
+		logger.debug(" === S : selectCartList(CartVO vo) 실행 === ");
+		return odao.selectCartList(vo);
+	}
+	
 	// 주문 할 상품 정보 가져오기
 	@Override
 	public CartVO selectProductInfo(int cart_code) throws Exception {
@@ -30,6 +39,8 @@ public class OrderServiceImpl implements OrderDAO {
 		logger.debug(" === S : selectUserPoint(String user_id) 실행 === ");
 		return odao.selectUserPoint(user_id);
 	}
+
+	
 	
 	
 	

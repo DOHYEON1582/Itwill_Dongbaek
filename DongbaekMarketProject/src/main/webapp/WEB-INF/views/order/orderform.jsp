@@ -14,22 +14,56 @@
 	.oderFormTbl td {
 		border: 1px solid black;
 	}
+	
+	/* Chrome, Safari, Edge, Opera */
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+	  -webkit-appearance: none;
+	  margin: 0;
+	}
+	
+	/* Firefox  */
+	input[type='number'] {
+	  -moz-appearance: textfield;
+	}
 </style>
 
 <div class="container">
-	<table id="" class="">
-		
+	<table id="productList" class="productList">
+		<thead>
+			<tr>
+				<th colspan="2">상품정보</th>
+				<th>판매가</th>
+				<th>수량</th>
+				<th>합계</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach var="list" items="${cartList }">
+			<tr>
+				<td><img alt="" src="">경로확인 후 값 넣기</td>
+				<td>${list.store_name}<br>${list.product_name}</td><!-- 가게명, 상품명 -->
+				<td>${list.price }</td>
+				<td>
+					<input type="number" id="count" name="count" value="${list.count }">
+				</td>
+				<c:set var="total" value="${list.price * list.count }"/>
+				<td>${total}</td>
+			</tr>
+			</c:forEach>
+		</tbody>
 	</table>
 	
-	<table class="oderFormTbl">
+	<form id="orderFrm" name="orderFrm">
+	<table class="orderFormTbl">
 		<tr>
-			<td>받으시는분</td>
-			<td><input type="text" id="" name=""></td>
+			<th>받으시는분</th>
+			<td><input type="text" id="rcv_name" name="rcv_name"></td>
 		</tr>
 		<tr>
-			<td>전화번호</td>
+			<th>전화번호</th>
 			<td>
-				<select>
+				<select id="phone1" name="phone1">
 				    <option value="010">010</option>
 		            <option value="011">011</option>
 		            <option value="016">016</option>
@@ -38,58 +72,62 @@
 		            <option value="019">019</option>
 				</select>
 					-
-				<input type="text" id="" name="" size="4">-
-				<input type="text" id="" name="" size="4">
+				<input type="text" id="phone2" name="phone2" size="4">-
+				<input type="text" id="phone3" name="phone3" size="4">
 			</td>
 		</tr>
 		<tr>
-			<td>주소</td>
+			<th>주소</th>
 			<td>
-				<input type="text" id="sample6_postcode" name="zipcode" placeholder="우편번호"><br>
+				<input type="text" id="rcv_zip" name="rcv_zip" placeholder="우편번호"><br>
 				<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
-				<input type="text" id="sample6_address" name="addr1" placeholder="주소"><br>
-				<input type="text" id="sample6_detailAddress" name="addr2" placeholder="상세주소"><br>
-				<input type="text" id="sample6_extraAddress" name="addr3" placeholder="참고항목"><br>
+				<input type="text" id="rcv_addr1" name="rcv_addr1" placeholder="주소"><br>
+				<input type="text" id="rcv_addr2" name="rcv_addr2" placeholder="상세주소"><br>
+				<input type="text" id="rcv_addr3" name="rcv_addr3" placeholder="참고항목"><br>
 			</td>
 		</tr>
 		<tr>
-			<td>배송메세지</td>
-			<td><textarea rows="20" cols="3"></textarea></td>
+			<th>배송메세지</th>
+			<td><textarea rows="20" cols="3" id="rcv_msg" name="rcv_msg"></textarea></td>
 		</tr>
 		<tr>
-			<td>적립금</td>
+			<th>적립금</th>
 			<td>
-				<input type="number" id="" nmae="reduce_point" value="">
-				&nbsp;&nbsp;&nbsp;사용가능 적립금:<span id="point"></span>
+				<input type="number" id="reduce_point" name="reduce_point" max="${point}">
+				&nbsp;&nbsp;&nbsp;사용가능 적립금:<span id="point">${point}</span>
 			</td>
 		</tr>
 		<tr>
-			<td>결제방법</td>
+			<th>결제방법</th>
 			<td>
-				<input type="radio" id="" name="pay_method" value="card">카드결제
-				<input type="radio" id="" name="pay_method" value="pay">
+				<input type="radio" id="pay_method" name="pay_method" value="card">카드결제
+				<input type="radio" id="pay_method" name="pay_method" value="pay">ㅇㅅㅇ?
 			</td>
 		</tr>
 	</table>
 	
 	<!-- 아이디, 묶음번호, 배달비, 총 결제금액, 적립 포인트, 예약여부..?  -->
-	<input type="hidden" id="" name="" value="${sessionScope.(아이디세션) }"> 
-	<input type="hidden" id="" name="" value="">
-	<input type="hidden" id="" name="" value="">
-	<input type="hidden" id="" name="" value="">
+	<input type="hidden" id="user_id" name="user_id" value="${sessionScope.(아이디세션) }"> 
+	<input type="hidden" id="bundle_code" name="bundle_code" value="${sessionScope.cart }">
+	<input type="hidden" id="delivery" name="delivery">
+	<input type="hidden" id="amount" name="amount">
 	<input type="hidden" id="" name="" value="">
 	<input type="hidden" id="" name="" value="">
 	
+	</form>
+
 	
 <!-- 금액 보여주기 시작 -->
 <table border=1>
 	<tr>
 		<td>총 상품금액</td>
+		<td>적립금 사용</td>
 		<td>배송비</td>
 		<td>결제예정금액</td>
 	</tr>
 	<tr>
 		<td id="totalPrice"></td>
+		<td id="usePoint"></td>
 		<td id="deliveryFee"></td>
 		<td id="payAmount"></td>
 	</tr>
@@ -164,22 +202,87 @@
 				}).open();
 	}
 	
+	// 제이쿼리 시작
 	$(document).ready(function(){
 		
+		// 주문 할 상품 가격의 합 (수정 필요)
+		$('#totalPrice').text(function(){		
+			var totalPrice = 0;
+			$('#productList tbody tr').each(function(){
+				var price = parseInt($(this).closest('tr').find('td:eq(2)').text());
+				totalPrice += price;
+			});
+			return totalPrice;
+		});
+		
+		// 사용한 적립금
+		$('#usePoint').text(function(){		
+			var reducePoint = $('#reduce_point').val();
+			return reducePoint;
+		});
+		
+		// 배송비 처리
+		$('#deliveryFee').text(function(){
+			var totalPrice = $('#totalPrice').val();
+			var deliveryFee = 0;
+			if(totalPrice > 50000){ // 5만원 이상시 배달비 무료
+				deliveryFee = 0;
+			} else if(totalPrice < 50000){ // 5만원 미만 배달비 2500원 배달비는 2500원으로 고정
+				deliveryFee = 2500; 
+			}
+			return deliveryFee;
+		});
+		
+		// 결제예정금액
+		$('#payAmount').text(function(){
+			var totalPrice = $('#totalPrice').val();
+			var deliveryFee = $('#deliveryFee').val();
+			var payAmount = totalPrice + deliveryFee;
+			
+			return payAmount;
+		});
+
+		// 주문하기
 		$('#payBtn').click(function(){
+			var orderInfo = $('#orderFrm').serialize();
+			
 			$.ajax({
 				url: '/order/pay',
 				type: 'POST',
-				data: {"checkList":checkList},
+				data: JSON.stringify(orderInfo),
 				success: function(data){
-					alert("삭제되었습니다.");
-					// 새로고침 해야하나... 
+					requestPay(data)
 				},
 				error: function(){
 					alert("오류가 발생했습니다.");
 				}
 			});
+			
+			function requestPay(data){
+				var IMP = window.IMP;
+				IMP.init("imp68706306");
+				
+				IMP.request_pay({
+					pg : "inicis",
+					pay_method : 'card',
+					merchant_uid : 고객사주문번호,
+					name : 제품명,
+					amount : 결제금액,
+					custom_data : 부가정보,
+					buyer_name : 주문자명,
+					buyer_tel : 주문자 연락처,
+					buyer_email : 주문자 이메일,
+					buyer_addr : 주문자 주소,
+					buyer_postcode : 주문자 우편번호,
+					
+					
+					
+				});
+			}
+			
 		});
+		
+		
 		
 	}); // 제이쿼리 끝 
 </script>
