@@ -25,6 +25,30 @@
 		<result property="auth" column="auth"/>
 	</resultMap>
 	
+	<resultMap type="com.itwillbs.domain.ProductVO" id="productMap">
+		<result property="product_code" column="product_code"/>
+		<result property="store_code" column="store_code"/>
+		<result property="price" column="price"/>
+		<result property="product_name" column="product_name"/>
+		<result property="viewcnt" column="viewcnt"/>
+		<result property="img1" column="img1"/>
+		<result property="img2" column="img2"/>
+		<result property="img3" column="img3"/>
+		<result property="product_explain" column="product_explain"/>
+		<result property="seller_id" column="seller_id"/>
+		<result property="country" column="country"/>
+		<result property="max_account" column="max_account"/>
+		<result property="category" column="category"/>
+		<result property="sub_product" column="sub_product"/>
+		<result property="unit" column="unit"/>
+	</resultMap>
+	
+	<resultMap type="com.itwillbs.domain.WishVO" id="wishMap">
+		<result property="wish_code" column="wish_code"/>
+		<result property="product_code" column="product_code"/>
+		<result property="user_id" column="user_id"/>
+	</resultMap>
+	
 	<!-- 회원가입 -->
 	<insert id="insertUser">
 		insert into user(user_id, user_pw, phone, user_name, addr1, addr2, regdate) 
@@ -37,21 +61,9 @@
 	</insert>
 	
 	<select id="loginUser" resultType="com.itwillbs.domain.UserVO">
-		select * from user 
+		select * 
+		from user 
 		where user_id = #{user_id} and user_pw = #{user_pw}
-	</select>
-	
-	<select id="getAuth" resultMap="authMap">
-		select * from user_auth 
-		where user_id = #{user_id}
-	</select>
-	
-	<select id="getUser" resultMap="userMap">
-		select u.user_id, u.user_pw, u.phone, u.user_name, u.addr1, u.addr2, u.point, u.identity, u.regdate, a.auth 
-		from user u
-		left join user_auth a 
-		on u.user_id = a.user_id 
-		where u.user_id = #{user_id}
 	</select>
 	
 	<!-- 시장정보 가져오기(메인) -->
@@ -80,16 +92,25 @@
 		where user_id = #{user_id}
 	</select>
 	<!-- 회원정보 삭제 -->
-	<!-- 삭제할때 auth정보랑 같이 삭제, join 써서 user_id가 같은 사람, 해시 값으로 변환? -->
 	<delete id="deleteUser">
 		delete from user 
 		where user_id = #{user_id} and user_pw = #{user_pw}
 	</delete>
 	
 	
-	
-	
-	
+	<!-- 마이페이지 - 찜 목록 불러오기 -->
+	<select id="getWish" resultMap="productMap">
+		select * 
+		from wish w 
+		join product p 
+		on w.product_code = p.product_code 
+		where user_id = #{user_id}
+	</select>
+	<!-- 찜 목록 삭제 - 개별 -->
+	<delete id="deleteWish">
+		delete from wish 
+		where product_code = #{product_code}
+	</delete>
 	
 	
 </mapper>

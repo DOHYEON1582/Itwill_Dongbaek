@@ -163,29 +163,8 @@
 		<div class="offcanvas-body">
 			<div class="order-md-last">
 				<h4 class="d-flex justify-content-between align-items-center mb-3">
-					<span class="text-primary">Your cart</span> <span class="badge bg-primary rounded-pill">3</span>
+					<span class="text-primary">장바구니</span> <span class="badge bg-primary rounded-pill">0</span>
 				</h4>
-				<ul class="list-group mb-3">
-					<li class="list-group-item d-flex justify-content-between lh-sm">
-						<div>
-							<h6 class="my-0">Growers cider</h6>
-							<small class="text-body-secondary">Brief description</small>
-						</div> <span class="text-body-secondary">$12</span>
-					</li>
-					<li class="list-group-item d-flex justify-content-between lh-sm">
-						<div>
-							<h6 class="my-0">Fresh grapes</h6>
-							<small class="text-body-secondary">Brief description</small>
-						</div> <span class="text-body-secondary">$8</span>
-					</li>
-					<li class="list-group-item d-flex justify-content-between lh-sm">
-						<div>
-							<h6 class="my-0">Heinz tomato ketchup</h6>
-							<small class="text-body-secondary">Brief description</small>
-						</div> <span class="text-body-secondary">$5</span>
-					</li>
-					<li class="list-group-item d-flex justify-content-between"><span>Total (USD)</span> <strong>$20</strong></li>
-				</ul>
 
 				<button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
 			</div>
@@ -198,7 +177,7 @@
 			<div class="row py-3 border-bottom">
 				<div class="col-sm-4 col-lg-3 text-center text-sm-start">
 					<div class="main-logo">
-						<a href="/"> <img src="resources/images/mylogo2.png" alt="logo" class="mylogo2">
+						<a href="/"> <img src="${pageContext.request.contextPath }resources/images/mylogo2.png" alt="logo" class="mylogo2">
 						</a>
 					</div>
 				</div>
@@ -227,16 +206,16 @@
 
 				<div class="col-sm-8 col-lg-3 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
 				    <div>
-				    	<c:if test="${sessionScope.authVO.user_id == null }">
+				    	<c:if test="${sessionScope.userVO.user_id == null }">
 					        <div class="align-items-center">
 					            <a href="/member/login" class="login">로그인</a>
 					            <a href="/member/register" class="join">회원가입</a>
 					            <a href="#" class="service">고객센터</a>
 					        </div>
 				    	</c:if>
-				    	<c:if test="${sessionScope.authVO.user_id != null }">
+				    	<c:if test="${sessionScope.userVO.user_id != null }">
 					        <div class="align-items-center">
-					            로그인 id : ${sessionScope.authVO.user_id }
+					            로그인 id : ${sessionScope.userVO.user_id }
 					            <a href="#" class="service">고객센터</a>
 					            <input type="button" value="로그아웃" onclick="location.href='/member/logout';">
 					        </div>
@@ -245,7 +224,7 @@
 				            <li><a href="/member/info" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
 				                        <use xlink:href="#user"></use></svg>
 				                </a></li>
-				            <li><a href="#" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
+				            <li><a href="/member/wish" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
 				                        <use xlink:href="#heart"></use></svg>
 				                </a></li>
 				        </ul>
@@ -254,7 +233,7 @@
 				    <!-- 장바구니 아이콘 -->
 				    <div class="cart text-end d-none d-lg-block dropdown">
 				        <button class="border-0 bg-transparent d-flex flex-column gap-2 lh-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
-				            <span class="fs-6 text-muted dropdown-toggle">Your Cart</span>
+				            <span class="fs-6 text-muted dropdown-toggle">장바구니</span>
 				        </button>
 				    </div>
 				</div>
@@ -279,7 +258,7 @@
     	                        <option>자갈치시장</option>
 	                        </select>
 	                        <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
-	                            <li class="nav-item active"><a href="#women" class="nav-link">시장소개</a></li>
+	                            <li class="nav-item active"><a href="marketInfo" class="nav-link">시장소개</a></li>
 	                            <li class="nav-item dropdown"><a href="#men" class="nav-link">제철음식</a></li>
 	                            <li class="nav-item"><a href="#kids" class="nav-link">인기음식</a></li>
 	                            <li class="nav-item"><a href="#accessories" class="nav-link">알뜰쇼핑</a></li>

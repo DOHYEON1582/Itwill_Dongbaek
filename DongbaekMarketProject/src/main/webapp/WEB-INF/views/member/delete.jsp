@@ -12,7 +12,7 @@
 	<fieldset>
 		<legend>회원 탈퇴</legend>
 		<form action="" method="post">
-			<input type="hidden" name="user_id" value="${sessionScope.authVO.user_id }">
+			<input type="hidden" name="user_id" value="${sessionScope.userVO.user_id }">
 			비밀번호 : <input type="password" name="user_pw" placeholder="비밀번호를 입력하세요.">
 			<input type="submit" value="삭제하기">
 		</form>

@@ -1,13 +1,17 @@
 package com.itwillbs.service;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.AuthVO;
+import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.persistence.UserDAO;
 
@@ -35,39 +39,26 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-    public AuthVO loginUser(UserVO uvo) throws Exception {
-        String userId = uvo.getUser_id();
-        String inputPassword = uvo.getUser_pw();
-        
-        UserVO user = udao.getUser(uvo);
-        if (user != null) {
-            String encodedPassword = user.getUser_pw(); // DB에 저장된 암호화된 비밀번호
-            if (pwEncoder.matches(inputPassword, encodedPassword)) {
-                // 비밀번호가 일치하는 경우
-                return udao.getAuth(userId);
-            }
-        }
-        return null; // 인증 실패
+    public UserVO loginUser(UserVO uvo) throws Exception {
+        logger.debug(" loginUser(UserVO uvo) 실행 ");
+        return udao.loginUser(uvo); 
     }
 
 	@Override
 	public UserVO userInfo(String user_id) throws Exception {
 		logger.debug(" userInfo(String user_id) 실행 ");
-		
 		return udao.userInfo(user_id);
 	}
 
 	@Override
 	public int userUpdate(UserVO uvo) throws Exception {
 		logger.debug(" userUpdate(UserVO uvo) 실행 ");
-		logger.debug("service uvo " + uvo);
 		return udao.updateUser(uvo);
 	}
 
 	@Override
 	public String getPass(String user_id) throws Exception {
 		logger.debug(" getPass(String user_id) 실행 ");
-		
 		return udao.getPass(user_id);
 	}
 
@@ -75,6 +66,19 @@ public class UserServiceImpl implements UserService {
 	public int deleteUser(UserVO uvo) throws Exception {
 		logger.debug(" deleteUser(UserVO uvo) 실행 ");
 		return udao.deleteUser(uvo);
+	}
+
+	@Override
+	public List<ProductVO> wishList(String user_id) throws Exception {
+		logger.debug(" wishList(String user_id) 실행 ");
+		logger.debug(" user_id " + user_id);
+		return udao.wishList(user_id);
+	}
+
+	@Override
+	public int deleteWish(int product_code) throws Exception {
+		logger.debug(" deleteWish(String product_code) 실행 ");
+		return udao.deleteWish(product_code);
 	}
 
 	

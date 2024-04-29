@@ -9,6 +9,9 @@
 	<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 	
 	<security:http auto-config="true">
+		<!-- 다른 Spring Security 설정 -->
+        <security:intercept-url pattern="/checkPassword" access="isAuthenticated()"/>
+        
 	    <!-- 다른 Spring Security 설정 -->
 	    <security:intercept-url pattern="/**" access="permitAll"/>
 	    <security:csrf disabled="true"/>

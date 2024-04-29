@@ -7,8 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>장바구니</h1>
-	
+	<h1>marketInfo.jsp</h1>
 	
 	
 </body>
