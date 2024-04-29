@@ -27,9 +27,7 @@ public class OrderController {
 	@Inject
 	private OrderService oService;
 
-	// 240426 같은 가게 상품만 주문 가능하게 구현할건지...
-	// order_info store_code 삭제 할 말... 
-	
+	// 240429 같은 가게 상품만 주문하기!!!!!	
 	// 주문페이지
 	@GetMapping(value = "/orderform")
 	public void orderFormGET(HttpSession session,
@@ -41,8 +39,8 @@ public class OrderController {
 		String userid = (String)session.getAttribute("user_id");
 		
 		CartVO cvo = new CartVO();
-		
-		// 주문 할 상품 리스트
+		/* 주문 할 상품 리스트 */
+		// 상품 선택 주문
 		List<CartVO> cartList = new ArrayList<CartVO>();
 		if(strCheckList != null && cartCode == null) {
 			int[] checkList = new int[strCheckList.length];
@@ -53,16 +51,21 @@ public class OrderController {
 				cartList.add(cvo);
 			}
 		}
+		// 상품 개별 주문
 		if(cartCode != null && strCheckList == null) {
 			cvo = oService.selectProductInfo(Integer.parseInt(cartCode));
 			cartList.add(cvo);
 		}
-		
+		// 상품 전체 주문
+		if(strCheckList != null && cartCode != null) {
+			cartList = oService.selectCartList(cvo);
+		}
 		// 적립금
-		oService.selectUserPoint(userid);
-		
+		String point = oService.selectUserPoint(userid);
 		
 		model.addAttribute("cartList",cartList);
+		model.addAttribute("point", point);
+		
 		
 	}
 

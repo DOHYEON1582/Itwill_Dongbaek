@@ -27,5 +27,26 @@
 		         ON c.product_code = prdc.product_code
 		WHERE  cart_cocd = #{cart_cocd}
 	</select>
+	
+	<!-- 장바구니 목록 가져오기 -->
+	<select id="selectCartList" resultType="CartVO">
+		SELECT c.*,
+		       prdc.*
+		FROM   cart c
+		       JOIN (SELECT s.store_code,
+		                    s.store_name,
+		                    p.product_code,
+		                    p.product_name,
+		                    p.img1,
+		                    p.max_account
+		             FROM   product p
+		                    JOIN store s
+		                      ON p.store_code = s.store_code) prdc
+		         ON c.product_code = prdc.product_code
+		WHERE  user_id = #{user_id}
+		       AND bundle_code = #{bundle_code}
+		       AND states = '장바구니' 
+	</select>
+	
 
 </mapper>
