@@ -1,5 +1,7 @@
 package com.itwillbs.persistence;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
@@ -19,6 +21,13 @@ public class OrderDAOImpl implements OrderDAO{
 	
 	private static final String NAMESPACE = "com.itwillbs.mapper.OrderMapper";
 	
+	// 장바구니 목록 가져오기
+	@Override
+	public List<CartVO> selectCartList(CartVO vo) throws Exception {
+		logger.debug(" === D : selectCartList(CartVO vo) 실행 === ");
+		return sqlSession.selectList(NAMESPACE+".selectProductInfo");
+	}
+	
 	// 주문 할 상품 정보 가져오기
 	@Override
 	public CartVO selectProductInfo(int cart_code) throws Exception {
@@ -32,5 +41,7 @@ public class OrderDAOImpl implements OrderDAO{
 		logger.debug(" === D : selectUserPoint(String user_id) 실행 === ");
 		return sqlSession.selectOne(NAMESPACE+".selectUserPoint");
 	}
+
+	
 	
 }
