@@ -48,5 +48,53 @@
 		       AND states = '장바구니' 
 	</select>
 	
+	<!-- 주문 번호 최대값 가져오기 -->
+	<select id="selectMaxOrderCode" resultType="int">
+		SELECT Ifnull(Max(order_code), 0) AS order_code
+		FROM   order_info
+		WHERE  LEFT(order_code, 6) = Date_format(Curdate(), '%y%m%d') 
+	</select>
+	
+	<!-- 주문정보 입력 -->
+	<insert id="insertOrderInfo">
+		INSERT INTO order_info
+		            (order_code,
+		             user_id,
+		             bundel_code,
+		             store_code,
+		             order_date,
+		             rcv_zip,
+		             rcv_name,
+		             rcv_phone,
+		             rcv_addr1,
+		             rcv_addr2,
+		             rcv_msg,
+		             pay_method,
+		             delivery_fee,
+		             point,
+		             cal_check,
+		             reservation,
+		             reduce_point,
+		             add_point)
+		VALUES     ( #{order_code},
+		             #{user_id},
+		             #{bundel_code},
+		             #{store_code},
+		             Now(),
+		             #{rcv_zip},
+		             #{rcv_name},
+		             #{rcv_phone},
+		             #{rcv_addr1},
+		             #{rcv_addr2},
+		             #{rcv_msg},
+		             #{pay_method},
+		             #{delivery_fee},
+		             #{point},
+		             'N',
+		             #{reservation},
+		             #{reduce_point},
+		             #{add_point}, ) 
+	</insert>
+	
 
 </mapper>

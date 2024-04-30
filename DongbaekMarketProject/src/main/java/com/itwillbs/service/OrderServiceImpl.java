@@ -9,10 +9,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.CartVO;
+import com.itwillbs.domain.OrderInfoVO;
 import com.itwillbs.persistence.OrderDAO;
 
 @Service
-public class OrderServiceImpl implements OrderDAO {
+public class OrderServiceImpl implements OrderService {
 
 	private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 	
@@ -38,6 +39,20 @@ public class OrderServiceImpl implements OrderDAO {
 	public String selectUserPoint(String user_id) throws Exception {
 		logger.debug(" === S : selectUserPoint(String user_id) 실행 === ");
 		return odao.selectUserPoint(user_id);
+	}
+
+	// 주문 번호 최대값 가져오기
+	@Override
+	public int selectMaxOrderCode() throws Exception {
+		logger.debug(" === S : selectMaxOrderCode() 실행 === ");
+		return odao.selectMaxOrderCode();
+	}
+
+	// 주문 정보 입력
+	@Override
+	public void insertOrderInfo(OrderInfoVO vo) throws Exception {
+		logger.debug(" === S : insertOrderInfo() 실행 === ");
+		odao.insertOrderInfo(vo);
 	}
 
 	
