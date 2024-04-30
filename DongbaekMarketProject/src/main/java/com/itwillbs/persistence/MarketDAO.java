@@ -36,7 +36,8 @@ public interface MarketDAO {
 	// 문의 작성하기
 	public void writeQuestion(QuestionVO qvo) throws Exception;
 	
-	
+	// 상품별 문의 글 불러오기
+	public List<QuestionVO> getQuestion(int product_code) throws Exception;
 	
 	
 	

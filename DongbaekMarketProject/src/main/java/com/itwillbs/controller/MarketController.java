@@ -89,12 +89,16 @@ public class MarketController {
 
 	// 상품 메인페이지
 	@RequestMapping(value = "/productMain", method = RequestMethod.GET)
-	public void productMain(@RequestParam("product_code") int product_code, Model model, HttpSession session) throws Exception{
+	public void productMain(@RequestParam("product_code") int product_code, Model model, HttpSession session, QuestionVO qvo) throws Exception{
 		logger.debug(" productMain() 호출 ");
 		ProductVO product = mService.eachProduct(product_code);
 		model.addAttribute("product", product);
 		List<ReviewVO> review = mService.productReview(product_code);
 		model.addAttribute("review", review);
+		//mService.writeQuestion(qvo);
+		List<QuestionVO> question = mService.selectQuestion(product_code);
+		model.addAttribute("question", question);
+		
 	}
 	
 	
@@ -102,7 +106,8 @@ public class MarketController {
 	@RequestMapping(value = "/productMain", method = RequestMethod.POST)
 	public void productMainPOST(@RequestParam("product_code") int product_code, Model model, HttpSession session, QuestionVO qvo) throws Exception{
 		logger.debug(" productMainPOST() 호출 ");
-		//mService.writeQuestion(qvo);
+		mService.writeQuestion(qvo);
+
 	}
 	
 }

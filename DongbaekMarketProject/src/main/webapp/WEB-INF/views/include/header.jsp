@@ -323,7 +323,6 @@
 				data : JSON.stringify(number),
 				contentType : "application/json; charset=UTF-8",
 				success: function(response){
-					alert("!!!!!!!!!!!");
 					console.log(response);
 				}
 				

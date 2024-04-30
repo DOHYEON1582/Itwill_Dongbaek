@@ -41,7 +41,8 @@ public interface MarketService {
 	// 문의 글 작성 
 	public void writeQuestion(QuestionVO qvo) throws Exception;
 	
-	
+	// 상품별 문의글 들고오기
+	public List<QuestionVO> selectQuestion(int product_code) throws Exception;
 	
 	
 	

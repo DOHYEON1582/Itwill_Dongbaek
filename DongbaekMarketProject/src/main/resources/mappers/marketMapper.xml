@@ -74,12 +74,15 @@
   
   <!-- 문의 작성하기 -->
   <insert id="writeQuestion">
-  	insert into question(user_id, user_name,title,content,q_type,product_code)
-  	values(#{user_id},#{user_name},#{title},#{content},#{q_type},#{product_code})
+  	insert into question(user_id, user_name,title,content,q_type,product_code,regdate)
+  	values(#{user_id},#{user_name},#{title},#{content},#{q_type},#{product_code},now())
   </insert>
   
-  
-  
+  <!-- 문의 글 불러오기 -->
+  <select id="selectQuestion" resultType="QuestionVO">
+  	select * from question
+  	where product_code = #{product_code}
+  </select>
   
   
   

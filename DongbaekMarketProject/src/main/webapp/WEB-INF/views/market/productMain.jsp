@@ -140,8 +140,57 @@
     text-align: left;
     font-size: 20px;
 }
+    .star-rating {
+        unicode-bidi: bidi-override;
+        color: #f8ce0b;
+        font-size: 25px;
+        display: inline-block;
+    }
+
+    .star-rating::before {
+        content: '\2605';
+        position: absolute;
+        z-index: 0;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+        width: 0;
+    }
+
+    .star-rating span {
+        position: absolute;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+        width: 0;
+        color: #000;
+    }
 </style>
-<script>
+<script type="text/javascript">
+// 맨 위로 스크롤되도록 설정
+function topFunction() {
+  document.body.scrollTop = 0; // For Safari
+  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+}
+
+function showStarRating() {
+    var starElements = document.getElementsByClassName('star-rating');
+    Array.prototype.forEach.call(starElements, function(starElement) {
+        var rating = parseInt(starElement.getAttribute('data-rating'), 10);
+        var stars = '';
+        for (var i = 0; i < 5; i++) {
+            if (i < rating) {
+                stars += '<span>&#x2605;</span>';
+            } else {
+                stars += '<span>&#x2606;</span>';
+            }
+        }
+        starElement.innerHTML = stars;
+    });
+}
+    showStarRating(); // 페이지가 로드될 때 별점 표시
+
+
 $(document).on("click", ".quantity-right-plus", function(e){
     // + 버튼을 클릭하면 수량 증가
     var $quantityInput = $(this).parent().find(".input-number");
@@ -170,10 +219,17 @@ function scrollFunction() {
   }
 }
 
-// 맨 위로 스크롤되도록 설정
-function topFunction() {
-  document.body.scrollTop = 0; // For Safari
-  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+
+//문의하기 버튼 클릭 시 폼 제출 및 페이지 리로드 함수
+function submitFormAndReload() {
+    // 폼 요소 참조
+    var form = document.getElementById('questionForm');
+
+    // 폼 제출
+    form.submit();
+
+    // 모달 닫기 및 폼 초기화
+    closeModal();
 }
 
 //모달 열기 함수
@@ -181,16 +237,23 @@ function openModal() {
     document.getElementById('myModal').style.display = 'block';
 }
 
-// 모달 닫기 함수
+//모달 닫기 함수
 function closeModal() {
     document.getElementById('myModal').style.display = 'none';
+    clearForm(); // 폼 요소 초기화 함수 호출
+}
+
+function clearForm() {
+    document.getElementById('q_type').value = ''; // 문의 유형 선택
+    document.getElementById('title').value = ''; // 문의 제목 초기화
+    document.getElementById('content').value = ''; // 문의 내용 초기화
 }
 
 // 모달 창 외부를 클릭하여 모달 닫기
 window.onclick = function(event) {
     var modal = document.getElementById('myModal');
     if (event.target == modal) {
-        modal.style.display = "none";
+        closeModal(); // 모달 닫기 함수 호출
     }
 }
 </script>
@@ -258,34 +321,77 @@ window.onclick = function(event) {
 	</div>
 </div>
 <div class="row reviews" style="text-align: center;">
+
+
+<hr>
+
+<div class="container"></div>
     <h1 class="page-header" style="margin-bottom: 50px;" id="review1">Review</h1>
-    ${review }
     <table class="table table-bordered">
     	<tbody>
     		<tr>
 				<th>Title</th>
 				<th>Writer</th>
 				<th>Content</th>
-				<th>Regdate</th>
 				<th>Star</th>
 				<th>img1</th>
+				<th>Regdate</th>
     		</tr>
 		<c:forEach var="review" items="${review }">
 			<tr>
 				<td>${review.title }</td>
 				<td>${review.user_id }</td>
 				<td>${review.content }</td>
+		        <td>
+		            <span class="star-rating" data-rating = ${review.star }>
+		                <c:forEach begin="1" end="${review.star}">
+		                    &#9733; <!-- 별 모양의 아이콘 -->
+		                </c:forEach>
+		            </span>
+		        </td>
+				<td><img src="${pageContext.request.contextPath}/resources/images/${review.img1}" style="width: 100px; height: 100px;"></td>
 				<td><fmt:formatDate value="${review.regdate }"/></td>
-				<td>${review.star }</td>
-				<td>${review.img1 }</td>
 			</tr>
 		</c:forEach>    		
     	</tbody>
     </table>
 </div>
 
+<hr>
+
 <div style="text-align: center; height: 700px;">
     <h1 class="page-header" id="qna1">상품 Q&A</h1>
+	 <table class="table table-bordered">
+    	<tbody>
+    		<tr>
+				<th>문의유형</th>
+				<th>작성자</th>
+				<th>문의제목</th>
+				<th>작성일</th>
+    		</tr>
+		<c:forEach var="question" items="${question }">
+			<tr>
+				<td>${question.q_type }</td>
+				<td>${question.user_id }</td>
+				<td>${question.title }</td>
+				<td><fmt:formatDate value="${question.regdate }"/></td>
+			</tr>
+		</c:forEach>    		
+    	</tbody>
+    </table>
+<!--    		<div class="box-footer clearfix"> -->
+<!-- 			<ul class="pagination pagination-sm no-margin pull-right"> -->
+<%-- 				<c:if test="${pageVO.prev }"> --%>
+<%-- 				<li><a href="/board/listCri?page=${pageVO.startPage - 1 }">«</a></li> --%>
+<%-- 				</c:if> --%>
+<%-- 				<c:forEach var="idx" begin="${pageVO.startPage }" end="${pageVO.endPage }" step="1"> --%>
+<%-- 				<li ${pageVO.cri.page == idx? "class=active":""}><a href="/board/listCri?page=${idx }">${idx }</a></li> --%>
+<%-- 				</c:forEach> --%>
+<%-- 				<c:if test="${pageVO.next }"> --%>
+<%-- 				<li><a href="/board/listCri?page=${pageVO.endPage + 1 }">»</a></li> --%>
+<%-- 				</c:if> --%>
+<!-- 			</ul> -->
+<!-- 		</div> -->
     <button type="button" class="ask-button" onclick="openModal()">문의하기</button>
     <!-- 모달 -->
     <div id="myModal" class="modal">
@@ -293,14 +399,14 @@ window.onclick = function(event) {
             <span class="close" onclick="closeModal()">&times;</span>
             <!-- 문의할 수 있는 양식 등을 추가합니다. -->
             <h2>문의하기</h2>
-            <form role="form" method="post">
+            <form action="" method="post" id="questionForm">
             <input type="hidden" id="product_code" name="product_code" value="${product.product_code }">
 				<div class="box-body">
 					<div class="form-group" style="margin-bottom: 20px;">
 						<label for="exampleInputPassword1">문의 유형</label> 
 							<select class="form-control" id="q_type" name="q_type">
-								<option value="delivery">배송 문의</option>
-								<option value="product">상품 문의</option>
+								<option value="1">배송 문의</option>
+								<option value="2">상품 문의</option>
 							</select>
 						</div>
 					<div class="form-group" style="margin-bottom: 20px;">
@@ -313,12 +419,14 @@ window.onclick = function(event) {
 				</div>
 				<br>
 				<div class="box-footer">
-					<button type="submit" class="btn btn-primary">글 쓰기</button>
+					<button type="submit" class="btn btn-primary" id="writeQuestion">글 쓰기</button>
 				</div>
 			</form>
         </div>
     </div>
+
 </div>
+
 
 
 <!-- Scroll to Top button -->
