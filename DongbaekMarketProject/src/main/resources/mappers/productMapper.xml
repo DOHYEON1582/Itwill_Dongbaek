@@ -24,7 +24,7 @@
 	<!-- 상품 목록 가져오기 -->
 	<select id="productList" resultType="ProductVO">
 		select * from product
-	    where seller_id = #{seller_id}
+	    where store_code = #{store_code}
 	    ORDER BY product_code
     	LIMIT #{startRow}, #{perPageNum}
 	</select>
