@@ -70,14 +70,14 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	public String productregistSubmit(@RequestParam("img1") MultipartFile img1,
 	                                  @RequestParam("img2") MultipartFile img2,
 	                                  @RequestParam("img3") MultipartFile img3,
-	                                  @RequestParam("category") String category,
-	                                  @RequestParam("product_name") String product_name,
-	                                  @RequestParam("unit") String unit,
-	                                  @RequestParam("price") String price,
-	                                  @RequestParam("product_explain") String product_explain,
-	                                  @RequestParam("max_account") int max_account,
-	                                  @RequestParam("country") String country,
-	                                  @RequestParam("store_code") long store_code,
+	                                  @RequestParam(value = "category", defaultValue = "기본 카테고리") String category,
+	                                  @RequestParam(value = "product_name", defaultValue = "상품명 없음") String product_name,
+	                                  @RequestParam(value = "unit", defaultValue = "개") String unit,
+	                                  @RequestParam(value = "price", defaultValue = "0") String price,
+	                                  @RequestParam(value = "product_explain", defaultValue = "설명 없음") String product_explain,
+	                                  @RequestParam(value = "max_account", defaultValue = "0") int max_account,
+	                                  @RequestParam(value = "country", defaultValue = "원산지 없음") String country,
+	                                  @RequestParam(value = "store_code", defaultValue = "0") long store_code,
 	                                  RedirectAttributes rttr) throws Exception {
 	    // 이미지 파일 저장
 	    String fileDirectory = "C:\\Users\\ITWILL\\git\\Itwill_Dongbaek\\DongbaekMarketProject\\src\\main\\webapp\\resources\\images"; // 이미지 파일이 저장될 디렉토리 경로 수정 필요
