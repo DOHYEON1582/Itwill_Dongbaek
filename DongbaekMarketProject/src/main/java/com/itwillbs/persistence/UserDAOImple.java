@@ -2,7 +2,9 @@ package com.itwillbs.persistence;
 
 import java.security.MessageDigest;
 import java.security.SecureRandom;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.AuthVO;
 import com.itwillbs.domain.ProductVO;
+import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.domain.WishVO;
 
@@ -105,13 +108,33 @@ public class UserDAOImple implements UserDAO {
 	}
 
 	@Override
-	public int deleteWish(int product_code) throws Exception {
+	public int deleteWish(int wish_code) throws Exception {
 		logger.debug(" deleteWish(String product_code) 호출 ");
-		return sql.delete(NAMESPACE + "deleteWish", product_code);
+		return sql.delete(NAMESPACE + "deleteWish", wish_code);
+	}
+
+	@Override
+	public List<ReviewVO> getReview(int product_code) throws Exception {
+		logger.debug(" getReview(int product_code) 호출");
+		return sql.selectList(NAMESPACE + ".getReview", product_code);
+	}
+
+//	@Override
+//	public List<ProductVO> productList(int product_code) throws Exception {
+//		logger.debug(" productList(ProductVO pvo) 호출 ");
+//		return sql.selectList(NAMESPACE + ".getProduct", product_code);
+//	}
+	@Override
+	public List<ProductVO> productList(int product_code, String orderBy) throws Exception {
+	    logger.debug(" productList(ProductVO pvo) 호출 ");
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("product_code", product_code);
+	    params.put("orderBy", orderBy); // orderBy를 매퍼에 전달
+	    return sql.selectList(NAMESPACE + ".getProduct", params);
 	}
 
 	
-
+	
 	
 	
 	

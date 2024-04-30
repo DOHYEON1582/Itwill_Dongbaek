@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.MarketVO;
 import com.itwillbs.domain.ProductVO;
+import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.MainService;
 import com.itwillbs.service.UserService;
@@ -161,17 +162,36 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "member/deleteWish", method = RequestMethod.POST)
-	public String deleteWish(int product_code) throws Exception {
+	public String deleteWish(int wish_code) throws Exception {
 		logger.debug(" deleteWish() 호출 ");
-		logger.debug("product_code " + product_code);
-		uService.deleteWish(product_code);
+		logger.debug("wish_code " + wish_code);
+		uService.deleteWish(wish_code);
 		
 		return "redirect:/member/wish";
 	}
 	
 	
-	
-	
+//	@RequestMapping(value = "member/review", method = RequestMethod.GET)
+//	public void reviewList(@RequestParam("product_code") int product_code, Model model) throws Exception{
+//		logger.debug(" review() 호출 ");
+//		List<ProductVO> product = uService.getProduct(product_code);
+//		model.addAttribute("product",product);
+//		List<ReviewVO> review = uService.getReview(product_code);
+//		model.addAttribute("review", review);
+//		
+//	}
+	@RequestMapping(value = "member/review", method = RequestMethod.GET)
+	public void reviewList(@RequestParam("product_code") int product_code,
+	                       @RequestParam(value = "orderBy", required = false, defaultValue = "latest") String orderBy,
+	                       Model model) throws Exception {
+	    logger.debug(" review() 호출 ");
+	    List<ProductVO> product = uService.getProduct(product_code, orderBy); // orderBy를 파라미터로 전달
+	    model.addAttribute("product", product);
+	    model.addAttribute("orderBy", orderBy); // orderBy를 모델에 추가
+	    List<ReviewVO> review = uService.getReview(product_code);
+	    model.addAttribute("review", review);
+	}
+
 	
 	
 	

@@ -109,8 +109,34 @@
 	<!-- 찜 목록 삭제 - 개별 -->
 	<delete id="deleteWish">
 		delete from wish 
-		where product_code = #{product_code}
+		where wish_code = #{wish_code}
 	</delete>
+	
+	
+	<!-- 리뷰 -->
+	<select id="getReview" resultType="com.itwillbs.domain.ReviewVO">
+		select * from review 
+		where product_code = #{product_code}
+	</select>
+	<!-- 리뷰 제품 -->
+	<select id="getProduct" resultType="com.itwillbs.domain.ProductVO">
+		select * 
+		from product 
+		where product_code = #{product_code} 
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 </mapper>

@@ -3,6 +3,7 @@ package com.itwillbs.service;
 import java.util.List;
 
 import com.itwillbs.domain.ProductVO;
+import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.UserVO;
 
 public interface UserService {
@@ -28,11 +29,15 @@ public interface UserService {
 	// 찜 목록 조회
 	public List<ProductVO> wishList(String user_id) throws Exception;
 	// 찜 상품 삭제(개별)
-	public int deleteWish(int product_code) throws Exception;
+	public int deleteWish(int wish_code) throws Exception;
 	
 	
-	
-	
+	// 리뷰
+	public List<ReviewVO> getReview(int product_code) throws Exception;
+	// 제품
+	//public List<ProductVO> getProduct(int product_code) throws Exception;
+	public List<ProductVO> getProduct(int product_code, String orderBy) throws Exception;
+
 	
 	
 	

@@ -1,11 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<%@include file="../include/header.jsp" %>
+
+
 <title>찜 목록</title>
 <style>
 	.container {
@@ -41,29 +39,71 @@
         bottom: 100px;
         right: 30px;
         color: pink;
-        font-size: 80px;
+        font-size: 60px;
     }
+    .btn-wishlist {
+     position: absolute;
+     top: 0;
+     right: 20px;
+     width: 40px;
+     height: 40px;
+     border-radius: 50px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     background: #fff;
+     border: 1px solid #d8d8d8;
+     transition: all 0.3s ease-out;
+   }
+   .btn-wishlist:hover {
+     background: rgb(240, 56, 56);
+     color: #fff;
+   }
 </style>
-</head>
-<body>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(".btn-wishlist").click(function(){
+			$.ajax({
+				url : "member/deleteWish",
+				type : "DELETE",
+				success : function(){
+					alert(" 삭제! ");
+				}
+			});
+		});
+	});
+	
+</script>
+
+
 
 <div class="container">
     <h1>찜 목록</h1>
-    <form action="deleteWish" method="post">
-	    <div class="wishlist-items">
-	        <c:forEach var="wishList" items="${wishList}">
-	            <div class="wishlist-item">
-	                <input type="checkbox" name="product_code" value="${wishList.product_code }" > 선택
-	                <img alt="Product Image" src="../resources/images/product/${wishList.img1}">
-	                <p>${wishList.product_name}</p>
-	                <p><fmt:formatNumber value="${wishList.price}" pattern="#,##0"/>원</p>
-	                <span class="heart-icon">&#x2665;</span> <!-- 하트 아이콘 추가 -->
-	            </div>
-	        </c:forEach>
-	    </div>
-	    <button type="submit">선택한 상품 삭제</button>
-    </form>
+    
+     <!-- 정렬 옵션 드롭다운 메뉴 -->
+<!--     <form action="review" method="get"> -->
+<%--         <input type="hidden" name="product_code" value="${product_code}"> --%>
+<!--         <select name="orderBy"> -->
+<%--             <option value="latest" ${param.orderBy == 'latest' ? 'selected' : ''}>최신순</option> --%>
+<%--             <option value="lowPrice" ${param.orderBy == 'lowPrice' ? 'selected' : ''}>낮은 가격순</option> --%>
+<%--             <option value="highPrice" ${param.orderBy == 'highPrice' ? 'selected' : ''}>높은 가격순</option> --%>
+<!--         </select> -->
+<!--         <input type="submit" value="정렬"> -->
+<!--     </form> -->
+    
+    <div class="wishlist-items">
+        <c:forEach var="wishList" items="${wishList}">
+            <div class="wishlist-item">
+                <div class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></div>
+                <a href="review?product_code=${wishList.product_code }"><img alt="Product Image" src="../resources/images/product/${wishList.img1}"> </a>
+                <p>${wishList.product_name}</p>
+                <p><fmt:formatNumber value="${wishList.price}" pattern="#,##0"/>원</p>
+            </div>
+        </c:forEach>
+    </div>
 </div>
 
-</body>
-</html>
+
+
+
+<%@include file="../include/footer.jsp" %>

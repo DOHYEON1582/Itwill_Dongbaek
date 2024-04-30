@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.AuthVO;
 import com.itwillbs.domain.ProductVO;
+import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.persistence.UserDAO;
 
@@ -76,10 +77,29 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int deleteWish(int product_code) throws Exception {
+	public int deleteWish(int wish_code) throws Exception {
 		logger.debug(" deleteWish(String product_code) 실행 ");
-		return udao.deleteWish(product_code);
+		return udao.deleteWish(wish_code);
 	}
+
+	@Override
+	public List<ReviewVO> getReview(int product_code) throws Exception {
+		logger.debug(" getReview(int product_code) 호출");
+		return udao.getReview(product_code);
+	}
+
+//	@Override
+//	public List<ProductVO> getProduct(int product_code) throws Exception {
+//		logger.debug(" getProduct(int product_code) 호출 ");
+//		return udao.productList(product_code);
+//	}
+	@Override
+	public List<ProductVO> getProduct(int product_code, String orderBy) throws Exception {
+	    logger.debug(" getProduct(int product_code) 호출 ");
+	    return udao.productList(product_code, orderBy); // orderBy를 DAO로 전달
+	}
+
+	
 
 	
 
