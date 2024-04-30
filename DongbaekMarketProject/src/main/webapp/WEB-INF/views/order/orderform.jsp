@@ -7,11 +7,17 @@
 <%@ include file="../include/header.jsp"%>
 
 <style>
-	.oderFormTbl {
+	.productList th{
+		border: 1px solid black;
+	}
+	.productList td{
+		border: 1px solid black;
+	}
+	.orderFormTbl {
 		width: 1300px;
 	}
 	
-	.oderFormTbl td {
+	.orderFormTbl td {
 		border: 1px solid black;
 	}
 	
@@ -61,9 +67,9 @@
 			<td><input type="text" id="rcv_name" name="rcv_name"></td>
 		</tr>
 		<tr>
-			<th>전화번호</th>
+			<th>전화번호</th><!-- 제출 안되게 제이쿼리 수정 -->
 			<td>
-				<select id="phone1" name="phone1">
+				<select id="rcv_phone1" name="rcv_phone1">
 				    <option value="010">010</option>
 		            <option value="011">011</option>
 		            <option value="016">016</option>
@@ -72,23 +78,23 @@
 		            <option value="019">019</option>
 				</select>
 					-
-				<input type="text" id="phone2" name="phone2" size="4">-
-				<input type="text" id="phone3" name="phone3" size="4">
+				<input type="text" id="rcv_phone2" name="rcv_phone2" size="4">-
+				<input type="text" id="rcv_phone3" name="rcv_phone3" size="4">
 			</td>
 		</tr>
 		<tr>
-			<th>주소</th>
+			<th>주소</th><!-- 제출 안되게 제이쿼리 수정 -->
 			<td>
 				<input type="text" id="rcv_zip" name="rcv_zip" placeholder="우편번호"><br>
 				<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
 				<input type="text" id="rcv_addr1" name="rcv_addr1" placeholder="주소"><br>
-				<input type="text" id="rcv_addr2" name="rcv_addr2" placeholder="상세주소"><br>
-				<input type="text" id="rcv_addr3" name="rcv_addr3" placeholder="참고항목"><br>
+				<input type="text" id="addr2" name="addr2" placeholder="상세주소"><br>
+				<input type="text" id="addr3" name="addr3" placeholder="참고항목"><br>
 			</td>
 		</tr>
 		<tr>
 			<th>배송메세지</th>
-			<td><textarea rows="20" cols="3" id="rcv_msg" name="rcv_msg"></textarea></td>
+			<td><textarea rows="3" cols="20" id="rcv_msg" name="rcv_msg"></textarea></td>
 		</tr>
 		<tr>
 			<th>적립금</th>
@@ -106,13 +112,17 @@
 		</tr>
 	</table>
 	
-	<!-- 아이디, 묶음번호, 배달비, 총 결제금액, 적립 포인트, 예약여부..?  -->
+	<!-- 아이디, 묶음번호, 가게코드, 배달비, 총 결제금액, 적립 포인트, 예약여부..?  -->
 	<input type="hidden" id="user_id" name="user_id" value="${sessionScope.(아이디세션) }"> 
 	<input type="hidden" id="bundle_code" name="bundle_code" value="${sessionScope.cart }">
-	<input type="hidden" id="delivery" name="delivery">
-	<input type="hidden" id="amount" name="amount">
-	<input type="hidden" id="" name="" value="">
-	<input type="hidden" id="" name="" value="">
+	<input type="hidden" id="store_code" name="store_code" value="${cartList.store_code }">
+	<input type="hidden" id="delivery" name="deleivery_fee">
+	<input type="hidden" id="amount" name="total_price">
+	<input type="hidden" id="add_point" name="add_point" value="">
+	
+	<!-- 합치기 -->
+	<input type="hidden" id="rcv_phone" name="rcv_phone">
+	<input type="hidden" id="rcv_addr2" name="rcv_addr2"><!-- 상세주소, 참고항목 합치기 -->
 	
 	</form>
 
@@ -223,7 +233,7 @@
 		
 		// 배송비 처리
 		$('#deliveryFee').text(function(){
-			var totalPrice = $('#totalPrice').val();
+			var totalPrice = $('#totalPrice').text();
 			var deliveryFee = 0;
 			if(totalPrice > 50000){ // 5만원 이상시 배달비 무료
 				deliveryFee = 0;
@@ -235,13 +245,28 @@
 		
 		// 결제예정금액
 		$('#payAmount').text(function(){
-			var totalPrice = $('#totalPrice').val();
-			var deliveryFee = $('#deliveryFee').val();
-			var payAmount = totalPrice + deliveryFee;
-			
+			var totalPrice = $('#totalPrice').text();
+			var usePoint = $('usePoint').text();
+			var deliveryFee = $('#deliveryFee').text();
+			var payAmount = (totalPrice - usePoint) + deliveryFee;
+	
 			return payAmount;
 		});
-
+		
+		// input 값 넣기 (수정 필요)
+		$('#delivery').val(
+				$('#deliveryFee').text()
+		);
+		$('#amount').val(
+				$('#payAmount').text()
+		);
+		$('#rcv_phone').val(function(){
+			var phone1 = $('#rcv_phone1').val();
+			var phone2 = $('#rcv_phone2').val();
+			var phone3 = $('#rcv_phone3').val();
+			return phone1 + phone2 + phone3
+		});
+		
 		// 주문하기
 		$('#payBtn').click(function(){
 			var orderInfo = $('#orderFrm').serialize();
@@ -250,6 +275,7 @@
 				url: '/order/pay',
 				type: 'POST',
 				data: JSON.stringify(orderInfo),
+				contentType: 'application/json; charset=utf-8',
 				success: function(data){
 					requestPay(data)
 				},
@@ -265,8 +291,8 @@
 				IMP.request_pay({
 					pg : "inicis",
 					pay_method : 'card',
-					merchant_uid : 고객사주문번호,
-					name : 제품명,
+					merchant_uid : data.order_code,
+					name : 하;; 상품 정보 리스트 가져오기 ㅅㅂ...;; ,
 					amount : 결제금액,
 					custom_data : 부가정보,
 					buyer_name : 주문자명,

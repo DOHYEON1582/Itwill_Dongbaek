@@ -3,6 +3,7 @@ package com.itwillbs.persistence;
 import java.util.List;
 
 import com.itwillbs.domain.CartVO;
+import com.itwillbs.domain.OrderInfoVO;
 
 public interface OrderDAO {
 	
@@ -14,5 +15,12 @@ public interface OrderDAO {
 	
 	// 적립금 가져오기
 	public String selectUserPoint(String user_id) throws Exception;
+	
+	// 주문 번호 최대값 가져오기
+	public int selectMaxOrderCode() throws Exception;
+	
+	// 주문 정보 입력
+	public void insertOrderInfo(OrderInfoVO vo) throws Exception;
+	
 	
 }
