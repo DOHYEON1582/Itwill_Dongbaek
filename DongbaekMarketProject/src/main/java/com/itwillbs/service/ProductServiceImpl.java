@@ -35,6 +35,20 @@ public class ProductServiceImpl implements ProductService {
 		
 	}
 
+
+	@Override
+	public void setFile(String originalFilename, String savedFilename, int product_code, String filePath) throws Exception {
+		logger.debug(" setFile(String originalFilename, String savedFilename, int product_code, String filePath) 호출 ");
+		pdao.setFile(originalFilename, savedFilename, product_code, filePath);
+	}
+
+
+	@Override
+	public int getProductCode() throws Exception {
+		logger.debug(" getProductCode() 호출 " );
+		return pdao.getProductCode();
+	}
+
 	
 	
 }

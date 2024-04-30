@@ -30,10 +30,20 @@
 	</select>
 	
 	<!-- 상품 등록 -->
-	<insert id="productRegist" parameterType="ProductVO">
-		INSERT INTO product (store_code, category, product_name, unit, price, img1, img2, img3, product_explain, seller_id, max_account, country)
-        VALUES (#{store_code}, #{category}, #{product_name}, #{unit}, #{price}, #{img1}, #{img2}, #{img3}, #{product_explain}, #{seller_id}, #{max_account}, #{country})
+	<insert id="productRegist" parameterType="com.itwillbs.domain.ProductVO">
+		INSERT INTO product (category, product_name, unit, price, img1, img2, img3, product_explain, max_account, country, store_code)
+        VALUES (#{category}, #{product_name}, #{unit}, #{price}, #{img1}, #{img2}, #{img3}, #{product_explain}, #{max_account}, #{country}, #{store_code})
 	</insert>
 
+	<!-- 이미지파일 저장 -->
+	<insert id="setFile" parameterType="map">
+   		INSERT INTO product (img1, img2, img3)
+    	VALUES (#{originalFilename}, #{savedFilename}, #{product_code})
+	</insert>
 
+	<!-- 이미지와 같이 들어온 상품코드 -->
+	<select id="getProductCode" resultType="int">
+    	SELECT MAX(product_code) FROM product
+	</select>
+	
 </mapper>

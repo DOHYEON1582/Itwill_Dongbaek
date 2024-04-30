@@ -26,6 +26,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Hahmlet&display=swap" rel="stylesheet">
 
+<script src="js/jquery-3.7.1.min.js"></script>
 </head>
 <style>
 /* 노멀라이즈 시작 */
@@ -382,72 +383,101 @@ body {
 
 
 
-	<div id="productregist" style="text-align: center; font-size: 24px; margin-bottom: 20px;">상품 등록</div>
-	<div style="background-color: white; padding: 20px; max-width: 400px; margin: 0 auto; border: 1px solid #ccc;">
-		<form action="/seller/productregist" method="post" enctype="multipart/form-data" style="max-width: 400px; margin: 0 auto;">
-			<div style="margin-bottom: 10px;">
-				<label for="category" style="display: block; margin-bottom: 5px;">카테고리:</label>
-				 <select id="category" name="category" style="width: 100%; padding: 8px;">
-					<option value="" selected disabled>카테고리를 선택하세요</option>
-					<option value="vegetable">채소</option>
-					<option value="meat">고기</option>
-					<option value="fish">생선</option>
-					<!-- 필요한 만큼 옵션을 추가할 수 있습니다 -->
-				</select>
-			</div>
-			<div style="margin-bottom: 10px;">
-				<label for="product_name" style="display: block; margin-bottom: 5px;">상품명:</label> 
-				<input type="text" id="product_name" name="product_name" style="width: 100%; padding: 8px;">
-			</div>
-			<div style="margin-bottom: 10px;">
-				<label for="unit" style="display: block; margin-bottom: 5px;">단위:</label> 
-				<input type="text" id="unit" name="unit" style="width: 100%; padding: 8px;">
-			</div>
-			<div style="margin-bottom: 10px;">
-				<label for="price" style="display: block; margin-bottom: 5px;">판매가:</label> 
-				<input type="text" id="price" name="price" style="width: 100%; padding: 8px;">
-			</div>
-			<div style="margin-bottom: 10px;">
-				<label for="image1" style="display: block; margin-bottom: 5px;">이미지1:</label>
-			    <input type="file" id="image1" name="imageFiles" style="width: 100%; padding: 8px;">
-			</div>
-			<div style="margin-bottom: 10px;">
-				<label for="image2" style="display: block; margin-bottom: 5px;">이미지2:</label> 
-				<input type="file" id="image2" name="imageFiles" style="width: 100%; padding: 8px;">
-			</div>
-			<div style="margin-bottom: 10px;">
-				<label for="image3" style="display: block; margin-bottom: 5px;">이미지3:</label> 
-				<input type="file" id="image3" name="imageFiles" style="width: 100%; padding: 8px;">
-			</div>
-			<div style="margin-bottom: 10px;">
-				<label for="product_explain" style="display: block; margin-bottom: 5px;">상세 설명:</label>
-				<textarea id="product_explain" name="product_explain" rows="4" style="width: 100%; padding: 8px;"></textarea>
-			</div>
-			<div style="margin-bottom: 10px;">
-				<label for="country" style="display: block; margin-bottom: 5px;">원산지</label> 
-				<input type="text" id="country" name="country" style="width: 100%; padding: 8px;">
-			</div>
-			<div style="margin-bottom: 10px;">
-				<label for="seller_id" style="display: block; margin-bottom: 5px;">판매자</label> 
-				<input type="text" id="seller_id" name="seller_id" style="width: 100%; padding: 8px;">
-			</div>
-			<div style="margin-bottom: 10px;">
-				<label for="max_account" style="display: block; margin-bottom: 5px;">최대 구매 수량</label> 
-				<input type="text" id="max_account" name="max_account" style="width: 100%; padding: 8px;">
-			</div>
-			<div style="margin-bottom: 10px;">
-				<label for="store_code" style="display: block; margin-bottom: 5px;">사업자등록번호</label> 
-				<input type="text" id="store_code" name="store_code" style="width: 100%; padding: 8px;">
-			</div>
+	<div id="productregistform" style="text-align: center; font-size: 24px; margin-bottom: 20px;">상품 등록</div>
+    <div style="background-color: white; padding: 20px; max-width: 400px; margin: 0 auto; border: 1px solid #ccc;">
+    <form id="productregistSubmit" action="/seller/productregistSubmit" method="post" enctype="multipart/form-data" style="max-width: 400px; margin: 0 auto;">
+        <div style="margin-bottom: 10px;">
+            <label for="category" style="display: block; margin-bottom: 5px;">카테고리:</label>
+            <select id="category" name="category" style="width: 100%; padding: 8px;">
+                <option value="" selected disabled>카테고리를 선택하세요</option>
+                <option value="vegetable">채소</option>
+                <option value="meat">고기</option>
+                <option value="fish">생선</option>
+                <!-- 필요한 만큼 옵션을 추가할 수 있습니다 -->
+            </select>
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label for="product_name" style="display: block; margin-bottom: 5px;">상품명:</label>
+            <input type="text" id="product_name" name="product_name" style="width: 100%; padding: 8px;">
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label for="unit" style="display: block; margin-bottom: 5px;">단위:</label>
+            <input type="text" id="unit" name="unit" style="width: 100%; padding: 8px;">
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label for="price" style="display: block; margin-bottom: 5px;">판매가:</label>
+            <input type="text" id="price" name="price" style="width: 100%; padding: 8px;">
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label for="img1" style="display: block; margin-bottom: 5px;">이미지1:</label>
+            <input type="file" id="img1" name="img1" style="width: 100%; padding: 8px;">
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label for="img2" style="display: block; margin-bottom: 5px;">이미지2:</label>
+            <input type="file" id="img2" name="img2" style="width: 100%; padding: 8px;">
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label for="img3" style="display: block; margin-bottom: 5px;">이미지3:</label>
+            <input type="file" id="img3" name="img3" style="width: 100%; padding: 8px;">
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label for="product_explain" style="display: block; margin-bottom: 5px;">상품 설명:</label>
+            <textarea id="product_explain" name="product_explain" rows="4" style="width: 100%; padding: 8px;"></textarea>
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label for="max_account" style="display: block; margin-bottom: 5px;">최대 구매 수량</label>
+            <input type="number" id="max_account" name="max_account" style="width: 100%; padding: 8px;">
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label for="country" style="display: block; margin-bottom: 5px;">원산지</label>
+            <input type="text" id="country" name="country" style="width: 100%; padding: 8px;">
+        </div>
+        <div style="margin-bottom: 10px;">
+            <label for="store_code" style="display: block; margin-bottom: 5px;">가게 번호</label>
+            <input type="number" id="store_code" name="store_code" style="width: 100%; padding: 8px;">
+        </div>
 
-			<input type="submit" value="등록" style="width: 100%; padding: 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">
-		</form>
-	</div>
-<script type="text/javascript">
-document.getElementById("category").addEventListener("change", function() {
-    var selectedCategory = this.value;
-    console.log("선택된 카테고리:", selectedCategory);
-    // 선택된 카테고리 값을 서버로 전송하거나 다른 작업을 수행할 수 있습니다.
+        <input type="submit" value="등록" id="submitButn" style="width: 100%; padding: 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">
+    </form>
+</div>
+<script>
+$(document).ready(function(){
+    $("#productregistSubmit").on("submit", function(event){
+        event.preventDefault(); // 기본 이벤트 제거
+        
+        var formData = new FormData(); // 폼 데이터 생성
+
+        // 폼 데이터에 파일 추가
+        formData.append("img1", $("#img1")[0].files[0]);
+        formData.append("img2", $("#img2")[0].files[0]);
+        formData.append("img3", $("#img3")[0].files[0]);
+
+        // 나머지 폼 데이터 추가
+        formData.append("category", $("#category").val());
+        formData.append("product_name", $("#product_name").val());
+        formData.append("unit", $("#unit").val());
+        formData.append("price", $("#price").val());
+        formData.append("product_explain", $("#product_explain").val());
+        formData.append("max_account", $("#max_account").val());
+        formData.append("country", $("#country").val());
+        formData.append("store_code", $("#store_code").val());
+
+        // Ajax 통신
+        $.ajax({
+            url: '/seller/productregistSubmit',
+            processData: false,
+            contentType: false,
+            data: formData,
+            type: "POST",
+            success: function(data){
+                if(data === "f"){
+                    alert("파일 업로드 실패");
+                } else {
+                    window.location.href = "/seller/productregist"; // 파일 업로드 성공시 페이지 리디렉션
+                }
+            }
+        });
+    });
 });
 </script>
 
@@ -520,7 +550,7 @@ document.getElementById("category").addEventListener("change", function() {
 	</footer>
 
 
-	<script src="js/jquery-3.7.1.min.js"></script>
+
 	<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 	<script src="js/plugins.js"></script>
