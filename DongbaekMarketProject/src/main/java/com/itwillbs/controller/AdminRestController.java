@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,12 +16,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
 
 import com.itwillbs.domain.AdminCartVO;
 import com.itwillbs.domain.AdminOrderVO;
+import com.itwillbs.domain.AdminProductVO;
 import com.itwillbs.domain.AdminReviewVO;
 import com.itwillbs.domain.AdminStoreVO;
+import com.itwillbs.domain.AdminSubPayVO;
+import com.itwillbs.domain.AdminSubProductVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.AdminService;
 
@@ -125,6 +132,28 @@ public class AdminRestController {
 
 		return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
 	}
+	
+	@PostMapping(value = "/sub")
+	public ResponseEntity<AdminSubPayVO> getSubInfo(UserVO vo)throws Exception{
+		logger.debug(" getSubInfo(UserVO vo) 호출 ");
+		
+		return new ResponseEntity<AdminSubPayVO>(aService.getUserSubInfo(vo), HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/sub/{user_id}")
+	public ResponseEntity<Map<String, Object>> getSubProduct(@PathVariable("user_id")String user_id)throws Exception{
+		logger.debug(" getSubProduct(@PathVariable(\"user_id\")String user_id) 호출 ");
+		Map<String, Object> map = new HashMap<String, Object>();
+		UserVO vo = new UserVO();
+		vo.setUser_id(user_id);
+		
+		map.put("subInfo", aService.getUserSubInfo(vo));
+		map.put("subList", aService.getUserSubPro(user_id));
+		
+		return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
+	}
+	
+
 	
 	
 }//endController

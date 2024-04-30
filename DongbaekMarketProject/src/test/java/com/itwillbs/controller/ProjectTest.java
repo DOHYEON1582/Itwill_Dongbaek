@@ -1,6 +1,10 @@
 package com.itwillbs.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -51,13 +55,32 @@ public class ProjectTest {
 		logger.info("@@@@@@@@@@@"+dao.getUserCart(order_code));
 	}
 	
-	@Test
+	//@Test
 	public void 주문리스트테스트()throws Exception{
 		dao.getOrderList("store_name", "아이티윌", "", "");
 		
 		logger.debug("!!!!!!!!"+dao.getOrderList("store_name", "아이티윌", "", ""));
 	}	
 	
+	@Test
+	public void 날짜가져오기()throws Exception{
+//		Date today = new Date();
+//		
+//		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//		String today1 = dateFormat.format(today);
+//		
+//		logger.debug(" @@@@@@@@@@@@@@today : "+today1);
+		
+		Calendar day = new GregorianCalendar();
+		SimpleDateFormat formatDay = new SimpleDateFormat("yyyy-MM-dd");
+		String today = formatDay.format(day.getTime());
+		logger.debug("@@@@@@@@"+ today);
+		
+		day.add(Calendar.DATE, -1);
+		String yesterday = formatDay.format(day.getTime());
+		logger.debug("!!!!!!!!!"+yesterday);
+		
+	}
 	
 	
 }//endTest

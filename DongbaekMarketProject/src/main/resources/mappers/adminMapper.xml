@@ -58,6 +58,14 @@
 	<collection property="AdminSellerVO" resultMap="AdminSellerVO"/>
 </resultMap>
 
+<resultMap type="com.itwillbs.domain.AdminSubProductVO" id="subMap">
+	<result property="product_code" column="product_code"/>
+	<result property="user_id" column="user_id"/>
+	<result property="count" column="count"/>
+	
+	<collection property="AdminProductVO" resultMap="AdminProductVO"/>
+</resultMap>
+
 <resultMap type="com.itwillbs.domain.AdminProductVO" id="AdminProductVO">
 	<result property="product_code" column="product_code"/>
 	<result property="product_name" column="product_name"/>
@@ -245,5 +253,33 @@
 	WHERE <![CDATA[ #{yesterday} <= ordr_date ]]> AND <![CDATA[ ordr_date < #{calDate} ]]> AND cal_check = '정산예정'
 </update>
 
+<!-- 회원 구독 정보 -->
+<select id="subInfo" resultType="com.itwillbs.domain.AdminSubPayVO">
+	SELECT * 
+	FROM subscribe_pay 
+	<choose>
+		<when test="user_id != null and user_id != ''">
+			WHERE user_id = #{user_id}
+		</when>
+		<when test="user_name != null and user_name != ''">
+			WHERE user_id = (SELECT user_id FROM user WHERE user_name = #{user_name})
+		</when>
+		<when test="phone != null and phone != ''">
+			WHERE user_id = (SELECT user_id FROM user WHERE phone = #{phone})
+		</when>
+	</choose>
+
+</select>
+
+
+<!-- 회원 구독 물품 리스트 -->
+<select id="subList" resultMap="subMap">
+	SELECT * 
+	FROM product p 
+	JOIN subscrbe_product s
+	ON p.product_code = s.product_code
+	WHERE user_id = #{user_id}
+
+</select>
 	
 </mapper>

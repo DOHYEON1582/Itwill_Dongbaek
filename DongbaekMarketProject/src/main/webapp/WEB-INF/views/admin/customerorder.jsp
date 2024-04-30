@@ -40,13 +40,20 @@
 						alert("주문정보가 없습니다!");
 					}else{
 						$(data).each(function(idx,item){
-						$('#list-tbody').append("<tr><td>"+item.order_code
-										 +"</td><td>"+item.user_id
-										 +"</td><td>"+item.rcv_name
-										 +"</td><td>"+item.rcv_addr1
-										 +"</td><td>"+item.total_price+"원"
-										 +"</td><td>"+item.ordr_date+
-										 +"</td></tr>");
+							var currentDate = new Date(item.ordr_date);
+
+							var year = currentDate.getFullYear();
+							var month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
+							var day = ('0' + currentDate.getDate()).slice(-2);
+							var formatDate = year + '-' + month + '-' + day;
+							
+							$('#list-tbody').append("<tr><td>"+item.order_code
+											 +"</td><td>"+item.user_id
+											 +"</td><td>"+item.rcv_name
+											 +"</td><td>"+item.rcv_addr1
+											 +"</td><td>"+item.total_price+"원"
+											 +"</td><td>"+formatDate+
+											 +"</td></tr>");
 						});
 					}
 					

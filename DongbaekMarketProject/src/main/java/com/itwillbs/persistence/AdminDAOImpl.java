@@ -15,6 +15,8 @@ import com.itwillbs.domain.AdminCartVO;
 import com.itwillbs.domain.AdminOrderVO;
 import com.itwillbs.domain.AdminReviewVO;
 import com.itwillbs.domain.AdminStoreVO;
+import com.itwillbs.domain.AdminSubPayVO;
+import com.itwillbs.domain.AdminSubProductVO;
 import com.itwillbs.domain.SchedulerVO;
 import com.itwillbs.domain.UserVO;
 
@@ -90,11 +92,21 @@ public class AdminDAOImpl implements AdminDAO {
 	}
 
 	@Override
-	public void calCheck(SchedulerVO svo) throws Exception {
-		logger.debug(" calCheck(SchedulerVO svo) 실행");
-		sql.update(NAMESPACE+".updateCal", svo);
+	public AdminSubPayVO getUserSubInfo(UserVO vo) throws Exception {
+		logger.debug(" getUserSubInfo(UserVO vo) 실행 ");
+		
+		return sql.selectOne(NAMESPACE+".subInfo", vo);
+	}
+
+	@Override
+	public List<AdminSubProductVO> getUserSubPro(String user_id) throws Exception {
+		logger.debug(" getUserSubPro(String user_id) 실행 ");
+		
+		return sql.selectList(NAMESPACE+".subList", user_id);
 	}
 	
+	
+
 	
 	
 

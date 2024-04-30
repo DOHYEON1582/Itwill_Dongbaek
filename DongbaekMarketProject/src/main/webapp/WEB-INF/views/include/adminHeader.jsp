@@ -118,7 +118,6 @@
 					</a>
 					<ul class="dropdown">
                         <li style="line-height:300%;"><a href="/admin/sub" class="dropdown-item">구독정보조회</a></li>
-                        <li style="line-height:300%;"><a href="/admin/suborder" class="dropdown-item">구독주문내역</a></li>
                         <li style="line-height:300%;"><a href="/admin/sublist" class="dropdown-item">구독물품조회</a></li>
                     </ul>
 				</li>

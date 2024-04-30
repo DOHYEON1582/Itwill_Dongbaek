@@ -6,6 +6,8 @@ import com.itwillbs.domain.AdminCartVO;
 import com.itwillbs.domain.AdminOrderVO;
 import com.itwillbs.domain.AdminReviewVO;
 import com.itwillbs.domain.AdminStoreVO;
+import com.itwillbs.domain.AdminSubPayVO;
+import com.itwillbs.domain.AdminSubProductVO;
 import com.itwillbs.domain.SchedulerVO;
 import com.itwillbs.domain.UserVO;
 
@@ -35,6 +37,11 @@ public interface AdminService {
 	// 업체 주문 정보(list)가져오기
 	public List<AdminOrderVO> getOrderList(String con, String search,String startDate,String endDate)throws Exception;
 	
-	// 시간 자동 정산 스케줄러 
-	public void calCheck(SchedulerVO svo)throws Exception;
+	// 회원 구독 정보 가져오기
+	public AdminSubPayVO getUserSubInfo(UserVO vo)throws Exception;
+	
+	// 회원 구독 제품 리스트 가져오기
+	public List<AdminSubProductVO> getUserSubPro(String user_id)throws Exception;
+	
+	
 }//endService

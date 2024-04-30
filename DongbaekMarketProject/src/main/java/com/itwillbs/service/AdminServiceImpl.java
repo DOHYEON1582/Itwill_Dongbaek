@@ -1,5 +1,9 @@
 package com.itwillbs.service;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +17,8 @@ import com.itwillbs.domain.AdminCartVO;
 import com.itwillbs.domain.AdminOrderVO;
 import com.itwillbs.domain.AdminReviewVO;
 import com.itwillbs.domain.AdminStoreVO;
+import com.itwillbs.domain.AdminSubPayVO;
+import com.itwillbs.domain.AdminSubProductVO;
 import com.itwillbs.domain.SchedulerVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.persistence.AdminDAO;
@@ -77,15 +83,24 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public List<AdminOrderVO> getOrderList(String con, String search,String startDate,String endDate) throws Exception {
 		logger.debug(" getOrderList(String con, String search)  호출 ");
-		
+	
 		return adao.getOrderList(con, search,startDate,endDate);
 	}
 
 	@Override
-	public void calCheck(SchedulerVO svo) throws Exception {
-		logger.debug(" calCheck(SchedulerVO svo) 호출 ");
-		adao.calCheck(svo);
+	public AdminSubPayVO getUserSubInfo(UserVO vo) throws Exception {
+		logger.debug(" getUserSubInfo(UserVO vo) 호출 ");
+		
+		return adao.getUserSubInfo(vo);
 	}
+
+	@Override
+	public List<AdminSubProductVO> getUserSubPro(String user_id) throws Exception {
+		logger.debug(" getUserSubPro(String user_id) 호출 ");
+		
+		return adao.getUserSubPro(user_id);
+	}
+
 	
 	
 	
