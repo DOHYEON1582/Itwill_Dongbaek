@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.CartVO;
+import com.itwillbs.domain.OrderInfoVO;
 
 @Repository
 public class OrderDAOImpl implements OrderDAO{
@@ -40,6 +41,20 @@ public class OrderDAOImpl implements OrderDAO{
 	public String selectUserPoint(String user_id) throws Exception {
 		logger.debug(" === D : selectUserPoint(String user_id) 실행 === ");
 		return sqlSession.selectOne(NAMESPACE+".selectUserPoint");
+	}
+
+	// 주문 번호 최대값 가져오기
+	@Override
+	public int selectMaxOrderCode() throws Exception {
+		logger.debug(" === D : selectMaxOrderCode() 실행 === ");
+		return sqlSession.selectOne(NAMESPACE+".selectMaxOrderCode");
+	}
+
+	// 주문 정보 입력
+	@Override
+	public void insertOrderInfo(OrderInfoVO vo) throws Exception {
+		logger.debug(" === D : insertOrderInfo() 실행 === ");
+		sqlSession.insert(NAMESPACE+".insertOrderInfo",vo);
 	}
 
 	
