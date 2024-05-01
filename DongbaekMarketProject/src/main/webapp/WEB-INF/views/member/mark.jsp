@@ -69,10 +69,10 @@
 <script type="text/javascript">
     $(document).ready(function(){
     	$("#deleteAllButton").click(function(){
-            var confirmation = confirm("전체 찜 목록을 삭제하시겠습니까?");
+    		var confirmation = confirm("가게 전체를 즐겨찾기 목록에서 삭제하시겠습니까?");
             if (confirmation) {
                 $.ajax({
-                    url : "deleteWishAll",
+                    url : "deleteMarkAll",
                     type : "post",
                     success : function(data){
                     	console.log(" 삭제 완료 ");
@@ -88,13 +88,13 @@
         });
     	
         $(".btn-wishlist").click(function(){
-            var product_code = $(this).closest('.wishlist-item').find('a').data('product-code');
-            var confirmation = confirm("해당 상품을 찜 목록에서 삭제하시겠습니까?");
+            var store_code = $(this).closest('.wishlist-item').find('a').data('store-code');
+            var confirmation = confirm("해당 가게를 즐겨찾기 목록에서 삭제하시겠습니까?");
             if (confirmation) {
                 $.ajax({
-                    url : "deleteWish",
+                    url : "deleteMark",
                     type : "post",
-                    data: { product_code: product_code },
+                    data: { store_code: store_code },
                     success : function(data){
                     	console.log(" 삭제 완료 ");
                     },
@@ -107,39 +107,27 @@
                 });
             }
         });
+        
     });
 </script>
 
 
 <div class="container">
-    <h1>찜 목록</h1>
-     <!-- 정렬 옵션 드롭다운 메뉴 -->
-<!--     <form action="review" method="get"> -->
-<%--         <input type="hidden" name="product_code" value="${product_code}"> --%>
-<!--         <select name="orderBy"> -->
-<%--             <option value="latest" ${param.orderBy == 'latest' ? 'selected' : ''}>최신순</option> --%>
-<%--             <option value="lowPrice" ${param.orderBy == 'lowPrice' ? 'selected' : ''}>낮은 가격순</option> --%>
-<%--             <option value="highPrice" ${param.orderBy == 'highPrice' ? 'selected' : ''}>높은 가격순</option> --%>
-<!--         </select> -->
-<!--         <input type="submit" value="정렬"> -->
-<!--     </form> -->
+    <h1>즐겨찾기 (가게)</h1>
     <button id="deleteAllButton" class="btn btn-danger">전체 삭제</button>
     <div class="wishlist-items">
-        <c:forEach var="wishList" items="${wishList}">
+        <c:forEach var="markList" items="${markList}">
             <div class="wishlist-item">
                 <div class="btn-wishlist">
                     <svg width="24" height="24"><use xlink:href="#heart"></use></svg>
                 </div>
-                <a href="review?product_code=${wishList.product_code}" data-product-code="${wishList.product_code}">
-                    <img alt="Product Image" src="../resources/images/product/${wishList.img1}">
-                </a>
-                <p> 상품명 : ${wishList.product_name}</p>
-                <p> 가격 : <fmt:formatNumber value="${wishList.price}" pattern="#,##0"/>원</p>
-                <p> 가게명 : 
-                <c:forEach var="store" items="${wishList.storeVO}">
-                    ${store.store_name}<c:if test="${not loop.last}"></c:if>
-	                </c:forEach>
-	            </p>
+                
+                <c:forEach var="store" items="${markList.storeVO}">
+               		<a href="#" data-store-code="${store.store_code }">
+               			<img alt="mark Image" src="../resources/images/product/${store.img1}">
+           			</a>
+					가게명 : ${store.store_name}<c:if test="${not loop.last}"></c:if>
+                </c:forEach>
             </div>
         </c:forEach>
     </div>

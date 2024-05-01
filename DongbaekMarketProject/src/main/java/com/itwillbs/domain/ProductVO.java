@@ -1,5 +1,7 @@
 package com.itwillbs.domain;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -20,4 +22,5 @@ public class ProductVO {
 	private String sub_product;
 	private String unit;
 	
+	private List<StoreVO> storeVO;
 }

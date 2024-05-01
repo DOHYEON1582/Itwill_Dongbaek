@@ -16,10 +16,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.MarketVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.ReviewVO;
+import com.itwillbs.domain.StoreVO;
 import com.itwillbs.domain.UserVO;
+import com.itwillbs.domain.WishVO;
 import com.itwillbs.service.MainService;
 import com.itwillbs.service.UserService;
 
@@ -155,20 +158,55 @@ public class UserController {
 		logger.debug(" wishGET() 호출 ");
 		UserVO userVO = (UserVO) session.getAttribute("userVO");
 		String user_id = userVO.getUser_id();
-		logger.debug(" user_id : " + user_id);
 		List<ProductVO> wishList = uService.wishList(user_id);
-		logger.debug("wishList : " + wishList);
 		model.addAttribute("wishList", wishList);
 	}
 	
+	// 찜 상품 삭제 - 개별
 	@RequestMapping(value = "member/deleteWish", method = RequestMethod.POST)
-	public String deleteWish(int wish_code) throws Exception {
+	public void deleteWish(int product_code) throws Exception {
 		logger.debug(" deleteWish() 호출 ");
-		logger.debug("wish_code " + wish_code);
-		uService.deleteWish(wish_code);
-		
-		return "redirect:/member/wish";
+		logger.debug("product_code " + product_code);
+		uService.deleteWish(product_code);
 	}
+	// 찜 상품 삭제 - 전체
+	@RequestMapping(value = "member/deleteWishAll", method = RequestMethod.POST)
+	public void deleteWishAll(WishVO wvo) throws Exception {
+		logger.debug(" deleteWishAll(WishVO wvo) 호출 ");
+		
+		uService.deleteWishAll(wvo);
+		logger.debug(" 찜 전체 삭제 완료 ");
+	}
+	
+	// 즐겨찾기
+	@RequestMapping(value = "member/mark", method = RequestMethod.GET)
+	public void cartGET(HttpSession session, Model model) throws Exception {
+		logger.debug(" cartGET() 호출 ");
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+		String user_id = userVO.getUser_id();
+		List<MarkVO> markList = uService.getMark(user_id);
+		model.addAttribute("markList", markList);
+	}
+	
+	// 즐겨찾기 삭제 (개별)
+	@RequestMapping(value = "member/deleteMark", method = RequestMethod.POST)
+	public void deleteMark(int store_code) throws Exception {
+		logger.debug(" deleteMark(int store_code) 호출 ");
+		
+		uService.deleteMark(store_code);
+	}
+	// 즐겨찾기 삭제 (전체)
+	@RequestMapping(value = "member/deleteMarkAll", method = RequestMethod.POST)
+	public void deleteMarkAll(HttpSession session) throws Exception {
+		logger.debug(" deleteMarkAll(String user_id) 호출 ");
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+		String user_id = userVO.getUser_id();
+		uService.deleteMarkAll(user_id);
+	}
+	
+	
+	
+	
 	
 	
 //	@RequestMapping(value = "member/review", method = RequestMethod.GET)

@@ -15,5 +15,8 @@
 
 <a href="/member/delete">회원정보 삭제</a>
 
-<a href="cart">장바구니</a>
+<a href="/member/wish">찜 목록</a>
+
+<a href="/member/mark">즐겨찾기</a>
+
 <%@include file="../include/footer.jsp" %>

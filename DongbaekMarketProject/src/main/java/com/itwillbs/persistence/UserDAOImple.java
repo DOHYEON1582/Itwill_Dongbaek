@@ -16,8 +16,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.AuthVO;
+import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.ReviewVO;
+import com.itwillbs.domain.StoreVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.domain.WishVO;
 
@@ -108,9 +110,10 @@ public class UserDAOImple implements UserDAO {
 	}
 
 	@Override
-	public int deleteWish(int wish_code) throws Exception {
+	public int deleteWish(int product_code) throws Exception {
 		logger.debug(" deleteWish(String product_code) 호출 ");
-		return sql.delete(NAMESPACE + "deleteWish", wish_code);
+		logger.debug("product_code : " + product_code);
+		return sql.delete(NAMESPACE + ".deleteWish", product_code);
 	}
 
 	@Override
@@ -133,6 +136,40 @@ public class UserDAOImple implements UserDAO {
 	    return sql.selectList(NAMESPACE + ".getProduct", params);
 	}
 
+
+	// 가게 목록 전체 조회
+	@Override
+	public List<StoreVO> getStore(StoreVO svo) throws Exception {
+		logger.debug(" getStore(StoreVO svo) 호출 ");
+		return sql.selectList(NAMESPACE + ".getStore", svo);
+	}
+
+	@Override
+	public int deleteWishAll(WishVO wvo) throws Exception {
+		logger.debug(" deleteWishAll(WishVO wvo) 호출 ");
+		return sql.delete(NAMESPACE + ".deleteWishAll", wvo);
+	}
+
+	// 즐겨찾기 (가게) 조회
+	@Override
+	public List<MarkVO> getMark(String user_id) throws Exception {
+		logger.debug(" getMark(MarkVO mvo) 호출 ");
+		return sql.selectList(NAMESPACE + ".getMark", user_id);
+	}
+
+	@Override
+	public int deleteMark(int store_code) throws Exception {
+		logger.debug(" deleteMark(int store_code) 호출 ");
+		return sql.delete(NAMESPACE + ".deleteMark", store_code);
+	}
+
+	@Override
+	public int deleteMarkAll(String user_id) throws Exception {
+		logger.debug(" deleteMarkAll(String user_id) 호출 ");
+		return sql.delete(NAMESPACE + ".deleteMarkAll",user_id);
+	}
+
+	
 	
 	
 	

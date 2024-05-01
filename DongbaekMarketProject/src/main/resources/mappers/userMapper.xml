@@ -41,12 +41,38 @@
 		<result property="category" column="category"/>
 		<result property="sub_product" column="sub_product"/>
 		<result property="unit" column="unit"/>
+		<collection property="storeVO" resultMap="storeMap"/>
 	</resultMap>
 	
 	<resultMap type="com.itwillbs.domain.WishVO" id="wishMap">
 		<result property="wish_code" column="wish_code"/>
 		<result property="product_code" column="product_code"/>
 		<result property="user_id" column="user_id"/>
+	</resultMap>
+	
+	<resultMap type="com.itwillbs.domain.StoreVO" id="storeMap">
+		<result property="store_code" column="store_code"/>
+		<result property="market_code" column="market_code"/>
+		<result property="seller_id" column="seller_id"/>
+		<result property="store_name" column="store_name"/>
+		<result property="store_value" column="store_value"/>
+		<result property="store_explain" column="store_explain"/>
+		<result property="img1" column="img1"/>
+		<result property="img2" column="img2"/>
+		<result property="img3" column="img3"/>
+		<result property="phone" column="phone"/>
+		<result property="store_addr1" column="store_addr1"/>
+		<result property="store_addr2" column="store_addr2"/>
+		<result property="min_price" column="min_price"/>
+		<result property="time" column="time"/>
+		<result property="status" column="status"/>
+	</resultMap>
+	
+	<resultMap type="com.itwillbs.domain.MarkVO" id="markMap">
+		<result property="mark_code" column="mark_code"/>
+		<result property="store_code" column="store_code"/>
+		<result property="user_id" column="user_id"/>
+		<collection property="storeVO" resultMap="storeMap"/>
 	</resultMap>
 	
 	<!-- 회원가입 -->
@@ -100,17 +126,51 @@
 	
 	<!-- 마이페이지 - 찜 목록 불러오기 -->
 	<select id="getWish" resultMap="productMap">
-		select * 
+		select distinct p.*, s.store_name 
 		from wish w 
 		join product p 
 		on w.product_code = p.product_code 
+		join store s 
+		on s.store_code = p.store_code 
 		where user_id = #{user_id}
 	</select>
 	<!-- 찜 목록 삭제 - 개별 -->
 	<delete id="deleteWish">
 		delete from wish 
-		where wish_code = #{wish_code}
+		where product_code = #{product_code}
 	</delete>
+	<!-- 찜목록 삭제 - 전체 -->
+	<delete id="deleteWishAll">
+		delete from wish
+	</delete>
+	
+	<!-- 즐겨찾기(가게) 조회 -->
+	<select id="getMark" resultMap="markMap">
+		select * 
+		from mark m 
+		join store s 
+		on m.store_code = s.store_code 
+		where user_id = #{user_id}
+	</select>
+	<!-- 줄겨찾기 해제 (개별) -->
+	<delete id="deleteMark">
+		delete from mark 
+		where store_code = #{store_code}
+	</delete>
+	<!-- 즐겨찾기 해제 (전체)-->
+	<delete id="deleteMarkAll">
+		delete from mark 
+		where user_id = #{user_id}
+	</delete>
+	
+	
+	<!-- 가게 목록 전체 조회 -->
+	<select id="getStore" resultType="com.itwillbs.domain.StoreVO">
+		select * from store
+	</select>
+	
+	
+	
 	
 	
 	<!-- 리뷰 -->
@@ -125,7 +185,25 @@
 		where product_code = #{product_code} 
 	</select>
 	
-	
+	<!-- 정렬 -->
+	<select id="selectProduct" parameterType="map" resultType="com.itwillbs.domain.ProductVO">
+	    SELECT * FROM product
+	    WHERE user_id = #{user_id}
+	    <where>
+	        <if test="orderBy == 'latest'">
+	            ORDER BY regdate DESC
+	        </if>
+	        <if test="orderBy == 'popularity'">
+	            ORDER BY viewcnt DESC
+	        </if>
+	        <if test="orderBy == 'lowPrice'">
+	            ORDER BY price ASC
+	        </if>
+	        <if test="orderBy == 'highPrice'">
+	            ORDER BY price DESC
+	        </if>
+	    </where>
+	</select>
 	
 	
 	

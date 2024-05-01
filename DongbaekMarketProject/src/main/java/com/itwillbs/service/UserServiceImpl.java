@@ -11,9 +11,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.AuthVO;
+import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.ReviewVO;
+import com.itwillbs.domain.StoreVO;
 import com.itwillbs.domain.UserVO;
+import com.itwillbs.domain.WishVO;
 import com.itwillbs.persistence.UserDAO;
 
 @Service
@@ -77,27 +80,62 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int deleteWish(int wish_code) throws Exception {
-		logger.debug(" deleteWish(String product_code) 실행 ");
-		return udao.deleteWish(wish_code);
+	public int deleteWish(int product_code) throws Exception {
+		logger.debug(" deleteWish(int product_code) 실행 ");
+		logger.debug("product_code : " + product_code);
+		return udao.deleteWish(product_code);
 	}
 
 	@Override
 	public List<ReviewVO> getReview(int product_code) throws Exception {
-		logger.debug(" getReview(int product_code) 호출");
+		logger.debug(" getReview(int product_code) 실행");
 		return udao.getReview(product_code);
 	}
 
 //	@Override
 //	public List<ProductVO> getProduct(int product_code) throws Exception {
-//		logger.debug(" getProduct(int product_code) 호출 ");
+//		logger.debug(" getProduct(int product_code) 실행 ");
 //		return udao.productList(product_code);
 //	}
 	@Override
 	public List<ProductVO> getProduct(int product_code, String orderBy) throws Exception {
-	    logger.debug(" getProduct(int product_code) 호출 ");
+	    logger.debug(" getProduct(int product_code) 실행 ");
 	    return udao.productList(product_code, orderBy); // orderBy를 DAO로 전달
 	}
+
+	// 가게 목록 전체 조회
+	@Override
+	public List<StoreVO> getStore(StoreVO svo) throws Exception {
+		logger.debug(" getStore(StoreVO svo) 실행 ");
+		return udao.getStore(svo);
+	}
+
+	@Override
+	public int deleteWishAll(WishVO wvo) throws Exception {
+		logger.debug(" deleteWishAll(WishVO wvo) 실행 ");
+		return udao.deleteWishAll(wvo);
+	}
+
+	// 즐겨찾기(가게) 조회
+	@Override
+	public List<MarkVO> getMark(String user_id) throws Exception {
+		logger.debug(" getMark(MarkVO mvo) 실행 ");
+		return udao.getMark(user_id);
+	}
+
+	@Override
+	public int deleteMark(int store_code) throws Exception {
+		logger.debug(" deleteMark(int store_code) 실행 ");
+		return udao.deleteMark(store_code);
+	}
+
+	@Override
+	public int deleteMarkAll(String user_id) throws Exception {
+		logger.debug(" deleteMarkAll(String user_id) 실행 ");
+		return udao.deleteMarkAll(user_id);
+	}
+	
+	
 
 	
 
