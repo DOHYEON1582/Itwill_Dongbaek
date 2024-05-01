@@ -384,7 +384,7 @@ body {
   </ul>
 </aside>
 
-<!-- 상품 목록 표시 -->
+	<!-- 상품 목록 표시 -->
     <c:if test="${not empty productList}">
         <table border="1">
             <thead>
