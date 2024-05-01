@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
 import com.itwillbs.domain.AdminCartVO;
+import com.itwillbs.domain.AdminNoticeVO;
 import com.itwillbs.domain.AdminOrderVO;
 import com.itwillbs.domain.AdminProductVO;
 import com.itwillbs.domain.AdminReviewVO;
@@ -153,7 +154,33 @@ public class AdminRestController {
 		return new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
 	}
 	
+	@PostMapping(value = "/sublistget")
+	public ResponseEntity<List<AdminProductVO>> subProductList(@RequestBody AdminProductVO vo)throws Exception{
+		logger.debug(" subProductList() 호출 ");
+		
+		return new ResponseEntity<List<AdminProductVO>>(aService.getSubProductList(vo), HttpStatus.OK);
+	}
 
+	@GetMapping(value = "/sublist/{product_code}")
+	public ResponseEntity<AdminProductVO> subProductInfo(@PathVariable("product_code")int product_code )throws Exception{
+		logger.debug(" subProductInfo() 호출 ");
+		
+		return new ResponseEntity<AdminProductVO>(aService.getSubProductInfo(product_code), HttpStatus.OK);
+	}
 	
+	@PostMapping(value = "/notice")
+	public ResponseEntity<List<AdminNoticeVO>> searchNotice(@RequestBody AdminNoticeVO vo)throws Exception{
+		logger.debug(" searchNotice() 호출 ");
+		
+		return new ResponseEntity<List<AdminNoticeVO>>(aService.searchNotice(vo), HttpStatus.OK);
+		
+	}
+	
+	@GetMapping(value = "/notice/{q_code}")
+	public ResponseEntity<AdminNoticeVO> noticeInfo(@PathVariable("q_code")int q_code)throws Exception{
+		logger.debug(" noticeInfo(@PathVariable(\"q_code\")int q_code) 호출 ");
+		
+		return new ResponseEntity<AdminNoticeVO>(aService.noticeInfo(q_code), HttpStatus.OK);
+	}
 	
 }//endController

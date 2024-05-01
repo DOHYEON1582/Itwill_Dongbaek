@@ -17,6 +17,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.itwillbs.domain.AdminCartVO;
+import com.itwillbs.domain.AdminProductVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.persistence.AdminDAO;
 
@@ -62,7 +63,7 @@ public class ProjectTest {
 		logger.debug("!!!!!!!!"+dao.getOrderList("store_name", "아이티윌", "", ""));
 	}	
 	
-	@Test
+	//@Test
 	public void 날짜가져오기()throws Exception{
 //		Date today = new Date();
 //		
@@ -82,5 +83,12 @@ public class ProjectTest {
 		
 	}
 	
+	@Test
+	public void 구독물품리스트테스트() throws Exception{
+		AdminProductVO vo = new AdminProductVO();
+		
+		logger.debug("결과!! : "+dao.getSubProductList(vo));
+		
+	}
 	
 }//endTest

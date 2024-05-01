@@ -25,26 +25,28 @@
 			}
 			
 			$.ajax({
-				url : "/admin/sub",
+				url : "/admin/customer",
 				type : "POST",
 				data : JSON.stringify(user),
 				contentType : "application/json; charset=UTF-8",
 				success : function(data){
+					console.log(data);
 					if(data == ''){
 						alert("회원정보가 없습니다!");
 					}else{ 
-						var currentDate = new Date(data.pay_date);
+						var currentDate = new Date(data.regdate);
+
 						var year = currentDate.getFullYear();
 						var month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
 						var day = ('0' + currentDate.getDate()).slice(-2);
 						var formatDate = year + '-' + month + '-' + day;
 						
 						$('#list-tbody').append("<tr><td>"+data.user_id
-										 +"</td><td>"+data.card_num
-										 +"</td><td>"+data.pay_price
+										 +"</td><td>"+data.user_name
+										 +"</td><td>"+data.phone
+										 +"</td><td>"+data.addr1
 										 +"</td><td>"+formatDate
-										 +"</td><td>"+data.pick_date
-										 +"</td></tr>");			
+										 +"</td></tr>");					
 					}
 				}
 			});
@@ -65,96 +67,62 @@
 			$('#chocolat-content-0').attr('class','chocolat-wrapper chocolat-visible');
 			$('#second').attr('class','chocolat-overlay chocolat-visible');
 			
-			var user_id = $(this).find('td:eq(0)').text();
+			var value = $(this).find('td:eq(0)').text();
+			
+				var user = {
+						"user_id" : value
+				};
+			
+			
 			
 			$.ajax({
-				url : "/admin/sub/"+user_id,
-				type : "GET",
+				url : "/admin/customer",
+				type : "POST",
+				data : JSON.stringify(user),
+				contentType : "application/json; charset=UTF-8",
 				success : function(data){
-					var subInfo = data.subInfo;
-					var subList = data.subList;
-					//console.log(subList);
-					
-					var currentDate = new Date(subInfo.pay_date);
-					var year = currentDate.getFullYear();
-					var month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
-					var day = ('0' + currentDate.getDate()).slice(-2);
-					var formatDate = year + '-' + month + '-' + day;
-					
-					$('#modal-table1').append(`<tr>
-						<td style="background-color: rgb(245,247,250);"><h6>아이디</h6></td>
-						<td>`+subInfo.user_id+ `</td>
-						<td style="background-color: rgb(245,247,250);"><h6>카드번호</h6></td>
-						<td>`+subInfo.card_num+`</td>
-						<td style="background-color: rgb(245,247,250);"><h6>결제금액</h6></td>
-						<td>`+subInfo.pay_price+`</td>
-					</tr>
-					<tr>
-						<td style="background-color: rgb(245,247,250);"><h6>결제일</h6></td>
-						<td colspan="5">`+formatDate+`</td>
-					</tr>
-					<tr>
-						<td style="background-color: rgb(245,247,250);"><h6>배송일</h6></td>
-						<td colspan="5">`+subInfo.pick_date+`</td>
-					</tr>`);
-					
-					$('#modal-table2 thead').append(
-							`
-							<tr>
-								<th colspan="7" style="background-color: white; text-align: center;"><h6>주문상품</h6></th>
-							</tr>
-							<tr style="background-color: rgb(245,247,250); text-align: center;">
-								<td><h6>상품코드</h6></td>
-								<td><h6>상품명</h6></td>
-								<td><h6>이미지</h6></td>
-								<td><h6>원산지</h6></td>
-								<td><h6>판매자아이디</h6></td>
-								<td><h6>수량</h6></td>
-								<td><h6>단위</h6></td>
-							</tr>`
-							);
-					
-					$(subList).each(function(i,subList){
+						var currentDate = new Date(data.regdate);
+	
+						var year = currentDate.getFullYear();
+						var month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
+						var day = ('0' + currentDate.getDate()).slice(-2);
+						var formatDate = year + '-' + month + '-' + day;
 						
-								var ProductVO = subList.AdminProductVO;
-								console.log(ProductVO);
-								
-								$('#modal-table2 tbody').append(
-										`<tr>
-											<td>`+ProductVO[0].product_code+ `</td>
-											<td>`+ProductVO[0].product_name+ `</td>
-											<td>`+ProductVO[0].img1+ `</td>
-											<td>`+ProductVO[0].country+`</td>
-											<td>`+ProductVO[0].seller_id+`</td>
-											<td>`+subList.count+`</td>
-											<td>`+ProductVO[0].unit+`</td>
-										</tr>`
-									)
-					});
-				
+						$('.modal-table').append(`<tr>
+						<td style="background-color: rgb(245,247,250);"><h6>아이디</h6></td>
+						<td>`+data.user_id+ `</td>
+						<td style="background-color: rgb(245,247,250);"><h6>이름</h6></td>
+						<td>`+data.user_name+`</td>
+						<td style="background-color: rgb(245,247,250);"><h6>휴대폰</h6></td>
+						<td>`+data.phone+`</td>
+					</tr>
+					<tr>
+						<td style="background-color: rgb(245,247,250);"><h6>주소</h6></td>
+						<td colspan="5">`+data.addr1+data.addr2+`</td>
+					</tr>
+					<tr>
+						<td style="background-color: rgb(245,247,250);"><h6>이메일</h6></td>
+						<td colspan="5">`+data.sns_email+`</td>
+					</tr>
+					<tr>
+						<td style="background-color: rgb(245,247,250);"><h6>잔여포인트</h6></td>
+						<td>`+data.point+`</td>
+						<td style="background-color: rgb(245,247,250);"><h6>성인인증</h6></td>
+						<td>`+data.identity+`</td>
+						<td style="background-color: rgb(245,247,250);"><h6>가입일</h6></td>
+						<td>`+formatDate+`</td>
+					</tr>`);					
+					
 				}
 			});
 			
 		});// 모달 오픈
 		
 		$('.chocolat-close').click(function(){
-			$('#modal-table1 tbody').empty();
-			$('#modal-table1 tfoot').empty();
-			$('#modal-table2 thead').empty();
-			$('#modal-table2 tbody').empty();
+			$('.modal-table').empty();
 			$('#chocolat-content-0').attr('class','chocolat-wrapper');
 			$('#second').attr('class','chocolat-overlay');
 		});// 모달 클로즈
-		
-		$('#end-date').change(function(){
-			var startDate = $('#start-date').val();
-			var endDate = $('#end-date').val();
-			if(startDate > endDate){
-				alert('시작일이 종료일보다 작아야 합니다!');
-				$('#start-date').val("");
-				$('#end-date').val("");
-			}
-		});
 		
 		$('.col-1').on('mouseover',function() {
 	        $(this).css('cursor','pointer');
@@ -174,25 +142,10 @@
 		<div class="chocolat-center">
 			<div class="chocolat-image-canvas chocolat-visible" >
 				<div class="chocolat-image-wrapper" style="width: 868px; height: 868px; background-image:url(/resources/images/modal_back.jpg); text-align: center; color: black; padding: 20px;">
-					<h1>주문상세정보</h1>
+					<h1>고객문의</h1>
 					<div style="width: 100%; height: 100%; height: 750px; overflow: scroll; overflow-x:hidden; ">
-						<table id="modal-table1" class="modal-table">
-							<thead>
-								<tr>
-									<th colspan="7" style="background-color: white; text-align: center;">주문내역</th>
-								</tr>
-							</thead>
-							<tbody>
-							</tbody>
-							<tfoot>
-							</tfoot>
-						</table>
-						
-						<table id="modal-table2" class="modal-table" style="margin-top: 30px;">
-							<thead>
-							</thead>
-							<tbody>
-							</tbody>
+						<table class="modal-table">
+
 						</table>
 					</div>
 				</div>
@@ -206,13 +159,14 @@
 
 
 
+
 <div id="main">
 
 <div id="main-first">
 <!-- 내용 -->
 <div class="notice">
 	<div style="text-align: left; padding: 10px;">
-		<h2>구독정보조회</h2>
+		<h2>고객문의</h2>
 			<div class="col-sm-6 offset-sm-2 offset-md-0 col-lg-5 d-none d-lg-block">
             <div class="search-bar row bg-light p-2 my-2 rounded-4">
               <div class="col-md-4 d-none d-md-block">
@@ -239,10 +193,9 @@
     <thead>
         <tr>
             <th><h6>아이디</h6></th>
-            <th><h6>카드번호</h6></th>
-            <th><h6>결제금액</h6></th>
-            <th><h6>결제일</h6></th>
-            <th><h6>배송날짜</h6></th>
+            <th><h6>이름</h6></th>
+            <th><h6>제목</h6></th>
+            <th><h6>작성일</h6></th>
         </tr>
     </thead>
     <tbody id="list-tbody">

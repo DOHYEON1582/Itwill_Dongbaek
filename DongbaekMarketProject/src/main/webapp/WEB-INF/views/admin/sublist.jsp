@@ -10,22 +10,18 @@
 			var title = $('#selectBox option:selected').val();
 			var value = $('#searchText').val();
 			
- 			if(title == "user_id"){
+ 			if(title == "product_name"){
 				var user = {
-						"user_id" : value,
-						"startDate" : $('#start-date').val(),
-						"endDate" : $('#end-date').val()
+						"product_name" : value,
 				};
 			}else{
 				var user = {
-						"user_name" : value,
-						"startDate" : $('#start-date').val(),
-						"endDate" : $('#end-date').val()
+						"product_code" : value,
 				};
 			}
 			
  			$.ajax({
-				url : "/admin/customerreview",
+				url : "/admin/sublistget",
 				type : "POST",
 				data : JSON.stringify(user),
 				contentType : "application/json; charset=UTF-8",
@@ -33,13 +29,16 @@
 					if(data == ''){
 						alert("리뷰정보가 없습니다!");
 					}else{
+						console.log(data);
 						$(data).each(function(idx,item){
-						$('#list-tbody').append("<tr><td>"+item.review_code
-										 +"</td><td>"+item.product_code
-										 +"</td><td>"+item.user_id
-										 +"</td><td>"+item.title
-										 +"</td><td>"+item.regdate
-										 +"</td></tr>");
+							$('#list-tbody').append(
+											 `<tr><td>`+item.product_code
+											 +`</td><td>`+item.product_name
+											 +`</td><td><img src="/resources/upload1/`+item.img1+`" style="width: 40px; height: 40px;">`
+											 +`</td><td>`+item.price
+											 +`</td><td>`+item.unit
+											 +`</td></tr>`);
+							
 						});
 					}
 					
@@ -59,68 +58,50 @@
 		
 	    $('#list-tbody').on('click', 'tr', function() {
 			
-			var review_code = $(this).find('td:eq(0)').text();
+			var product_code = $(this).find('td:eq(0)').text();
 			
 			$.ajax({
-				url : "/admin/customerreview/"+review_code,
+				url : "/admin/sublist/"+product_code,
 				type : "GET",
 				success : function(data){
 					//console.log(data);
-					//console.log(data.cartList);
-					var review = data;
-					var product = data.AdminProductVO[0];
-					console.log(review);
-					console.log(product);
-					
+					var SVO = data.AdminStoreVO;
+					//console.log(SVO);
+					//console.log(PVO);
 					  	$('#modal-table1 thead').append(
 								`<tr>
-									<td style="background-color: rgb(245,247,250);"><h6>아이디</h6></td>
-									<td>`+review.user_id+ `</td>
-									<td style="background-color: rgb(245,247,250);"><h6>별점</h6></td>
-									<td>`+review.star+`</td>
-									<td style="background-color: rgb(245,247,250);"><h6>작성일</h6></td>
-									<td colspan="2">`+review.regdate+`</td>
+									<td rowspan="4"><img style="width: 300px; height: 300px;" src="/resources/upload1/`+data.img1+`"></td>
+									<td style="background-color: rgb(245,247,250);"><h6>상품이름</h6></td>
+									<td>`+data.product_name+`</td>
+									<td style="background-color: rgb(245,247,250);"><h6>카테고리</h6></td>
+									<td>`+data.category+`</td>
 								</tr>
 								<tr>
-									<td style="background-color: rgb(245,247,250);"><h6>제목</h6></td>
-									<td colspan="6">`+review.title+`</td>
+									<td style="background-color: rgb(245,247,250);"><h6>최대주문</h6></td>
+									<td>`+data.max_account+`</td>
+									<td style="background-color: rgb(245,247,250);"><h6>단위</h6></td>
+									<td>`+data.unit+`</td>
 								</tr>
 								<tr>
-									<td colspan="7" style="background-color: rgb(245,247,250);"><h6>내용</h6></td>
+									<td style="background-color: rgb(245,247,250);"><h6>판매업체</h6></td>
+									<td>`+SVO.store_name+`</td>
+									<td style="background-color: rgb(245,247,250);"><h6>판매자아이디</h6></td>
+									<td>`+data.seller_id+`</td>
 								</tr>
 								<tr>
-									<td colspan="7">`+review.content+`</td>
+									<td style="background-color: rgb(245,247,250);"><h6>가격</h6></td>
+									<td>`+data.price+`</td>
+									<td style="background-color: rgb(245,247,250);"><h6>판매자번호</h6></td>
+									<td>`+SVO.phone+`</td>
+								</tr>
+								<tr>
+									<td colspan="5" style="background-color: rgb(245,247,250);"><h6>상품설명</h6></td>
+								</tr>
+								<tr>
+									<td colspan="5">`+data.product_explain+`</td>
 								</tr>`
 							);
 					  	
-					  	$('#modal-table2 tbody').append(
-					  			`<tr>
-									<th colspan="7" style="background-color: white; text-align: center;"><h6>구매상품내역</h6></th>
-									<tr style="background-color: rgb(245,247,250); text-align: center;">
-									<td><h6>상품코드</h6></td>
-									<td><h6>상품명</h6></td>
-									<td><h6>이미지</h6></td>
-									<td><h6>원산지</h6></td>
-									<td><h6>판매자아이디</h6></td>
-									<td><h6>가격</h6></td>
-									<td><h6>뷰카운트</h6></td>
-								</tr>`		
-					  	);
-					  
-						$('#modal-table2 tfoot').append(
-								`<tr>
-									<td>`+product.product_code+ `</td>
-									<td>`+product.product_name+ `</td>
-									<td>`+product.img1+ `</td>
-									<td>`+product.country+`</td>											
-									<td>`+product.seller_id+`</td>
-									<td>`+product.price+`</td>
-									<td>`+product.viewcnt+`</td>
-								</tr>`
-							);
-						
-					
-					
 					$('#chocolat-content-0').attr('class','chocolat-wrapper chocolat-visible');
 					$('#second').attr('class','chocolat-overlay chocolat-visible');
 				}
@@ -265,9 +246,7 @@
 	</div>
 </div>
 
-
 <div id="main">
-
 <div id="main-first">
 <!-- 내용 -->
 <div class="notice">
@@ -293,6 +272,7 @@
           </div>
       </div>
 </div>
+
 
 <table class="listTable" style="width: 99%; border-collapse: collapse; margin-left: 19px; background-color: white;">
     <thead>

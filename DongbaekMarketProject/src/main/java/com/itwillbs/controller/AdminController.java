@@ -1,22 +1,38 @@
 package com.itwillbs.controller;
 
 
+import java.io.File;
+import java.util.UUID;
+
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.itwillbs.domain.AdminNoticeVO;
+import com.itwillbs.domain.AdminProductVO;
+import com.itwillbs.service.AdminService;
 
 /**
  * Handles requests for the application home page.
  */
 @Controller
 public class AdminController {
+	
+	@Inject
+	private AdminService aService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 	
@@ -103,24 +119,105 @@ public class AdminController {
 		logger.debug(" subList() 호출 "); 
 		
 		
+	}
+	
+	@RequestMapping(value = "/admin/qna", method = RequestMethod.GET)
+	public void Question()throws Exception {
+		logger.debug(" Question() 호출 "); 
+		
+		
 	}	
 	
+	//구독 물품 업로드
 	@RequestMapping(value = "/admin/sublist", method = RequestMethod.POST)
-	public void uploadProduct(@RequestParam("img1") MultipartFile file, HttpServletRequest request)throws Exception{
+	public ResponseEntity uploadProduct(@RequestParam("product_name") String product_name,
+							  @RequestParam("price") String price,
+							  @RequestParam("country") String country,
+							  @RequestParam("max_account") String max_account,
+							  @RequestParam("unit") String unit,
+							  @RequestParam("category") String category,
+							  @RequestParam("product_explain") String product_explain,
+							  @RequestParam("img1") MultipartFile file, HttpServletRequest request)throws Exception{
 		logger.debug(" uploadProduct(AdminProductVO vo) 호출 ");
 		
-		String realPath = request.getSession().getServletContext().getRealPath("/upload");
+		String uniqueFileName = "";
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/upload1");
 		logger.debug("realPath : "+realPath);
 		
-
-		//MultipartRequest multi = new MultipartRequest(
-				   //request,
-				   //realPath,
-				   //maxSize,
-				   //"UTF-8",
-				   //new DefaultFileRenamePolicy()
-				  // ); 
+		if(!file.isEmpty()) {
+	        String originalFileName = file.getOriginalFilename();
+	        String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+	        uniqueFileName = UUID.randomUUID().toString() + fileExtension; // 중복방지를 위해 파일이름 랜덤값 변경
+	        String filePath = realPath + File.separator + uniqueFileName;
+	        File dest = new File(filePath);
+	        file.transferTo(dest);
+		}
 		
+		AdminProductVO pvo = new AdminProductVO();
+		
+		pvo.setProduct_name(product_name);
+		pvo.setStore_code(1);
+		pvo.setPrice(Integer.parseInt(price));
+		pvo.setCountry(country);
+		pvo.setMax_account(Integer.parseInt(max_account));
+		pvo.setUnit(unit);
+		pvo.setCategory(category);
+		pvo.setProduct_explain(product_explain);
+		pvo.setSeller_id("admin");
+		pvo.setImg1(uniqueFileName);
+		pvo.setSub_product("구독");
+		
+		logger.debug(" 작성글 : "+pvo.toString());
+		int success = 0;
+		success = aService.insertSubProduct(pvo);
+		String result = "";
+		HttpHeaders respHeaders = new HttpHeaders();
+		respHeaders.add("Content-Type", "text/html; charset=utf-8");
+		
+		if(success == 1) {
+			result = "<script>";
+			result += " alert('상품 등록 완료!'); ";
+			result += " location.href='http://localhost:8088/admin/sublist';";
+			result += "</script>";
+		}else {
+			result = "<script>";
+			result += " alert('상품 등록 실패!'); ";
+			result += " location.href='http://localhost:8088/admin/sublist';";
+			result += "</script>";
+		}
+		
+		return new ResponseEntity(result,respHeaders,HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/admin/insertnotice")
+	public ResponseEntity insertNotice(String title, String content)throws Exception{
+		logger.debug(" insertNotice(String title, String content) 호출 ");
+		AdminNoticeVO vo = new AdminNoticeVO();
+		vo.setTitle(title);
+		vo.setContent(content);
+		vo.setUser_id("admin");
+		vo.setUser_name("admin");
+		vo.setQ_type(100);
+		
+		int success = 0;
+		success = aService.insertNotice(vo);
+		String result = "";
+		HttpHeaders respHeaders = new HttpHeaders();
+		respHeaders.add("Content-Type", "text/html; charset=utf-8");
+		
+		if(success == 1) {
+			result = "<script>";
+			result += " alert('공지사항 등록 완료!'); ";
+			result += " location.href='http://localhost:8088/admin/notice';";
+			result += "</script>";
+		}else {
+			result = "<script>";
+			result += " alert('공지사항 등록 실패!'); ";
+			result += " location.href='http://localhost:8088/admin/notice';";
+			result += "</script>";
+		}
+		
+		return new ResponseEntity(result,respHeaders,HttpStatus.OK);
 		
 	}
 	

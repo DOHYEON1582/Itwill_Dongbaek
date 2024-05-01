@@ -47,7 +47,7 @@
 										 +"</td><td>"+item.user_id
 										 +"</td><td>"+item.pay_method
 										 +"</td><td>"+item.total_price+"원"
-										 +"</td><td>"+item.cal_check+
+										 +"</td><td>"+item.cal_check
 										 +"</td></tr>");
 						});
 					}
@@ -74,13 +74,19 @@
 				url : "/admin/shoporder/"+order_code,
 				type : "GET",
 				success : function(data){
-					console.log(data);
+					//console.log(data);
 					
 					var orderList = data.orderList[0];
 					var cartList = data.cartList;
 					
-					console.log(orderList);
-					console.log(cartList);
+					//console.log(orderList);
+					//console.log(cartList);
+					
+					var currentDate = new Date(orderList.ordr_date);
+					var year = currentDate.getFullYear();
+					var month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
+					var day = ('0' + currentDate.getDate()).slice(-2);
+					var formatDate = year + '-' + month + '-' + day;
 					
  					$('#modal-table1 tbody').append(
 								`<tr>
@@ -89,7 +95,7 @@
 									<td style="background-color: rgb(245,247,250);"><h6>이름</h6></td>
 									<td>`+orderList.rcv_name+`</td>
 									<td style="background-color: rgb(245,247,250);"><h6>주문일</h6></td>
-									<td colspan="2">`+orderList.ordr_date+`</td>
+									<td colspan="2">`+formatDate+`</td>
 								</tr>
 								<tr>
 									<td style="background-color: rgb(245,247,250);"><h6>주소</h6></td>

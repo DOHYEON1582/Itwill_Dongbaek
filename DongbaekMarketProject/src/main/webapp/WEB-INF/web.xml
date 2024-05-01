@@ -46,4 +46,13 @@
 	</filter-mapping>
 <!-- 스프링 한글처리 필터 -->
 
+<!-- 멀티파트 업로드 조건 -->
+	<multipart-config>
+	     <location>C:\\resources\\upload1</location>
+	     <max-file-size>20971520</max-file-size>
+	     <max-request-size>41943040</max-request-size>
+	     <file-size-threshold>20971520</file-size-threshold>
+     </multipart-config>
+<!-- 멀티파트 업로드 조건 -->
+
 </web-app>

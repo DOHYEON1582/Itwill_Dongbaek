@@ -34,12 +34,19 @@
 						alert("리뷰정보가 없습니다!");
 					}else{
 						$(data).each(function(idx,item){
-						$('#list-tbody').append("<tr><td>"+item.review_code
-										 +"</td><td>"+item.product_code
-										 +"</td><td>"+item.user_id
-										 +"</td><td>"+item.title
-										 +"</td><td>"+item.regdate
-										 +"</td></tr>");
+							var currentDate = new Date(item.regdate);
+							
+							var year = currentDate.getFullYear();
+							var month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
+							var day = ('0' + currentDate.getDate()).slice(-2);
+							var formatDate = year + '-' + month + '-' + day;
+							
+							$('#list-tbody').append("<tr><td>"+item.review_code
+											 +"</td><td>"+item.product_code
+											 +"</td><td>"+item.user_id
+											 +"</td><td>"+item.title
+											 +"</td><td>"+formatDate
+											 +"</td></tr>");
 						});
 					}
 					
@@ -72,6 +79,12 @@
 					console.log(review);
 					console.log(product);
 					
+					var currentDate = new Date(review.regdate);
+					var year = currentDate.getFullYear();
+					var month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
+					var day = ('0' + currentDate.getDate()).slice(-2);
+					var formatDate = year + '-' + month + '-' + day;
+					
 					  	$('#modal-table1 thead').append(
 								`<tr>
 									<td style="background-color: rgb(245,247,250);"><h6>아이디</h6></td>
@@ -79,7 +92,7 @@
 									<td style="background-color: rgb(245,247,250);"><h6>별점</h6></td>
 									<td>`+review.star+`</td>
 									<td style="background-color: rgb(245,247,250);"><h6>작성일</h6></td>
-									<td colspan="2">`+review.regdate+`</td>
+									<td colspan="2">`+formatDate+`</td>
 								</tr>
 								<tr>
 									<td style="background-color: rgb(245,247,250);"><h6>제목</h6></td>
@@ -98,7 +111,8 @@
 									<td>`+product.product_code+ `</td>
 									<td>`+product.product_name+ `</td>
 									<td>`+product.img1+ `</td>
-									<td>`+product.country+`</td>											<td>`+product.seller_id+`</td>
+									<td>`+product.country+`</td>											
+									<td>`+product.seller_id+`</td>
 									<td>`+product.price+`</td>
 									<td>`+product.viewcnt+`</td>
 								</tr>`

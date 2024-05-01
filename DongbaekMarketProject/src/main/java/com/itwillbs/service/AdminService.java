@@ -3,7 +3,9 @@ package com.itwillbs.service;
 import java.util.List;
 
 import com.itwillbs.domain.AdminCartVO;
+import com.itwillbs.domain.AdminNoticeVO;
 import com.itwillbs.domain.AdminOrderVO;
+import com.itwillbs.domain.AdminProductVO;
 import com.itwillbs.domain.AdminReviewVO;
 import com.itwillbs.domain.AdminStoreVO;
 import com.itwillbs.domain.AdminSubPayVO;
@@ -42,6 +44,24 @@ public interface AdminService {
 	
 	// 회원 구독 제품 리스트 가져오기
 	public List<AdminSubProductVO> getUserSubPro(String user_id)throws Exception;
+	
+	// 구독 물품 업로드하기
+	public int insertSubProduct(AdminProductVO vo)throws Exception;
+	
+	// 구독 물품 검색하기
+	public List<AdminProductVO> getSubProductList(AdminProductVO vo)throws Exception;
+	
+	// 구독 물품 상세보기
+	public AdminProductVO getSubProductInfo(int product_code)throws Exception;
+	
+	// 공지사항 작성하기
+	public int insertNotice(AdminNoticeVO vo)throws Exception;
+	
+	// 공지사항 검색하기
+	public List<AdminNoticeVO> searchNotice(AdminNoticeVO vo)throws Exception;
+	
+	// 공지사항 상세보기
+	public AdminNoticeVO noticeInfo(int q_code)throws Exception;
 	
 	
 }//endService

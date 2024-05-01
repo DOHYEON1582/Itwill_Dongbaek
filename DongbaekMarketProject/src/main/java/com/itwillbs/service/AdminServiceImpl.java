@@ -14,7 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.AdminCartVO;
+import com.itwillbs.domain.AdminNoticeVO;
 import com.itwillbs.domain.AdminOrderVO;
+import com.itwillbs.domain.AdminProductVO;
 import com.itwillbs.domain.AdminReviewVO;
 import com.itwillbs.domain.AdminStoreVO;
 import com.itwillbs.domain.AdminSubPayVO;
@@ -99,6 +101,48 @@ public class AdminServiceImpl implements AdminService {
 		logger.debug(" getUserSubPro(String user_id) 호출 ");
 		
 		return adao.getUserSubPro(user_id);
+	}
+
+	@Override
+	public int insertSubProduct(AdminProductVO vo) throws Exception {
+		logger.debug(" insertSubProduct(AdminProductVO vo) 호출 ");
+		
+		return adao.insertSubProduct(vo);
+	}
+
+	@Override
+	public List<AdminProductVO> getSubProductList(AdminProductVO vo) throws Exception {
+		logger.debug(" getSubProductList(AdminProductVO vo) 호출 ");
+		
+		return adao.getSubProductList(vo);
+	}
+
+	@Override
+	public AdminProductVO getSubProductInfo(int product_code) throws Exception {
+		logger.debug(" getSubProductInfo(int product_code) 호출 ");
+		
+		return adao.getSubProductInfo(product_code);
+	}
+
+	@Override
+	public int insertNotice(AdminNoticeVO vo) throws Exception {
+		logger.debug(" insertNotice(AdminNoticeVO vo) 호출 ");
+		
+		return adao.insertNotice(vo);
+	}
+
+	@Override
+	public List<AdminNoticeVO> searchNotice(AdminNoticeVO vo) throws Exception {
+		logger.debug(" searchNotice(AdminNoticeVO vo) 호출 ");
+		
+		return adao.searchNotice(vo);
+	}
+
+	@Override
+	public AdminNoticeVO noticeInfo(int q_code) throws Exception {
+		logger.debug(" noticeInfo(int q_code) 호출 ");
+		
+		return adao.noticeInfo(q_code);
 	}
 
 	

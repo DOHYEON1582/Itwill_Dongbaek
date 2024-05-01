@@ -34,11 +34,18 @@
 					if(data == ''){
 						alert("회원정보가 없습니다!");
 					}else{ 
+						var currentDate = new Date(data.regdate);
+
+						var year = currentDate.getFullYear();
+						var month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
+						var day = ('0' + currentDate.getDate()).slice(-2);
+						var formatDate = year + '-' + month + '-' + day;
+						
 						$('#list-tbody').append("<tr><td>"+data.user_id
 										 +"</td><td>"+data.user_name
 										 +"</td><td>"+data.phone
 										 +"</td><td>"+data.addr1
-										 +"</td><td>"+data.regdate
+										 +"</td><td>"+formatDate
 										 +"</td></tr>");					
 					}
 				}
@@ -74,6 +81,13 @@
 				data : JSON.stringify(user),
 				contentType : "application/json; charset=UTF-8",
 				success : function(data){
+						var currentDate = new Date(data.regdate);
+	
+						var year = currentDate.getFullYear();
+						var month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
+						var day = ('0' + currentDate.getDate()).slice(-2);
+						var formatDate = year + '-' + month + '-' + day;
+						
 						$('.modal-table').append(`<tr>
 						<td style="background-color: rgb(245,247,250);"><h6>아이디</h6></td>
 						<td>`+data.user_id+ `</td>
@@ -96,7 +110,7 @@
 						<td style="background-color: rgb(245,247,250);"><h6>성인인증</h6></td>
 						<td>`+data.identity+`</td>
 						<td style="background-color: rgb(245,247,250);"><h6>가입일</h6></td>
-						<td>`+data.regdate+`</td>
+						<td>`+formatDate+`</td>
 					</tr>`);					
 					
 				}

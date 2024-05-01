@@ -80,6 +80,8 @@
 	<result property="category" column="category"/>
 	<result property="sub_product" column="sub_product"/>
 	<result property="unit" column="unit"/>
+	
+	<collection property="AdminStoreVO" resultMap="storeMap"/>
 </resultMap>
 
 <resultMap type="com.itwillbs.domain.AdminSellerVO" id="AdminSellerVO">
@@ -281,5 +283,61 @@
 	WHERE user_id = #{user_id}
 
 </select>
-	
+
+<!-- 구독 물품 업로드 -->
+<insert id="insertSubProduct">
+	INSERT INTO product (product_code,store_code,price,product_name,img1,product_explain,seller_id,country,max_account,category,sub_product,unit) 
+	VALUES ((SELECT product_code FROM (SELECT IFNULL(MAX(product_code), 0) + 1 as product_code FROM product) as t),
+			#{store_code},#{price},#{product_name},#{img1},#{product_explain},#{seller_id},#{country},#{max_account},#{category},#{sub_product},#{unit})
+
+</insert>
+
+<!-- 구독 물품 검색 -->
+<select id="getSubProduct" resultType="com.itwillbs.domain.AdminProductVO">
+	SELECT * FROM product 
+	<choose>
+		<when test="product_name != null and product_name != ''">
+			WHERE product_name = #{product_name} AND sub_product = '구독'
+		</when>
+		<when test="product_code != null and product_code != ''">
+			WHERE product_code = #{product_code} AND sub_product = '구독'
+		</when>
+		<when test="product_code = null and product_code = '' and product_name = null and product_name = ''">
+			WHERE sub_product = '구독'
+		</when>
+	</choose>
+</select>
+
+<!-- 구독 물품 상세 검색 -->
+<select id="getSubProInfo" resultMap="AdminProductVO">
+	SELECT * 
+	FROM product p
+	JOIN store s
+	ON p.store_code = s.store_code
+	WHERE product_code = #{product_code}
+</select>
+
+<!-- 공지사항 작성 -->
+<insert id="insertNotice">
+	INSERT INTO question (q_code, user_id, user_name, title, content, q_type, regdate)
+	VALUE ((SELECT q_code FROM (SELECT IFNULL(MAX(q_code), 0) + 1 as q_code FROM question) as t),
+			#{user_id},#{user_name},#{title},#{content},#{q_type},now())
+
+</insert>
+
+<!-- 공지사항 검색 -->
+<select id="searchNotice" resultType="com.itwillbs.domain.AdminNoticeVO">
+	SELECT * FROM question 
+	WHERE content LIKE CONCAT('%',#{content},'%')
+	ORDER BY q_code desc 
+</select>
+
+<!-- 공지사항 상세 보기 -->
+<select id="noticeInfo" resultType="com.itwillbs.domain.AdminNoticeVO">
+	SELECT * FROM question 
+	WHERE q_code = #{q_code}
+</select>
+
+
+
 </mapper>

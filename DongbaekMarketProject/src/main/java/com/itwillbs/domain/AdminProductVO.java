@@ -7,6 +7,7 @@ public class AdminProductVO {
 
 	private int product_code;
 	private int store_code;
+	private int price;
 	private String product_name;
 	private int viewcnt;
 	private String img1;
@@ -19,5 +20,7 @@ public class AdminProductVO {
 	private String category;
 	private String sub_product;
 	private String unit;
+	
+	private AdminStoreVO AdminStoreVO;
 	
 }
