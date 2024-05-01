@@ -10,7 +10,9 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.itwillbs.domain.ProductCri;
+import com.itwillbs.domain.ProductPagingVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.service.ProductService;
 
@@ -31,6 +35,8 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 
 	@Inject
 	private ProductService pService; //서비스 가져오기
+	
+	
 	
 	private static final Logger logger = LoggerFactory.getLogger(SellerPageController.class);
 	
@@ -44,16 +50,28 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	// 판매자 상품페이지(상품목록)
 	//	http://localhost:8088/seller/product
 	@RequestMapping(value = "/product",method = RequestMethod.GET)
-	public void product(Model model, @RequestParam(value = "page", defaultValue = "1") int page) throws Exception{	
-		logger.debug(" product() 실행 ");
-		int perPageNum = 9; //페이지당 보여줄 상품 수 설정
-		int startRow = (page - 1) * perPageNum; //시작행 계산
-		
-		List<ProductVO> productList = pService.productList("seller_id", startRow, perPageNum);
-		
-		 model.addAttribute("productList", productList);
-		
-		
+	public String productList(Model model, @ModelAttribute("cri") ProductCri cri, HttpSession session) throws Exception {
+	    // 세션에서 가게 코드를 가져옴
+	    Integer store_code = (Integer) session.getAttribute("store_code");
+	    //if (store_code == null) {
+	        // 가게 코드가 없으면 로그인 페이지로 리다이렉트 또는 다른 처리를 수행할 수 있음
+	    //   return "redirect:/login";
+	    //}
+
+	    // 가게 코드를 설정
+	    cri.setStore_code(2024042501);
+
+	    List<ProductVO> productList = pService.getProductPage(cri);
+	    int totalCount = pService.getTotalCount(2024042501); // 총 상품 수를 ProductService를 통해 가져옴
+
+	    ProductPagingVO pagingVO = new ProductPagingVO();
+	    pagingVO.setCri(cri);
+	    pagingVO.setTotalCount(totalCount);
+
+	    model.addAttribute("productList", productList);
+	    model.addAttribute("pagingVO", pagingVO);
+
+	    return "/seller/product";
 	}
 		
 	// 판매자 상품페이지(상품등록)
@@ -77,7 +95,7 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	                                  @RequestParam(value = "product_explain", defaultValue = "설명 없음") String product_explain,
 	                                  @RequestParam(value = "max_account", defaultValue = "0") int max_account,
 	                                  @RequestParam(value = "country", defaultValue = "원산지 없음") String country,
-	                                  @RequestParam(value = "store_code", defaultValue = "0") long store_code,
+	                                  @RequestParam(value = "store_code", defaultValue = "0") int store_code,
 	                                  RedirectAttributes rttr) throws Exception {
 	    // 이미지 파일 저장
 	    String fileDirectory = "C:\\Users\\ITWILL\\git\\Itwill_Dongbaek\\DongbaekMarketProject\\src\\main\\webapp\\resources\\images"; // 이미지 파일이 저장될 디렉토리 경로 수정 필요
@@ -94,7 +112,7 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	    prod.setProduct_explain(product_explain);
 	    prod.setMax_account(max_account);
 	    prod.setCountry(country);
-	    prod.setStore_code((int) store_code);
+	    prod.setStore_code(store_code);
 	    prod.setImg1(img1Filename);
 	    prod.setImg2(img2Filename);
 	    prod.setImg3(img3Filename);

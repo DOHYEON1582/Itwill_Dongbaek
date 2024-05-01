@@ -2,11 +2,14 @@ package com.itwillbs.service;
 
 import java.util.List;
 
+import com.itwillbs.domain.ProductCri;
 import com.itwillbs.domain.ProductVO;
 
 public interface ProductService {
+
+	public int getTotalCount(int store_code) throws Exception; // 전체 상품 수 조회
 	
-	public List<ProductVO> productList(String seller_id, int startRow, int perPageNum) throws Exception; //상품 목록 불러오기
+	public List<ProductVO> getProductPage(ProductCri cri) throws Exception; // 페이징된 상품 목록 조회
 	
 	public void productRegist(ProductVO product) throws Exception; //상품 등록
 	

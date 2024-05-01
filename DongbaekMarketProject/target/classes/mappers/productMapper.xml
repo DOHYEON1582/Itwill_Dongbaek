@@ -14,21 +14,28 @@
 		<result property="img2" column="img2" />
 		<result property="img3" column="img3" />
 		<result property="product_explain" column="product_explain" />
-		<result property="seller_id" column="seller_id" />
 		<result property="country" column="country" />
 		<result property="max_account" column="max_account" />
 		<result property="category" column="category" />
 		<result property="sub_product" column="sub_product" />
 		<result property="unit" column="unit" />
 	</resultMap>
-	<!-- 상품 목록 가져오기 -->
-	<select id="productList" resultType="ProductVO">
-		select * from product
-	    where store_code = #{store_code}
-	    ORDER BY product_code
-    	LIMIT #{startRow}, #{perPageNum}
+
+	<!-- 판매자가 등록한 상품의 총 수 조회 -->
+	<select id="getTotalCount" parameterType="int" resultType="int">
+	    SELECT COUNT(*) FROM product
+	    WHERE store_code = #{store_code}
 	</select>
-	
+
+	<!-- 판매자가 등록한 상품 목록 조회 -->
+	<select id="getProductPage" parameterType="map" resultType="com.itwillbs.domain.ProductVO">
+	    SELECT * FROM product
+	    WHERE store_code = #{store_code}
+	    ORDER BY product_code DESC
+	    LIMIT #{startPage}, #{pageSize}
+	</select>
+
+    
 	<!-- 상품 등록 -->
 	<insert id="productRegist" parameterType="com.itwillbs.domain.ProductVO">
 		INSERT INTO product (category, product_name, unit, price, img1, img2, img3, product_explain, max_account, country, store_code)

@@ -1,6 +1,8 @@
 package com.itwillbs.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -8,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.itwillbs.domain.ProductCri;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.persistence.ProductDAO;
 
@@ -20,11 +23,24 @@ public class ProductServiceImpl implements ProductService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 
+	
+	
 
 	@Override
-	public List<ProductVO> productList(String seller_id, int startRow, int perPageNum) throws Exception{
-		logger.debug(" productList(String seller_id, int startRow, int perPageNum) 호출 ");
-		return pdao.productList(seller_id, startRow, perPageNum);
+	public int getTotalCount(int store_code) throws Exception {
+		logger.debug(" getTotalCount() 호출 ");
+		return pdao.getTotalCount(store_code);
+	}
+
+
+	@Override
+	public List<ProductVO> getProductPage(ProductCri cri) throws Exception {
+		logger.debug(" getProductPage(ProductCri cri) 호출 ");
+		Map<String, Object> map = new HashMap<>();
+        map.put("store_code", cri.getStore_code());
+        map.put("startPage", cri.getStartPage());
+        map.put("pageSize", cri.getPageSize());
+		return pdao.getProductPage(map);
 	}
 
 
