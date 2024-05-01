@@ -113,7 +113,8 @@
 	</table>
 	
 	<!-- 아이디, 묶음번호, 가게코드, 배달비, 총 결제금액, 적립 포인트, 예약여부..?  -->
-	<input type="hidden" id="user_id" name="user_id" value="${sessionScope.(아이디세션) }"> 
+	<%-- <input type="hidden" id="user_id" name="user_id" value="${sessionScope.user_id }">  --%>
+	<input type="hidden" id="name" name="name" value="${sessionScope.user_name }">
 	<input type="hidden" id="bundle_code" name="bundle_code" value="${sessionScope.cart }">
 	<input type="hidden" id="store_code" name="store_code" value="${cartList.store_code }">
 	<input type="hidden" id="delivery" name="deleivery_fee">
@@ -215,58 +216,60 @@
 	// 제이쿼리 시작
 	$(document).ready(function(){
 		
-		// 주문 할 상품 가격의 합 (수정 필요)
+		// 주문 할 상품 가격의 합
 		$('#totalPrice').text(function(){		
-			var totalPrice = 0;
-			$('#productList tbody tr').each(function(){
-				var price = parseInt($(this).closest('tr').find('td:eq(2)').text());
-				totalPrice += price;
-			});
-			return totalPrice;
+		    var totalPrice = 0;
+		    $('#productList tbody tr').each(function(){
+		        var price = parseInt($(this).closest('tr').find('td:eq(2)').text());
+		        totalPrice += price;
+		    });
+		    return totalPrice;
 		});
-		
+
 		// 사용한 적립금
 		$('#usePoint').text(function(){		
-			var reducePoint = $('#reduce_point').val();
-			return reducePoint;
+		    var reducePoint = $('#reduce_point').val();
+		    return reducePoint;
 		});
 		
 		// 배송비 처리
 		$('#deliveryFee').text(function(){
-			var totalPrice = $('#totalPrice').text();
-			var deliveryFee = 0;
-			if(totalPrice > 50000){ // 5만원 이상시 배달비 무료
-				deliveryFee = 0;
-			} else if(totalPrice < 50000){ // 5만원 미만 배달비 2500원 배달비는 2500원으로 고정
-				deliveryFee = 2500; 
-			}
-			return deliveryFee;
+		    var totalPrice = parseInt($('#totalPrice').text());
+		    var deliveryFee = 0;
+		    if(totalPrice > 50000){ // 5만원 이상시 배달비 무료
+		        deliveryFee = 0;
+		    } else if(totalPrice < 50000){ // 5만원 미만 배달비 2500원 배달비는 2500원으로 고정
+		        deliveryFee = 2500; 
+		    }
+		    return deliveryFee;
 		});
 		
 		// 결제예정금액
 		$('#payAmount').text(function(){
-			var totalPrice = $('#totalPrice').text();
-			var usePoint = $('usePoint').text();
-			var deliveryFee = $('#deliveryFee').text();
-			var payAmount = (totalPrice - usePoint) + deliveryFee;
-	
-			return payAmount;
+		    var totalPrice = parseInt($('#totalPrice').text());
+		    var usePoint = parseInt($('#usePoint').text());
+		    var deliveryFee = parseInt($('#deliveryFee').text());
+		    var payAmount = totalPrice - usePoint + deliveryFee;
+		    return payAmount;
 		});
-		
+
 		// input 값 넣기 (수정 필요)
-		$('#delivery').val(
-				$('#deliveryFee').text()
-		);
-		$('#amount').val(
-				$('#payAmount').text()
-		);
+		$('#delivery').val($('#deliveryFee').text());
+		$('#amount').val($('#payAmount').text());
 		$('#rcv_phone').val(function(){
-			var phone1 = $('#rcv_phone1').val();
-			var phone2 = $('#rcv_phone2').val();
-			var phone3 = $('#rcv_phone3').val();
-			return phone1 + phone2 + phone3
+		    var phone1 = $('#rcv_phone1').val();
+		    var phone2 = $('#rcv_phone2').val();
+		    var phone3 = $('#rcv_phone3').val();
+		    return phone1 + phone2 + phone3;
 		});
 		
+	  	// addr2, addr3, rcv_phone1, rcv_phone2, rcv_phone3 폼 제출 막기
+        $('#addr2, #addr3, #rcv_phone1, #rcv_phone2, #rcv_phone3').change(function(){
+            $('#orderFrm').off('submit').submit(function(event){
+                event.preventDefault();
+            });
+        });
+	  	
 		// 주문하기
 		$('#payBtn').click(function(){
 			var orderInfo = $('#orderFrm').serialize();
@@ -274,8 +277,7 @@
 			$.ajax({
 				url: '/order/pay',
 				type: 'POST',
-				data: JSON.stringify(orderInfo),
-				contentType: 'application/json; charset=utf-8',
+				dataType: "text",
 				success: function(data){
 					requestPay(data)
 				},
@@ -289,20 +291,28 @@
 				IMP.init("imp68706306");
 				
 				IMP.request_pay({
-					pg : "inicis",
+					pg : "html5_inicis",
 					pay_method : 'card',
-					merchant_uid : data.order_code,
-					name : 하;; 상품 정보 리스트 가져오기 ㅅㅂ...;; ,
-					amount : 결제금액,
-					custom_data : 부가정보,
-					buyer_name : 주문자명,
-					buyer_tel : 주문자 연락처,
-					buyer_email : 주문자 이메일,
-					buyer_addr : 주문자 주소,
-					buyer_postcode : 주문자 우편번호,
-					
-					
-					
+					merchant_uid : data,
+					name : '상품명 어떻게 가져올건지..',
+					amount : $('#amount').val(),
+					custom_data : '부가정보...',
+					buyer_name : $('#name').val(),
+					buyer_tel : '필수입력',
+					buyer_addr : '',
+					buyer_postcode : '',
+				}, function(rsp){
+					if(rsp.success){
+						$.ajax({
+							type: 'POST',
+							url: '/paySuccess',
+							data: JSON.stringify(orderInfo),
+							contentType: 'application/json; charset=utf-8',
+						});
+					}else{
+						
+					} // if문 끝
+				}
 				});
 			}
 			
