@@ -25,6 +25,7 @@ import com.itwillbs.domain.OrderInfoVO;
 import com.itwillbs.dto.OrderInfoDTO;
 import com.itwillbs.service.MyPageService;
 import com.itwillbs.service.OrderService;
+import com.siot.IamportRestClient.IamportClient;
 
 @Controller
 @RequestMapping(value = "/order/*")
@@ -34,7 +35,14 @@ public class OrderController {
 
 	@Inject
 	private OrderService oService;
+	
+	private IamportClient api;
 
+	public OrderController(){		
+		//토큰 발급
+		this.api = new IamportClient("4412056010508705","t7oYBzO2MlZ3YgFYXDpwwD40JbHJnOmnMWuClc6nvcmZfKipioc8gF9t0igZSoj0qrtvLYgPww8AgOr9");
+	}
+	
 	// 240429 같은 가게 상품만 주문하기!!!!!
 	// 주문페이지
 	@GetMapping(value = "/orderform")
@@ -74,10 +82,9 @@ public class OrderController {
 		model.addAttribute("point", point);
 	}
 
-	// 결제하기
-	@ResponseBody
+	// 주문 번호 생성
 	@PostMapping(value = "/pay")
-	public OrderInfoVO orderPayPOST(@ModelAttribute OrderInfoVO ovo) throws Exception {
+	public int orderPayPOST() throws Exception {
 		logger.debug(" === orderPayPOST() 실행 === ");
 		
 		/* 주문번호 생성 */
@@ -89,21 +96,20 @@ public class OrderController {
 		String today = now.format(formatter);
 		// 숫자 출력 서식 정하기
 		DecimalFormat dc = new DecimalFormat("0000");
+		int orderCode = 0;
 		int result = oService.selectMaxOrderCode();
 		if(result == 0) {
 			logger.debug(" ===order_code=== : " + today+"0001");
-			ovo.setOrder_code(Integer.parseInt(today+"0001"));
+			orderCode = (Integer.parseInt(today+"0001"));
 		} else if(result != 0) {
 			logger.debug(" ===result=== : " + result);
 			logger.debug(" ===result + 1=== : " + (result+1));
-			ovo.setOrder_code(result+1);
+			orderCode = (result+1);
 		}
-		logger.debug(" ===ovo=== : " + ovo);
+		logger.debug(" ===orderCode=== : " + orderCode);
 		
-		// 주문 정보 입력
-		oService.insertOrderInfo(ovo);
-	
-		return ovo;
+		return orderCode;
 	}
+	
 
 }
