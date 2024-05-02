@@ -190,25 +190,26 @@
 						</a>
 					</div>
 				</div>
-
+				
+				<!-- 검색 -->
 				<div class="col-sm-4 offset-sm-2 offset-md-0 col-lg-5 d-none d-lg-block">
 				    <div class="search-bar row bg-light p-2 my-4 rounded-4">
 				        <div class="col-9 col-md-8 align-self-center">
-				            <form id="search-form" class="text-center" action="" method="get">
+				            <form id="searchForm" class="text-center" action="search" method="get">
 				                <div class="input-group">
 				                    <div class="input-group-prepend">
 				                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">검색 유형</button>
-				                        <ul class="dropdown-menu">
+				                        <ul class="dropdown-menu" id="categorySelect">
 				                            <li><a class="dropdown-item" data-value="name">시장</a></li>
 				                            <li><a class="dropdown-item" data-value="product_name">음식</a></li>
 				                        </ul>
 				                    </div>
-				                    <input type="text" class="form-control border-0 bg-transparent" placeholder="찾고 싶은 음식, 시장을 검색해보세요!" name="query" />
+				                    <input type="text" id="searchInput" class="form-control border-0 bg-transparent" placeholder="찾고 싶은 음식, 시장을 검색해보세요!" name="query" />
 				                </div>
 				            </form>
 				        </div>
 				        <div class="col-3 col-md-4 align-self-center text-end">
-				            <button type="submit" form="search-form" class="btn btn-sm btn-primary">검색</button>
+				            <button id="search-btn" type="submit" form="search-form" class="btn btn-sm btn-primary search-btn">검색</button>
 				        </div>
 				    </div>
 				</div>
@@ -228,7 +229,6 @@
 					            <a href="#" class="service">고객센터</a>
 					            <input type="button" value="로그아웃" onclick="location.href='/member/logout';">
 					        </div>
-				    	</c:if>
 				        <ul class="d-flex justify-content-end list-unstyled m-3">
 				            <li><a href="/member/info" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
 				                        <use xlink:href="#user"></use></svg>
@@ -237,13 +237,7 @@
 				                        <use xlink:href="#heart"></use></svg>
 				                </a></li>
 				        </ul>
-				    </div>
-				
-				    <!-- 장바구니 아이콘 -->
-				    <div class="cart text-end d-none d-lg-block dropdown">
-				        <button class="border-0 bg-transparent d-flex flex-column gap-2 lh-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
-				            <span class="fs-6 text-muted dropdown-toggle">장바구니</span>
-				        </button>
+				    	</c:if>
 				    </div>
 				</div>
 			</div>
@@ -287,25 +281,29 @@
 	</div>
 
 	<script>
-	$(document).ready(function(){
-		
-		console.log($('#market_code').val());
-		$('#market_code').change(function(){
-			console.log($('#market_code').val());
-			var number = {
-					"market_code" : $('#market_code').val()
-					};
-			$.ajax({
-				type: 'POST',
-				url: '/market/marketMain',
-				data : JSON.stringify(number),
-				contentType : "application/json; charset=UTF-8",
-				success: function(response){
-					console.log(response);
-				}
-				
-			});
-		});
-		
-	});
+	    document.addEventListener("DOMContentLoaded", function() {
+	        var searchForm = document.getElementById("searchForm");
+	        var searchBtn = document.getElementById("search-btn");
+	
+	        // 검색 버튼 클릭 시 이벤트 처리
+	        searchBtn.addEventListener("click", function(event) {
+	            event.preventDefault(); // 기본 동작 방지 (페이지 새로고침 방지)
+	
+	            // 검색어 입력 요소 가져오기
+	            var searchInput = document.getElementById("searchInput");
+	            
+	            // 검색어에서 공백 제거
+	            var keyword = searchInput.value.trim();
+	
+	            // 선택된 카테고리 가져오기
+	            var type = document.getElementById("categorySelect").value;
+	
+	            // 새로운 URL로 이동
+	            location.href = "/" + "&keyword=" + encodeURIComponent(keyword) + "&type=" + type;
+	            
+	            searchForm.submit();
+	            
+	        });
+	    });
 	</script>
+	<!-- 검색기능 구현 스크립트 추가 -->
