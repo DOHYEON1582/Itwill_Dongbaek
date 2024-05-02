@@ -293,26 +293,14 @@ $(document).ready(function(){
     <div class="row nav">
         <nav id="middle_nav">
             <ul class="nav nav-tabs nav-justified">
-                <li id="about"><a href="#about1">상품 상세</a></li>
-                <li id="review"><a href="#review1">리뷰</a></li>
                 <li id="qna"><a href="#qna1">상품 문의</a></li>
             </ul>
         </nav>
     </div>
 </div>
 
-
-<div class="row about_product" style="text-align: center;">
-    <h1 class="page-header" id="about1">상품 상세</h1>
-    <div style="text-align: center; margin: 0 auto;">
-    <img class="product-img2" src="${pageContext.request.contextPath}/resources/images/${product.img2}" style="width: 400px; height: 400px; margin: 10px; display: inline-block;"/>
-    <img class="product-img3" src="${pageContext.request.contextPath}/resources/images/${product.img3}" style="width: 400px; height: 400px; margin: 10px; display: inline-block;"/>
-	</div>
-</div>
 <div class="row reviews" style="text-align: center;"></div>
 
-
-<hr>
 
 <div class="container" style="text-align: center; height: 700px;">
     <h1 class="page-header" id="qna1">상품 Q&A</h1>
@@ -334,7 +322,20 @@ $(document).ready(function(){
 		</c:forEach>    		
     	</tbody>
     </table>
-	<a href="/market/productMain"> 상품 보러가기</a>
+		<div class="box-footer clearfix">
+			<ul class="pagination pagination-sm no-margin pull-right">
+				<c:if test="${pageVO.prev }">
+					<li><a href="/board/listCri?page=${pageVO.startPage - 1 }">«</a></li>
+				</c:if>
+				<c:forEach var="idx" begin="${pageVO.startPage }" end="${pageVO.endPage }" step="1">
+					<li ${pageVO.cri.page == idx? "class=active":""}><a href="/board/listCri?page=${idx }">${idx }</a></li>
+				</c:forEach>
+				<c:if test="${pageVO.next }">
+					<li><a href="/board/listCri?page=${pageVO.endPage + 1 }">»</a></li>
+				</c:if>
+			</ul>
+		</div>
+		<a href="/market/productMain?product_code=${product.product_code }"> 상품 보러가기</a>
  		
     <button type="button" class="ask-button" onclick="openModal()">문의하기</button>
     <!-- 모달 -->

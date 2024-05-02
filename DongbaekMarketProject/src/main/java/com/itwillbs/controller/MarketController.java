@@ -112,21 +112,11 @@ public class MarketController {
 
 	}
 	
-	@RequestMapping(value = "/productMain", method = RequestMethod.POST)
-	public ResponseEntity<String> questionAdd(@RequestBody QuestionVO question) throws Exception{
+	@RequestMapping(value = "/productMain", method = RequestMethod.POST, consumes = "application/json")
+	public void questionAdd(@RequestBody QuestionVO question, HttpSession session) throws Exception{
 		logger.debug(" questionAddPOST 실행 ");
 		logger.debug(" qvo : " + question);
-		try {
-			mService.writeQuestion(question);
-		} catch (Exception e) {
-			return ResponseEntity.badRequest()
-					.contentType(MediaType.valueOf("text/plain; charset=UTF-8"))
-					.body("문의 글 작성 실패");
-		}
-		
-		return ResponseEntity.ok()
-				.contentType(MediaType.valueOf("text/plain; charset=UTF-8"))
-				.body("문의 글 작성 성공");
+		mService.writeQuestion(question);
 	}
 	
 	
@@ -136,11 +126,14 @@ public class MarketController {
 		pageVO.setCri(cri);
 		pageVO.setTotalCount(mService.questionCount());
 		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("product_code", product_code);
+		ProductVO product = mService.eachProduct(product_code);
 		paramMap.put("startPage", pageVO.getStartPage());
 		paramMap.put("pageSize", cri.getPageSize());
 	
 		List<QuestionVO> question = mService.getQuestion(paramMap);
-		
+		model.addAttribute("question", question);
+		model.addAttribute("product", product);
 		model.addAttribute("cri", cri);
 		model.addAttribute("pageVO", pageVO);
 	}

@@ -99,7 +99,7 @@
   		select * from question
   		where product_code = #{product_code}
   		order by regdate desc
-  		limit #{page},5
+  		limit #{page},10
   	]]>
   </select>
   
