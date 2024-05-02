@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class StoreVO {
+
 	private int store_code;
 	private int market_code;
 	private String seller_id;
@@ -20,4 +21,5 @@ public class StoreVO {
 	private String time;
 	private String status;
 	private int viewcnt;
+
 }

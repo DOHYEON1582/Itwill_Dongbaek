@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-
 <footer style="font-family: 'Roboto', sans-serif; padding-bottom: 0;">
 
     <div class="row justify-content-center" id="r">
@@ -14,7 +13,7 @@
             <div class="footer-menu">
                 <h5 class="widget-title">소개</h5>
                 <ul class="menu-list list-unstyled">
-                    <li class="menu-item"><a href="#" class="nav-link">▶ 동백장터 소개</a></li>
+                    <li class="menu-item"><a href="introduce" class="nav-link">▶ 동백장터 소개</a></li>
                     <li class="menu-item"><a href="#" class="nav-link">▶ 동백팀 소개</a></li>
                 </ul>
             </div>
@@ -48,7 +47,6 @@
         </div>
     </div>
 </footer>
-
 
 <script src="./resources/js/jquery-2.1.1.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>

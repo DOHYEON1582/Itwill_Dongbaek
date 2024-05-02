@@ -6,7 +6,6 @@ import lombok.Data;
 
 @Data
 public class ReviewVO {
-
 	private int review_code;
 	private int product_code;
 	private Timestamp regdate;
@@ -21,7 +20,4 @@ public class ReviewVO {
 	private int re_lev;
 	private int re_ref;
 	private int re_seq;
-	
-	
-	
 }
