@@ -3,6 +3,7 @@ package com.itwillbs.persistence;
 import java.util.List;
 
 import com.itwillbs.domain.CartVO;
+import com.itwillbs.domain.OrderInfoVO;
 
 public interface MyPageDAO {
 
@@ -21,6 +22,14 @@ public interface MyPageDAO {
 	
 	// 장바구니 비우기
 	public void deleteCartAllProduct(CartVO vo) throws Exception;
+	
+	/* 주문내역 */
+	// 주문내역 리스트
+	public List<OrderInfoVO> selectUserOrderList(String user_id) throws Exception;
+	
+	// 주문내역 갯수
+	public int selectCountOrder(String user_id) throws Exception;
+	
 	
 	
 	

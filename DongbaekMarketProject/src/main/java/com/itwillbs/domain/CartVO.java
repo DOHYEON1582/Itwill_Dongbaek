@@ -12,7 +12,7 @@ public class CartVO {
 	private int count;					// 상품 수량
 	private String price;				// 상품 가격
 	private String delivery_fee;		// 배달비
-	private String states;				// 주문현황
+	private String states;				// 주문현황(장바구니, 결제완료, 배달준비, 배달중, 배달완료, 주문취소(가게주인 취소 or 사용자가 배달 준비 전 취소), 반품접수, 환불대기중, 환불완료)
 	private String refund_reason;		// 환불 사유... 
 	
 	////////////////////////////////

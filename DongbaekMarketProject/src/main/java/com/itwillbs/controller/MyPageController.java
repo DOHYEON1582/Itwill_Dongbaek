@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.OrderInfoVO;
 import com.itwillbs.domain.PageMaker;
 import com.itwillbs.service.MyPageService;
 
@@ -81,11 +82,10 @@ public class MyPageController {
 
 	// 장바구니 상품 전체 삭제
 	@PostMapping(value = "/cart/deleteAll")
-	public String deleteAllCartProducts(HttpSession session, 
-										HttpServletRequest request, 
-										HttpServletResponse response) throws Exception {
+	public String deleteAllCartProducts(HttpSession session, HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		logger.debug(" === deleteAllCartProducts() 실행 ===");
-		
+
 		CartVO cvo = new CartVO();
 		// 세션 가져오기
 		String userid = (String) session.getAttribute("user_id");
@@ -93,34 +93,58 @@ public class MyPageController {
 
 		cvo.setUser_id(userid);
 		cvo.setBundle_code(bundleCode);
-		
+
 		mService.deleteCartAllProduct(cvo);
-		
+
 		return "redirect:/mypage/cart";
 	}
 
 	// 장바구니 상품 개별 삭제
 	@PostMapping(value = "/cart/delete")
-	public String deleteCartProducts(@RequestParam("ap_check") String cart_code ) throws Exception {
+	public String deleteCartProducts(@RequestParam("ap_check") String cart_code) throws Exception {
 		logger.debug(" === deleteCartProducts() 실행 ===");
-		
+
 		mService.deleteCartProduct(Integer.parseInt(cart_code));
-		
+
 		return "redirect:/mypage/cart";
 	}
 
 	// 장바구니 상품 수량 변경
 	@PostMapping(value = "/cart/updateCount")
-	public String updateCartProductsCount(@RequestParam("cartCode") int cartCode, 
-											@RequestParam("newCount") int newCount) throws Exception {
+	public String updateCartProductsCount(@RequestParam("cartCode") int cartCode,
+			@RequestParam("newCount") int newCount) throws Exception {
 		logger.debug(" === updateCartProductsCount() 실행 ===");
-		
+
 		CartVO cvo = new CartVO();
 		cvo.setCart_code(cartCode);
 		cvo.setCount(newCount);
-		
+
 		mService.updateProductCount(cvo);
-		
+
 		return "redirect:/mypage/cart";
+	}
+
+	/* 주문내역 */
+	// 주문내역
+	@GetMapping(value = "orderlist")
+	public void orderListGET(HttpSession session, 
+							 HttpServletRequest request, 
+							 HttpServletResponse response, 
+							 @ModelAttribute("cri") Criteria cri, 
+							 Model model) throws Exception {
+		logger.debug(" === orderListGET() 실행 ===");
+		
+		String userid = (String)session.getAttribute("user_id"); // 수정필요 240502
+		
+		List<OrderInfoVO> orderList = mService.selectUserOrderList(userid);
+		
+		PageMaker pageMaker = new PageMaker();
+
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(mService.selectCountOrder(userid));
+		
+		model.addAttribute("orderList", orderList); 
+		model.addAttribute("pageMaker", pageMaker);
+		
 	}
 }

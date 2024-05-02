@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.CartVO;
+import com.itwillbs.domain.OrderInfoVO;
 import com.itwillbs.persistence.MyPageDAO;
 
 @Service
@@ -53,7 +54,20 @@ public class MyPageServiceImpl implements MyPageService {
 		logger.debug(" === S : deleteCartAllProduct(CartVO vo) 실행 === ");
 		mdao.deleteCartAllProduct(vo);
 	}
-	
-	
+
+	/* 주문내역 */
+	// 주문내역 리스트
+	@Override
+	public List<OrderInfoVO> selectUserOrderList(String user_id) throws Exception {
+		logger.debug(" === S : selectUserOrderList(String user_id) 실행 === ");
+		return selectUserOrderList(user_id);
+	}
+
+	// 주문내역 갯수
+	@Override
+	public int selectCountOrder(String user_id) throws Exception {
+		logger.debug(" === S : selectCountOrder(String user_id) 실행 === ");
+		return selectCountOrder(user_id);
+	}
 
 }

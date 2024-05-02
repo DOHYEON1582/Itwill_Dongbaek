@@ -5,6 +5,7 @@
 
 <mapper namespace="com.itwillbs.mapper.MyPageMapper">
 
+	<!-- 장바구니 -->
 	<!-- 장바구니에 담긴 상품 수 세어오기 -->
 	<select id="selectCountCart" resultType="int">
 		SELECT Count(*)
@@ -54,6 +55,51 @@
 		       AND bundle_code = #{bundle_code}
 		       AND states = '장바구니' 
 	</delete>
+	
+	<!-- 주문내역 -->
+	<!-- 주문내역 리스트 -->
+	<select id="selectUserOrderList" resultType="OrderInfoVO">
+		SELECT o.user_id,
+		       o.ordr_date,
+		       o.order_code,
+		       o.bundle_code,
+		       o.store_code,
+		       A.store_name,
+		       A.img1,
+		       A.product_code,
+		       A.product_name,
+		       o.total_price,
+		       A.states
+		FROM   order_info o
+		       JOIN (SELECT p.product_code,
+		                    p.product_name,
+		                    p.img1,
+		                    s.store_code,
+		                    s.store_name,
+		                    c.user_id,
+		                    c.bundle_code,
+		                    c.states
+		             FROM   product p
+		                    JOIN store s
+		                      ON p.store_code = s.store_code
+		                    JOIN cart c
+		                      ON p.product_code = c.product_code) A
+		         ON o.user_id = A.user_id
+		WHERE  o.user_id = #{user_id}
+		       AND A.states NOT IN ('장바구니') 
+	</select>
+	
+	<!-- 주문내역 갯수 -->
+	<select id="selectCountOrder" resultType="int">
+		SELECT Count(*)
+		FROM   order_info o
+		       JOIN cart c
+		         ON o.bundle_code = c.bundle_code
+		WHERE  o.user_id = #{user_id}
+		       AND c.states NOT IN ( '장바구니' )  
+	</select>
+
+	
 
 
 </mapper>

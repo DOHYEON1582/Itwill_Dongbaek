@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.CartVO;
+import com.itwillbs.domain.OrderInfoVO;
 
 @Repository
 public class MyPageDAOImpl implements MyPageDAO {
@@ -54,6 +55,21 @@ public class MyPageDAOImpl implements MyPageDAO {
 	public void deleteCartAllProduct(CartVO vo) throws Exception {
 		logger.debug(" === D : deleteCartAllProduct(CartVO vo) === ");
 		sqlSession.delete(NAMESPACE+".deleteCart",vo);	
+	}
+
+	/* 주문내역 */
+	// 주문내역 리스트
+	@Override
+	public List<OrderInfoVO> selectUserOrderList(String user_id) throws Exception {
+		logger.debug(" === D : selectUserOrderList(String user_id) === ");
+		return sqlSession.selectList(NAMESPACE+".selectUserOrderList",user_id);
+	}
+
+	// 주문내역 갯수
+	@Override
+	public int selectCountOrder(String user_id) throws Exception {
+		logger.debug(" === D : selectCountOrder(String user_id) === ");
+		return sqlSession.selectOne(NAMESPACE+".selectCountOrder",user_id);
 	}
 	
 }
