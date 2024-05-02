@@ -1,6 +1,7 @@
 package com.itwillbs.persistence;
 
 import java.util.List;
+import java.util.Map;
 
 import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.ProductVO;
@@ -41,6 +42,10 @@ public interface UserDAO {
 	// 즐겨찾기 삭제 (전체)
 	public int deleteMarkAll(String user_id) throws Exception;
 	
+	
+	
+	// 제품 정렬
+	public List<ProductVO> selectProductOrderBy(Map<String, Object> map) throws Exception;
 	
 	
 	// 가게 목록 전체 조회

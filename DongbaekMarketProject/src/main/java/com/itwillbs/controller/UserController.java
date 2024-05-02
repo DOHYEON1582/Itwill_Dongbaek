@@ -154,12 +154,16 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "member/wish", method = RequestMethod.GET)
-	public void wishGET(HttpSession session, Model model) throws Exception {
+	public void wishGET(@RequestParam(name = "orderBy", required = false, defaultValue = "latest") String orderBy,
+			HttpSession session, Model model) throws Exception {
+		
 		logger.debug(" wishGET() 호출 ");
 		UserVO userVO = (UserVO) session.getAttribute("userVO");
 		String user_id = userVO.getUser_id();
 		List<ProductVO> wishList = uService.wishList(user_id);
+//		List<ProductVO> productList = uService.getProductOrderBy(orderBy, user_id);
 		model.addAttribute("wishList", wishList);
+//		model.addAttribute("productList", productList);
 	}
 	
 	// 찜 상품 삭제 - 개별
@@ -230,6 +234,19 @@ public class UserController {
 	    model.addAttribute("review", review);
 	}
 
+	@RequestMapping(value = "member/product", method = RequestMethod.GET)
+	public void productLsit(@RequestParam(name = "orderBy", required = false, defaultValue = "popularity") String orderBy,
+			HttpSession session, Model model) throws Exception {
+		logger.debug("productLsit() 호출 ");
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+		String user_id = userVO.getUser_id();
+		
+		List<ProductVO> productList = uService.getProductOrderBy(orderBy, user_id);
+		model.addAttribute("productList", productList);
+	}
+	
+	
+	
 	
 	
 	

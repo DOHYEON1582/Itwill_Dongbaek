@@ -1,6 +1,8 @@
 package com.itwillbs.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -133,6 +135,14 @@ public class UserServiceImpl implements UserService {
 	public int deleteMarkAll(String user_id) throws Exception {
 		logger.debug(" deleteMarkAll(String user_id) 실행 ");
 		return udao.deleteMarkAll(user_id);
+	}
+
+	@Override
+	public List<ProductVO> getProductOrderBy(String orderBy, String user_id) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		map.put("orderBy", orderBy);
+		map.put("user_id", user_id);
+		return udao.selectProductOrderBy(map);
 	}
 	
 	

@@ -169,6 +169,21 @@ public class UserDAOImple implements UserDAO {
 		return sql.delete(NAMESPACE + ".deleteMarkAll",user_id);
 	}
 
+	public List<ProductVO> selectProductOrderBy(Map<String, Object> map) {
+	    logger.debug("selectProductOrderBy(Map<String, Object> map) 호출");
+
+	    // DAO 메서드 파라미터로 전달된 매개 변수 가져오기
+	    String orderBy = (String) map.get("orderBy");
+	    String userId = (String) map.get("user_id");
+
+	    // SQL 쿼리 실행을 위해 적절한 매개 변수 설정
+	    map.put("orderBy", orderBy);
+
+	    // SQL 쿼리 실행
+	    return sql.selectList(NAMESPACE + ".selectProduct", map);
+	}
+
+
 	
 	
 	

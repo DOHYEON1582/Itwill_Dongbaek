@@ -43,6 +43,9 @@ public interface UserService {
 	public int deleteMarkAll(String user_id) throws Exception;
 	
 	
+	// 제품 정렬
+	public List<ProductVO> getProductOrderBy(String orderBy, String user_id) throws Exception;
+	
 	
 	// 가게 목록 전체 조회
 	public List<StoreVO> getStore(StoreVO svo) throws Exception;

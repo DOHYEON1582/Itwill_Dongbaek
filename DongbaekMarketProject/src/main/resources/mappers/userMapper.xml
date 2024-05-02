@@ -187,22 +187,19 @@
 	
 	<!-- 정렬 -->
 	<select id="selectProduct" parameterType="map" resultType="com.itwillbs.domain.ProductVO">
-	    SELECT * FROM product
-	    WHERE user_id = #{user_id}
-	    <where>
-	        <if test="orderBy == 'latest'">
-	            ORDER BY regdate DESC
-	        </if>
-	        <if test="orderBy == 'popularity'">
-	            ORDER BY viewcnt DESC
-	        </if>
-	        <if test="orderBy == 'lowPrice'">
-	            ORDER BY price ASC
-	        </if>
-	        <if test="orderBy == 'highPrice'">
-	            ORDER BY price DESC
-	        </if>
-	    </where>
+	    SELECT *
+	    FROM product  
+        <choose>
+            <when test="orderBy == 'popularity'">
+                ORDER BY viewcnt DESC
+            </when>
+            <when test="orderBy == 'lowPrice'">
+                ORDER BY price ASC
+            </when>
+            <when test="orderBy == 'highPrice'">
+                ORDER BY price DESC
+            </when>
+        </choose>
 	</select>
 	
 	
