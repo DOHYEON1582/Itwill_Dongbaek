@@ -256,6 +256,36 @@ window.onclick = function(event) {
         closeModal(); // 모달 닫기 함수 호출
     }
 }
+$(document).ready(function(){
+	$("#writeQuestion").click(function(){
+		alert("문의를 작성합니다.");
+        var currentDate = new Date();
+        var formattedDate = currentDate.toISOString();
+		var question = {
+			"title" : $("#title").val(),
+			"q_type" : $("#q_type").val(),
+			"content" : $("#content").val(),
+			"product_code" : $("#product_code").val(),
+			"regdate" : formattedDate
+		};
+	$.ajax({
+		type : "POST",
+		url : "/productMain",
+		data : question,
+		contentType : "application/json; charset=UTF-8",
+		success : function(data){
+			$("#title").val("");
+			$("#q_type").val("");
+			$("#content").val("");
+			$("#product_code").val("");
+			$("#regdate").val("");
+		},
+		error : function(){
+			alert("실패");
+		}
+		});
+	});
+});
 </script>
 </head>
 
@@ -379,19 +409,8 @@ window.onclick = function(event) {
 		</c:forEach>    		
     	</tbody>
     </table>
-<!--    		<div class="box-footer clearfix"> -->
-<!-- 			<ul class="pagination pagination-sm no-margin pull-right"> -->
-<%-- 				<c:if test="${pageVO.prev }"> --%>
-<%-- 				<li><a href="/board/listCri?page=${pageVO.startPage - 1 }">«</a></li> --%>
-<%-- 				</c:if> --%>
-<%-- 				<c:forEach var="idx" begin="${pageVO.startPage }" end="${pageVO.endPage }" step="1"> --%>
-<%-- 				<li ${pageVO.cri.page == idx? "class=active":""}><a href="/board/listCri?page=${idx }">${idx }</a></li> --%>
-<%-- 				</c:forEach> --%>
-<%-- 				<c:if test="${pageVO.next }"> --%>
-<%-- 				<li><a href="/board/listCri?page=${pageVO.endPage + 1 }">»</a></li> --%>
-<%-- 				</c:if> --%>
-<!-- 			</ul> -->
-<!-- 		</div> -->
+	<a href="/market/questionMain"> 전체 문의 보러가기</a>
+ 		
     <button type="button" class="ask-button" onclick="openModal()">문의하기</button>
     <!-- 모달 -->
     <div id="myModal" class="modal">

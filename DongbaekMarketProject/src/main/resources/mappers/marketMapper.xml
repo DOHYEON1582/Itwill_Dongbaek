@@ -78,21 +78,38 @@
   	values(#{user_id},#{user_name},#{title},#{content},#{q_type},#{product_code},now())
   </insert>
   
-  <!-- 문의 글 불러오기 -->
-  <select id="selectQuestion" resultType="QuestionVO">
-  	select * from question
-  	where product_code = #{product_code}
+  <!-- 문의 글 불러오기 페이징처리 -->
+  	<select id="selectQuestion" resultType="QuestionVO">
+		<![CDATA[
+		select * from question
+		where product_code = #{product_code}
+		order by regdate desc 
+		limit #{startPage},#{pageSize}
+		]]>
+ 	</select>  
+  
+  <!-- 전체 글 계산 -->
+  <select id="totalCount" resultType="int">
+  	select count(q_code) from question;
   </select>
   
+  <!-- 문의 글 목록 페이징처리 -->
+  <select id="questionPage" resultType="QuestionVO">
+  	<![CDATA[
+  		select * from question
+  		where product_code = #{product_code}
+  		order by regdate desc
+  		limit #{page},5
+  	]]>
+  </select>
   
-  
-  
-  
-  
-  
-  
-  
-  
+  <!-- 최근 문의글 10개 불러오기  -->
+  <select id="newQuestion" resultType="QuestionVO">
+  	select * from question
+  	where product_code = #{product_code}
+  	order by regdate desc
+  	limit 0,10;
+  </select>
   
   
   

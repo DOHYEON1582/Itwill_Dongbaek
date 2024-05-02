@@ -1,6 +1,7 @@
 package com.itwillbs.persistence;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -9,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MarketVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.QuestionVO;
@@ -83,8 +85,24 @@ public class MarketDAOImpl implements MarketDAO{
 	}
 
 	@Override
-	public List<QuestionVO> getQuestion(int product_code) throws Exception {
-		return sqlSession.selectList(NAMESPACE + ".selectQuestion", product_code);
+	public List<QuestionVO> getQuestion(Map<String, Object> paramMap) throws Exception {
+		return sqlSession.selectList(NAMESPACE + ".selectQuestion", paramMap);
+	}
+
+	@Override
+	public int questionCount() throws Exception {
+		return sqlSession.selectOne(NAMESPACE + ".totalCount");
+	}
+
+	@Override
+	public List<QuestionVO> questionListPage(int page) throws Exception {
+		page = (page - 1) * 5;
+		return sqlSession.selectList(NAMESPACE + ".questionPage", page);
+	}
+
+	@Override
+	public List<QuestionVO> newQuestion(int product_code) throws Exception {
+		return sqlSession.selectList(NAMESPACE + ".newQuestion", product_code);
 	}
 
 	

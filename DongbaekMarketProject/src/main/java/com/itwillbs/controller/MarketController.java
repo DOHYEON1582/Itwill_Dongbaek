@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MarketVO;
+import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.QuestionVO;
 import com.itwillbs.domain.ReviewVO;
@@ -85,29 +87,54 @@ public class MarketController {
 		}
 		
 	}
+	
+
 
 
 	// 상품 메인페이지
 	@RequestMapping(value = "/productMain", method = RequestMethod.GET)
-	public void productMain(@RequestParam("product_code") int product_code, Model model, HttpSession session, QuestionVO qvo) throws Exception{
+	public void productMain(@RequestParam("product_code") int product_code, Model model, HttpSession session, QuestionVO qvo, Criteria cri) throws Exception{
 		logger.debug(" productMain() 호출 ");
+
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("product_code", product_code);
 		ProductVO product = mService.eachProduct(product_code);
 		model.addAttribute("product", product);
+		List<QuestionVO> question = mService.newQuestion(product_code);
 		List<ReviewVO> review = mService.productReview(product_code);
+		model.addAttribute("question", question);
 		model.addAttribute("review", review);
 		//mService.writeQuestion(qvo);
-		List<QuestionVO> question = mService.selectQuestion(product_code);
-		model.addAttribute("question", question);
 		
-	}
-	
-	
-	// 상품 POST 페이지
-	@RequestMapping(value = "/productMain", method = RequestMethod.POST)
-	public void productMainPOST(@RequestParam("product_code") int product_code, Model model, HttpSession session, QuestionVO qvo) throws Exception{
-		logger.debug(" productMainPOST() 호출 ");
-		mService.writeQuestion(qvo);
 
 	}
+	
+	@RequestMapping(value = "/questionMain", method = RequestMethod.GET)
+	public void questionMain(@RequestParam("product_code") int product_code, Criteria cri, Model model) throws Exception {
+		PageVO pageVO = new PageVO();
+		pageVO.setCri(cri);
+		pageVO.setTotalCount(mService.questionCount());
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("startPage", pageVO.getStartPage());
+		paramMap.put("pageSize", cri.getPageSize());
+	
+		List<QuestionVO> question = mService.getQuestion(paramMap);
+		
+		model.addAttribute("cri", cri);
+		model.addAttribute("pageVO", pageVO);
+	}
+	
+	
+	
+	
+	
+	
+//	// 상품 POST 페이지
+//	@RequestMapping(value = "/productMain", method = RequestMethod.POST)
+//	public void productMainPOST(@RequestParam("product_code") int product_code, Model model, HttpSession session, QuestionVO qvo) throws Exception{
+//		logger.debug(" productMainPOST() 호출 ");
+//		//mService.writeQuestion(qvo);
+//
+//	}
 	
 }
