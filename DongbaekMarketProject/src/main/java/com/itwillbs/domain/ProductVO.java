@@ -1,11 +1,11 @@
 package com.itwillbs.domain;
 
 import java.util.List;
-
 import lombok.Data;
 
 @Data
 public class ProductVO {
+
 	private int product_code;
 	private int store_code;
 	private String price;
