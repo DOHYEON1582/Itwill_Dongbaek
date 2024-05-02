@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +29,7 @@ import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.QuestionVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
+import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.MarketService;
 
 @Controller
@@ -93,9 +95,10 @@ public class MarketController {
 
 	// 상품 메인페이지
 	@RequestMapping(value = "/productMain", method = RequestMethod.GET)
-	public void productMain(@RequestParam("product_code") int product_code, Model model, HttpSession session, QuestionVO qvo, Criteria cri) throws Exception{
+	public void productMain(@RequestParam("product_code") int product_code, Model model, HttpSession session, QuestionVO qvo) throws Exception{
 		logger.debug(" productMain() 호출 ");
-
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+		String user_id = userVO.getUser_id();
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("product_code", product_code);
 		ProductVO product = mService.eachProduct(product_code);
@@ -105,9 +108,27 @@ public class MarketController {
 		model.addAttribute("question", question);
 		model.addAttribute("review", review);
 		//mService.writeQuestion(qvo);
-		
+		//model.addAttribute("user_id", user_id);
 
 	}
+	
+	@RequestMapping(value = "/productMain", method = RequestMethod.POST)
+	public ResponseEntity<String> questionAdd(@RequestBody QuestionVO question) throws Exception{
+		logger.debug(" questionAddPOST 실행 ");
+		logger.debug(" qvo : " + question);
+		try {
+			mService.writeQuestion(question);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest()
+					.contentType(MediaType.valueOf("text/plain; charset=UTF-8"))
+					.body("문의 글 작성 실패");
+		}
+		
+		return ResponseEntity.ok()
+				.contentType(MediaType.valueOf("text/plain; charset=UTF-8"))
+				.body("문의 글 작성 성공");
+	}
+	
 	
 	@RequestMapping(value = "/questionMain", method = RequestMethod.GET)
 	public void questionMain(@RequestParam("product_code") int product_code, Criteria cri, Model model) throws Exception {

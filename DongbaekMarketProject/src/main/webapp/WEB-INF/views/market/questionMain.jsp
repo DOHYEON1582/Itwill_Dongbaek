@@ -122,49 +122,7 @@
     max-width: 600px;
 }
 
-/* 모달 닫기 버튼 스타일 */
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
 
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-.form-group {
-    text-align: left;
-    font-size: 20px;
-}
-    .star-rating {
-        unicode-bidi: bidi-override;
-        color: #f8ce0b;
-        font-size: 25px;
-        display: inline-block;
-    }
-
-    .star-rating::before {
-        content: '\2605';
-        position: absolute;
-        z-index: 0;
-        top: 0;
-        left: 0;
-        overflow: hidden;
-        width: 0;
-    }
-
-    .star-rating span {
-        position: absolute;
-        top: 0;
-        left: 0;
-        overflow: hidden;
-        width: 0;
-        color: #000;
-    }
     table {
         width: 100%;
         border-collapse: collapse;
@@ -194,23 +152,6 @@ function topFunction() {
   document.body.scrollTop = 0; // For Safari
   document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 }
-
-function showStarRating() {
-    var starElements = document.getElementsByClassName('star-rating');
-    Array.prototype.forEach.call(starElements, function(starElement) {
-        var rating = parseInt(starElement.getAttribute('data-rating'), 10);
-        var stars = '';
-        for (var i = 0; i < 5; i++) {
-            if (i < rating) {
-                stars += '<span>&#x2605;</span>';
-            } else {
-                stars += '<span>&#x2606;</span>';
-            }
-        }
-        starElement.innerHTML = stars;
-    });
-}
-    showStarRating(); // 페이지가 로드될 때 별점 표시
 
 
 $(document).on("click", ".quantity-right-plus", function(e){
@@ -360,13 +301,6 @@ $(document).ready(function(){
     </div>
 </div>
 
-<div class="row" style="margin: 50px 0;">
-    <h1 class="jumbotron">
-        <div class="container1">
-            <small>This is product page.</small>
-        </div>
-    </h1>
-</div>
 
 <div class="row about_product" style="text-align: center;">
     <h1 class="page-header" id="about1">상품 상세</h1>
@@ -377,40 +311,6 @@ $(document).ready(function(){
 </div>
 <div class="row reviews" style="text-align: center;"></div>
 
-
-<hr>
-
-<div class="container">
-    <h1 class="page-header" style="margin-bottom: 50px;" id="review1">Review</h1>
-    <table class="table table-bordered">
-    	<tbody>
-    		<tr>
-				<th>Title</th>
-				<th>Writer</th>
-				<th>Content</th>
-				<th>Star</th>
-				<th>img1</th>
-				<th>Regdate</th>
-    		</tr>
-		<c:forEach var="review" items="${review }">
-			<tr>
-				<td>${review.title }</td>
-				<td>${review.user_id }</td>
-				<td>${review.content }</td>
-		        <td>
-		            <span class="star-rating" data-rating = ${review.star }>
-		                <c:forEach begin="1" end="${review.star}">
-		                    &#9733; <!-- 별 모양의 아이콘 -->
-		                </c:forEach>
-		            </span>
-		        </td>
-				<td><img src="${pageContext.request.contextPath}/resources/images/${review.img1}" style="width: 100px; height: 100px;"></td>
-				<td><fmt:formatDate value="${review.regdate }"/></td>
-			</tr>
-		</c:forEach>    		
-    	</tbody>
-    </table>
-</div>
 
 <hr>
 
@@ -434,7 +334,7 @@ $(document).ready(function(){
 		</c:forEach>    		
     	</tbody>
     </table>
-	<a href="/market/questionMain"> 전체 문의 보러가기</a>
+	<a href="/market/productMain"> 상품 보러가기</a>
  		
     <button type="button" class="ask-button" onclick="openModal()">문의하기</button>
     <!-- 모달 -->
