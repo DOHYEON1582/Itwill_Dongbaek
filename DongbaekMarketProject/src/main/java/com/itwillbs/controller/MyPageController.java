@@ -21,6 +21,7 @@ import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.OrderInfoVO;
 import com.itwillbs.domain.PageMaker;
+import com.itwillbs.domain.SearchCriteria;
 import com.itwillbs.service.MyPageService;
 
 @Controller
@@ -128,23 +129,35 @@ public class MyPageController {
 	// 주문내역
 	@GetMapping(value = "orderlist")
 	public void orderListGET(HttpSession session, 
-							 HttpServletRequest request, 
-							 HttpServletResponse response, 
-							 @ModelAttribute("cri") Criteria cri, 
-							 Model model) throws Exception {
+							@ModelAttribute("cri") Criteria cri, 
+							@RequestParam(required = false) String startDate,
+							@RequestParam(required = false) String endDate, 
+							@RequestParam(required = false) String states, 
+							Model model) throws Exception {
 		logger.debug(" === orderListGET() 실행 ===");
-		
-		String userid = (String)session.getAttribute("user_id"); // 수정필요 240502
+
+		String userid = (String) session.getAttribute("user_id"); // 수정필요 240502
+
+		// 검색
+		SearchCriteria searchCri = new SearchCriteria();
+		searchCri.setStartDate(startDate);
+		searchCri.setEndDate(endDate);
+		searchCri.setEndDate(states);
 		
 		List<OrderInfoVO> orderList = mService.selectUserOrderList(userid);
-		
+
 		PageMaker pageMaker = new PageMaker();
 
 		pageMaker.setCri(cri);
 		pageMaker.setTotalCount(mService.selectCountOrder(userid));
-		
-		model.addAttribute("orderList", orderList); 
+
+		model.addAttribute("orderList", orderList);
 		model.addAttribute("pageMaker", pageMaker);
-		
+
+	}
+
+	@GetMapping(value = "orderdetail")
+	public void orderDetailGET() throws Exception {
+		logger.debug(" === orderDetailGET() 실행 ===");
 	}
 }
