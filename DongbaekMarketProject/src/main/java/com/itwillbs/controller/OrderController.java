@@ -14,16 +14,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.CartVO;
-import com.itwillbs.domain.OrderInfoVO;
-import com.itwillbs.dto.OrderInfoDTO;
-import com.itwillbs.service.MyPageService;
 import com.itwillbs.service.OrderService;
 import com.siot.IamportRestClient.IamportClient;
 
@@ -54,6 +49,10 @@ public class OrderController {
 		String userid = (String) session.getAttribute("user_id");
 
 		CartVO cvo = new CartVO();
+		
+		// 상품갯수
+		int productNum = 0;
+		
 		/* 주문 할 상품 리스트 */
 		// 상품 선택 주문
 		List<CartVO> cartList = new ArrayList<CartVO>();
@@ -64,21 +63,25 @@ public class OrderController {
 				logger.debug(" checkList " + checkList[i]);
 				cvo = oService.selectProductInfo(checkList[i]);
 				cartList.add(cvo);
+				productNum = strCheckList.length;
 			}
 		}
 		// 상품 개별 주문
 		if (cartCode != null && strCheckList == null) {
 			cvo = oService.selectProductInfo(Integer.parseInt(cartCode));
 			cartList.add(cvo);
+			productNum = 1;
 		}
 		// 상품 전체 주문
 		if (strCheckList != null && cartCode != null) {
 			cartList = oService.selectCartList(cvo);
+			productNum = oService.selectCountCart(cvo);
 		}
 		// 적립금
 		String point = oService.selectUserPoint(userid);
 
 		model.addAttribute("cartList", cartList);
+		model.addAttribute("productNum", productNum);
 		model.addAttribute("point", point);
 	}
 

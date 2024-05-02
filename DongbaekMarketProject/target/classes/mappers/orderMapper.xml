@@ -28,6 +28,15 @@
 		WHERE  cart_cocd = #{cart_cocd}
 	</select>
 	
+	<!-- 장바구니에 담긴 상품 수 세어오기 -->
+	<select id="selectCountCart" resultType="int">
+		SELECT Count(*)
+		FROM   cart
+		WHERE  user_id = #{user_id}
+		       AND bundle_code = #{bundle_code}
+		       AND states = '장바구니' 
+	</select>
+	
 	<!-- 장바구니 목록 가져오기 -->
 	<select id="selectCartList" resultType="CartVO">
 		SELECT c.*,

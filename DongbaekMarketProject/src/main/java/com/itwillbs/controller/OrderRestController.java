@@ -11,12 +11,15 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.itwillbs.domain.OrderInfoVO;
 import com.itwillbs.service.OrderService;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
@@ -47,10 +50,11 @@ public class OrderRestController {
 	}
 	
 	//결제 완료 시 DB에 결제 완료 처리
-	@RequestMapping(value="/paySuccess", method=RequestMethod.POST)
-	public void paySuccess() {
+	@RequestMapping(value="/order/success", method=RequestMethod.POST)
+	public void paySuccess(@RequestBody OrderInfoVO ovo) throws Exception{
+		logger.debug(" === paySuccess(@RequestBody OrderInfoVO ovo) 실행 === ");
 		
-
+		oService.insertOrderInfo(ovo);
 		
 	}	
 
