@@ -29,6 +29,13 @@ public class OrderDAOImpl implements OrderDAO{
 		return sqlSession.selectList(NAMESPACE+".selectProductInfo");
 	}
 	
+	// 장바구니 상품 수 세어오기
+	@Override
+	public int selectCountCart(CartVO vo) throws Exception {
+		logger.debug(" === D : selectCountCart(CartVO vo) 실행 === ");
+		return sqlSession.selectOne(NAMESPACE+".selectCountCart",vo);
+	}
+	
 	// 주문 할 상품 정보 가져오기
 	@Override
 	public CartVO selectProductInfo(int cart_code) throws Exception {
@@ -56,6 +63,8 @@ public class OrderDAOImpl implements OrderDAO{
 		logger.debug(" === D : insertOrderInfo() 실행 === ");
 		sqlSession.insert(NAMESPACE+".insertOrderInfo",vo);
 	}
+
+	
 
 	
 	

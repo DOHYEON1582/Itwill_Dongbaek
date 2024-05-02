@@ -125,6 +125,8 @@
 	<input type="hidden" id="rcv_phone" name="rcv_phone">
 	<input type="hidden" id="rcv_addr2" name="rcv_addr2"><!-- 상세주소, 참고항목 합치기 -->
 	
+	<!-- 주문 상품 수량 -->
+	<input type="hidden" id="productNum" name="productNum" value="${productNum }">	
 	</form>
 
 	
@@ -263,8 +265,8 @@
 		    return phone1 + phone2 + phone3;
 		});
 		
-	  	// addr2, addr3, rcv_phone1, rcv_phone2, rcv_phone3 폼 제출 막기
-        $('#addr2, #addr3, #rcv_phone1, #rcv_phone2, #rcv_phone3').change(function(){
+	  	// addr2, addr3, rcv_phone1, rcv_phone2, rcv_phone3, productNum 폼 제출 막기
+        $('#addr2, #addr3, #rcv_phone1, #rcv_phone2, #rcv_phone3, #productNum').change(function(){
             $('#orderFrm').off('submit').submit(function(event){
                 event.preventDefault();
             });
@@ -294,23 +296,23 @@
 					pg : "html5_inicis",
 					pay_method : 'card',
 					merchant_uid : data,
-					name : '상품명 어떻게 가져올건지..',
+					name : '상품명',
 					amount : $('#amount').val(),
-					custom_data : '부가정보...',
 					buyer_name : $('#name').val(),
-					buyer_tel : '필수입력',
+					buyer_tel : $('#rcv_phone').val(), // 없으면 오류
 					buyer_addr : '',
 					buyer_postcode : '',
 				}, function(rsp){
 					if(rsp.success){
 						$.ajax({
 							type: 'POST',
-							url: '/paySuccess',
+							url: '/order/success',
 							data: JSON.stringify(orderInfo),
 							contentType: 'application/json; charset=utf-8',
 						});
 					}else{
-						
+						alert("오류가 발생했습니다.");
+						history.bakc()
 					} // if문 끝
 				}
 				});

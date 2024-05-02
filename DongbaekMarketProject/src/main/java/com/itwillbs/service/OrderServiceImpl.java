@@ -27,6 +27,13 @@ public class OrderServiceImpl implements OrderService {
 		return odao.selectCartList(vo);
 	}
 	
+	// 장바구니 상품 수 세어오기
+	@Override
+	public int selectCountCart(CartVO vo) throws Exception {
+		logger.debug(" === S : selectCountCart(CartVO vo) 실행 === ");
+		return odao.selectCountCart(vo);
+	}
+	
 	// 주문 할 상품 정보 가져오기
 	@Override
 	public CartVO selectProductInfo(int cart_code) throws Exception {
@@ -54,6 +61,8 @@ public class OrderServiceImpl implements OrderService {
 		logger.debug(" === S : insertOrderInfo() 실행 === ");
 		odao.insertOrderInfo(vo);
 	}
+
+	
 
 	
 	
