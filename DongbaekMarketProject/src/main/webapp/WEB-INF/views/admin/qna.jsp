@@ -14,18 +14,15 @@
 				var user = {
 						"user_id" : value
 				};
-			}else if(title == "user_name"){
+			}else{
 				var user = {
 						"user_name" : value
 				};
-			}else{
-				var user = {
-						"phone" : value
-				};
 			}
+		
 			
 			$.ajax({
-				url : "/admin/customer",
+				url : "/admin/qna",
 				type : "POST",
 				data : JSON.stringify(user),
 				contentType : "application/json; charset=UTF-8",
@@ -173,7 +170,6 @@
                 <select id="selectBox" class="form-select border-0 bg-transparent">
                   <option value="user_id">아이디</option>
                   <option value="user_name">이름</option>
-                  <option value="phone">전화번호</option>
                 </select>
               </div>
               <div class="col-11 col-md-7">

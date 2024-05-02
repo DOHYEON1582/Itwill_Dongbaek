@@ -183,4 +183,14 @@ public class AdminRestController {
 		return new ResponseEntity<AdminNoticeVO>(aService.noticeInfo(q_code), HttpStatus.OK);
 	}
 	
+	@PostMapping(value = "/qna")
+	public void	qnaList(@RequestBody UserVO vo)throws Exception{
+		logger.debug(" qnaList()호출 ");
+		
+		
+		
+	}
+	
+	
+	
 }//endController
