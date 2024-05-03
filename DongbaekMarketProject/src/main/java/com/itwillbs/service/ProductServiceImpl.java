@@ -27,6 +27,13 @@ public class ProductServiceImpl implements ProductService {
 	
 
 	@Override
+	public ProductVO getProductById(int product_code) {
+		logger.debug(" getProductById(int product_code) ");
+		return pdao.getProductById(product_code);
+	}
+
+
+	@Override
 	public int getTotalCount(int store_code) throws Exception {
 		logger.debug(" getTotalCount() 호출 ");
 		return pdao.getTotalCount(store_code);

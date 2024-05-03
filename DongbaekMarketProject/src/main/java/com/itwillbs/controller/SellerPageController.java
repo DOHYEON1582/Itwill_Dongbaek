@@ -15,9 +15,12 @@ import javax.servlet.http.HttpSession;
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,28 +55,41 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	@RequestMapping(value = "/product",method = RequestMethod.GET)
 	public String productList(Model model, @ModelAttribute("cri") ProductCri cri, HttpSession session) throws Exception {
 	    // 세션에서 가게 코드를 가져옴
-	    Integer store_code = (Integer) session.getAttribute("store_code");
-	    //if (store_code == null) {
-	        // 가게 코드가 없으면 로그인 페이지로 리다이렉트 또는 다른 처리를 수행할 수 있음
-	    //   return "redirect:/login";
-	    //}
+//	    Integer store_code = (Integer) session.getAttribute("store_code");
+//	    if (store_code == null) {
+//	        // 가게 코드가 없으면 로그인 페이지로 리다이렉트 또는 다른 처리를 수행할 수 있음
+//	       return "redirect:/login";
+//	    }
 
 	    // 가게 코드를 설정
 	    cri.setStore_code(2024042501);
 
-	    List<ProductVO> productList = pService.getProductPage(cri);
+	    List<ProductVO> product = pService.getProductPage(cri);
 	    int totalCount = pService.getTotalCount(2024042501); // 총 상품 수를 ProductService를 통해 가져옴
 
 	    ProductPagingVO pagingVO = new ProductPagingVO();
 	    pagingVO.setCri(cri);
 	    pagingVO.setTotalCount(totalCount);
 
-	    model.addAttribute("productList", productList);
+	    model.addAttribute("product", product);
 	    model.addAttribute("pagingVO", pagingVO);
 
 	    return "/seller/product";
 	}
 		
+	// 상품 상세 페이지를 보여주는 메서드
+    @RequestMapping(value = "/productDetail", method = RequestMethod.GET)
+    public String showProductDetail(@RequestParam("product_code") int product_code, Model model) {
+        // 상품 정보 조회
+        ProductVO product = pService.getProductById(product_code);
+        
+        // 조회된 상품 정보를 모델에 추가하여 뷰로 전달
+        model.addAttribute("product", product);
+        
+        // 상품 상세 페이지로 이동
+        return "product/detail";
+    }
+	
 	// 판매자 상품페이지(상품등록)
 	//	http://localhost:8088/seller/productregist
 	@RequestMapping(value = "/productregist",method = RequestMethod.GET)
@@ -98,7 +114,7 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	                                  @RequestParam(value = "store_code", defaultValue = "0") int store_code,
 	                                  RedirectAttributes rttr) throws Exception {
 	    // 이미지 파일 저장
-	    String fileDirectory = "C:\\Users\\ITWILL\\git\\Itwill_Dongbaek\\DongbaekMarketProject\\src\\main\\webapp\\resources\\images"; // 이미지 파일이 저장될 디렉토리 경로 수정 필요
+	    String fileDirectory = "/resources/images"; // 이미지 파일이 저장될 디렉토리 경로 수정 필요
 	    String img1Filename = saveImage(img1, fileDirectory, rttr);
 	    String img2Filename = saveImage(img2, fileDirectory, rttr);
 	    String img3Filename = saveImage(img3, fileDirectory, rttr);
@@ -141,6 +157,30 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	        }
 	    }
 	    return null;
+	}
+
+	@RequestMapping(value = "/image/{imageName:.+}", method = RequestMethod.GET)
+	public ResponseEntity<byte[]> getProductImage(@PathVariable("imageName") String imageName) throws IOException {
+	    // 이미지 파일이 저장된 디렉토리 경로
+	    String fileDirectory = "/resources/images";
+
+	    // 이미지 파일 경로
+	    String imagePath = fileDirectory + "/" + imageName;
+
+	    // 이미지 파일을 읽어옴
+	    Path path = Paths.get(imagePath);
+	    byte[] imageBytes = Files.readAllBytes(path);
+
+	    // 이미지 파일 확장자에 따라 MediaType 설정
+	    MediaType mediaType = MediaType.IMAGE_JPEG;
+	    if (imageName.endsWith(".png")) {
+	        mediaType = MediaType.IMAGE_PNG;
+	    } else if (imageName.endsWith(".gif")) {
+	        mediaType = MediaType.IMAGE_GIF;
+	    }
+
+	    // 이미지 파일과 MediaType을 ResponseEntity에 담아서 반환
+	    return ResponseEntity.ok().contentType(mediaType).body(imageBytes);
 	}
 
 

@@ -7,6 +7,9 @@ import com.itwillbs.domain.ProductVO;
 
 public interface ProductService {
 
+	 
+    public ProductVO getProductById(int product_code); // 상품 ID를 기준으로 상품 정보를 조회하는 메서드
+    
 	public int getTotalCount(int store_code) throws Exception; // 전체 상품 수 조회
 	
 	public List<ProductVO> getProductPage(ProductCri cri) throws Exception; // 페이징된 상품 목록 조회

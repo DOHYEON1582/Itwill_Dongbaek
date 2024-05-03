@@ -23,6 +23,14 @@ public class ProductDAOImpl implements ProductDAO {
 	private static final Logger logger = LoggerFactory.getLogger(ProductDAOImpl.class);
 	private static final String NAMESPACE = "com.itwillbs.mapper.ProductMapper";
 	
+	
+	
+	
+	@Override
+	public ProductVO getProductById(int product_code) {
+		return sqlSession.selectOne(NAMESPACE+".getProductById",product_code);
+	}
+
 	@Override
     public int getTotalCount(int store_code) {
         return sqlSession.selectOne(NAMESPACE + ".getTotalCount", store_code);
