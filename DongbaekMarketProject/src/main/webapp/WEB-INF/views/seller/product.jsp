@@ -427,7 +427,7 @@ body {
                         </a>
                     </div>
                 </td>
-                <c:if test="${loop.index % 3 == 2 or loop.last}">
+                 <c:if test="${loop.index % 3 == 2 or loop.last}">
                     </tr>
                 </c:if>
             </c:forEach>
