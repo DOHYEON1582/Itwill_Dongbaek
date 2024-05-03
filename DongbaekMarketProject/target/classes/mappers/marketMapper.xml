@@ -111,6 +111,12 @@
   	limit 0,10;
   </select>
   
+  <!-- 문의 상세정보 불러오기 -->
+  <select id="questionDetail" resultType="QuestionVO">
+  	select * from question
+  	where q_code = #{q_code}
+  </select>
+  
   
   
   

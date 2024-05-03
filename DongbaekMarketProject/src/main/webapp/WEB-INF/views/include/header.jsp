@@ -186,7 +186,7 @@
 			<div class="row py-3 border-bottom">
 				<div class="col-sm-4 col-lg-3 text-center text-sm-start">
 					<div class="main-logo">
-						<a href="/"> <img src="${pageContext.request.contextPath }resources/images/mylogo2.png" alt="logo" class="mylogo2">
+						<a href="/"> <img src="${pageContext.request.contextPath }/resources/images/mylogo2.png" alt="logo" class="mylogo2">
 						</a>
 					</div>
 				</div>

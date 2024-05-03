@@ -313,6 +313,25 @@ $(document).ready(function() {
             }
         });
     });
+    // 문의 제목을 클릭했을 때 모달 창을 열고 해당 문의 정보를 표시하는 함수
+    function openQuestionModal(q_code) {
+        // 문의 정보를 가져오는 AJAX 요청
+        console.log("정보 들고온다.");
+        $.ajax({
+            type: "GET",
+            url: "/market/questionDetail?q_code=" + q_code, // 문의 상세 정보를 가져오는 URL
+            success: function(data) {
+                // 가져온 데이터를 모달에 표시
+                $("#questionDetailModal .modal-content").html(data);
+                // 모달 열기
+                $("#questionDetailModal").modal("show");
+            },
+            error: function(xhr, status, error) {
+                // 에러 처리
+                console.error("Error fetching question details:", error);
+            }
+        });
+    }
 });
 </script>
 </head>
@@ -431,7 +450,7 @@ $(document).ready(function() {
 			<tr>
 				<td>${question.q_type }</td>
 				<td>${question.user_id }</td>
-				<td>${question.title }</td>
+				<td><a href="#" onclick="openQuestionModal(${question.q_code})">${question.title}</a></td>
 				<td><fmt:formatDate value="${question.regdate }"/></td>
 			</tr>
 		</c:forEach>    		
@@ -475,7 +494,26 @@ $(document).ready(function() {
 			</div>
         </div>
     </div>
+	    <!-- 문의 상세 정보를 표시하는 모달 -->
+	<div id="questionDetailModal" class="modal fade" role="dialog">
+	    <div class="modal-dialog">
+	        <!-- Modal content-->
+	        <div class="modal-content">
+					<div>
+						<h2>${detail.title}</h2>
+						<p>작성자: ${detail.user_id}</p>
+						<p>문의 유형: ${detail.q_type}</p>
+						<p>
+							작성일:
+							<fmt:formatDate value="${detail.regdate}" />
+						</p>
+						<p>내용: ${detail.content}</p>
+					</div>
+				</div>
+	    </div>
+	</div>
 </div>
+
 
 
 

@@ -145,6 +145,23 @@
     tr:hover {
         background-color: #dddddd;
     }
+    .pagination {
+        display: inline-block;
+    }
+
+    .pagination li {
+        display: inline;
+        padding: 0 5px;
+    }
+
+    .pagination li.active {
+        font-weight: bold;
+    }
+
+    .pagination li.disabled {
+        pointer-events: none;
+        cursor: default;
+    }
 </style>
 <script type="text/javascript">
 // 맨 위로 스크롤되도록 설정
@@ -152,7 +169,6 @@ function topFunction() {
   document.body.scrollTop = 0; // For Safari
   document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 }
-
 
 $(document).on("click", ".quantity-right-plus", function(e){
     // + 버튼을 클릭하면 수량 증가
@@ -219,6 +235,7 @@ window.onclick = function(event) {
         closeModal(); // 모달 닫기 함수 호출
     }
 }
+
 $(document).ready(function(){
 	$("#writeQuestion").click(function(){
 		alert("문의를 작성합니다.");
@@ -250,6 +267,7 @@ $(document).ready(function(){
 			alert('에러가 발생했습니다.\n' + errorMessage);
 		}
 		});
+
 	});
 });
 </script>
@@ -322,19 +340,22 @@ $(document).ready(function(){
 		</c:forEach>    		
     	</tbody>
     </table>
-		<div class="box-footer clearfix">
-			<ul class="pagination pagination-sm no-margin pull-right">
+		<div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+			<ul class="pagination">
 				<c:if test="${pageVO.prev }">
-					<li><a href="/board/listCri?page=${pageVO.startPage - 1 }">«</a></li>
+					<li class="paginate_button previous disabled" id="example2_previous">
+						<a href="/market/questionMain?product_code=${product.product_code }&page=${pageVO.startPage - 1 }">«</a></li>
 				</c:if>
 				<c:forEach var="idx" begin="${pageVO.startPage }" end="${pageVO.endPage }" step="1">
-					<li ${pageVO.cri.page == idx? "class=active":""}><a href="/board/listCri?page=${idx }">${idx }</a></li>
+					<li ${pageVO.cri.page == idx? "class=active":""}>
+					<a href="/market/questionMain?product_code=${product.product_code }&page=${idx }#qna1">${idx }</a></li>
 				</c:forEach>
 				<c:if test="${pageVO.next }">
-					<li><a href="/board/listCri?page=${pageVO.endPage + 1 }">»</a></li>
+					<li><a href="/market/questionMain?product_code=${product.product_code }&page=${pageVO.endPage + 1 }">»</a></li>
 				</c:if>
 			</ul>
 		</div>
+
 		<a href="/market/productMain?product_code=${product.product_code }"> 상품 보러가기</a>
  		
     <button type="button" class="ask-button" onclick="openModal()">문의하기</button>
