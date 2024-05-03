@@ -56,9 +56,10 @@
 		       AND states = '장바구니' 
 	</delete>
 	
-	<!-- 주문내역 -->
+	<!-- 주문내역-->
 	<!-- 주문내역 리스트 -->
 	<select id="selectUserOrderList" resultType="OrderInfoVO">
+		<![CDATA[
 		SELECT o.user_id,
 		       o.ordr_date,
 		       o.order_code,
@@ -86,7 +87,14 @@
 		                      ON p.product_code = c.product_code) A
 		         ON o.user_id = A.user_id
 		WHERE  o.user_id = #{user_id}
-		       AND A.states NOT IN ('장바구니') 
+		       AND A.states NOT IN ('장바구니')
+		]]>
+		<if test="startDate != null and endDate != null">
+			AND o.ordr_date between #{startDate} and #{endDate}
+		</if>
+		<if test="states != null">
+			AND c.states = #{states}
+		</if> 
 	</select>
 	
 	<!-- 주문내역 갯수 -->
@@ -96,9 +104,38 @@
 		       JOIN cart c
 		         ON o.bundle_code = c.bundle_code
 		WHERE  o.user_id = #{user_id}
-		       AND c.states NOT IN ( '장바구니' )  
+		       AND c.states NOT IN ('장바구니')  
 	</select>
-
+	
+	<!-- 주문 상세 정보 -->
+	<select id="selectOrderInfo" resultType="OrderInfoVO">
+		SELECT u.user_name,
+		       o.*
+		FROM   order_info o
+		       JOIN USER u
+		         ON o.user_id = u.user_id
+		WHERE  order_code = # {order_code}  
+	</select>
+	
+	<!-- 주문 상품 정보 -->
+	<select id="selectOrderProduct" resultType="CartVO">
+		SELECT s.store_code,
+		       s.store_name,
+		       p.product_code,
+		       p.product_name,
+		       p.img1,
+		       A.*
+		FROM   product p
+		       JOIN (SELECT c.*
+		             FROM   cart c
+		                    JOIN order_info o
+		                      ON c.bundle_code = o.bundle_code) A
+		         ON p.product_code = A.product_code
+		       JOIN store s
+		         ON p.store_code = s.store_code
+		WHERE  order_code = #{order_code} 
+	</select>
+	
 	
 
 

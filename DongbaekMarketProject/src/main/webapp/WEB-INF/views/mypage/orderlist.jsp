@@ -22,7 +22,7 @@
 <div class="container">
 
 	<!-- 기간선택 -->
-	<form id="searchFrom">
+	<form id="searchForm">
 	<table>
 		<tr>
 			<td>
@@ -69,10 +69,12 @@
 					<td>${list.product_name }</td><!-- 가격 -->
 				</tr>
 				<tr>	
-					<td><button id="" onclick="location.href='/mypage/orderdetail'">주문상세</button></td><!-- 주문상세 버튼 -->
-					<c:if test="${list.states == '배달완료' }">
-					<td><button id="" onclick="location.href=''">주문상세</button></td><!-- 주문상세 버튼 -->
-					<td><button id="" onclick="location.href='/mypage/orderdelete'">주문내역삭제</button></td><!-- 주문내역 삭제 버튼 -->
+				<!-- 주문내역삭제, 주문취소 js 코드 추가 -->
+					<td><button id="" onclick="location.href='/mypage/orderdetail?order_code=${list.cart_code}&page=${pageMaker.cri.page}&pageSize=${pageMaker.cri.pageSize}'">주문상세</button></td><!-- 주문상세 버튼 -->
+					<td><button id="" onclick="location.href='/mypage/orderdelete?order_code=${list.cart_code}&page=${pageMaker.cri.page}&pageSize=${pageMaker.cri.pageSize }'">주문내역삭제</button></td><!-- 주문내역 삭제 버튼 -->
+					<c:if test="${list.states == '결제완료' }">
+					<td><button id="" onclick="location.href='/mypage/orderdetail?order_code=${list.cart_code}&page=${pageMaker.cri.page}&pageSize=${pageMaker.cri.pageSize}'">주문상세</button></td><!-- 주문상세 버튼 -->
+					<td><button id="" onclick="location.href='/mypage/ordercancel?order_code=${list.cart_code}&page=${pageMaker.cri.page}&pageSize=${pageMaker.cri.pageSize}'">주문취소</button></td><!-- 주문상세 버튼 -->	
 					</c:if>
 				</tr>
 			</c:forEach>
@@ -100,41 +102,51 @@
 <!-- 페이징 끝  -->
 
 </div>
+
+<%@ include file="../include/footer.jsp"%>
+
 <script>
-//검색 
-function search() {
-	var startDate = document.getElementById("startDate").value;
-	var endDate = document.getElementById("endDate").value;
-	var department = document.getElementById("states").value;
+	//검색 
+	function search() {
+		var startDate = document.getElementById("startDate").value;
+		var endDate = document.getElementById("endDate").value;
+		var department = document.getElementById("states").value;
+		
+		var url = "/mypage/orderlist?";
+		var params = [];
 	
-	var url = "/mypage/orderlist?";
-	var params = [];
-
-	if (startDate.trim() !== "") {
-		params.push("startDate=" + startDate);
+		if (startDate.trim() !== "") {
+			params.push("startDate=" + startDate);
+		}
+		if (endDate.trim() !== "") {
+			params.push("endDate=" + endDate);
+		}
+		if (states.trim() !== "" && states.trim() !== "=주문상태=") {
+			params.push("states=" + states);
+		}
+	
+		// 파라미터가 있는 경우에만 URL에 추가
+		if (params.length > 0) {
+			url += params.join("&");
+		}
+	
+		// 페이지 이동
+		window.location.href = url;
 	}
-	if (endDate.trim() !== "") {
-		params.push("endDate=" + endDate);
+	
+	// 폼 서브밋 이벤트 핸들러
+	document.getElementById("searchForm").addEventListener("submit",
+			function(event) {
+				event.preventDefault(); // 기본 동작인 폼 서브밋 방지
+				search(); // 검색 함수 호출
+	});
+		
+	const seartchParams = new URLSearhParams(location.search);
+	
+	/* 240503 주문취소 수정해야함 */
+	function orderCancel(){
+		var url = "/mypage/orderdetail?order_code"
+		location.href='/mypage/orderdetail?order_code=${list.cart_code}&page=${pageMaker.cri.page}&pageSize=${pageMaker.cri.pageSize}'
 	}
-	if (states.trim() !== "" && states.trim() !== "=주문상태=") {
-		params.push("states=" + states);
-	}
-
-	// 파라미터가 있는 경우에만 URL에 추가
-	if (params.length > 0) {
-		url += params.join("&");
-	}
-
-	// 페이지 이동
-	window.location.href = url;
-}
-
-// 폼 서브밋 이벤트 핸들러
-document.getElementById("searchFrom").addEventListener("submit",
-		function(event) {
-			event.preventDefault(); // 기본 동작인 폼 서브밋 방지
-			search(); // 검색 함수 호출
-		});
 
 </script>
-<%@ include file="../include/footer.jsp"%>

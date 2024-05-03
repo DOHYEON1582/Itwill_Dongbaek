@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.OrderInfoVO;
+import com.itwillbs.domain.SearchCriteria;
 
 public interface MyPageService {
 
@@ -25,9 +26,15 @@ public interface MyPageService {
 	
 	/* 주문내역 */
 	// 주문내역 리스트
-	public List<OrderInfoVO> selectUserOrderList(String user_id) throws Exception;
+	public List<OrderInfoVO> selectUserOrderList(SearchCriteria searchCri) throws Exception;
 	
 	// 주문내역 갯수
 	public int selectCountOrder(String user_id) throws Exception;
+	
+	// 주문 상세 내역
+	public OrderInfoVO selectOrderInfo(int order_code) throws Exception;
+	
+	// 주문 상품 정보
+	public List<CartVO> selectOrderProduct(int order_code) throws Exception;
 	
 }

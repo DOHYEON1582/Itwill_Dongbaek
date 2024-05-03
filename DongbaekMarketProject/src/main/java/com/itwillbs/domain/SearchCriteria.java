@@ -9,7 +9,10 @@ public class SearchCriteria extends Criteria{
 	private String keyword;
 	
 	// 주문리스트
+	private String user_id;
+	
 	private String states;
 	private String startDate;
 	private String endDate;
+	
 }

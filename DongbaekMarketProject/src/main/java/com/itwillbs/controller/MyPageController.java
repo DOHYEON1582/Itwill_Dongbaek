@@ -143,8 +143,9 @@ public class MyPageController {
 		searchCri.setStartDate(startDate);
 		searchCri.setEndDate(endDate);
 		searchCri.setEndDate(states);
+		searchCri.setUser_id(userid);
 		
-		List<OrderInfoVO> orderList = mService.selectUserOrderList(userid);
+		List<OrderInfoVO> orderList = mService.selectUserOrderList(searchCri);
 
 		PageMaker pageMaker = new PageMaker();
 
@@ -156,8 +157,22 @@ public class MyPageController {
 
 	}
 
+	// 주문 상세내역
 	@GetMapping(value = "orderdetail")
-	public void orderDetailGET() throws Exception {
+	public void orderDetailGET(@ModelAttribute("cri") Criteria cri,
+							   @RequestParam String order_code,
+							   Model model
+								) throws Exception {
 		logger.debug(" === orderDetailGET() 실행 ===");
+	
+		// 주문 정보 보여주기
+		OrderInfoVO ovo = mService.selectOrderInfo(Integer.parseInt(order_code));
+		
+		// 주문 상품 정보 
+		List<CartVO> productList = mService.selectOrderProduct(Integer.parseInt(order_code));
+		
+		model.addAttribute("ovo", ovo);
+		model.addAttribute("productList", productList);
+		
 	}
 }

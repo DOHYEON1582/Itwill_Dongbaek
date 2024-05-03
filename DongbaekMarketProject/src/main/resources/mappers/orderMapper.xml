@@ -25,7 +25,7 @@
 		                    JOIN store s
 		                      ON p.store_code = s.store_code) prdc
 		         ON c.product_code = prdc.product_code
-		WHERE  cart_cocd = #{cart_cocd}
+		WHERE  cart_code = #{cart_code}
 	</select>
 	
 	<!-- 장바구니에 담긴 상품 수 세어오기 -->

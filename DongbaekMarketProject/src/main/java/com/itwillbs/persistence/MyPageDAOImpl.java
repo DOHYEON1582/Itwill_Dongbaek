@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.OrderInfoVO;
+import com.itwillbs.domain.SearchCriteria;
 
 @Repository
 public class MyPageDAOImpl implements MyPageDAO {
@@ -60,9 +61,9 @@ public class MyPageDAOImpl implements MyPageDAO {
 	/* 주문내역 */
 	// 주문내역 리스트
 	@Override
-	public List<OrderInfoVO> selectUserOrderList(String user_id) throws Exception {
-		logger.debug(" === D : selectUserOrderList(String user_id) === ");
-		return sqlSession.selectList(NAMESPACE+".selectUserOrderList",user_id);
+	public List<OrderInfoVO> selectUserOrderList(SearchCriteria searchCri) throws Exception {
+		logger.debug(" === D : selectUserOrderList(SearchCriteria searchCri) === ");
+		return sqlSession.selectList(NAMESPACE+".selectUserOrderList",searchCri);
 	}
 
 	// 주문내역 갯수
@@ -70,6 +71,20 @@ public class MyPageDAOImpl implements MyPageDAO {
 	public int selectCountOrder(String user_id) throws Exception {
 		logger.debug(" === D : selectCountOrder(String user_id) === ");
 		return sqlSession.selectOne(NAMESPACE+".selectCountOrder",user_id);
+	}
+
+	// 주문 상세 내역
+	@Override
+	public OrderInfoVO selectOrderInfo(int order_code) throws Exception {
+		logger.debug(" === D : selectOrderInfo(int order_code) === ");
+		return sqlSession.selectOne(NAMESPACE+".selectOrderInfo",order_code);
+	}
+
+	// 주문 상품 정보
+	@Override
+	public List<CartVO> selectOrderProduct(int order_code) throws Exception {
+		logger.debug(" === D : selectOrderProduct(int order_code) === ");
+		return sqlSession.selectList(NAMESPACE+".selectOrderProduct",order_code);
 	}
 	
 }
