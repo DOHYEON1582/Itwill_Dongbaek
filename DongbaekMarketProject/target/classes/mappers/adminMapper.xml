@@ -5,6 +5,35 @@
   
 <mapper namespace="com.itwillbs.mapper.AdminMapper">
 
+<resultMap type="com.itwillbs.domain.AdminChatRoomVO" id="chatRoomMap">
+	<result property="room_idx" column="room_idx"/>
+	<result property="user_id" column="user_id"/>
+	<result property="to_id" column="to_id"/>
+	<result property="regdate" column="regdate"/>
+
+	<collection property="AdminMessageVO" resultMap="AdminMessageVO"/>
+	<collection property="UserVO" resultMap="UserVO"/>
+</resultMap>
+
+<resultMap type="com.itwillbs.domain.AdminMessageVO" id="AdminMessageVO">
+	<result property="message_idx" column="message_idx"/>
+	<result property="room_idx" column="room_idx"/>
+	<result property="user_id" column="user_id"/>
+	<result property="context" column="context"/>
+	<result property="regdate" column="regdate"/>
+
+</resultMap>
+
+<resultMap type="com.itwillbs.domain.UserVO" id="UserVO">
+	<result property="user_id" column="user_id"/>
+	<result property="phone" column="phone"/>
+	<result property="user_name" column="user_name"/>
+	<result property="sns_email" column="sns_email"/>
+	<result property="point" column="point"/>
+
+</resultMap>
+
+
  <resultMap type="com.itwillbs.domain.AdminCartVO" id="cartMap">
 	<result property="cart_code" column="cart_code"/>
 	<result property="user_id" column="user_id"/>
@@ -99,6 +128,13 @@
 	<result property="mos_number" column="mos_number"/>
 	<result property="regdate" column="regdate"/>
 </resultMap>
+
+<!-- 로그인 -->
+<select id="login" resultType="String">
+	SELECT user_pw FROM user 
+	WHERE user_id = #{user_id}
+
+</select>
 
 
 <!-- 회원정보 조회 -->
@@ -338,6 +374,32 @@
 	WHERE q_code = #{q_code}
 </select>
 
+<!-- 채팅방 리스트 가져오기 -->
+<select id="chatRoomList" resultMap="chatRoomMap">
+	SELECT * FROM chat_room c
+	JOIN user u
+	ON c.user_id = u.user_id
+	<choose>
+		<when test="user_id != null and user_id != ''">
+			WHERE user_id = #{user_id}
+		</when>
+		<when test="user_name != null and user_name != ''">
+			WHERE user_id = (SELECT user_id FROM user WHERE user_name = #{user_name})
+		</when>
+	</choose>
+</select>
+
+<!-- 채팅방 생성 -->
+<insert id="createRoom">
+	INSERT INTO chat_room (room_idx, user_id, to_id, regdate)
+	VALUES ((SELECT room_idx FROM (SELECT IFNULL(MAX(room_idx), 0) + 1 as room_idx FROM chat_room) as t),#{user_id},'admin',now())
+
+</insert>
+
+<!-- 마지막 채팅방 가져오기 -->
+<select id="lastRoom" resultType="int">
+	SELECT MAX(room_idx) FROM chat_room WHERE user_id = #{user_id}
+</select>
 
 
 </mapper>

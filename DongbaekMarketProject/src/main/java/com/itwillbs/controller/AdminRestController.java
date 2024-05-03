@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
 import com.itwillbs.domain.AdminCartVO;
+import com.itwillbs.domain.AdminChatRoomVO;
 import com.itwillbs.domain.AdminNoticeVO;
 import com.itwillbs.domain.AdminOrderVO;
 import com.itwillbs.domain.AdminProductVO;
@@ -184,12 +185,20 @@ public class AdminRestController {
 	}
 	
 	@PostMapping(value = "/qna")
-	public void	qnaList(@RequestBody UserVO vo)throws Exception{
+	public ResponseEntity<List<AdminChatRoomVO>> qnaList(@RequestBody UserVO vo)throws Exception{
 		logger.debug(" qnaList()호출 ");
 		
-		
-		
+		return new ResponseEntity<List<AdminChatRoomVO>>(aService.chatRoomList(vo), HttpStatus.OK);
 	}
+	
+	@GetMapping(value = "/createRoom/{user_id}")
+	public int createRoom(@PathVariable("user_id") String user_id)throws Exception{
+		logger.debug(" createRoom(@PathVariable(\"user_id\") String user_id) 호출 ");
+		int result = aService.createChatRoom(user_id);
+		
+		return result;
+	}
+	
 	
 	
 	

@@ -2,7 +2,10 @@ package com.itwillbs.persistence;
 
 import java.util.List;
 
+import org.apache.catalina.User;
+
 import com.itwillbs.domain.AdminCartVO;
+import com.itwillbs.domain.AdminChatRoomVO;
 import com.itwillbs.domain.AdminNoticeVO;
 import com.itwillbs.domain.AdminOrderVO;
 import com.itwillbs.domain.AdminProductVO;
@@ -14,6 +17,8 @@ import com.itwillbs.domain.SchedulerVO;
 import com.itwillbs.domain.UserVO;
 
 public interface AdminDAO {
+	//로그인
+	public String adminLogin(UserVO vo)throws Exception;
 	
 	// 고객 상세정보 가져오기
 	public UserVO getUserInfo(UserVO vo)throws Exception;
@@ -62,5 +67,16 @@ public interface AdminDAO {
 	
 	// 공지사항 상세보기
 	public AdminNoticeVO noticeInfo(int q_code)throws Exception;
+	
+	// 문의 내역 가져오기
+	public List<AdminChatRoomVO> chatRoomList(UserVO vo)throws Exception;
+	
+	// 새로운 채팅방 생성
+	public int createChatRoom(String user_id)throws Exception;
+	
+	// 마지막 채팅방 가져오기
+	public int lastChatRoom(String user_id)throws Exception;
+	
+
 
 }//endDAO

@@ -10,5 +10,8 @@ public class AdminChatRoomVO {
 	private String user_id;
 	private String to_id;
 	private Timestamp regdate;
+	
+	private AdminMessageVO AdminMessageVO;
+	private UserVO UserVO;
 
 }

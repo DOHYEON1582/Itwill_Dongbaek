@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.AdminCartVO;
+import com.itwillbs.domain.AdminChatRoomVO;
 import com.itwillbs.domain.AdminNoticeVO;
 import com.itwillbs.domain.AdminOrderVO;
 import com.itwillbs.domain.AdminProductVO;
@@ -32,6 +33,15 @@ public class AdminServiceImpl implements AdminService {
 	private AdminDAO adao;
 	
 	private static final Logger logger = LoggerFactory.getLogger(AdminServiceImpl.class);
+	
+	
+
+	@Override
+	public String adminLogin(UserVO vo) throws Exception {
+		logger.debug(" adminLogin(UserVO vo) 호출 ");
+		
+		return adao.adminLogin(vo);
+	}
 
 	@Override
 	public UserVO getUserInfo(UserVO vo) throws Exception {
@@ -144,6 +154,22 @@ public class AdminServiceImpl implements AdminService {
 		
 		return adao.noticeInfo(q_code);
 	}
+
+	@Override
+	public List<AdminChatRoomVO> chatRoomList(UserVO vo) throws Exception {
+		logger.debug(" chatRoomList(UserVO vo) 호출 ");
+		
+		return adao.chatRoomList(vo);
+	}
+
+	@Override
+	public int createChatRoom(String user_id) throws Exception {
+		logger.debug(" createChatRoom(String user_id) 호출 ");
+		adao.createChatRoom(user_id);
+		
+		return adao.lastChatRoom(user_id);
+	}
+
 
 	
 	

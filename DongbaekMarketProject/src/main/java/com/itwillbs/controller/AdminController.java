@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.itwillbs.domain.AdminNoticeVO;
 import com.itwillbs.domain.AdminProductVO;
+import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.AdminService;
 
 /**
@@ -35,6 +37,34 @@ public class AdminController {
 	private AdminService aService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+	
+	@RequestMapping(value = "/admin/login", method = RequestMethod.GET)
+	public void adminLogin()throws Exception {
+		logger.debug(" main() 호출 "); 
+
+	}
+
+	@RequestMapping(value = "/admin/join", method = RequestMethod.GET)
+	public void adminJoin()throws Exception {
+		logger.debug(" main() 호출 "); 
+
+	}
+	
+	@PostMapping(value = "/admin/loginAction")
+	public String loginAction(UserVO vo, HttpSession session)throws Exception{
+		logger.debug(" loginAction(UserVO vo) 호출 ");
+		String pass = aService.adminLogin(vo);
+		
+		
+		if(vo.getUser_pw().equals(pass)) {
+			logger.debug(" 로그인 성공! ");
+			session.setAttribute("user_id", vo.getUser_id());
+			
+			return "redirect:/admin/main";
+		}
+			return "redirect:/admin/login";
+		
+	}
 	
 
 	@RequestMapping(value = "/main", method = RequestMethod.GET)
@@ -220,5 +250,6 @@ public class AdminController {
 		return new ResponseEntity(result,respHeaders,HttpStatus.OK);
 		
 	}
+	
 	
 }//endController
