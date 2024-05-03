@@ -114,8 +114,6 @@
 <div class="container">
     <h1>찜 목록</h1>
     
-    <a href="product"><h2>제품</h2></a>
-    
      <!-- 정렬 옵션 드롭다운 메뉴 -->
     <form action="" method="get">
         <input type="hidden" name="product_code" value="${product_code}">

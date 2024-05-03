@@ -13,6 +13,10 @@
 <meta name="keywords" content="">
 <meta name="description" content="">
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" href="./resources/css/vendor.css">
@@ -21,17 +25,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Hahmlet&display=swap" rel="stylesheet">
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" >
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
 
 </head>
@@ -160,6 +154,8 @@
         </symbol>
       </defs>
     </svg>
+    
+    
 
 	<div class="preloader-wrapper">
 		<div class="preloader"></div>
@@ -186,7 +182,7 @@
 			<div class="row py-3 border-bottom">
 				<div class="col-sm-4 col-lg-3 text-center text-sm-start">
 					<div class="main-logo">
-						<a href="/"> <img src="${pageContext.request.contextPath }resources/images/mylogo2.png" alt="logo" class="mylogo2">
+						<a href="/"> <img src="${pageContext.request.contextPath }/resources/images/mylogo2.png" alt="logo" class="mylogo2">
 						</a>
 					</div>
 				</div>
@@ -198,13 +194,23 @@
 				            <form id="searchForm" class="text-center" action="search" method="get">
 				                <div class="input-group">
 				                    <div class="input-group-prepend">
-				                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">검색 유형</button>
-				                        <ul class="dropdown-menu" id="categorySelect">
-				                            <li><a class="dropdown-item" data-value="name">시장</a></li>
-				                            <li><a class="dropdown-item" data-value="product_name">음식</a></li>
-				                        </ul>
+				                    	<table>
+				                    	<tr>
+				                    		<td>
+				                    			<select id="categorySelect" name="type" class="form-control select2 select2-hidden-accessible"
+							                            style="width: 100%; margin-bottom: 5px;" data-select2-id="1"	 tabindex="-1"
+							                            aria-hidden="true">
+							                        <option value="market"
+							                        	<c:out value = "${pageVO.cri.type eq 'market'?'selected':'' }"/>>시장</option>
+							                        <option value="product"
+							                        	<c:out value = "${pageVO.cri.type eq 'product'?'selected':'' }"/>>음식</option>
+				                    			</select>
+				                    		</td>
+				                    	</tr>
+				                    	</table>
 				                    </div>
-				                    <input type="text" id="searchInput" class="form-control border-0 bg-transparent" placeholder="찾고 싶은 음식, 시장을 검색해보세요!" name="query" />
+				                    <input type="text" id="searchInput" class="form-control border-0 bg-transparent" placeholder="찾고 싶은 음식, 시장을 검색해보세요!" 
+				                    		name="query" value = "${cri.keyword }"/>
 				                </div>
 				            </form>
 				        </div>
@@ -213,6 +219,7 @@
 				        </div>
 				    </div>
 				</div>
+
 
 				<div class="col-sm-8 col-lg-3 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
 				    <div>
@@ -257,8 +264,8 @@
 	                    <div class="offcanvas-body">
 	                    	<form id="marketForm" action="/market/marketMain" method="post">
 		                        <select id="market_code" name="market_code" class="filter-categories border-0 mb-0 me-5" class="market_codeOption">
-		                            <option value="0">구포시장</option>
-		                            <option value="1">자갈치시장</option>
+		                            <option value="1">구포시장</option>
+		                            <option value="2">자갈치시장</option>
 		                        </select>
 		                        <input type="submit" value="이동">
 	                        </form>
@@ -288,19 +295,23 @@
 	        // 검색 버튼 클릭 시 이벤트 처리
 	        searchBtn.addEventListener("click", function(event) {
 	            event.preventDefault(); // 기본 동작 방지 (페이지 새로고침 방지)
-	
+	            
 	            // 검색어 입력 요소 가져오기
 	            var searchInput = document.getElementById("searchInput");
 	            
 	            // 검색어에서 공백 제거
 	            var keyword = searchInput.value.trim();
-	
+	            
+	            if (keyword === "") {
+	                alert("검색어를 입력해주세요.");
+	                return false;
+	            }
 	            // 선택된 카테고리 가져오기
 	            var type = document.getElementById("categorySelect").value;
 	
 	            // 새로운 URL로 이동
-	            location.href = "/" + "&keyword=" + encodeURIComponent(keyword) + "&type=" + type;
-	            
+	            location.href = "/search?keyword=" + encodeURIComponent(keyword) + "&type=" + type;
+
 	            searchForm.submit();
 	            
 	        });

@@ -24,12 +24,11 @@ public interface MarketService {
 	// 시장 정보 코드 가져오기
 	public MarketVO getMarketListCode() throws Exception;
 	
-	// 인기상품 메인에 가져오기
-	public List<ProductVO> getProductList() throws Exception;
-	public List<ProductVO> getProductList1() throws Exception;
-	
+	// 제품 조회
+	public List<ProductVO> getProductAll(ProductVO pvo) throws Exception;
+		
 	// 가게별 상품 가져오기
-	public List<ProductVO> productOnStore(int store_code) throws Exception;
+	public List<ProductVO> productOnStore(String orderBy, int store_code) throws Exception;
 	
 	// 가게 조회수 1 증가
 	public void updateViewcnt(int store_code) throws Exception;

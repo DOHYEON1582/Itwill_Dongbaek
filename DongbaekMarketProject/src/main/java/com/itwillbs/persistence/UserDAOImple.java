@@ -183,6 +183,13 @@ public class UserDAOImple implements UserDAO {
 	    return sql.selectList(NAMESPACE + ".selectProduct", map);
 	}
 
+	@Override
+	public List<ProductVO> selectProductAll(ProductVO pvo) throws Exception {
+		logger.debug(" selectProductAll(ProductVO pvo) 호출 ");
+		return sql.selectList(NAMESPACE + ".getProductAll", pvo);
+	}
+	
+	
 
 	
 	

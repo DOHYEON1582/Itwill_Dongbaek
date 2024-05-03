@@ -75,6 +75,21 @@
 		<collection property="storeVO" resultMap="storeMap"/>
 	</resultMap>
 	
+	<!-- 검색 -->
+	<sql id="criteria">
+		<trim prefix="where (" suffix=")" prefixOverrides="OR">
+			<choose>
+				<when test="type == 'market'.toString()">
+					market.market_name LIKE CONCAT('%',#{keyword},'%')
+				</when>
+				<when test="type == 'product'.toString()">
+					product.product_name LIKE CONCAT('%',#{keyword},'%')
+				</when>
+			</choose>
+		</trim>
+	</sql>
+	
+	
 	<!-- 회원가입 -->
 	<insert id="insertUser">
 		insert into user(user_id, user_pw, phone, user_name, addr1, addr2, regdate) 
@@ -201,8 +216,10 @@
             </when>
         </choose>
 	</select>
-	
-	
+	<!-- 제품 조회 -->
+	<select id="getProductAll" resultType="com.itwillbs.domain.ProductVO">
+		select * from product 
+	</select>
 	
 	
 	

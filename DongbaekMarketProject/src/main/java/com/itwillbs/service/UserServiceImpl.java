@@ -139,10 +139,17 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<ProductVO> getProductOrderBy(String orderBy, String user_id) throws Exception {
+		logger.debug(" getProductOrderBy(String orderBy, String user_id) 실행 ");
 		Map<String, Object> map = new HashMap<>();
 		map.put("orderBy", orderBy);
 		map.put("user_id", user_id);
 		return udao.selectProductOrderBy(map);
+	}
+
+	@Override
+	public List<ProductVO> getProductAll(ProductVO pvo) throws Exception {
+		logger.debug(" getProductAll(ProductVO pvo) 호출 ");
+		return udao.selectProductAll(pvo);
 	}
 	
 	

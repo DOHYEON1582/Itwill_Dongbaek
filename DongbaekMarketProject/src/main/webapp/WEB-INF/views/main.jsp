@@ -1,20 +1,20 @@
 <%@page pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@include file="include/header.jsp" %>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
-    
+
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=37fae0919828ca56ee2095e651f697ce"></script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    
+    <script src="./resources/js/jquery-2.1.1.js"></script>
+	<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    
 	<style>
 		.bx-wrapper {
 			max-width: 1000px;
-			heigth: 700px;
-			margin: 0 auto; 
-		}	
+			height: 350px;
+			margin: 0 auto;
+		}
 		#map-container{
 			display: flex;
 			align-items: flex-start; /* 지도와 정보를 위로 정렬 */
@@ -40,7 +40,7 @@
           pager: true,
           slideWidth: 1000
         });
-
+ 
         var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
         var options = { //지도를 생성할 때 필요한 기본 옵션
             center: new kakao.maps.LatLng(35.137922, 129.055628), //지도의 중심좌표.
@@ -98,8 +98,8 @@
                             infowindow.setContent(content);
                             infowindow.open(map, marker);
                             console.log(data);
-                            $('#marketName').text(data.name);
-                            $('#marketExplain').html("시장 설명 : "+data.explain + '<a href="http://www.naver.com">시장이동</a>');
+                            $('#marketName').html('<a href="http://localhost:8088/market/marketMain?market_code=' + (i + 1) + '">'+data.name+ '</a>');
+                            $('#marketExplain').html("시장 설명 : "+data.explain);
                             $('#marketPhone').html("전화번호 : "+data.phone);
                             $('#marketTraffic').html("교통편 : " +data.traffic);
                             $('#marketAddr').html("주소 : " +data.market_addr1 + "(" + data.market_addr2 + ")");
@@ -151,22 +151,15 @@
     });
     </script>
     
-	<div class="bxslider">
+   	<div class="bxslider">
 		<div><img src="resources/images/spring.png" /></div>
 		<div><img src="resources/images/mylogo2.png" /></div>
 		<div><img src="resources/images/mylogo2.png" /></div>
 	</div>
 	
 	<div id="map-container">
-		<div class="marketList">
-			<select name="name">
-				<c:forEach var="market" items="${getMarket }">
-						<option value="${market.name }">${market.name }</option>
-				</c:forEach>
-			</select>
-		</div>
-		
 		<div id="map"></div>
+		
 		<div id="marketInfo">
 			<h2 id="marketName"></h2>
 			<p id="marketExplain"/>

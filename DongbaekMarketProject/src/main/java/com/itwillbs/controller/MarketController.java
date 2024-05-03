@@ -28,6 +28,7 @@ import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.QuestionVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
+import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.MarketService;
 
 @Controller
@@ -42,41 +43,32 @@ public class MarketController {
 	
 	// http://localhost:8088/market/marketMain
 	@RequestMapping(value = "/marketMain", method = {RequestMethod.GET, RequestMethod.POST}) 
-	public void marketMain(Model model,@RequestParam(defaultValue = "0") int market_code, HttpSession session) throws Exception {
+	public void marketMain(@RequestParam(name = "orderBy", required = false, defaultValue = "popularity") String orderBy,
+			Model model,@RequestParam(defaultValue = "1") int market_code, HttpSession session, ProductVO pvo) throws Exception {
 	    logger.debug(" marketMain 호출 ");
-	    
-	    	if(market_code == 0) {
-	        MarketVO marketList = mService.getMarketList();
-	        List<StoreVO> storeList = mService.getStoreList();
-	        List<ProductVO> productList = mService.getProductList();    
+	    List<StoreVO> storeList = mService.getStoreList();
+	    List<ProductVO> productList = mService.getProductAll(pvo);
+	    model.addAttribute("storeList", storeList);
+	    model.addAttribute("productList", productList);
+    	if(market_code == 1) {
+    		MarketVO marketList = mService.getMarketList();
+ 	        model.addAttribute("marketList", marketList);
+    	} else if(market_code == 2) {
+    		MarketVO marketList = mService.getMarketListCode();
 	        model.addAttribute("marketList", marketList);
-	        model.addAttribute("storeList", storeList);
-	        model.addAttribute("productList", productList);
-	        logger.debug(" marketList : " + marketList);
-	        logger.debug(" storeList : " + storeList);
-	    	} else if(market_code == 1) {
-	    		MarketVO marketList = mService.getMarketListCode();
-		        List<StoreVO> storeList = mService.getStoreList();
-		        List<ProductVO> productList = mService.getProductList1();  
-		        model.addAttribute("marketList", marketList);
-		        model.addAttribute("storeList", storeList);
-		        model.addAttribute("productList", productList);
-	    		logger.debug(" marketList : " + marketList);
-	    		logger.debug(" storeList : " + storeList);
-	    		
-	    	}
-	    	session.setAttribute("viewUpdateStatus", 1);
-		    
-	    }
+    	}
+		session.setAttribute("viewUpdateStatus", 1);
+    }
 	
 	// http://localhost:8088/market/storeMain
 	// 가게 메인페이지
 	@RequestMapping(value = "/storeMain", method = RequestMethod.GET)
-	public void storeMain(@RequestParam("store_code") int store_code, Model model, HttpSession session) throws Exception{
+	public void storeMain(@RequestParam(name = "orderBy", required = false, defaultValue = "popularity") String orderBy, 
+			@RequestParam("store_code") int store_code, Model model, HttpSession session) throws Exception{
 		logger.debug(" storeMain() 호출 ");
 		StoreVO store = mService.selectStore(store_code);
+		List<ProductVO> product = mService.productOnStore(orderBy, store_code);
 		model.addAttribute("store", store);
-		List<ProductVO> product = mService.productOnStore(store_code);
 		model.addAttribute("product", product);
 		int status = (Integer)session.getAttribute("viewUpdateStatus");
 		if(status == 1) {
@@ -85,9 +77,7 @@ public class MarketController {
 			// 조회수 상태 0으로 만들기
 			session.setAttribute("viewUpdateStatus", 0);
 		}
-		
 	}
-	
 
 
 
@@ -104,8 +94,6 @@ public class MarketController {
 		List<ReviewVO> review = mService.productReview(product_code);
 		model.addAttribute("question", question);
 		model.addAttribute("review", review);
-		//mService.writeQuestion(qvo);
-		
 
 	}
 	
