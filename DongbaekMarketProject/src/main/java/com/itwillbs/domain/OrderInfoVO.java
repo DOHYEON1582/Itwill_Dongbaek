@@ -28,6 +28,12 @@ public class OrderInfoVO {
 	////////////////////////////////////////////
 	private String store_name;		// 가게 이름
 	private String img1;			// 상품 이미지
+	private String product_code;	// 상품번호
 	private String product_name;	// 상품명
+	private String cart_code;		// cart 번호
+	private int count;				// 상품 수량
+	private int price;				// 상품 가격
+	private String states;			// 주문 상태
+	private String user_name;		// 주문자명...
 	
 }
