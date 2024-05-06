@@ -387,53 +387,57 @@ body {
 
 
 	<!-- 상품 목록 표시 -->
-<c:if test="${not empty product}">
-    <table border="1" style="border-collapse: collapse; width: 100%;">
-        <thead>
-            <tr>
-                <th style="padding: 8px; text-align: center;"></th>
-                <th style="padding: 8px; text-align: center;"></th>
-                <th style="padding: 8px; text-align: center;"></th>
-                <!-- 필요한 다른 열들을 추가할 수 있습니다 -->
-            </tr>
-        </thead>
-        <tbody>
-            <c:forEach var="product" items="${product}" varStatus="loop">
-                <c:if test="${loop.index % 3 == 0}">
-                    <tr style="text-align: center;">
-                </c:if>
-                <td style="padding: 8px;">
-                    <div style="text-align: center;">
-                        <a href="/seller/productDetail?id=${product.product_code}">
-                            <c:choose>
-                                <c:when test="${not empty product.img1}">
-                                    <img src="${product.img1}" alt="상품 이미지" style="max-width: 100px; max-height: 100px;">
-                                </c:when>
-                                <c:when test="${not empty product.img2}">
-                                    <img src="${product.img2}" alt="상품 이미지" style="max-width: 100px; max-height: 100px;">
-                                </c:when>
-                                <c:when test="${not empty product.img3}">
-                                    <img src="${product.img3}" alt="상품 이미지" style="max-width: 100px; max-height: 100px;">
-                                </c:when>
-                                <c:otherwise>
-                                    <img src="/resources/images/noimg.png" alt="상품 이미지 없음" style="max-width: 100px; max-height: 100px;">
-                                </c:otherwise>
-                            </c:choose>
-                            <div>
-                                <p>${product.product_name}</p>
-                                <p>${product.price}</p>
-                                <!-- 필요한 다른 정보를 여기에 추가할 수 있습니다 -->
-                            </div>
-                        </a>
-                    </div>
-                </td>
-                 <c:if test="${loop.index % 3 == 2 or loop.last}">
-                    </tr>
-                </c:if>
-            </c:forEach>
-        </tbody>
-    </table>
-</c:if>
+	<c:if test="${not empty product}">
+	    <table border="0" style="border-collapse: collapse; width: 100%;">
+	        <thead>
+	            <tr>
+	                <th style="padding: 8px; text-align: center;"></th>
+	                <th style="padding: 8px; text-align: center;"></th>
+	                <th style="padding: 8px; text-align: center;"></th>
+	                <!-- 필요한 다른 열들을 추가할 수 있습니다 -->
+	            </tr>
+	        </thead>
+	        <tbody>
+	            <c:forEach var="product" items="${product}" varStatus="loop">
+	                <c:if test="${loop.index % 3 == 0}">
+	                    <tr style="text-align: center;">
+	                </c:if>
+	                <td style="padding: 8px;">
+	                    <div style="text-align: center;">
+	                        <div style="margin-bottom: 20px;"> <!-- 여기서 간격 조정 -->
+	                            <a href="/seller/productDetail?id=${product.product_code}" style="display: inline-block; padding: 10px; text-decoration: none;"> <!-- 패딩 추가 -->
+	                                <c:choose>
+	                                    <c:when test="${not empty product.img1}">
+	                                        <img src="${product.img1 }" alt="상품 이미지" style="max-width: 100px; max-height: 100px;">
+	                                    </c:when>
+	                                    <c:when test="${not empty product.img2}">
+	                                        <img src="${product.img2 }" alt="상품 이미지" style="max-width: 100px; max-height: 100px;">
+	                                    </c:when>
+	                                    <c:when test="${not empty product.img3}">
+	                                        <img src="${product.img3 }" alt="상품 이미지" style="max-width: 100px; max-height: 100px;">
+	                                    </c:when>
+	                                    <c:otherwise>
+	                                        <img src="/resources/images/noimg.png" alt="상품 이미지 없음" style="max-width: 100px; max-height: 100px;">
+	                                    </c:otherwise>
+	                                </c:choose>
+	                                <div>
+	                                    <p>${product.product_name}</p>
+	                                    <p>${product.price}</p>
+	                                    <!-- 필요한 다른 정보를 여기에 추가할 수 있습니다 -->
+	                                </div>
+	                            </a>
+	                        </div>
+	                    </div>
+	                </td>
+	                 <c:if test="${loop.index % 3 == 2 or loop.last}">
+	                    </tr>
+	                </c:if>
+	            </c:forEach>
+	        </tbody>
+	    </table>
+	</c:if>
+
+
 
 
 <!-- 페이지 링크 추가 -->

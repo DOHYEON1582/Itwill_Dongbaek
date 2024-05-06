@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,7 +40,7 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	@Inject
 	private ProductService pService; //서비스 가져오기
 	
-	
+	private static final String FILE_DIRECTORY = "/resources/images/uploads";
 	
 	private static final Logger logger = LoggerFactory.getLogger(SellerPageController.class);
 	
@@ -112,49 +113,51 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	                                  @RequestParam(value = "max_account", defaultValue = "0") int max_account,
 	                                  @RequestParam(value = "country", defaultValue = "원산지 없음") String country,
 	                                  @RequestParam(value = "store_code", defaultValue = "0") int store_code,
-	                                  RedirectAttributes rttr) throws Exception {
-	    // 이미지 파일 저장
-	    String fileDirectory = "/resources/images"; // 이미지 파일이 저장될 디렉토리 경로 수정 필요
-	    String img1Filename = saveImage(img1, fileDirectory, rttr);
-	    String img2Filename = saveImage(img2, fileDirectory, rttr);
-	    String img3Filename = saveImage(img3, fileDirectory, rttr);
+	                                  RedirectAttributes rttr) throws Exception{
+	    try {
+	        String img1Filename = saveImage(img1);
+	        String img2Filename = saveImage(img2);
+	        String img3Filename = saveImage(img3);
 
-	    // 상품 정보 저장
-	    ProductVO prod = new ProductVO();
-	    prod.setCategory(category);
-	    prod.setProduct_name(product_name);
-	    prod.setUnit(unit);
-	    prod.setPrice(price);
-	    prod.setProduct_explain(product_explain);
-	    prod.setMax_account(max_account);
-	    prod.setCountry(country);
-	    prod.setStore_code(store_code);
-	    prod.setImg1(img1Filename);
-	    prod.setImg2(img2Filename);
-	    prod.setImg3(img3Filename);
-	    pService.productRegist(prod);
+	        ProductVO product = new ProductVO();
+	        product.setCategory(category);
+	        product.setProduct_name(product_name);
+	        product.setUnit(unit);
+	        product.setPrice(price);
+	        product.setProduct_explain(product_explain);
+	        product.setMax_account(max_account);
+	        product.setCountry(country);
+	        product.setStore_code(store_code);
+	        product.setImg1(img1Filename);
+	        product.setImg2(img2Filename);
+	        product.setImg3(img3Filename);
+	        pService.productRegist(product);
 
-	    logger.debug(" 등록 성공 ");
+	        logger.debug(" 등록 성공 ");
 
-	    return "redirect:/seller/productregist";
+	        return "redirect:/seller/productregist";
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	        rttr.addFlashAttribute("f", "이미지 파일 업로드에 실패했습니다.");
+	        return "redirect:/seller/productregist";
+	    }
 	}
 
-	private String saveImage(MultipartFile img, String fileDirectory, RedirectAttributes rttr) throws Exception {
+	private String saveImage(MultipartFile img) throws IOException {
 	    if (!img.isEmpty()) {
-	        String filerealname = img.getOriginalFilename(); // 원본 파일명
-	        // UUID로 고유한 파일명 생성
+	        String originalFilename = img.getOriginalFilename(); // 이미지 원본 이름
 	        String uuid = UUID.randomUUID().toString();
-	        String filename = uuid + "_" + filerealname;
-	        String filePath = fileDirectory + File.separator + filename;
-	        try {
-	            // 이미지 파일 저장
-	            img.transferTo(new File(filePath));
-	            return filename; // 저장된 파일명 반환
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	            rttr.addFlashAttribute("f", "이미지 파일 업로드에 실패했습니다.");
-	            return null;
+	        String filename = uuid + "_" + originalFilename;
+	        String filePath = FILE_DIRECTORY + filename;
+
+	        // 실제 파일 시스템 경로로 저장
+	        Path path = Paths.get(FILE_DIRECTORY);
+	        if (!Files.exists(path)) {
+	            Files.createDirectories(path); // 디렉토리가 없는 경우 생성
 	        }
+	        Files.copy(img.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
+	        
+	        return filename;
 	    }
 	    return null;
 	}
@@ -162,7 +165,7 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	@RequestMapping(value = "/image/{imageName:.+}", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> getProductImage(@PathVariable("imageName") String imageName) throws IOException {
 	    // 이미지 파일이 저장된 디렉토리 경로
-	    String fileDirectory = "/resources/images";
+	    String fileDirectory = "/resources/images/uploads";
 
 	    // 이미지 파일 경로
 	    String imagePath = fileDirectory + "/" + imageName;
