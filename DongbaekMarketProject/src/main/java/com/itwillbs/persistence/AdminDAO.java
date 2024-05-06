@@ -1,6 +1,7 @@
 package com.itwillbs.persistence;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.catalina.User;
 
@@ -76,6 +77,16 @@ public interface AdminDAO {
 	
 	// 마지막 채팅방 가져오기
 	public int lastChatRoom(String user_id)throws Exception;
+	
+	// 메인 매출데이터 가져오기
+	public String mainChartData(String date)throws Exception;
+	
+	// 고객수 데이터 가져오기
+	public String mainUserData(String date)throws Exception;
+	
+	// 사장님수 데이터 가져오기
+	public String mainSellerData(String date)throws Exception;
+
 	
 
 

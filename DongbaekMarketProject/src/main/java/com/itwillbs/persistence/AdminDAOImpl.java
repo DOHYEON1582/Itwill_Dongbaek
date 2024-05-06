@@ -1,5 +1,8 @@
 package com.itwillbs.persistence;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -178,6 +181,27 @@ public class AdminDAOImpl implements AdminDAO {
 		logger.debug(" lastChatRoom(String user_id) 호출  ");
 		
 		return sql.selectOne(NAMESPACE+".lastRoom", user_id);
+	}
+
+	@Override
+	public String mainChartData(String date) throws Exception {
+		logger.debug(" mainChartData() 호출 ");
+		
+		return sql.selectOne(NAMESPACE+".totalsell", date);
+	}
+
+	@Override
+	public String mainUserData(String date) throws Exception {
+		logger.debug(" mainUserData(String date) 호출 ");
+		
+		return sql.selectOne(NAMESPACE+".totalUser", date);
+	}
+
+	@Override
+	public String mainSellerData(String date) throws Exception {
+		logger.debug(" mainSellerData(String date) 호출 ");
+		
+		return sql.selectOne(NAMESPACE+".totalSeller", date);
 	}
 	
 	

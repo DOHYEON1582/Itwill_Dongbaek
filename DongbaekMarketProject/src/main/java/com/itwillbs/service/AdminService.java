@@ -1,6 +1,7 @@
 package com.itwillbs.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.itwillbs.domain.AdminCartVO;
 import com.itwillbs.domain.AdminChatRoomVO;
@@ -73,6 +74,13 @@ public interface AdminService {
 	// 새로운 채팅방 생성
 	public int createChatRoom(String user_id)throws Exception;
 	
-
+	// 메인차트 매출 데이터가져오기
+	public Map<String, Object> chartSellCount()throws Exception;
+	
+	//고객수 데이터 가져오기
+	public Map<String, Object> mainUserData()throws Exception;
+	
+	//사장님수 데이터 가져오기
+	public Map<String, Object> mainSellerData()throws Exception;
 	
 }//endService

@@ -2,6 +2,7 @@ package com.itwillbs.controller;
 
 
 import java.io.File;
+import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itwillbs.domain.AdminNoticeVO;
 import com.itwillbs.domain.AdminProductVO;
 import com.itwillbs.domain.UserVO;
@@ -40,13 +43,13 @@ public class AdminController {
 	
 	@RequestMapping(value = "/admin/login", method = RequestMethod.GET)
 	public void adminLogin()throws Exception {
-		logger.debug(" main() 호출 "); 
+		logger.debug(" adminLogin() 호출 "); 
 
 	}
 
 	@RequestMapping(value = "/admin/join", method = RequestMethod.GET)
 	public void adminJoin()throws Exception {
-		logger.debug(" main() 호출 "); 
+		logger.debug(" adminJoin() 호출 "); 
 
 	}
 	
@@ -66,19 +69,22 @@ public class AdminController {
 		
 	}
 	
-
-	@RequestMapping(value = "/main", method = RequestMethod.GET)
-	public void main()throws Exception {
-		logger.debug(" main() 호출 "); 
-
-
-	}
 	
 	@RequestMapping(value = "/admin/main", method = RequestMethod.GET)
-	public void adminMain()throws Exception {
+	public void adminMain(Model model)throws Exception {
 		logger.debug(" adminMain() 호출 "); 
-
-
+		ObjectMapper objectMapper = new ObjectMapper();// map형식을 json형식으로
+		String sellList = objectMapper.writeValueAsString(aService.chartSellCount());
+		String userCountList = objectMapper.writeValueAsString(aService.mainUserData());
+		String sellerCountList = objectMapper.writeValueAsString(aService.mainSellerData());
+		
+		AdminNoticeVO vo = new AdminNoticeVO();
+		vo.setContent("");
+			
+		model.addAttribute("sellList", sellList);
+		model.addAttribute("userCountList", userCountList);
+		model.addAttribute("sellerCountList", sellerCountList);
+		model.addAttribute("noticeList", aService.searchNotice(vo));
 	}
 	
 	@RequestMapping(value = "/admin/notice", method = RequestMethod.GET)

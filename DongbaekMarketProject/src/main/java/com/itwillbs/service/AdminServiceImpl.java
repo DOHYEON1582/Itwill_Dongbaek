@@ -3,7 +3,10 @@ package com.itwillbs.service;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -170,7 +173,79 @@ public class AdminServiceImpl implements AdminService {
 		return adao.lastChatRoom(user_id);
 	}
 
+	@Override
+	public Map<String, Object> chartSellCount() throws Exception {
+		logger.debug(" chartSellCount() 호출 ");
+		
+		List<String> dayList = new ArrayList<String>();
+		Map<String, Object> chartList = new LinkedHashMap<String, Object>();
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		
+		for(int i = 6; i > 0; i-- ){
+			Calendar c1 = Calendar.getInstance(); 
+		    c1.add(Calendar.DATE, -i);
+		    dayList.add(dateFormat.format(c1.getTime()));
+		}
+		logger.debug("날짜 리스트"+dayList);
+		
+		for(String date : dayList) {
+			chartList.put(date, adao.mainChartData(date));
+		}
+	    logger.debug("###########"+chartList);
+		
+		return chartList;
+	}
 
+	@Override
+	public Map<String, Object> mainUserData() throws Exception {
+		logger.debug(" mainUserData(String date) 호출 ");
+		
+		List<String> dayList = new ArrayList<String>();
+		Map<String, Object> chartList = new LinkedHashMap<String, Object>();
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		
+		for(int i = 6; i > 0; i-- ){
+			Calendar c1 = Calendar.getInstance(); 
+		    c1.add(Calendar.DATE, -i);
+		    dayList.add(dateFormat.format(c1.getTime()));
+		}
+		logger.debug("날짜 리스트"+dayList);
+		
+		for(String date : dayList) {
+			chartList.put(date, adao.mainUserData(date));
+		}
+	    logger.debug("###########"+chartList);
+		
+		return chartList;
+	}
+
+	@Override
+	public Map<String, Object> mainSellerData() throws Exception {
+		logger.debug(" mainSellerData(String date) 호출 ");
+		
+		List<String> dayList = new ArrayList<String>();
+		Map<String, Object> chartList = new LinkedHashMap<String, Object>();
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		
+		for(int i = 6; i > 0; i-- ){
+			Calendar c1 = Calendar.getInstance(); 
+		    c1.add(Calendar.DATE, -i);
+		    dayList.add(dateFormat.format(c1.getTime()));
+		}
+		logger.debug("날짜 리스트"+dayList);
+		
+		for(String date : dayList) {
+			chartList.put(date, adao.mainSellerData(date));
+		}
+	    logger.debug("###########"+chartList);
+		
+		return chartList;
+	}
+
+	
 	
 	
 	

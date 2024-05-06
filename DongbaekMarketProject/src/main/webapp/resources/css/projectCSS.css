@@ -90,14 +90,15 @@ body{
 	margin: 30px;
 	position: absolute;
 	width:800px;
-	height:400px; 
+	height:400px;
+	 
 }
 
 .chart-container2{
-	margin: 30px;
+	margin-top:40px;
 	margin-left:700px;
 	position: relative;
-	width:400px;
+	width:500px;
 	height:400px; 
 	background-color: white;
 	border-radius: 10px;
