@@ -40,7 +40,7 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	@Inject
 	private ProductService pService; //서비스 가져오기
 	
-	private static final String FILE_DIRECTORY = "/resources/images/uploads";
+	private static final String FILE_DIRECTORY = "/resources/images/uploads/";
 	
 	private static final Logger logger = LoggerFactory.getLogger(SellerPageController.class);
 	
