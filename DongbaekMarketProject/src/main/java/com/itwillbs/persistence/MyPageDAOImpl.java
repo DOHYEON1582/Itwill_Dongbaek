@@ -96,6 +96,13 @@ public class MyPageDAOImpl implements MyPageDAO {
 		return sqlSession.selectOne(NAMESPACE+".selectReviewProduct",productCode);
 	}
 
+	// 리뷰코드 최대값 가져오기
+	@Override
+	public int selectReviewMaxCount() throws Exception {
+		logger.debug(" === D : selectReviewMaxCount() === ");
+		return sqlSession.selectOne(NAMESPACE+".selectReviewMaxCount");
+	}
+		
 	// 리뷰작성
 	@Override
 	public void insertReview(ReviewVO vo) throws Exception {
@@ -103,11 +110,17 @@ public class MyPageDAOImpl implements MyPageDAO {
 		sqlSession.insert(NAMESPACE+"insertReview",vo);
 	}
 
-	// 내가 쓴 리뷰
+	// 내가 쓴 리뷰 갯수
 	@Override
-	public List<ReviewVO> selectReview(String user_id) throws Exception {
-		logger.debug(" === D : selectReview() === ");
-		return sqlSession.selectList(NAMESPACE+".selectReview",user_id);
+	public int selectCountReview(SearchCriteria searchCri) throws Exception {
+		logger.debug(" === D : selectCountReview(SearchCriteria searchCri) === ");
+		return sqlSession.selectOne(NAMESPACE+".selectCountReview",searchCri);
 	}
 	
+	// 내가 쓴 리뷰
+	@Override
+	public List<ReviewVO> selectReview(SearchCriteria searchCri) throws Exception {
+		logger.debug(" === D : selectReview(SearchCriteria searchCri) === ");
+		return sqlSession.selectList(NAMESPACE+".selectReview",searchCri);
+	}
 }

@@ -178,53 +178,100 @@ public class MyPageController {
 	/* 리뷰 */
 	// 리뷰 작성
 	@GetMapping(value = "/review/write")
-	public String reviewWriteGET(@RequestParam String orderCode, @RequestParam String productCode, Model model)
+	public String reviewWriteGET(@RequestParam String order_code, @RequestParam String product_code, Model model)
 			throws Exception {
 		logger.debug(" === reviewWriteGET(Model model) 실행 === ");
 
 		// 리뷰 작성 할 상품 정보 불러오기
-		CartVO cvo = mService.selectReviewProduct(productCode);
+		CartVO cvo = mService.selectReviewProduct(product_code); 
 
-		model.addAttribute("cvo", cvo);
+		model.addAttribute("cvo", cvo); 
 
-		return "reviewWrite";
+		return "/mypage/reviewWrite";
 	}
 
-	// 오토인크리먼트 해제 해야햄,,, 
+	// 오토인크리먼트 해제 완료
 	@PostMapping(value = "/review/write")
-	public String reviewWritePOST(@ModelAttribute ReviewVO rvo, MultipartFile file, HttpServletRequest request)
-			throws Exception {
-		logger.debug(" === reviewWritePOST() 실행 === ");
+	public String reviewWritePOST(
+			@RequestParam("order_code") String order_code,
+	        @RequestParam("product_code") String product_code,
+			@RequestParam("user_id") String user_id, 
+	        @RequestParam("title") String title,
+	        @RequestParam("content") String content,
+	        @RequestParam("images") MultipartFile[] images,
+	        HttpServletRequest request)
+	        throws Exception {
+	    logger.debug(" === reviewWritePOST() 실행 === ");
+	    
+	    ReviewVO rvo = new ReviewVO();
+	    
+	    // 리뷰 번호 생성
+	    int result = mService.selectReviewMaxCount();
+	    if(result == 0) {
+	        rvo.setReview_code(1);
+	    } 
+	    if(result != 0){
+	        rvo.setReview_code(result + 1);
+	    }
 
-		String uniqueFileName = "";
-		String realPath = request.getSession().getServletContext().getRealPath("/resources/upload1");
-		logger.debug("realPath : " + realPath);
+	    // 이미지 파일 업로드
+	    String realPath = request.getSession().getServletContext().getRealPath("/resources/upload1");
+	    logger.debug("realPath : " + realPath);
 
-		if (!file.isEmpty()) {
-			String originalFileName = file.getOriginalFilename();
-			String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
-			uniqueFileName = UUID.randomUUID().toString() + fileExtension; // 중복방지를 위해 파일이름 랜덤값 변경
-			String filePath = realPath + File.separator + uniqueFileName;
-			File dest = new File(filePath);
-			file.transferTo(dest);
-		}
+	    if (images != null && images.length > 0) {
+	        String[] uniqueFileNames = new String[3];
+	        for (int i = 0; i < Math.min(images.length, 3); i++) {
+	            MultipartFile imgFile = images[i];
+	            if (!imgFile.isEmpty()) {
+	                String originalFileName = imgFile.getOriginalFilename();
+	                String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+	                uniqueFileNames[i] = UUID.randomUUID().toString() + fileExtension;
+	                String filePath = realPath + File.separator + uniqueFileNames[i];
+	                File dest = new File(filePath);
+	                imgFile.transferTo(dest);
+	            }
+	        }
+	        // 이미지 파일 경로 설정
+	        rvo.setImg1(uniqueFileNames[0]);
+	        rvo.setImg2(uniqueFileNames[1]);
+	        rvo.setImg3(uniqueFileNames[2]);
+	    }
 
-		rvo.setImg1(uniqueFileName);
+	    // 답변 그룹번호
+	    rvo.setRe_ref(result+1);
+	    
+	    logger.debug("===rvo=== : " + rvo);
+	    mService.insertReview(rvo);
 
-		mService.insertReview(rvo);
-
-		return "redirect:/review/list";
+	    return "redirect:/review/list";
 	}
 
 	// 내가 쓴 리뷰
 	@GetMapping(value = "/review/list")
-	public void reviewListGET(HttpSession session, Model model) throws Exception {
+	public void reviewListGET(HttpSession session, 
+			@ModelAttribute("cri") Criteria cri,
+			@RequestParam(required = false) String startDate, 
+			@RequestParam(required = false) String endDate,
+			Model model) throws Exception {
 		logger.debug(" === reviewListGET() 실행 === ");
 		
 		String userid = (String)session.getAttribute("user_id");
-		List<ReviewVO> reviewList = mService.selectReview(userid);
+		
+		// 검색
+		SearchCriteria searchCri = new SearchCriteria();
+		searchCri.setStartDate(startDate);
+		searchCri.setEndDate(endDate);
+		searchCri.setUser_id(userid);
+
+		List<ReviewVO> reviewList = mService.selectReview(searchCri);
+		
+		PageMaker pageMaker = new PageMaker();
+		
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(mService.selectCountReview(searchCri));
 		
 		model.addAttribute("reviewList",reviewList);
+		model.addAttribute("pageMaker", pageMaker);
 	}
 
 }

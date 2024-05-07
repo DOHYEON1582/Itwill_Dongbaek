@@ -93,6 +93,13 @@ public class MyPageServiceImpl implements MyPageService {
 		logger.debug(" === S : selectReviewProduct(String productCode) 실행 === ");
 		return mdao.selectReviewProduct(productCode);
 	}
+	
+	// 리뷰코드 최대값 가져오기
+	@Override
+	public int selectReviewMaxCount() throws Exception {
+		logger.debug(" === S : selectReviewMaxCount() 실행 === ");
+		return mdao.selectReviewMaxCount();
+	}
 
 	// 리뷰작성
 	@Override
@@ -100,13 +107,24 @@ public class MyPageServiceImpl implements MyPageService {
 		logger.debug(" === S : insertReview(ReviewVO vo) 실행 === ");
 		mdao.insertReview(vo);
 	}
+	
+	// 내가 쓴 리뷰 갯수
+	@Override
+	public int selectCountReview(SearchCriteria searchCri) throws Exception {
+		logger.debug(" === S : selectCountReview(SearchCriteria searchCri) 실행 === ");
+		return mdao.selectCountReview(searchCri);
+	}
 
 	// 내가 쓴 리뷰
 	@Override
-	public List<ReviewVO> selectReview(String user_id) throws Exception {
-		logger.debug(" === S : selectReview(String user_id) 실행 === ");
-		return selectReview(user_id);
+	public List<ReviewVO> selectReview(SearchCriteria searchCri) throws Exception {
+		logger.debug(" === S : selectReview(SearchCriteria searchCri) 실행 === ");
+		return selectReview(searchCri);
 	}
+
+	
+
+	
 
 	
 

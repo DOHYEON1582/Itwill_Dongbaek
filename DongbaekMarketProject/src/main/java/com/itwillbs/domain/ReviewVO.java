@@ -10,7 +10,7 @@ public class ReviewVO {
 	private String regdate;
 	private String title;
 	private String content;
-	private int start;
+	private int star;
 	private String img1;
 	private String img2;
 	private String img3;

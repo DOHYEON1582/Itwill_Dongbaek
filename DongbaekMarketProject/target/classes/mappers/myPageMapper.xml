@@ -149,13 +149,19 @@
 		FROM   product p
 		       JOIN store s
 		         ON p.store_code = s.store_code
-		WHERE  product_code = # {product_code} 
+		WHERE  product_code = #{product_code} 
+	</select>
+	
+	<!-- 리뷰코드 최댓값 가져오기 -->
+	<select id="selectReviewMaxCount" resultType="int">
+		SELECT ifnull(Max(review_code),0)
+		FROM   review 
 	</select>
 	
 	<!-- 리뷰작성 -->
-	<!-- 0507 autoincrement 해제 후 수정해야함 -->
 	<insert id="insertReview">
-		INSERT INTO (product_code,
+		INSERT INTO (review_code,
+					product_code,
 		            regdate,
 		            title,
 		            content,
@@ -168,7 +174,9 @@
 		            re_lev,
 		            re_ref,
 		            re_seq)
-           VALUES   (#{product_code},
+           VALUES   (
+           			#{review_code},
+           			#{product_code},
                      now(),
                      #{title},
                      #{content},
@@ -179,16 +187,35 @@
                      #{order_code},
                      #{user_id},
                      0,
-                     0,
+                     #{re_ref},,
                      0)
 	</insert>
 	
+	<!-- 내가 쓴 리뷰 글 갯수 -->
+	<select id="selectCountReview" resultType="int">
+		<![CDATA[
+		SELECT Count(*)
+		FROM   review
+		WHERE  user_id = #{user_id}
+		]]>
+		<if test="startDate != null and endDate != null">
+			AND regdate between #{startDate} and #{endDate}
+		</if>
+	</select>
+	
 	<!-- 내가 쓴 리뷰 -->
 	<select id="selectReview" resultType="ReviewVO">
+		<![CDATA[
 		SELECT *
 		FROM   review
-		WHERE  user_id = # {user_id}
-		ORDER  BY review_code DESC 
+		WHERE  user_id = #{user_id}
+		]]>
+		<if test="startDate != null and endDate != null">
+			AND regdate between #{startDate} and #{endDate}
+		</if>
+		<![CDATA[
+		ORDER  BY review_code DESC
+		]]>
 	</select>
 
 </mapper>
