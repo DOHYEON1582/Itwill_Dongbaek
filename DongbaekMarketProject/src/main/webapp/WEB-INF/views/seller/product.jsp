@@ -388,56 +388,61 @@ body {
 <div class="productAllList">
 <!-- 상품 목록 표시 -->
 <div class="productList">
-<c:if test="${not empty product}">
-    <table border="0" style="border-collapse: collapse; width: 100%;">
-        <thead>
-            <tr>
-                <th style="padding: 8px; text-align: center;"></th>
-                <th style="padding: 8px; text-align: center;"></th>
-                <th style="padding: 8px; text-align: center;"></th>
-                <!-- 필요한 다른 열들을 추가할 수 있습니다 -->
-            </tr>
-        </thead>
-        <tbody>
-            <c:forEach var="product" items="${product}" varStatus="loop">
-                <c:if test="${loop.index % 3 == 0}">
-                    <tr style="text-align: center;">
-                </c:if>
-                <td style="padding: 8px;">
-                    <div style="text-align: center;">
-                        <div style="margin-bottom: 20px;"> <!-- 여기서 간격 조정 -->
-                            <a href="/seller/productDetail?id=${product.product_code}" style="display: inline-block; padding: 10px; text-decoration: none;"> <!-- 패딩 추가 -->
-                                <c:choose>
-                                    <c:when test="${not empty product.img1}">
-                                        <img src="<c:url value='/resources/images/${product.img1}' />" alt="상품 이미지" style="max-width: 100px; max-height: 100px;">
-                                    </c:when>
-                                    <c:when test="${not empty product.img2}">
-                                        <img src="<c:url value='/resources/images/${product.img2}' />" alt="상품 이미지" style="max-width: 100px; max-height: 100px;">
-                                    </c:when>
-                                    <c:when test="${not empty product.img3}">
-                                        <img src="<c:url value='/resources/images/${product.img3}' />" alt="상품 이미지" style="max-width: 100px; max-height: 100px;">
-                                    </c:when>
-                                    <c:otherwise>
-                                        <img src="/resources/images/noimg.png" alt="상품 이미지 없음" style="max-width: 100px; max-height: 100px;">
-                                    </c:otherwise>
-                                </c:choose>
-                                <div>
-                                    <p style="margin-top: 10px;">${product.product_name}</p> <!-- 상품 이름에 상단 여백 추가 -->
-                                    <p>${product.price}</p>
-                                    <!-- 필요한 다른 정보를 여기에 추가할 수 있습니다 -->
-                                </div>
-                            </a>
+    <c:if test="${not empty product}">
+        <table border="0" style="border-collapse: collapse; width: 100%;">
+            <thead>
+                <tr>
+                    <th style="padding: 8px; text-align: center;"></th>
+                    <th style="padding: 8px; text-align: center;"></th>
+                    <th style="padding: 8px; text-align: center;"></th>
+                    <!-- 필요한 다른 열들을 추가할 수 있습니다 -->
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="product" items="${product}" varStatus="loop">
+                    <c:if test="${loop.index % 3 == 0}">
+                        <tr style="text-align: center;">
+                    </c:if>
+                    <td style="padding: 8px;">
+                        <div style="text-align: center;">
+                            <div style="margin-bottom: 20px;"> <!-- 여기서 간격 조정 -->
+                                <a href="/seller/productDetail?id=${product.product_code}" style="display: inline-block; padding: 10px; text-decoration: none;"> <!-- 패딩 추가 -->
+                                    <c:choose>
+                                        <c:when test="${not empty product.img1}">
+                                            <img src="<c:url value='/resources/images/${product.img1}' />" alt="상품 이미지" style="max-width: 100px; max-height: 100px;">
+                                        </c:when>
+                                        <c:when test="${not empty product.img2}">
+                                            <img src="<c:url value='/resources/images/${product.img2}' />" alt="상품 이미지" style="max-width: 100px; max-height: 100px;">
+                                        </c:when>
+                                        <c:when test="${not empty product.img3}">
+                                            <img src="<c:url value='/resources/images/${product.img3}' />" alt="상품 이미지" style="max-width: 100px; max-height: 100px;">
+                                        </c:when>
+                                        <c:otherwise>
+                                            <img src="/resources/images/noimg.png" alt="상품 이미지 없음" style="max-width: 100px; max-height: 100px;">
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <div style="margin-top: 10px;"> <!-- 상품 이름 아래에 여백 추가 -->
+                                        <p>${product.product_name}</p> <!-- 상품 이름에 상단 여백 추가 -->
+                                        <p>${product.price}</p>
+                                        <p>
+                                            <a href="/seller/productmodify?id=${product.product_code}">수정</a> |
+                                            <a href="#" onclick="deleteProduct(${product.product_code})">삭제</a>
+                                        </p>
+                                        <!-- 필요한 다른 정보를 여기에 추가할 수 있습니다 -->
+                                    </div>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                </td>
-                 <c:if test="${loop.index % 3 == 2 or loop.last}">
-                    </tr>
-                </c:if>
-            </c:forEach>
-        </tbody>
-    </table>
-</c:if>
-</div>	
+                    </td>
+                     <c:if test="${loop.index % 3 == 2 or loop.last}">
+                        </tr>
+                    </c:if>
+                </c:forEach>
+            </tbody>
+        </table>
+    </c:if>
+</div>
+
 
 
 
@@ -447,7 +452,7 @@ body {
     <ul style="margin-top: 20px; list-style: none; display: flex; justify-content: center;">
         <c:if test="${pagingVO.prev}">
             <li style="margin: 0 5px;">
-                <a href="/seller/product?page=${pagingVO.cri.page - 1}" style="color: #007bff;">이전</a>
+                <a href="/seller/product?page=${pagingVO.cri.page - 1}" style="color: #000;">이전</a>
             </li>
         </c:if>
         
@@ -459,7 +464,7 @@ body {
         
         <c:if test="${pagingVO.next}">
             <li style="margin: 0 5px;">
-            <a href="/seller/product?page=${pagingVO.cri.page + 1}">다음</a>
+            <a href="/seller/product?page=${pagingVO.cri.page + 1}" style="color: #000;">다음</a>
             </li>
         </c:if>
     </ul>

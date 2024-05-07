@@ -72,6 +72,10 @@ public class ProductServiceImpl implements ProductService {
 		return pdao.getProductCode();
 	}
 
-	
+	@Override
+    public String getImagePathByProductCode(int product_code) throws Exception {
+        logger.debug("getImagePathByProductCode(int product_code) 호출");
+        return pdao.getImagePathByProductCode(product_code);
+    }
 	
 }

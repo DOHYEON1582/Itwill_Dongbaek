@@ -63,4 +63,10 @@ public class ProductDAOImpl implements ProductDAO {
     public int getProductCode() throws Exception {
         return sqlSession.selectOne(NAMESPACE + ".getProductCode");
     }
+	
+	@Override
+    public String getImagePathByProductCode(int product_code) throws Exception {
+        return sqlSession.selectOne(NAMESPACE + ".getImagePathByProductCode", product_code);
+    }
+	
 }

@@ -42,8 +42,6 @@
 	    ]]>
 	</select>
 
-
-
     
 	<!-- 상품 등록 -->
 	<insert id="productRegist" parameterType="com.itwillbs.domain.ProductVO">
@@ -59,9 +57,21 @@
 	</insert>
 
 
+	<!-- 이미지 파일 경로를 가져오는 쿼리 -->
+    <select id="getImagePathByProductCode" parameterType="String" resultType="String">
+        SELECT img1, img2, img3 FROM product WHERE product_code = #{product_code}
+    </select>
+
+
 	<!-- 이미지와 같이 들어온 상품코드 -->
 	<select id="getProductCode" resultType="int">
     	SELECT MAX(product_code) FROM product
 	</select>
-	
+
+
+	<!-- 상품 삭제 -->
+    <delete id="deleteProduct" parameterType="int">
+        DELETE FROM product WHERE product_code = #{product_code}
+    </delete>
+    	
 </mapper>

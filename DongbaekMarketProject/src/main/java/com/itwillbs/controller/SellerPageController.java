@@ -36,59 +36,66 @@ import com.itwillbs.domain.ProductCri;
 import com.itwillbs.domain.ProductPagingVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.service.ProductService;
+import com.itwillbs.service.ReviewReplyService;
 
 @Controller
 @RequestMapping(value = "/seller/*")
 public class SellerPageController {//판매자 페이지 컨트롤러
 
-	@Inject
-	private ProductService pService; //서비스 가져오기
-	
-	@Value("${file.upload.directory}")
-	private String FILE_DIRECTORY = "/resources/images/";
-	
-	private static final Logger logger = LoggerFactory.getLogger(SellerPageController.class);
-	
-	// 판매자 메인페이지
-    //	http://localhost:8088/seller/sellermain
-	@RequestMapping(value = "/sellermain",method = RequestMethod.GET)
-	public void main() throws Exception{
-		logger.debug(" main() 실행 ");
-	}
-	
-	// 판매자 상품페이지(상품목록)
-	//	http://localhost:8088/seller/product
-	@RequestMapping(value = "/product",method = RequestMethod.GET)
-	public String productList(Model model,ProductCri cri, HttpSession session) throws Exception {
-	    // 세션에서 가게 코드를 가져옴
-//	    Integer store_code = (Integer) session.getAttribute("store_code");
-//	    if (store_code == null) {
-//	        // 가게 코드가 없으면 로그인 페이지로 리다이렉트 또는 다른 처리를 수행할 수 있음
-//	       return "redirect:/login";
-//	    }
+    @Inject
+    private ProductService pService; // 상품 관련 서비스 가져오기
+    
+    @Inject
+    private ReviewReplyService rService;
+    
+    // 파일 업로드 디렉토리
+    @Value("${file.upload.directory}")
+    private String FILE_DIRECTORY;
+    
+    
+    
+    private static final Logger logger = LoggerFactory.getLogger(SellerPageController.class);
+    
+    // 판매자 메인페이지
+    //  http://localhost:8088/seller/sellermain
+    @RequestMapping(value = "/sellermain",method = RequestMethod.GET)
+    public void main() throws Exception{
+        logger.debug(" main() 실행 ");
+    }
+    
+    // 판매자 상품페이지(상품목록)
+    //  http://localhost:8088/seller/product
+    @RequestMapping(value = "/product",method = RequestMethod.GET)
+    public String productList(Model model, ProductCri cri, HttpSession session) throws Exception {
+        // 세션에서 가게 코드를 가져옴
+        // Integer store_code = (Integer) session.getAttribute("store_code");
+        // if (store_code == null) {
+        //     // 가게 코드가 없으면 로그인 페이지로 리다이렉트 또는 다른 처리를 수행할 수 있음
+        //     return "redirect:/login";
+        // }
 
-	    // 가게 코드를 설정
-	    cri.setStore_code(2024042501);
+        // 가게 코드를 설정
+        cri.setStore_code(2024042501);
 
-	    
-	    ProductPagingVO pagingVO = new ProductPagingVO();
-	    pagingVO.setCri(cri);
-	    pagingVO.setTotalCount(pService.getTotalCount(2024042501)); // 총 상품 수를 ProductService를 통해 가져옴
+        
+        ProductPagingVO pagingVO = new ProductPagingVO();
+        pagingVO.setCri(cri);
+        pagingVO.setTotalCount(pService.getTotalCount(2024042501)); // 총 상품 수를 ProductService를 통해 가져옴
 
-	    logger.debug(""+pagingVO);
-	    
-	    List<ProductVO> product = pService.getProductPage(cri);
-	    
-	    model.addAttribute("product", product);
-	    
-	    model.addAttribute("cri",cri);
-	    
-	    model.addAttribute("pagingVO", pagingVO);
+        logger.debug(""+pagingVO);
+        
+        List<ProductVO> product = pService.getProductPage(cri);
+        
+        model.addAttribute("product", product);
+        
+        model.addAttribute("cri", cri);
+        
+        model.addAttribute("pagingVO", pagingVO);
 
-	    return "/seller/product";
-	}
-		
-	// 상품 상세 페이지를 보여주는 메서드
+        return "/seller/product";
+    }
+        
+    // 상품 상세 페이지를 보여주는 메서드
     @RequestMapping(value = "/productDetail", method = RequestMethod.GET)
     public String showProductDetail(@RequestParam("product_code") int product_code, Model model) {
         // 상품 정보 조회
@@ -100,91 +107,104 @@ public class SellerPageController {//판매자 페이지 컨트롤러
         // 상품 상세 페이지로 이동
         return "/seller/productDetail";
     }
-	
-	// 판매자 상품페이지(상품등록)
-	//	http://localhost:8088/seller/productregist
-	@RequestMapping(value = "/productregist",method = RequestMethod.GET)
-	public void productregist(Model model) throws Exception{
-		model.addAttribute("product", new ProductVO());
-		logger.debug(" productregist() 실행 ");
-	}
-	
-	// 판매자 상품페이지(상품등록)
-	// http://localhost:8088/seller/productregistSubmit
-	 @RequestMapping(value = "/productregistSubmit", method = RequestMethod.POST)
-	    public String productregistSubmit(@RequestParam("img1") MultipartFile img1,
-	                                      @RequestParam("img2") MultipartFile img2,
-	                                      @RequestParam("img3") MultipartFile img3,
-	                                      @RequestParam(value = "category", defaultValue = "기본 카테고리") String category,
-	                                      @RequestParam(value = "product_name", defaultValue = "상품명 없음") String product_name,
-	                                      @RequestParam(value = "unit", defaultValue = "개") String unit,
-	                                      @RequestParam(value = "price", defaultValue = "0") String price,
-	                                      @RequestParam(value = "product_explain", defaultValue = "설명 없음") String product_explain,
-	                                      @RequestParam(value = "max_account", defaultValue = "0") int max_account,
-	                                      @RequestParam(value = "country", defaultValue = "원산지 없음") String country,
-	                                      @RequestParam(value = "store_code", defaultValue = "0") int store_code,
-	                                      RedirectAttributes rttr) throws Exception {
-	        try {
-	            String img1Filename = saveImage(img1);
-	            String img2Filename = saveImage(img2);
-	            String img3Filename = saveImage(img3);
+    
+    // 판매자 상품페이지(상품등록)
+    //  http://localhost:8088/seller/productregist
+    @RequestMapping(value = "/productregist", method = RequestMethod.GET)
+    public void productregist(Model model) throws Exception{
+        model.addAttribute("product", new ProductVO());
+        logger.debug(" productregist() 실행 ");
+    }
+    
+    // 판매자 상품페이지(상품등록)
+    // http://localhost:8088/seller/productregistSubmit
+     @RequestMapping(value = "/productregistSubmit", method = RequestMethod.POST)
+        public String productregistSubmit(@RequestParam("img1") MultipartFile img1,
+                                          @RequestParam("img2") MultipartFile img2,
+                                          @RequestParam("img3") MultipartFile img3,
+                                          @RequestParam(value = "category", defaultValue = "기본 카테고리") String category,
+                                          @RequestParam(value = "product_name", defaultValue = "상품명 없음") String product_name,
+                                          @RequestParam(value = "unit", defaultValue = "개") String unit,
+                                          @RequestParam(value = "price", defaultValue = "0") String price,
+                                          @RequestParam(value = "product_explain", defaultValue = "설명 없음") String product_explain,
+                                          @RequestParam(value = "max_account", defaultValue = "0") int max_account,
+                                          @RequestParam(value = "country", defaultValue = "원산지 없음") String country,
+                                          @RequestParam(value = "store_code", defaultValue = "0") int store_code,
+                                          RedirectAttributes rttr) throws Exception {
+            try {
+                String img1Filename = saveImage(img1);
+                String img2Filename = saveImage(img2);
+                String img3Filename = saveImage(img3);
 
-	            ProductVO product = new ProductVO();
-	            product.setCategory(category);
-	            product.setProduct_name(product_name);
-	            product.setUnit(unit);
-	            product.setPrice(price);
-	            product.setProduct_explain(product_explain);
-	            product.setMax_account(max_account);
-	            product.setCountry(country);
-	            product.setStore_code(store_code);
-	            product.setImg1(img1Filename);
-	            product.setImg2(img2Filename);
-	            product.setImg3(img3Filename);
-	            pService.productRegist(product);
+                ProductVO product = new ProductVO();
+                product.setCategory(category);
+                product.setProduct_name(product_name);
+                product.setUnit(unit);
+                product.setPrice(price);
+                product.setProduct_explain(product_explain);
+                product.setMax_account(max_account);
+                product.setCountry(country);
+                product.setStore_code(store_code);
+                saveImagePaths(product, img1Filename, img2Filename, img3Filename);
+                pService.productRegist(product);
 
-	            logger.debug("등록 성공");
+                logger.debug("등록 성공");
 
-	            return "redirect:/seller/productregist";
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	            rttr.addFlashAttribute("f", "이미지 파일 업로드에 실패했습니다.");
-	            return "redirect:/seller/productregist";
-	        }
-	    }
+                return "redirect:/seller/productregist";
+            } catch (IOException e) {
+                e.printStackTrace();
+                rttr.addFlashAttribute("f", "이미지 파일 업로드에 실패했습니다.");
+                return "redirect:/seller/productregist";
+            }
+        }
+     
+     // 이미지 파일의 경로를 상품 객체에 저장하는 메서드
+     private void saveImagePaths(ProductVO product, String img1Filename, String img2Filename, String img3Filename) {
+    	    product.setImg1(img1Filename);
+    	    product.setImg2(img2Filename);
+    	    product.setImg3(img3Filename);
+    	}
 
-	// 이미지 파일을 저장하는 메서드
-	    private String saveImage(MultipartFile img) throws IOException {
-	        if (!img.isEmpty()) {
-	            String originalFilename = img.getOriginalFilename(); // 이미지 원본 이름
-	            String uuid = UUID.randomUUID().toString();
-	            String encodedFilename = URLEncoder.encode(originalFilename, StandardCharsets.UTF_8);
-	            String filename = uuid + "_" + encodedFilename;
-	            String filePath = FILE_DIRECTORY + filename;
+    // 이미지 파일을 저장하는 메서드
+    private String saveImage(MultipartFile img) throws IOException {
+        if (!img.isEmpty()) {
+            String originalFilename = img.getOriginalFilename(); // 이미지 원본 이름
+            String uuid = UUID.randomUUID().toString();
+            String encodedFilename = URLEncoder.encode(originalFilename, StandardCharsets.UTF_8);
+            String filename = uuid + "_" + encodedFilename;
+            String filePath = FILE_DIRECTORY + filename;
 
-	            // 실제 파일 시스템 경로로 저장
-	            Path path = Paths.get(FILE_DIRECTORY);
-	            if (!Files.exists(path)) {
-	                Files.createDirectories(path); // 디렉토리가 없는 경우 생성
-	            }
-	            Files.copy(img.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
+            // 실제 파일 시스템 경로로 저장
+            Path path = Paths.get(FILE_DIRECTORY);
+            if (!Files.exists(path)) {
+                Files.createDirectories(path); // 디렉토리가 없는 경우 생성
+            }
+            Files.copy(img.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
 
-	            return filename;
-	        }
-	        return null;
-	    }
+            return filename;
+        }
+        return null;
+    }
 
-	 // 이미지 파일을 제공하는 메서드
-	    @RequestMapping(value = "/image/{imageName:.+}", method = RequestMethod.GET)
-	    @ResponseBody
-	    public byte[] getProductImage(@PathVariable("imageName") String imageName) throws IOException {
-	        // 이미지 파일 경로
-	        String imagePath = FILE_DIRECTORY + "/" + imageName;
+    // 이미지 파일을 제공하는 메서드 수정
+    @RequestMapping(value = "/image/{imageName:.+}", method = RequestMethod.GET)
+    @ResponseBody
+    public byte[] getProductImage(@PathVariable("imageName") String imageName, @RequestParam("product_code") int product_code) throws Exception {
+        // 상품 코드를 사용하여 이미지 파일 경로를 DB에서 가져옴
+        String imagePath = pService.getImagePathByProductCode(product_code);
+        
+        // 이미지 파일 경로에 이미지 파일 이름을 추가하여 완전한 이미지 파일 경로를 생성
+        String fullImagePath = imagePath + "/" + imageName;
+        
+        // 이미지 파일 경로를 이용하여 이미지 파일을 읽어옴
+        Path path = Paths.get(fullImagePath);
+        return Files.readAllBytes(path);
+    }
 
-	        // 이미지 파일을 읽어옴
-	        Path path = Paths.get(imagePath);
-	        return Files.readAllBytes(path);
-	    }
+
+
+
+
 
 
 
@@ -240,11 +260,12 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	}
 
 	// 판매자 리뷰페이지
-	//	http://localhost:8088/seller/review
-	@RequestMapping(value = "/review",method = RequestMethod.GET)
-	public void review() throws Exception{
-		logger.debug(" review() 실행 ");
-	}
+		//	http://localhost:8088/seller/review
+		@RequestMapping(value = "/review",method = RequestMethod.GET)
+		public String getAllReviews(Model model) throws Exception{
+	        model.addAttribute("reviews", rService.getAllReviews());
+	        return "/seller/review"; // 리뷰 목록 페이지로 이동
+	    }
 	
 	// 판매자 매출페이지
 	//	http://localhost:8088/seller/sales
