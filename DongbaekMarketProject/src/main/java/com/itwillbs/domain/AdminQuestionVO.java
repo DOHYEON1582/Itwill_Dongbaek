@@ -1,5 +1,5 @@
 package com.itwillbs.domain;
 
-public class AdminVO {
+public class AdminQuestionVO {
 
 }
