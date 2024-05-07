@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.OrderInfoVO;
+import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.SearchCriteria;
 import com.itwillbs.persistence.MyPageDAO;
 
@@ -83,6 +84,28 @@ public class MyPageServiceImpl implements MyPageService {
 	public List<CartVO> selectOrderProduct(int order_code) throws Exception {
 		logger.debug(" === S : selectOrderProduct(int order_code) 실행 === ");
 		return mdao.selectOrderProduct(order_code);
+	}
+
+	/* 리뷰 */
+	// 리뷰 작성 할 상품 정보 불러오기
+	@Override
+	public CartVO selectReviewProduct(String productCode) throws Exception {
+		logger.debug(" === S : selectReviewProduct(String productCode) 실행 === ");
+		return mdao.selectReviewProduct(productCode);
+	}
+
+	// 리뷰작성
+	@Override
+	public void insertReview(ReviewVO vo) throws Exception {
+		logger.debug(" === S : insertReview(ReviewVO vo) 실행 === ");
+		mdao.insertReview(vo);
+	}
+
+	// 내가 쓴 리뷰
+	@Override
+	public List<ReviewVO> selectReview(String user_id) throws Exception {
+		logger.debug(" === S : selectReview(String user_id) 실행 === ");
+		return selectReview(user_id);
 	}
 
 	

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.OrderInfoVO;
+import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.SearchCriteria;
 
 public interface MyPageDAO {
@@ -37,7 +38,15 @@ public interface MyPageDAO {
 	// 주문 상품 정보
 	public List<CartVO> selectOrderProduct(int order_code) throws Exception;
 	
+	/* 리뷰 */
+	// 리뷰 작성 할 상품 정보 불러오기
+	public CartVO selectReviewProduct(String productCode) throws Exception;
 	
+	// 리뷰작성
+	public void insertReview(ReviewVO vo) throws Exception;
+	
+	// 내가 쓴 리뷰
+	public List<ReviewVO> selectReview(String user_id) throws Exception;
 	
 	 
 	

@@ -136,7 +136,59 @@
 		WHERE  order_code = #{order_code} 
 	</select>
 	
+	<!-- 리뷰 -->
+	<!-- 리뷰 작성 할 상품 불러오기 -->
+	<!-- 0507 resultType 수정 해야함 -->
+	<select id="selectReviewProduct" resultType="CartVO">
+		SELECT s.store_code,
+		       s.store_name,
+		       p.product_code,
+		       p.product_name,
+		       p.img1,
+		       p.price
+		FROM   product p
+		       JOIN store s
+		         ON p.store_code = s.store_code
+		WHERE  product_code = # {product_code} 
+	</select>
 	
-
+	<!-- 리뷰작성 -->
+	<!-- 0507 autoincrement 해제 후 수정해야함 -->
+	<insert id="insertReview">
+		INSERT INTO (product_code,
+		            regdate,
+		            title,
+		            content,
+		            star,
+		            img1,
+		            img2,
+		            img3,
+		            order_code,
+		            user_id,
+		            re_lev,
+		            re_ref,
+		            re_seq)
+           VALUES   (#{product_code},
+                     now(),
+                     #{title},
+                     #{content},
+                     #{star},
+                     #{img1},
+                     #{img2},
+                     #{img3},
+                     #{order_code},
+                     #{user_id},
+                     0,
+                     0,
+                     0)
+	</insert>
+	
+	<!-- 내가 쓴 리뷰 -->
+	<select id="selectReview" resultType="ReviewVO">
+		SELECT *
+		FROM   review
+		WHERE  user_id = # {user_id}
+		ORDER  BY review_code DESC 
+	</select>
 
 </mapper>

@@ -56,7 +56,7 @@
 					<td colspan="2">${list.states }</td><!-- 주문상태표시 -->
 				</tr>
 				<tr>
-					<td rowspan="3">#{list.img1 }</td> <!-- 상품 이미지 -->
+					<td rowspan="3">${list.img1 }</td> <!-- 상품 이미지 -->
 					<td>${list.ordr_date }</td><!-- 주문날짜 -->
 				</tr>
 				<tr>
@@ -66,15 +66,20 @@
 					<td>${list.product_name}</td><!-- 상품명 -->
 				</tr>
 				<tr>
-					<td>${list.product_name }</td><!-- 가격 -->
+					<td>${list.price }</td><!-- 가격 -->
 				</tr>
 				<tr>	
 				<!-- 주문내역삭제, 주문취소 js 코드 추가 -->
-					<td><button id="" onclick="location.href='/mypage/orderdetail?order_code=${list.cart_code}&page=${pageMaker.cri.page}&pageSize=${pageMaker.cri.pageSize}'">주문상세</button></td><!-- 주문상세 버튼 -->
-					<td><button id="" onclick="location.href='/mypage/orderdelete?order_code=${list.cart_code}&page=${pageMaker.cri.page}&pageSize=${pageMaker.cri.pageSize }'">주문내역삭제</button></td><!-- 주문내역 삭제 버튼 -->
+					<td><button id="" onclick="location.href='/mypage/orderdetail?order_code=${list.order_code}&page=${pageMaker.cri.page}&pageSize=${pageMaker.cri.pageSize}'">주문상세</button></td><!-- 주문상세 버튼 -->
+					<td><button id="" onclick="location.href='/mypage/orderdelete?order_code=${list.order_code}&page=${pageMaker.cri.page}&pageSize=${pageMaker.cri.pageSize }'">주문내역삭제</button></td><!-- 주문내역 삭제 버튼 -->
 					<c:if test="${list.states == '결제완료' }">
-					<td><button id="" onclick="location.href='/mypage/orderdetail?order_code=${list.cart_code}&page=${pageMaker.cri.page}&pageSize=${pageMaker.cri.pageSize}'">주문상세</button></td><!-- 주문상세 버튼 -->
-					<td><button id="" onclick="location.href='/mypage/ordercancel?order_code=${list.cart_code}&page=${pageMaker.cri.page}&pageSize=${pageMaker.cri.pageSize}'">주문취소</button></td><!-- 주문상세 버튼 -->	
+					<td><button id="" onclick="location.href='/mypage/orderdetail?order_code=${list.order_code}&page=${pageMaker.cri.page}&pageSize=${pageMaker.cri.pageSize}'">주문상세</button></td><!-- 주문상세 버튼 -->
+					<td><button id="" onclick="location.href='/mypage/ordercancel?order_code=${list.order_code}&page=${pageMaker.cri.page}&pageSize=${pageMaker.cri.pageSize}'">주문취소</button></td><!-- 주문상세 버튼 -->	
+					</c:if>
+					<c:if test="${list.states == '배달완료' }">
+						<td><button id="" onclick="location.href='/mypage/orderdetail?order_code=${list.order_code}&page=${pageMaker.cri.page}&pageSize=${pageMaker.cri.pageSize}'">주문상세</button></td><!-- 주문상세 버튼 -->
+						<td><button id="" onclick="location.href='/mypage/review/write?order_code=${list.order_code}&product_code=${list.product_code}'">리뷰쓰기</button></td>
+						<td><button id="" onclick="location.href='/mypage/orderdelete?order_code=${list.order_code}&page=${pageMaker.cri.page}&pageSize=${pageMaker.cri.pageSize }'">주문내역삭제</button></td><!-- 주문내역 삭제 버튼 -->
 					</c:if>
 				</tr>
 			</c:forEach>

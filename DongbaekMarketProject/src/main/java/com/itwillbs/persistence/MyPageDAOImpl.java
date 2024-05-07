@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.OrderInfoVO;
+import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.SearchCriteria;
 
 @Repository
@@ -85,6 +86,28 @@ public class MyPageDAOImpl implements MyPageDAO {
 	public List<CartVO> selectOrderProduct(int order_code) throws Exception {
 		logger.debug(" === D : selectOrderProduct(int order_code) === ");
 		return sqlSession.selectList(NAMESPACE+".selectOrderProduct",order_code);
+	}
+
+	/* 리뷰 */
+	// 리뷰 작성 할 상품 정보 불러오기
+	@Override
+	public CartVO selectReviewProduct(String productCode) throws Exception {
+		logger.debug(" === D : selectReviewProduct(String productCode) === ");
+		return sqlSession.selectOne(NAMESPACE+".selectReviewProduct",productCode);
+	}
+
+	// 리뷰작성
+	@Override
+	public void insertReview(ReviewVO vo) throws Exception {
+		logger.debug(" === D : insertReview(ReviewVO vo) === ");
+		sqlSession.insert(NAMESPACE+"insertReview",vo);
+	}
+
+	// 내가 쓴 리뷰
+	@Override
+	public List<ReviewVO> selectReview(String user_id) throws Exception {
+		logger.debug(" === D : selectReview() === ");
+		return sqlSession.selectList(NAMESPACE+".selectReview",user_id);
 	}
 	
 }
