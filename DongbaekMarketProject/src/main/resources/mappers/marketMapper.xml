@@ -87,7 +87,7 @@
 		select * from question
 		where product_code = #{product_code}
 		order by regdate desc 
-		limit #{startPage},#{pageSize}
+		limit #{cri.startPage},#{cri.pageSize}
 		]]>
 	</select>
 

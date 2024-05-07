@@ -110,11 +110,14 @@ public class MarketController {
 		PageVO pageVO = new PageVO();
 		pageVO.setCri(cri);
 		pageVO.setTotalCount(mService.questionCount());
+		logger.debug("pagevo" + pageVO);
+		
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("product_code", product_code);
 		ProductVO product = mService.eachProduct(product_code);
-		paramMap.put("startPage", pageVO.getStartPage());
-		paramMap.put("pageSize", cri.getPageSize());
+		paramMap.put("cri", cri);
+		
+		logger.debug("paramMap" + paramMap);
 	
 		List<QuestionVO> question = mService.getQuestion(paramMap);
 		model.addAttribute("question", question);
