@@ -3,6 +3,7 @@ package com.itwillbs.controller;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -10,14 +11,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.MarketVO;
+import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
@@ -38,12 +42,32 @@ public class UserController {
 	
 	// http://localhost:8088/
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Model model, MarketVO mvo) throws Exception {
+	public String home(@ModelAttribute("criteria")Criteria cri, Model model, MarketVO mvo) throws Exception {
 		logger.info("home");
-		
 		model.addAttribute("getMarket", mService.getMarket(mvo));
 		return "main";
 	}
+	
+	@RequestMapping(value = "search", method = RequestMethod.GET)
+	public String search(@RequestParam("query") String query, @RequestParam("type") String type, Model model) throws Exception {
+	    logger.debug("search() 호출");
+	    
+	    // type에 따라 다른 페이지로 리다이렉트
+	    if (type.equals("market")) {
+	        if (query.contains("자갈치")) {
+	            return "redirect:/market/marketMain?market_code=2";
+	        } else if (query.contains("구포")) {
+	            return "redirect:/market/marketMain?market_code=1";
+	        } else {
+	            return "redirect:/";
+	        }
+	    } else if (type.equals("product")) {
+	    	
+	        return "redirect:/member/product"; // productMain.jsp 페이지로 리다이렉트
+	    } 
+	    return "redirect:/"; // 기본 페이지로 리다이렉트
+	}
+
 	
 	@ResponseBody
 	@PostMapping(value = "/get")
@@ -154,12 +178,16 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "member/wish", method = RequestMethod.GET)
-	public void wishGET(HttpSession session, Model model) throws Exception {
+	public void wishGET(@RequestParam(name = "orderBy", required = false, defaultValue = "popularity") String orderBy,
+			HttpSession session, Model model) throws Exception {
+		
 		logger.debug(" wishGET() 호출 ");
 		UserVO userVO = (UserVO) session.getAttribute("userVO");
 		String user_id = userVO.getUser_id();
-		List<ProductVO> wishList = uService.wishList(user_id);
+		List<ProductVO> wishListAll = uService.wishListAll(user_id);
+		List<ProductVO> wishList = uService.wishList(orderBy, user_id);
 		model.addAttribute("wishList", wishList);
+		model.addAttribute("wishListAll", wishListAll);
 	}
 	
 	// 찜 상품 삭제 - 개별
@@ -204,20 +232,6 @@ public class UserController {
 		uService.deleteMarkAll(user_id);
 	}
 	
-	
-	
-	
-	
-	
-//	@RequestMapping(value = "member/review", method = RequestMethod.GET)
-//	public void reviewList(@RequestParam("product_code") int product_code, Model model) throws Exception{
-//		logger.debug(" review() 호출 ");
-//		List<ProductVO> product = uService.getProduct(product_code);
-//		model.addAttribute("product",product);
-//		List<ReviewVO> review = uService.getReview(product_code);
-//		model.addAttribute("review", review);
-//		
-//	}
 	@RequestMapping(value = "member/review", method = RequestMethod.GET)
 	public void reviewList(@RequestParam("product_code") int product_code,
 	                       @RequestParam(value = "orderBy", required = false, defaultValue = "latest") String orderBy,
@@ -230,6 +244,17 @@ public class UserController {
 	    model.addAttribute("review", review);
 	}
 
+	@RequestMapping(value = "member/product", method = RequestMethod.GET)
+	public String productLsit(@RequestParam(name = "orderBy", required = false, defaultValue = "popularity") String orderBy,
+			HttpSession session, Model model, HttpServletResponse response, ProductVO pvo) throws Exception {
+		logger.debug("productLsit() 호출 ");
+		List<ProductVO> productList = uService.getProductOrderBy(orderBy);
+		model.addAttribute("productList", productList);
+		return "member/product";
+	}
+	
+	
+	
 	
 	
 	

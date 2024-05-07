@@ -20,11 +20,10 @@ public interface MarketDAO {
 	
 	public MarketVO getMarketListCode() throws Exception;
 	
-	public List<ProductVO> getProductList() throws Exception;
+	// 제품 조회
+	public List<ProductVO> selectProductAll(ProductVO pvo) throws Exception;
 	
-	public List<ProductVO> getProductList1() throws Exception;
-	
-	public List<ProductVO> productOnStore(int store_code) throws Exception;
+	public List<ProductVO> productOnStore(Map<String, Object> map) throws Exception;
 	
 	// 가게 조회수 1증가
 	public void storeViewcntUpdate(int store_code) throws Exception;

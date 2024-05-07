@@ -113,16 +113,18 @@
 
 <div class="container">
     <h1>찜 목록</h1>
+    
      <!-- 정렬 옵션 드롭다운 메뉴 -->
-<!--     <form action="review" method="get"> -->
-<%--         <input type="hidden" name="product_code" value="${product_code}"> --%>
-<!--         <select name="orderBy"> -->
-<%--             <option value="latest" ${param.orderBy == 'latest' ? 'selected' : ''}>최신순</option> --%>
-<%--             <option value="lowPrice" ${param.orderBy == 'lowPrice' ? 'selected' : ''}>낮은 가격순</option> --%>
-<%--             <option value="highPrice" ${param.orderBy == 'highPrice' ? 'selected' : ''}>높은 가격순</option> --%>
-<!--         </select> -->
-<!--         <input type="submit" value="정렬"> -->
-<!--     </form> -->
+    <form action="" method="get">
+        <select name="orderBy">
+            <option value="popularity" ${param.orderBy == 'popularity' ? 'selected' : ''}>인기순</option>
+            <option value="lowPrice" ${param.orderBy == 'lowPrice' ? 'selected' : ''}>낮은 가격순</option>
+            <option value="highPrice" ${param.orderBy == 'highPrice' ? 'selected' : ''}>높은 가격순</option>
+        </select>
+        <input type="hidden" name="user_id" value="${sessionScope.userVO.user_id}">
+        <input type="submit" value="정렬">
+    </form>
+    
     <button id="deleteAllButton" class="btn btn-danger">전체 삭제</button>
     <div class="wishlist-items">
         <c:forEach var="wishList" items="${wishList}">

@@ -50,18 +50,18 @@ public class MarketDAOImpl implements MarketDAO{
 	}
 
 	@Override
-	public List<ProductVO> getProductList() throws Exception {
-		return sqlSession.selectList(NAMESPACE + ".selectProduct");
+	public List<ProductVO> selectProductAll(ProductVO pvo) throws Exception {
+		logger.debug(" selectProductAll(ProductVO pvo) 호출 ");
+		return sqlSession.selectList(NAMESPACE + ".getProductAll", pvo);
 	}
+	
 
 	@Override
-	public List<ProductVO> getProductList1() throws Exception {
-		return sqlSession.selectList(NAMESPACE + ".selectProduct1");
-	}
-
-	@Override
-	public List<ProductVO> productOnStore(int store_code) throws Exception {
-		return sqlSession.selectList(NAMESPACE + ".productOnStore", store_code);
+	public List<ProductVO> productOnStore(Map<String, Object> map) throws Exception {
+		String orderBy = (String) map.get("orderBy");
+		logger.debug("map1 : " + map);
+	    map.put("orderBy", orderBy);
+		return sqlSession.selectList(NAMESPACE + ".productOnStore", map);
 	}
 
 	@Override

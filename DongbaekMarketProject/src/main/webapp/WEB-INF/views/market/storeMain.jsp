@@ -2,7 +2,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="../include/header.jsp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
+    <script src="./resources/js/jquery-2.1.1.js"></script>
+	<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 
 <script>
     $(document).ready(function(){
@@ -352,14 +353,15 @@ h3 {
 
 <div class="bootstrap-tabs product-tabs">
     <h3>가게 상품</h3>
-	<section class="shop">
-    <div class="shop__buttonContainer">
-            <button class="shop__basicBtn">최신순</button>
-            <button class="shop__mostsell">인기순</button>
-            <button class="shop__lowPriceBtn">낮은 가격순</button>
-            <button class="shop__highPriceBtn">높은 가격순</button>
-    </div>
-	</section>
+	<form action="" method="get">
+        <select name="orderBy">
+            <option value="popularity" ${param.orderBy == 'popularity' ? 'selected' : ''}>인기순</option>
+            <option value="lowPrice" ${param.orderBy == 'lowPrice' ? 'selected' : ''}>낮은 가격순</option>
+            <option value="highPrice" ${param.orderBy == 'highPrice' ? 'selected' : ''}>높은 가격순</option>
+        </select>
+        <input type="hidden" name="store_code" value="${store.store_code }">
+        <input type="submit" value="정렬">
+    </form>
 	<div class="container">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-6 justify-content-center gap-3">
             <c:forEach items="${product}" var="product">
@@ -368,7 +370,7 @@ h3 {
                         <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
                         <figure>
                             <a href="productMain?product_code=${product.product_code }" title="Product Title">
-                                <img src="${pageContext.request.contextPath}/resources/images/carrot.jpg" alt="Product Thumbnail" class="tab-image" style="width : 180px">
+                                <img src="${pageContext.request.contextPath}/resources/images/product/${product.img1}" alt="Product Thumbnail" class="tab-image" style="width : 180px">
                             </a>
                         </figure>
                         <h4>${product.product_name}</h4>

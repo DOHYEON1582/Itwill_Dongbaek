@@ -30,7 +30,8 @@ public interface UserService {
 	
 	
 	// 찜 목록 조회
-	public List<ProductVO> wishList(String user_id) throws Exception;
+	public List<ProductVO> wishListAll(String user_id) throws Exception;
+	public List<ProductVO> wishList(String orderBy, String user_id) throws Exception;
 	// 찜 상품 삭제(개별)
 	public int deleteWish(int product_code) throws Exception;
 	// 찜 상품 삭제(전체)
@@ -43,6 +44,8 @@ public interface UserService {
 	public int deleteMarkAll(String user_id) throws Exception;
 	
 	
+	// 제품 정렬
+	public List<ProductVO> getProductOrderBy(String orderBy) throws Exception;
 	
 	// 가게 목록 전체 조회
 	public List<StoreVO> getStore(StoreVO svo) throws Exception;

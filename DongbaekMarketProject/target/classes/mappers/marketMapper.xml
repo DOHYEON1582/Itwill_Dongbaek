@@ -2,99 +2,102 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-  <mapper namespace="com.itwillbs.mapper.MarketMapper">
-  
-  
-  <!-- 시장 조회 -->
-  <select id="marketList" resultType="MarketVO">
-  	select * from market
-  	where market_code = 0
-  </select>
-  
-  <!-- marekt_code에 따른 시장 조회 -->
-  <select id="marketListCode" resultType="MarketVO">
-  	select * from market
-  	where market_code = 1
-  </select>
-  
-  <!-- 메인 페이지 인기상품 정렬 -->
-  <select id="selectProduct" resultType="ProductVO">
-  	select * from product
-  	where market_code = 0
-  	order by viewcnt desc 
-  	limit 0,10
-  </select>
-  
-  <!-- 메인 페이지 인기상품 정렬 -->
-  <select id="selectProduct1" resultType="ProductVO">
-  	select * from product
-  	where market_code = 1
-  	order by viewcnt desc 
-  	limit 0,10
-  </select>
-  
-  <!-- 전체 가게 조회 -->
-  <select id="storeList" resultType="StoreVO">
-  	select * from store
-  	<!-- where market_code = #{market_code} -->
-  	order by viewcnt desc
-  	limit 0, 10
-  </select>
-  
-  <!-- 각 가게 정보 조회 -->
-  <select id="selectStore" resultType="StoreVO">
-  	select * from store
-  	where store_code = #{store_code}
-  </select>
-  
-  <!-- 가게별 상품 조회 -->
-  <select id="productOnStore" resultType="ProductVO">
-  	select * from product
-  	where store_code = #{store_code}
-  </select>
-  
-  <!-- 가게 조회수 증가 -->
-  <update id="updateViewcnt">
-  	update store set viewcnt = viewcnt + 1
-  	where store_code = #{store_code}
-  </update>
-  
-  <!-- 각 상품 불러오기 -->
-  <select id="eachProduct" resultType="ProductVO">
-  	select * from product
-  	where product_code = #{product_code}
-  </select>
-  
-  <!-- 상품별 리뷰 불러오기  -->
-  <select id="productReview" resultType="ReviewVO">
-  	select * from review 
-  	where product_code = #{prouct_code}
-  </select>
-  
-  <!-- 문의 작성하기 -->
-  <insert id="writeQuestion">
-  	insert into question(user_id, user_name,title,content,q_type,product_code,regdate)
-  	values(#{user_id},#{user_name},#{title},#{content},#{q_type},#{product_code},now())
-  </insert>
-  
-  <!-- 문의 글 불러오기 페이징처리 -->
-  	<select id="selectQuestion" resultType="QuestionVO">
+
+<mapper namespace="com.itwillbs.mapper.MarketMapper">
+
+	<!-- 시장 조회 -->
+	<select id="marketList" resultType="MarketVO">
+		select * from market
+		where market_code = 1
+	</select>
+
+	<!-- marekt_code에 따른 시장 조회 -->
+	<select id="marketListCode" resultType="MarketVO">
+		select * from market
+		where market_code = 2
+	</select>
+
+	<!-- 제품 조회 -->
+	<select id="getProductAll"
+		resultType="com.itwillbs.domain.ProductVO">
+		select * from product
+	</select>
+
+
+	<!-- 전체 가게 조회 -->
+	<select id="storeList" resultType="StoreVO">
+		select * from store
+		<!-- where market_code = #{market_code} -->
+		order by viewcnt desc
+		limit 0, 10
+	</select>
+
+	<!-- 각 가게 정보 조회 -->
+	<select id="selectStore" resultType="StoreVO">
+		select * from store
+		where store_code = #{store_code}
+	</select>
+
+	<!-- 가게별 상품 조회 -->
+	<select id="productOnStore" resultType="ProductVO"
+		parameterType="map">
+		select * from product
+		where store_code = #{store_code}
+		<choose>
+			<when test="orderBy == 'popularity'">
+				ORDER BY viewcnt DESC
+			</when>
+			<when test="orderBy == 'lowPrice'">
+				ORDER BY price ASC
+			</when>
+			<when test="orderBy == 'highPrice'">
+				ORDER BY price DESC
+			</when>
+		</choose>
+	</select>
+
+	<!-- 가게 조회수 증가 -->
+	<update id="updateViewcnt">
+		update store set viewcnt = viewcnt + 1
+		where store_code = #{store_code}
+	</update>
+
+	<!-- 각 상품 불러오기 -->
+	<select id="eachProduct" resultType="ProductVO">
+		select * from product
+		where product_code = #{product_code}
+	</select>
+
+	<!-- 상품별 리뷰 불러오기 -->
+	<select id="productReview" resultType="ReviewVO">
+		select * from review
+		where product_code = #{prouct_code}
+	</select>
+
+	<!-- 문의 작성하기 -->
+	<insert id="writeQuestion">
+		insert into question(user_id,
+		user_name,title,content,q_type,product_code,regdate)
+		values(#{user_id},#{user_name},#{title},#{content},#{q_type},#{product_code},now())
+	</insert>
+
+	<!-- 문의 글 불러오기 페이징처리 -->
+	<select id="selectQuestion" resultType="QuestionVO">
 		<![CDATA[
 		select * from question
 		where product_code = #{product_code}
 		order by regdate desc 
 		limit #{startPage},#{pageSize}
 		]]>
- 	</select>  
-  
-  <!-- 전체 글 계산 -->
-  <select id="totalCount" resultType="int">
-  	select count(q_code) from question;
-  </select>
-  
-  <!-- 문의 글 목록 페이징처리 -->
-  <select id="questionPage" resultType="QuestionVO">
+	</select>
+
+	<!-- 전체 글 계산 -->
+	<select id="totalCount" resultType="int">
+		select count(q_code) from question;
+	</select>
+
+	<!-- 문의 글 목록 페이징처리 -->
+	<select id="questionPage" resultType="QuestionVO">
   	<![CDATA[
   		select * from question
   		where product_code = #{product_code}
@@ -116,9 +119,5 @@
   	select * from question
   	where q_code = #{q_code}
   </select>
-  
-  
-  
-  
   
   </mapper>

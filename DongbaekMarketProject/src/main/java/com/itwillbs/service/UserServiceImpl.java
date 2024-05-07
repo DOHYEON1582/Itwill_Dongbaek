@@ -1,6 +1,8 @@
 package com.itwillbs.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -72,11 +74,19 @@ public class UserServiceImpl implements UserService {
 		return udao.deleteUser(uvo);
 	}
 
+	// 찜 목록 조회
 	@Override
-	public List<ProductVO> wishList(String user_id) throws Exception {
+	public List<ProductVO> wishListAll(String user_id) throws Exception {
 		logger.debug(" wishList(String user_id) 실행 ");
-		logger.debug(" user_id " + user_id);
-		return udao.wishList(user_id);
+		return udao.wishListAll(user_id);
+	}
+	@Override
+	public List<ProductVO> wishList(String orderBy, String user_id) throws Exception {
+		logger.debug(" wishList(String orderBy, String user_id) 실행 ");
+		Map<String, Object> map = new HashMap<>();
+		map.put("orderBy", orderBy);
+		map.put("user_id", user_id);
+		return udao.wishList(map);
 	}
 
 	@Override
@@ -92,11 +102,6 @@ public class UserServiceImpl implements UserService {
 		return udao.getReview(product_code);
 	}
 
-//	@Override
-//	public List<ProductVO> getProduct(int product_code) throws Exception {
-//		logger.debug(" getProduct(int product_code) 실행 ");
-//		return udao.productList(product_code);
-//	}
 	@Override
 	public List<ProductVO> getProduct(int product_code, String orderBy) throws Exception {
 	    logger.debug(" getProduct(int product_code) 실행 ");
@@ -133,6 +138,14 @@ public class UserServiceImpl implements UserService {
 	public int deleteMarkAll(String user_id) throws Exception {
 		logger.debug(" deleteMarkAll(String user_id) 실행 ");
 		return udao.deleteMarkAll(user_id);
+	}
+
+	@Override
+	public List<ProductVO> getProductOrderBy(String orderBy) throws Exception {
+		logger.debug(" getProductOrderBy(String orderBy, String user_id) 실행 ");
+		Map<String, Object> map = new HashMap<>();
+		map.put("orderBy", orderBy);
+		return udao.selectProductOrderBy(map);
 	}
 	
 	

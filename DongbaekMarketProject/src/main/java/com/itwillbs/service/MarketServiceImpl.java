@@ -1,5 +1,6 @@
 package com.itwillbs.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,18 +47,17 @@ public class MarketServiceImpl implements MarketService{
 	}
 
 	@Override
-	public List<ProductVO> getProductList() throws Exception {
-		return mdao.getProductList();
+	public List<ProductVO> getProductAll(ProductVO pvo) throws Exception {
+		logger.debug(" getProductAll(ProductVO pvo) 호출 ");
+		return mdao.selectProductAll(pvo);
 	}
-
+	
 	@Override
-	public List<ProductVO> getProductList1() throws Exception {
-		return mdao.getProductList1();
-	}
-
-	@Override
-	public List<ProductVO> productOnStore(int store_code) throws Exception {
-		return mdao.productOnStore(store_code);
+	public List<ProductVO> productOnStore(String orderBy, int store_code) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		map.put("orderBy", orderBy);
+		map.put("store_code", store_code);
+		return mdao.productOnStore(map);
 	}
 
 	@Override
