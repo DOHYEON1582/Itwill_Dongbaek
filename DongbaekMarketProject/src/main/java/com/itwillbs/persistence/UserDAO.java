@@ -30,7 +30,8 @@ public interface UserDAO {
 	
 	
 	// 찜 목록 조회
-	public List<ProductVO> wishList(String user_id) throws Exception;
+	public List<ProductVO> wishListAll(String user_id) throws Exception;
+	public List<ProductVO> wishList(Map<String, Object> map) throws Exception;
 	// 찜 상품 삭제 (개별)
 	public int deleteWish(int product_code) throws Exception;
 	// 찜 상품 삭제 (전체)

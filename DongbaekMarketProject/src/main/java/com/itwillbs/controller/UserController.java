@@ -178,16 +178,16 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "member/wish", method = RequestMethod.GET)
-	public void wishGET(@RequestParam(name = "orderBy", required = false, defaultValue = "latest") String orderBy,
+	public void wishGET(@RequestParam(name = "orderBy", required = false, defaultValue = "popularity") String orderBy,
 			HttpSession session, Model model) throws Exception {
 		
 		logger.debug(" wishGET() 호출 ");
 		UserVO userVO = (UserVO) session.getAttribute("userVO");
 		String user_id = userVO.getUser_id();
-		List<ProductVO> wishList = uService.wishList(user_id);
-//		List<ProductVO> productList = uService.getProductOrderBy(orderBy, user_id);
+		List<ProductVO> wishListAll = uService.wishListAll(user_id);
+		List<ProductVO> wishList = uService.wishList(orderBy, user_id);
 		model.addAttribute("wishList", wishList);
-//		model.addAttribute("productList", productList);
+		model.addAttribute("wishListAll", wishListAll);
 	}
 	
 	// 찜 상품 삭제 - 개별

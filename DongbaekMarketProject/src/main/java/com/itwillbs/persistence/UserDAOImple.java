@@ -103,16 +103,23 @@ public class UserDAOImple implements UserDAO {
 	}
 
 	@Override
-	public List<ProductVO> wishList(String user_id) throws Exception {
+	public List<ProductVO> wishListAll(String user_id) throws Exception {
 		logger.debug(" wishList(String user_id) 호출 ");
 		logger.debug(" user_id " + user_id);
-		return sql.selectList(NAMESPACE + ".getWish", user_id);
+		return sql.selectList(NAMESPACE + ".getWishList", user_id);
+	}
+	@Override
+	public List<ProductVO> wishList(Map<String, Object> map) throws Exception {
+		logger.debug(" wishList(Map<String, Object> map) 호출 ");
+		String orderBy = (String) map.get("orderBy");
+		map.put("orderBy", orderBy);
+		logger.debug(" map: " + map);
+		return sql.selectList(NAMESPACE + ".getWish", map);
 	}
 
 	@Override
 	public int deleteWish(int product_code) throws Exception {
 		logger.debug(" deleteWish(String product_code) 호출 ");
-		logger.debug("product_code : " + product_code);
 		return sql.delete(NAMESPACE + ".deleteWish", product_code);
 	}
 
@@ -122,11 +129,6 @@ public class UserDAOImple implements UserDAO {
 		return sql.selectList(NAMESPACE + ".getReview", product_code);
 	}
 
-//	@Override
-//	public List<ProductVO> productList(int product_code) throws Exception {
-//		logger.debug(" productList(ProductVO pvo) 호출 ");
-//		return sql.selectList(NAMESPACE + ".getProduct", product_code);
-//	}
 	@Override
 	public List<ProductVO> productList(int product_code, String orderBy) throws Exception {
 	    logger.debug(" productList(ProductVO pvo) 호출 ");
@@ -135,7 +137,6 @@ public class UserDAOImple implements UserDAO {
 	    params.put("orderBy", orderBy); // orderBy를 매퍼에 전달
 	    return sql.selectList(NAMESPACE + ".getProduct", params);
 	}
-
 
 	// 가게 목록 전체 조회
 	@Override
@@ -174,7 +175,6 @@ public class UserDAOImple implements UserDAO {
 
 	    // DAO 메서드 파라미터로 전달된 매개 변수 가져오기
 	    String orderBy = (String) map.get("orderBy");
-	    String userId = (String) map.get("user_id");
 
 	    // SQL 쿼리 실행을 위해 적절한 매개 변수 설정
 	    map.put("orderBy", orderBy);

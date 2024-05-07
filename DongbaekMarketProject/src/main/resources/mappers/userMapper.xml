@@ -138,9 +138,8 @@
 		where user_id = #{user_id} and user_pw = #{user_pw}
 	</delete>
 	
-	
-	<!-- 마이페이지 - 찜 목록 불러오기 -->
-	<select id="getWish" resultMap="productMap">
+	<!-- 마이페이지 - 찜 목록 조회 -->
+	<select id="getWishList" resultMap="productMap">
 		select distinct p.*, s.store_name 
 		from wish w 
 		join product p 
@@ -149,6 +148,28 @@
 		on s.store_code = p.store_code 
 		where user_id = #{user_id}
 	</select>
+	<!-- 마이페이지 - 찜 목록 조회 - 정렬 -->
+	<select id="getWish" resultMap="productMap" parameterType="map">
+		select * 
+		from wish w 
+		join product p 
+		on w.product_code = p.product_code 
+		join store s 
+		on s.store_code = p.store_code 
+		where user_id = #{user_id} 
+		<choose>
+			<when test="orderBy == 'popularity'">
+				ORDER BY p.viewcnt DESC
+			</when>
+			<when test="orderBy == 'lowPrice'">
+				ORDER BY p.price ASC
+			</when>
+			<when test="orderBy == 'highPrice'">
+				ORDER BY p.price DESC
+			</when>
+		</choose>
+	</select>
+	
 	<!-- 찜 목록 삭제 - 개별 -->
 	<delete id="deleteWish">
 		delete from wish 

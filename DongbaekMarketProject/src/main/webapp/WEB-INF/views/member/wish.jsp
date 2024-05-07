@@ -116,12 +116,12 @@
     
      <!-- 정렬 옵션 드롭다운 메뉴 -->
     <form action="" method="get">
-        <input type="hidden" name="product_code" value="${product_code}">
         <select name="orderBy">
-            <option value="latest" ${param.orderBy == 'popularity' ? 'selected' : ''}>인기순</option>
+            <option value="popularity" ${param.orderBy == 'popularity' ? 'selected' : ''}>인기순</option>
             <option value="lowPrice" ${param.orderBy == 'lowPrice' ? 'selected' : ''}>낮은 가격순</option>
             <option value="highPrice" ${param.orderBy == 'highPrice' ? 'selected' : ''}>높은 가격순</option>
         </select>
+        <input type="hidden" name="user_id" value="${sessionScope.userVO.user_id}">
         <input type="submit" value="정렬">
     </form>
     
