@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.MarketVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.QuestionVO;
@@ -108,6 +109,11 @@ public class MarketDAOImpl implements MarketDAO{
 	@Override
 	public QuestionVO questionDetail(int q_code) throws Exception {
 		return sqlSession.selectOne(NAMESPACE + ".questionDetail", q_code);
+	}
+
+	@Override
+	public void markStore(MarkVO mvo) throws Exception {
+		sqlSession.insert(NAMESPACE + ".markStore", mvo);
 	}
 
 	

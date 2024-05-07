@@ -104,6 +104,7 @@
   		order by regdate desc
   		limit #{page},10
   	]]>
+
   </select>
   
   <!-- 최근 문의글 10개 불러오기  -->
@@ -119,5 +120,13 @@
   	select * from question
   	where q_code = #{q_code}
   </select>
+  
+  <!-- 찜에 넣기 -->
+  <insert id="markStore">
+  	insert into mark(store_code, user_id)
+  	values (#{store_code}, #{user_id})
+  </insert>
+  
+  
   
   </mapper>

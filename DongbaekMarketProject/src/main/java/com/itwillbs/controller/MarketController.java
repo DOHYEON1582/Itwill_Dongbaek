@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.MarketVO;
 import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.ProductVO;
@@ -67,6 +68,8 @@ public class MarketController {
 	public void storeMain(@RequestParam(name = "orderBy", required = false, defaultValue = "popularity") String orderBy, 
 			@RequestParam("store_code") int store_code, Model model, HttpSession session) throws Exception{
 		logger.debug(" storeMain() 호출 ");
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+		String user_id = userVO.getUser_id();
 		StoreVO store = mService.selectStore(store_code);
 		List<ProductVO> product = mService.productOnStore(orderBy, store_code);
 		model.addAttribute("store", store);
@@ -152,4 +155,26 @@ public class MarketController {
 		logger.debug("detail >>>>>>>>>>>>" + detail);
 		return "/market/questionDetail";
 	}
+	
+	
+	@RequestMapping(value = "/storeMain", method = RequestMethod.POST, consumes = "application/json")
+	public void storeMainPOST(@RequestParam("store_code") int store_code,  HttpSession session, @RequestBody MarkVO mvo) throws Exception{
+		logger.debug("storeMainPOST 호출 ");
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+		String user_id = userVO.getUser_id();
+		mService.markStore(mvo);
+		logger.debug("mvo " + mvo);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

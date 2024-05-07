@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.MarketVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.QuestionVO;
@@ -52,5 +53,8 @@ public interface MarketDAO {
 	
 	// 문의 상세정보 
 	public QuestionVO questionDetail(int q_code) throws Exception;
+	
+	// 찜에 넣기
+	public void markStore(MarkVO mvo) throws Exception;
 	
 }

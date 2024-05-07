@@ -34,6 +34,29 @@
                 $(this).parent().next().val(quantity - 1);
             }
         });
+        
+        $("#markStore").click(function(){
+        	alert("즐겨찾기 하시겠습니까 ?");
+        	var mvo = {
+        			"mark_code":$("#mark_code").val(),
+        			"store_code":$("#store_code").val(),
+        			"user_id":$("#user_id").val()
+        	};
+        	$.ajax({
+        		type: "POST",
+        		url: "/storeMain",
+                data: JSON.stringify(mvo),
+                contentType: "application/json; charset=UTF-8",  
+                success: function(data){
+                	location.reload();
+                },
+                error: function(xhr, status, error) {
+                    var errorMessage = xhr.status + ': ' + xhr.statusText;
+                    alert('에러가 발생했습니다.\n' + errorMessage);
+                }
+        	});
+        });
+        
     });
     
     document.addEventListener("DOMContentLoaded", function(){
@@ -312,7 +335,7 @@ h3 {
 	<div id="sijang_text" style="display: inline-block; vertical-align: top;">
 		<div class="tit">
 			<div class="sij_name" style="font-size: 30px; font-weight: bold;">▶ ${store.store_name }
-		        <button class="clear-button button button-follow" style="margin-left: 10px;">
+		        <button id="markStore" class="clear-button button button-follow" style="margin-left: 10px;">
 		            <span class="content">
 		                <div class="inner-container">
 		                    <img src="https://front.coupangcdn.com/coupang-store-display/20240415182517/img/ic_heart_dark_outline.ebe809a.svg" width="12" alt="">

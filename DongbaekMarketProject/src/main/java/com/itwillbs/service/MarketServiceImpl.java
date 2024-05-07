@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.MarketVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.QuestionVO;
@@ -105,6 +106,11 @@ public class MarketServiceImpl implements MarketService{
 	@Override
 	public QuestionVO questionDetail(int q_code) throws Exception {
 		return mdao.questionDetail(q_code);
+	}
+
+	@Override
+	public void markStore(MarkVO mvo) throws Exception {
+		mdao.markStore(mvo);
 	}
 
 

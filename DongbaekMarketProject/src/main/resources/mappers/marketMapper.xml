@@ -121,7 +121,11 @@
   	where q_code = #{q_code}
   </select>
   
-  
+  <!-- 찜에 넣기 -->
+  <insert id="markStore">
+  	insert into mark(store_code, user_id)
+  	values (#{store_code}, #{user_id})
+  </insert>
   
   
   
