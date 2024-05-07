@@ -210,7 +210,14 @@ public class AdminRestController {
 		return result;
 	}
 	
-	
+	@GetMapping(value = "/deleteroom/{room_idx}")
+	public int deleteRoom(@PathVariable("room_idx") int room_idx)throws Exception{
+		logger.debug(" deleteRoom(@RequestBody int room_idx) 호출 ");
+		
+		int result = aService.deleteChatRoom(room_idx);
+		
+		return result;
+	}
 	
 	
 }//endController

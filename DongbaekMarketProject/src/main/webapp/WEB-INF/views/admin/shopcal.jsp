@@ -137,7 +137,7 @@
 					
 					$(cartList).each(function(i,cartList){
 						
-								var ProductVO = cartList.AdminProductVO[0];
+								var ProductVO = cartList.adminProductVO[0];
 								console.log(ProductVO);
 								
 								$('#modal-table2 tbody').append(

@@ -31,17 +31,24 @@
 				contentType : "application/json; charset=UTF-8",
 				success : function(data){
 					if(data == ''){
-						alert("리뷰정보가 없습니다!");
+						alert("상담정보가 없습니다!");
 					}else{
 						console.log(data);
 						
 						$(data).each(function(idx,item){
+							
+							var currentDate = new Date(item.regdate);
+							var year = currentDate.getFullYear();
+							var month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
+							var day = ('0' + currentDate.getDate()).slice(-2);
+							var formatDate = year + '-' + month + '-' + day;
+							
 							var uservo = item.userVO
 							$('#list-tbody').append(
 											 `<tr><td>`+item.room_idx
 											 +`</td><td>`+uservo.user_id
 											 +`</td><td>`+uservo.user_name
-											 +`</td><td>`+item.regdate
+											 +`</td><td>`+formatDate
 											 +`</td></tr>`);
 							
 						});
@@ -111,6 +118,21 @@
 			$('#modal-table2 tbody').empty();
 			$('#modal-table2 tfoot').empty();
 			closeSocket();
+			
+			$.ajax({
+				url : "/admin/deleteroom/"+room_idx,
+				type : "GET",
+				success : function(data){
+					if(data == 1){
+						alert("상담 종료!");
+					}else{
+						alert("상담중");
+					}
+					$(location).prop("href", location.href);
+				}
+				
+			});
+			
 		});//클로즈 확인
 		
 		
