@@ -1,6 +1,7 @@
 package com.itwillbs.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -8,8 +9,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MarketVO;
 import com.itwillbs.domain.ProductVO;
+import com.itwillbs.domain.QuestionVO;
+import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
 import com.itwillbs.persistence.MarketDAO;
 
@@ -32,13 +36,76 @@ public class MarketServiceImpl implements MarketService{
 	}
 
 	@Override
-	public List<MarketVO> getMarketListCode(int market_code) throws Exception {
-		return mdao.getMarketListCode(market_code);
+	public StoreVO selectStore(int store_code) throws Exception {
+		return mdao.selectStore(store_code);
+	}
+	
+	@Override
+	public MarketVO getMarketListCode() throws Exception {
+		return mdao.getMarketListCode();
 	}
 
 	@Override
 	public List<ProductVO> getProductList() throws Exception {
 		return mdao.getProductList();
 	}
+
+	@Override
+	public List<ProductVO> getProductList1() throws Exception {
+		return mdao.getProductList1();
+	}
+
+	@Override
+	public List<ProductVO> productOnStore(int store_code) throws Exception {
+		return mdao.productOnStore(store_code);
+	}
+
+	@Override
+	public void updateViewcnt(int store_code) throws Exception {
+		mdao.storeViewcntUpdate(store_code);
+		
+	}
+
+	@Override
+	public ProductVO eachProduct(int product_code) throws Exception {
+		return mdao.eachProduct(product_code);
 	
+	}
+
+	@Override
+	public List<ReviewVO> productReview(int product_code) throws Exception {
+		return mdao.reviewList(product_code);
+	}
+
+	@Override
+	public void writeQuestion(QuestionVO qvo) throws Exception {
+		mdao.writeQuestion(qvo);
+	}
+
+//	@Override
+//	public List<QuestionVO> selectQuestion(Criteria cri) throws Exception {
+//		return mdao.getQuestion(cri);
+//	}
+	
+	@Override
+	public int questionCount() throws Exception {
+		return mdao.questionCount();
+	}
+
+	@Override
+	public List<QuestionVO> getQuestion(Map<String, Object> paramMap) throws Exception {
+		return mdao.getQuestion(paramMap);
+	}
+
+	@Override
+	public List<QuestionVO> newQuestion(int product_code) throws Exception {
+		return mdao.newQuestion(product_code);
+	}
+
+	@Override
+	public QuestionVO questionDetail(int q_code) throws Exception {
+		return mdao.questionDetail(q_code);
+	}
+
+
 }

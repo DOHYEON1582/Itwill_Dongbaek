@@ -5,29 +5,38 @@
 
 
 <script>
-	$(document).ready(function(){
-		$('.bxslider').bxSlider({
-			  infiniteLoop: false,
-			  hideControlOnEnd: true,
-			  slideWidth: 500
-			});
-		
-	    $('.slider5').bxSlider({
-	        slideWidth: 200,
-	        minSlides: 6,
-	        maxSlides: 6,
-	        moveSlides: 6,
-	        slideMargin: 10,
-	        adaptiveHeight: true, // 높이를 자동 조정하여 일관된 높이 유지
-	        pager: false
-	    });
+    $(document).ready(function(){
+        $('.bxslider').bxSlider({
+            infiniteLoop: false,
+            hideControlOnEnd: true,
+            slideWidth: 500
+        });
 
-	}); 
-	
-
+        $('.slider5').bxSlider({
+            slideWidth: 200,
+            minSlides: 6,
+            maxSlides: 6,
+            moveSlides: 6,
+            slideMargin: 10,
+            adaptiveHeight: true, // 높이를 자동 조정하여 일관된 높이 유지
+            pager: false,
+            touchEnabled: false
+        });
+        // 수량 증가
+        $(".quantity-right-plus").click(function(e){
+        	var quantity = parseInt($(this).parent().prev().val());
+        	$(this).parent().prev().val(quantity + 1);
+        });
+        $(".quantity-left-minus").click(function(e){
+        	var quantity = parseInt($(this).parent().next().val());
+            if(quantity > 1){
+                $(this).parent().next().val(quantity - 1);
+            }
+        });
+    });
 </script>
-<style>
 
+<style> 
 	.bxslider{
  		display: inline-block;
         margin-right: 20px; /* 이미지 슬라이더 오른쪽에 공간 추가 */
@@ -164,7 +173,17 @@
     font-family: 'Gowun Dodum', sans-serif;
     font-weight: bold;
 	}
+    .store-link {
+        text-decoration: none; /* 밑줄 제거 */
+        color: #333; /* 링크 색상 */
+        font-size: 16px; /* 글자 크기 */
+        font-weight: bold; /* 글자 굵기 */
+        font-family: 'Gowun Dodum', sans-serif;
+    }
 
+    .store-link:hover {
+        color: purple; /* 마우스 오버시 텍스트 색상 */
+    }
 </style>
 <!-- 시장정보 -->
 <section class="py-2 mb-1" style="background: url(${pageContext.request.contextPath}/resources/images/background-pattern.jpg);">
@@ -215,18 +234,14 @@
 	<h3>인기 상점</h3>
 	<div class="slider-container">
 		<div class="slider5">
-		<%-- <c:forEach var="storeList" items="${storeList }" > --%>
-	    <div class="slide"><img src=""></div>
-	    <div class="slide"><img src="http://placehold.it/300x150&text=FooBar2"></div>
-	    <div class="slide"><img src="http://placehold.it/300x150&text=FooBar3"></div>
-	    <div class="slide"><img src="http://placehold.it/300x150&text=FooBar4"></div>
-	    <div class="slide"><img src="http://placehold.it/300x150&text=FooBar5"></div>
-	    <div class="slide"><img src="http://placehold.it/300x150&text=FooBar6"></div>
-	    <div class="slide"><img src="http://placehold.it/300x150&text=FooBar7"></div>
-	    <div class="slide"><img src="http://placehold.it/300x150&text=FooBar8"></div>
-	    <div class="slide"><img src="http://placehold.it/300x150&text=FooBar9"></div>
-	    <div class="slide"><img src="http://placehold.it/300x150&text=FooBar10"></div>
-	  	<%-- </c:forEach> --%>
+		<c:forEach var="store" items="${storeList }" >
+	    <div class="slide">
+	    <img src="${pageContext.request.contextPath}/resources/images/도현상회.jpg">
+	    <a href="storeMain?store_code=${store.store_code}" class="store-link">
+	    <p style="margin: 0;">${store.store_name } 바로가기</p>
+	    </a>
+	    </div>
+	  	<</c:forEach>
 	  </div>
 	</div>
 <div class="bootstrap-tabs product-tabs">
@@ -238,7 +253,7 @@
                     <div class="product-item">
                         <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
                         <figure>
-                            <a href="" title="Product Title">
+                            <a href="productMain?product_code=${product.product_code }" title="Product Title">
                                 <img src="${pageContext.request.contextPath}/resources/images/carrot.jpg" alt="Product Thumbnail" class="tab-image" style="width : 180px">
                             </a>
                         </figure>
@@ -268,7 +283,4 @@
     </div>
 </div>
 
-              
-  
-${marketList }
 <%@ include file="../include/footer.jsp"%>

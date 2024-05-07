@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,84 +36,81 @@
 
 </head>
 <style>
-.c {
-	margin: 10px 100px;
-}
-.container-fluid2 {
-	padding-left: 100px;
-	padding-right: auto;
-}
-.search1{
-	margin-left: 10px;
-}
-.search-bar input[type="text"] {
-	border: none;
-	border-radius: 20px;
-	padding: 10px auto;
-}
-.search-bar{
-	padding: 10px auto;
-}
-.main-menu .menu-list .nav-item {
-	margin-right: 15px;
-}
-
-@media ( max-width : 767px) {
-	.main-menu .menu-list .nav-item:last-child {
-		margin-right: 0;
+	.c {
+		margin: 10px 100px;
 	}
-	.main-menu .navbar-toggler {
+	.container-fluid2 {
+		padding-left: 100px;
+		padding-right: auto;
+	}
+	.search1{
+		margin-left: 10px;
+	}
+	.search-bar input[type="text"] {
+		border: none;
+		border-radius: 20px;
+		padding: 10px auto;
+	}
+	.search-bar{
+		padding: 10px auto;
+	}
+	.main-menu .menu-list .nav-item {
 		margin-right: 15px;
 	}
-}
 
-.offcanvas-body, .text-center {
-	font-family: 'Hahmlet', sans-serif; /* 햄릿(Hahmlet) 글꼴 적용 */
-	font-size: 20px;
-}
-
-.main-logo{
-	width: 300px;
-	height: 100px;
-	font-size: 20px;
-	padding-left: 70px; /* 왼쪽 여백 추가 */
-}
-.mylogo2 {
-	width: 300px;
-	height: 100px;
-}
-
-.login, .join, .service {
-	text-decoration-line: none;
-	font-family: 'Hahmlet', sans-serif; /* 햄릿(Hahmlet) 글꼴 적용 */
-}
-#ct{
-	padding: 0 auto;
-	margin: 0 auto;
-}
-
-.mylogo {
-	width: 200px;
-	height: 70px;
-}
-
-.footer-menu {
-	width: 200px;
-	height: 110px;
-	font-family: 'Hahmlet', sans-serif; /* 햄릿(Hahmlet) 글꼴 적용 */
-	font-size: 15px;
-	padding: 15px;
-}
-
-#r {
-	height: 100px;
-	margin: 0 auto;
-}
+	@media ( max-width : 767px) {
+		.main-menu .menu-list .nav-item:last-child {
+			margin-right: 0;
+		}
+		.main-menu .navbar-toggler {
+			margin-right: 15px;
+		}
+	}
+	
+	.offcanvas-body, .text-center {
+		font-family: 'Hahmlet', sans-serif; /* 햄릿(Hahmlet) 글꼴 적용 */
+		font-size: 20px;
+	}
+	
+	.main-logo{
+		width: 300px;
+		height: 100px;
+		font-size: 20px;
+		padding-left: 70px; /* 왼쪽 여백 추가 */
+	}
+	.mylogo2 {
+		width: 300px;
+		height: 100px;
+	}
+	
+	.login, .join, .service {
+		text-decoration-line: none;
+		font-family: 'Hahmlet', sans-serif; /* 햄릿(Hahmlet) 글꼴 적용 */
+	}
+	#ct{
+		padding: 0 auto;
+		margin: 0 auto;
+	}
+	
+	.mylogo {
+		width: 200px;
+		height: 70px;
+	}
+	.footer-menu {
+		width: 200px;
+		height: 110px;
+		font-family: 'Hahmlet', sans-serif; /* 햄릿(Hahmlet) 글꼴 적용 */
+		font-size: 15px;
+		padding: 15px;
+	}
+	
+	#r {
+		height: 100px;
+		margin: 0 auto;
+	}
 </style>
 
-
-<body>
-
+  <body>
 	<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
       <defs>
         <symbol xmlns="http://www.w3.org/2000/svg" id="link" viewBox="0 0 24 24">
@@ -174,48 +172,10 @@
 		<div class="offcanvas-body">
 			<div class="order-md-last">
 				<h4 class="d-flex justify-content-between align-items-center mb-3">
-					<span class="text-primary">Your cart</span> <span class="badge bg-primary rounded-pill">3</span>
+					<span class="text-primary">장바구니</span> <span class="badge bg-primary rounded-pill">0</span>
 				</h4>
-				<ul class="list-group mb-3">
-					<li class="list-group-item d-flex justify-content-between lh-sm">
-						<div>
-							<h6 class="my-0">Growers cider</h6>
-							<small class="text-body-secondary">Brief description</small>
-						</div> <span class="text-body-secondary">$12</span>
-					</li>
-					<li class="list-group-item d-flex justify-content-between lh-sm">
-						<div>
-							<h6 class="my-0">Fresh grapes</h6>
-							<small class="text-body-secondary">Brief description</small>
-						</div> <span class="text-body-secondary">$8</span>
-					</li>
-					<li class="list-group-item d-flex justify-content-between lh-sm">
-						<div>
-							<h6 class="my-0">Heinz tomato ketchup</h6>
-							<small class="text-body-secondary">Brief description</small>
-						</div> <span class="text-body-secondary">$5</span>
-					</li>
-					<li class="list-group-item d-flex justify-content-between"><span>Total (USD)</span> <strong>$20</strong></li>
-				</ul>
 
 				<button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
-			</div>
-		</div>
-	</div>
-
-	<div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasSearch" aria-labelledby="Search">
-		<div class="offcanvas-header justify-content-center">
-			<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-		</div>
-		<div class="offcanvas-body">
-			<div class="order-md-last">
-				<h4 class="d-flex justify-content-between align-items-center mb-3">
-					<span class="text-primary">Search</span>
-				</h4>
-				<form role="search" action="index.html" method="get" class="d-flex mt-3 gap-0">
-					<input class="form-control rounded-start rounded-0 bg-light" type="email" placeholder="What are you looking for?" aria-label="What are you looking for?">
-					<button class="btn btn-dark rounded-end rounded-0" type="submit">Search</button>
-				</form>
 			</div>
 		</div>
 	</div>
@@ -226,37 +186,54 @@
 			<div class="row py-3 border-bottom">
 				<div class="col-sm-4 col-lg-3 text-center text-sm-start">
 					<div class="main-logo">
-						<a href="index.html"> <img src="${pageContext.request.contextPath }/resources/images/mylogo2.png" alt="logo" class="mylogo2">
+						<a href="/"> <img src="${pageContext.request.contextPath }/resources/images/mylogo2.png" alt="logo" class="mylogo2">
 						</a>
 					</div>
 				</div>
 
-				<div class="col-sm-4 offset-sm-2 offset-md-0 col-lg-5 d-none d-lg-block" class="search1">
-					<div class="search-bar row bg-light p-2 my-4 rounded-4">
-						<div class="col-9 col-md-8 align-self-center">
-							<form id="search-form" class="text-center" action="search.html" method="post">
-								<input type="text" class="form-control border-0 bg-transparent" placeholder="찾고 싶은 음식, 시장을 검색해보세요!" />
-							</form>
-						</div>
-						<div class="col-3 col-md-4 align-self-center text-end">
-							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-               					<path fill="currentColor" d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z" />
-							</svg>
-						</div>
-					</div>
+				<div class="col-sm-4 offset-sm-2 offset-md-0 col-lg-5 d-none d-lg-block">
+				    <div class="search-bar row bg-light p-2 my-4 rounded-4">
+				        <div class="col-9 col-md-8 align-self-center">
+				            <form id="search-form" class="text-center" action="" method="get">
+				                <div class="input-group">
+				                    <div class="input-group-prepend">
+				                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">검색 유형</button>
+				                        <ul class="dropdown-menu">
+				                            <li><a class="dropdown-item" data-value="name">시장</a></li>
+				                            <li><a class="dropdown-item" data-value="product_name">음식</a></li>
+				                        </ul>
+				                    </div>
+				                    <input type="text" class="form-control border-0 bg-transparent" placeholder="찾고 싶은 음식, 시장을 검색해보세요!" name="query" />
+				                </div>
+				            </form>
+				        </div>
+				        <div class="col-3 col-md-4 align-self-center text-end">
+				            <button type="submit" form="search-form" class="btn btn-sm btn-primary">검색</button>
+				        </div>
+				    </div>
 				</div>
+
 				<div class="col-sm-8 col-lg-3 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
 				    <div>
-				        <div class="align-items-center">
-				            <a href="#" class="login">로그인</a>
-				            <a href="#" class="join">회원가입</a>
-				            <a href="#" class="service">고객센터</a>
-				        </div>
+				    	<c:if test="${sessionScope.userVO.user_id == null }">
+					        <div class="align-items-center">
+					            <a href="/member/login" class="login">로그인</a>
+					            <a href="/member/register" class="join">회원가입</a>
+					            <a href="#" class="service">고객센터</a>
+					        </div>
+				    	</c:if>
+				    	<c:if test="${sessionScope.userVO.user_id != null }">
+					        <div class="align-items-center">
+					            로그인 id : ${sessionScope.userVO.user_id }
+					            <a href="#" class="service">고객센터</a>
+					            <input type="button" value="로그아웃" onclick="location.href='/member/logout';">
+					        </div>
+				    	</c:if>
 				        <ul class="d-flex justify-content-end list-unstyled m-3">
-				            <li><a href="#" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
+				            <li><a href="/member/info" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
 				                        <use xlink:href="#user"></use></svg>
 				                </a></li>
-				            <li><a href="#" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
+				            <li><a href="/member/wish" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
 				                        <use xlink:href="#heart"></use></svg>
 				                </a></li>
 				        </ul>
@@ -265,7 +242,7 @@
 				    <!-- 장바구니 아이콘 -->
 				    <div class="cart text-end d-none d-lg-block dropdown">
 				        <button class="border-0 bg-transparent d-flex flex-column gap-2 lh-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
-				            <span class="fs-6 text-muted dropdown-toggle">Your Cart</span>
+				            <span class="fs-6 text-muted dropdown-toggle">장바구니</span>
 				        </button>
 				    </div>
 				</div>
@@ -282,15 +259,18 @@
 	                    <div class="offcanvas-header justify-content-center">
 	                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 	                    </div>
+	                    
 	                    <div class="offcanvas-body">
 	                    	<form id="marketForm" action="/market/marketMain" method="post">
-		                        <select id="market_code" class="filter-categories border-0 mb-0 me-5" class="market_codeOption">
+		                        <select id="market_code" name="market_code" class="filter-categories border-0 mb-0 me-5" class="market_codeOption">
 		                            <option value="0">구포시장</option>
 		                            <option value="1">자갈치시장</option>
 		                        </select>
+		                        <input type="submit" value="이동">
 	                        </form>
+
 	                        <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
-	                            <li class="nav-item active"><a href="#women" class="nav-link">시장소개</a></li>
+	                            <li class="nav-item active"><a href="marketInfo" class="nav-link">시장소개</a></li>
 	                            <li class="nav-item dropdown"><a href="#men" class="nav-link">제철음식</a></li>
 	                            <li class="nav-item"><a href="#kids" class="nav-link">인기음식</a></li>
 	                            <li class="nav-item"><a href="#accessories" class="nav-link">알뜰쇼핑</a></li>
@@ -303,10 +283,9 @@
 	        </div>
 	    </div>
 	</div>
-
 	</header>
 	</div>
-	
+
 	<script>
 	$(document).ready(function(){
 		
@@ -322,7 +301,6 @@
 				data : JSON.stringify(number),
 				contentType : "application/json; charset=UTF-8",
 				success: function(response){
-					alert("!!!!!!!!!!!");
 					console.log(response);
 				}
 				
@@ -330,5 +308,4 @@
 		});
 		
 	});
-	
 	</script>
