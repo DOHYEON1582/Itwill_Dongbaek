@@ -312,23 +312,25 @@ $(document).ready(function() {
                 alert('에러가 발생했습니다.\n' + errorMessage);
             }
         });
+      
     });
-    // 문의 제목을 클릭했을 때 모달 창을 열고 해당 문의 정보를 표시하는 함수
+    $("td").click(function() {
+        openQuestionModal($(this).data('q_code'));
+    });
+
     function openQuestionModal(q_code) {
-        // 문의 정보를 가져오는 AJAX 요청
-        console.log("정보 들고온다.");
+        console.log("되나");
         $.ajax({
             type: "GET",
-            url: "/market/questionDetail?q_code=" + q_code, // 문의 상세 정보를 가져오는 URL
+            url: "/market/questionDetail?q_code=" + q_code,
             success: function(data) {
-                // 가져온 데이터를 모달에 표시
-                $("#questionDetailModal .modal-content").html(data);
-                // 모달 열기
-                $("#questionDetailModal").modal("show");
+            	console.log("되나");
+                $("#questionDetailModal .modal-content").html(data); // 모달 내용을 가져와서 채웁니다
+                $("#questionDetailModal").modal("show"); // 모달을 엽니다
             },
             error: function(xhr, status, error) {
-                // 에러 처리
-                console.error("Error fetching question details:", error);
+            	console.log("error");
+            	console.error("Error fetching question details:", xhr.statusText);
             }
         });
     }
@@ -450,13 +452,13 @@ $(document).ready(function() {
 			<tr>
 				<td>${question.q_type }</td>
 				<td>${question.user_id }</td>
-				<td><a href="#" onclick="openQuestionModal(${question.q_code})">${question.title}</a></td>
+				<td onclick="openQuestionModal(${question.q_code}); return false;">${question.title}</td>
 				<td><fmt:formatDate value="${question.regdate }"/></td>
 			</tr>
 		</c:forEach>    		
     	</tbody>
     </table>
-    
+<%--     /market/questionDetail?q_code=${question.q_code } --%>
 	<a href="/market/questionMain?product_code=${product.product_code }"> 전체 문의 보러가기</a>
  		
     <button type="button" class="ask-button" onclick="openModal()">문의하기</button>
@@ -494,27 +496,35 @@ $(document).ready(function() {
 			</div>
         </div>
     </div>
-	    <!-- 문의 상세 정보를 표시하는 모달 -->
-	<div id="questionDetailModal" class="modal fade" role="dialog">
-	    <div class="modal-dialog">
-	        <!-- Modal content-->
-	        <div class="modal-content">
-					<div>
-						<h2>${detail.title}</h2>
-						<p>작성자: ${detail.user_id}</p>
-						<p>문의 유형: ${detail.q_type}</p>
-						<p>
-							작성일:
-							<fmt:formatDate value="${detail.regdate}" />
-						</p>
-						<p>내용: ${detail.content}</p>
-					</div>
+
+
+<!-- 문의 상세 정보를 표시하는 모달 -->
+<div id="questionDetailModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">문의 상세 정보</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+					<h2>${detail.title}</h2>
+					<p>작성자: ${detail.user_id}</p>
+					<p>문의 유형: ${detail.q_type}</p>
+					<p>
+						작성일:
+						<fmt:formatDate value="${detail.regdate}" />
+					</p>
+					<p>내용: ${detail.content}</p>
 				</div>
-	    </div>
-	</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
 </div>
-
-
 
 
 <!-- Scroll to Top button -->

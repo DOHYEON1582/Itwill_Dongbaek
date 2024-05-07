@@ -139,11 +139,12 @@ public class MarketController {
 	}
 	
 	@RequestMapping(value = "/questionDetail", method = RequestMethod.GET)
-	public void questionDetail(Model model, @RequestParam("q_code") int q_code) throws Exception{
+	public String questionDetail(Model model, @RequestParam("q_code") int q_code) throws Exception{
 		logger.debug("questionDetil 호출 ");
 		QuestionVO detail = mService.questionDetail(q_code);
 		model.addAttribute("detail", detail);
 		logger.debug("detail >>>>>>>>>>>>" + detail);
+		return "/market/questionDetail";
 	}
 	
 	
