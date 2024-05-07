@@ -401,5 +401,34 @@
 	SELECT MAX(room_idx) FROM chat_room WHERE user_id = #{user_id}
 </select>
 
+<!-- 차트 매출 가져오기 -->
+<select id="totalsell" resultType="String">
+	SELECT SUM(total_price) FROM order_info 
+	WHERE ordr_date LIKE CONCAT('%',#{date},'%') 
+</select>
+
+<!-- 날짜별 고객수 가져오기 -->
+<select id="totalUser" resultType="String">
+	SELECT COUNT(*) FROM user 
+	WHERE <![CDATA[ regdate <= #{date}]]>
+
+</select>
+
+<!-- 날짜별 사장님수 가져오기 -->
+<select id="totalSeller" resultType="String">
+	SELECT COUNT(*) FROM seller 
+	WHERE <![CDATA[ regdate <= #{date}]]>
+</select>
+
+<!-- id 중복 체크 -->
+<select id="idCheck" resultType="int">
+	SELECT COUNT(*) FROM seller 
+	WHERE seller_id = #{seller_id}
+</select>
+
+
+
+
+
 
 </mapper>

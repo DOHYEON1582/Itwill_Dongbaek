@@ -65,7 +65,7 @@
 				type : "GET",
 				success : function(data){
 					//console.log(data);
-					var SVO = data.AdminStoreVO;
+					var SVO = data.adminStoreVO;
 					//console.log(SVO);
 					//console.log(PVO);
 					  	$('#modal-table1 thead').append(

@@ -23,7 +23,7 @@
 			<input class="loginInput" type="text"  name="phone" placeholder="휴대폰 번호">
 			<input class="loginInput" type="text"  name="name" placeholder="성명">
 			<input class="loginInput" type="text"  name="id" placeholder="아이디">
-			<input class="loginInput" type="text"  name="pass" placeholder="비밀번호"><br>
+			<input class="loginInput" type="password"  name="pass" placeholder="비밀번호"><br>
 			<input  id="loginBtn" type="submit" value="가입"/>
 		</form>
 	</div>

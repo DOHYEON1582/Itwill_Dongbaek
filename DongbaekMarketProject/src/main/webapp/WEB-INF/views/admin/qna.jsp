@@ -36,7 +36,7 @@
 						console.log(data);
 						
 						$(data).each(function(idx,item){
-							var uservo = item.UserVO
+							var uservo = item.userVO
 							$('#list-tbody').append(
 											 `<tr><td>`+item.room_idx
 											 +`</td><td>`+uservo.user_id

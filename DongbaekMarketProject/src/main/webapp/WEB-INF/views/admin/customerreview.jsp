@@ -72,10 +72,10 @@
 				url : "/admin/customerreview/"+review_code,
 				type : "GET",
 				success : function(data){
-					//console.log(data);
+					console.log(data);
 					//console.log(data.cartList);
 					var review = data;
-					var product = data.AdminProductVO[0];
+					var product = data.adminProductVO[0];
 					console.log(review);
 					console.log(product);
 					

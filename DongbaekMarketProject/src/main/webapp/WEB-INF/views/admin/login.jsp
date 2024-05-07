@@ -19,7 +19,7 @@
 	<div>
 		<form action="/admin/loginAction" method="post">
 			<input class="loginInput" type="text"  name="user_id" placeholder="아이디">
-			<input class="loginInput" type="text"  name="user_pw" placeholder="비밀번호"><br>
+			<input class="loginInput" type="password"  name="user_pw" placeholder="비밀번호"><br>
 			<input  id="loginBtn" type="submit" value="로그인"/>
 		</form>
 	</div>

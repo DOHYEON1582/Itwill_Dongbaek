@@ -20,6 +20,7 @@ import com.itwillbs.domain.AdminNoticeVO;
 import com.itwillbs.domain.AdminOrderVO;
 import com.itwillbs.domain.AdminProductVO;
 import com.itwillbs.domain.AdminReviewVO;
+import com.itwillbs.domain.AdminSellerVO;
 import com.itwillbs.domain.AdminStoreVO;
 import com.itwillbs.domain.AdminSubPayVO;
 import com.itwillbs.domain.AdminSubProductVO;
@@ -202,6 +203,13 @@ public class AdminDAOImpl implements AdminDAO {
 		logger.debug(" mainSellerData(String date) 호출 ");
 		
 		return sql.selectOne(NAMESPACE+".totalSeller", date);
+	}
+
+	@Override
+	public int idCheck(AdminSellerVO vo) throws Exception {
+		logger.debug(" idCheck(AdminSellerVO vo) 호출 ");
+		
+		return sql.selectOne(NAMESPACE+".idCheck", vo);
 	}
 	
 	

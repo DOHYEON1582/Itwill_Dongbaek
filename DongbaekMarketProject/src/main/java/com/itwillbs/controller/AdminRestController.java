@@ -27,6 +27,7 @@ import com.itwillbs.domain.AdminNoticeVO;
 import com.itwillbs.domain.AdminOrderVO;
 import com.itwillbs.domain.AdminProductVO;
 import com.itwillbs.domain.AdminReviewVO;
+import com.itwillbs.domain.AdminSellerVO;
 import com.itwillbs.domain.AdminStoreVO;
 import com.itwillbs.domain.AdminSubPayVO;
 import com.itwillbs.domain.AdminSubProductVO;
@@ -195,6 +196,16 @@ public class AdminRestController {
 	public int createRoom(@PathVariable("user_id") String user_id)throws Exception{
 		logger.debug(" createRoom(@PathVariable(\"user_id\") String user_id) 호출 ");
 		int result = aService.createChatRoom(user_id);
+		
+		return result;
+	}
+	
+	@PostMapping(value = "/idcheck")
+	public int idCheck(@RequestBody AdminSellerVO vo)throws Exception{
+		logger.debug(" idCheck(@RequestBody AdminSellerVO vo) 호출 ");
+		logger.debug("idcheck : "+vo.getSeller_id());
+		
+		int result  = aService.idCheck(vo);
 		
 		return result;
 	}

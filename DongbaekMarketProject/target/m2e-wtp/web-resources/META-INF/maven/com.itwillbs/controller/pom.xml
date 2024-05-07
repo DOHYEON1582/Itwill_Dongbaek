@@ -119,6 +119,12 @@
 		<!-- 외부 라이브러리 추가 영역 -->
 		
 		<dependency>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
+          <version>2.9.0</version>
+      	</dependency>
+		
+		<dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-websocket</artifactId>
             <version>${org.springframework-version}</version>

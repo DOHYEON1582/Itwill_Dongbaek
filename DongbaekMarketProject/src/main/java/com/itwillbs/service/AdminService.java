@@ -9,6 +9,7 @@ import com.itwillbs.domain.AdminNoticeVO;
 import com.itwillbs.domain.AdminOrderVO;
 import com.itwillbs.domain.AdminProductVO;
 import com.itwillbs.domain.AdminReviewVO;
+import com.itwillbs.domain.AdminSellerVO;
 import com.itwillbs.domain.AdminStoreVO;
 import com.itwillbs.domain.AdminSubPayVO;
 import com.itwillbs.domain.AdminSubProductVO;
@@ -82,5 +83,8 @@ public interface AdminService {
 	
 	//사장님수 데이터 가져오기
 	public Map<String, Object> mainSellerData()throws Exception;
+	
+	// 아이디 중복체크
+	public int idCheck(AdminSellerVO vo)throws Exception;
 	
 }//endService

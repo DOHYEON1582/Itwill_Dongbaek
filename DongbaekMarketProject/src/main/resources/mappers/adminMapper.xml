@@ -420,4 +420,15 @@
 	WHERE <![CDATA[ regdate <= #{date}]]>
 </select>
 
+<!-- id 중복 체크 -->
+<select id="idCheck" resultType="int">
+	SELECT COUNT(*) FROM seller 
+	WHERE seller_id = #{seller_id}
+</select>
+
+
+
+
+
+
 </mapper>
