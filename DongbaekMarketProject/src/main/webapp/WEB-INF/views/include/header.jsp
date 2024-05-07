@@ -271,9 +271,9 @@
 	                        </form>
 
 	                        <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
-	                            <li class="nav-item active"><a href="marketInfo" class="nav-link">시장소개</a></li>
+	                            <li class="nav-item active"><a href="/market/marketMain" class="nav-link">시장소개</a></li>
 	                            <li class="nav-item dropdown"><a href="#men" class="nav-link">제철음식</a></li>
-	                            <li class="nav-item"><a href="#kids" class="nav-link">인기음식</a></li>
+	                            <li class="nav-item"><a href="member/product?orderBy=popularity" class="nav-link">인기음식</a></li>
 	                            <li class="nav-item"><a href="#accessories" class="nav-link">알뜰쇼핑</a></li>
 	                            <li class="nav-item"><a href="#brand" class="nav-link">특가/혜택</a></li>
 	                            <li class="nav-item"><a href="#brand" class="nav-link">구독상품</a></li>
@@ -310,7 +310,7 @@
 	            var type = document.getElementById("categorySelect").value;
 	
 	            // 새로운 URL로 이동
-	            location.href = "/search?keyword=" + encodeURIComponent(keyword) + "&type=" + type;
+// 	            location.href = "/search?keyword=" + encodeURIComponent(keyword) + "&type=" + type;
 
 	            searchForm.submit();
 	            

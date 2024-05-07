@@ -47,19 +47,14 @@ public interface UserDAO {
 	
 	// 제품 정렬
 	public List<ProductVO> selectProductOrderBy(Map<String, Object> map) throws Exception;
-	// 제품 조회
-	public List<ProductVO> selectProductAll(ProductVO pvo) throws Exception;
 	
 	
 	// 가게 목록 전체 조회
 	public List<StoreVO> getStore(StoreVO svo) throws Exception;
 	
-	
-	
 	// 리뷰
 	public List<ReviewVO> getReview(int product_code) throws Exception;
 	// 상품
-	//public List<ProductVO> productList(int product_code) throws Exception;
 	public List<ProductVO> productList(int product_code, String orderBy) throws Exception;
 
 }

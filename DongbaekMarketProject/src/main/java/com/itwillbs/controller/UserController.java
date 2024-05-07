@@ -245,28 +245,12 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "member/product", method = RequestMethod.GET)
-	public void productLsit(@RequestParam(name = "orderBy", required = false, defaultValue = "popularity") String orderBy,
+	public String productLsit(@RequestParam(name = "orderBy", required = false, defaultValue = "popularity") String orderBy,
 			HttpSession session, Model model, HttpServletResponse response, ProductVO pvo) throws Exception {
 		logger.debug("productLsit() 호출 ");
-		model.addAttribute("productAll", uService.getProductAll(pvo));
-		UserVO userVO = (UserVO) session.getAttribute("userVO");
-		if (userVO != null) {
-			String user_id = userVO.getUser_id();
-			if (user_id != null) {
-				try {
-				List<ProductVO> productList = uService.getProductOrderBy(orderBy, user_id);
-				model.addAttribute("productList", productList);
-				} catch (Exception e) {
-					logger.error(e.getMessage());
-				}
-			} 
-		} else {
-			String message = "로그인이 필요한 서비스입니다.";
-	        String redirectUrl = "/member/login";
-	        String script = "alert('" + message + "'); window.location='" + redirectUrl + "';";
-	        response.setContentType("text/html;charset=UTF-8");
-	        response.getWriter().println("<script>" + script + "</script>");
-		}
+		List<ProductVO> productList = uService.getProductOrderBy(orderBy);
+		model.addAttribute("productList", productList);
+		return "member/product";
 	}
 	
 	

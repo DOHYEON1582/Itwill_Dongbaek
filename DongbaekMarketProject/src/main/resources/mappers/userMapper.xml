@@ -221,6 +221,7 @@
 		where product_code = #{product_code} 
 	</select>
 	
+	
 	<!-- 정렬 -->
 	<select id="selectProduct" parameterType="map" resultType="com.itwillbs.domain.ProductVO">
 	    SELECT *
@@ -236,10 +237,6 @@
                 ORDER BY price DESC
             </when>
         </choose>
-	</select>
-	<!-- 제품 조회 -->
-	<select id="getProductAll" resultType="com.itwillbs.domain.ProductVO">
-		select * from product 
 	</select>
 	
 	

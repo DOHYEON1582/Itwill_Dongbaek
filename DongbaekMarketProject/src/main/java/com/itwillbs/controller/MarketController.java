@@ -79,8 +79,6 @@ public class MarketController {
 		}
 	}
 
-
-
 	// 상품 메인페이지
 	@RequestMapping(value = "/productMain", method = RequestMethod.GET)
 	public void productMain(@RequestParam("product_code") int product_code, Model model, HttpSession session, QuestionVO qvo, Criteria cri) throws Exception{
@@ -113,8 +111,26 @@ public class MarketController {
 	}
 	
 	
-	
-	
+	// 검색기능
+	@RequestMapping(value = "search", method = RequestMethod.GET)
+	public String search(@RequestParam("query") String query, @RequestParam("type") String type, Model model) throws Exception {
+	    logger.debug("search() 호출");
+	    
+	    // type에 따라 다른 페이지로 리다이렉트
+	    if (type.equals("market")) {
+	        if (query.contains("자갈치")) {
+	            return "redirect:/market/marketMain?market_code=2";
+	        } else if (query.contains("구포")) {
+	            return "redirect:/market/marketMain?market_code=1";
+	        } else {
+	            return "redirect:/";
+	        }
+	    } else if (type.equals("product")) {
+	    	
+	        return "redirect:/member/product"; // productMain.jsp 페이지로 리다이렉트
+	    } 
+	    return "redirect:/"; // 기본 페이지로 리다이렉트
+	}
 	
 	
 //	// 상품 POST 페이지

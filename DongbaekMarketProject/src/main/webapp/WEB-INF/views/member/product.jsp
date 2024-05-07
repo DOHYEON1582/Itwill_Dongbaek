@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
+<%@include file="../include/header.jsp" %>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <title>전체 제품 목록</title>
 <style>
     .container {
@@ -38,7 +38,6 @@
         margin-bottom: 10px; /* 이미지 아래 간격 조정 */
     }
 </style>
-</head>
 <body>
     <div class="container">
         <h1>전체 제품 목록</h1>
@@ -64,4 +63,5 @@
     </div>
     
 </body>
-</html>
+
+<%@include file="../include/footer.jsp" %>
