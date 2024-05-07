@@ -9,7 +9,7 @@ public class PageVO {
 	private boolean prev; // 이전 버튼
 	private boolean next; // 다음 버튼 
 	
-	private int pageBlock = 5; // 페이지 블럭의 개수 
+	private int pageBlock = 10; // 페이지 블럭의 개수 
 	private Criteria cri;
 	
 	public void setCri(Criteria cri) {

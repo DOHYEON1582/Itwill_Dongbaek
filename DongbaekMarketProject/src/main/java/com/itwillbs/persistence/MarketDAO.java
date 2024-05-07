@@ -50,4 +50,7 @@ public interface MarketDAO {
 	// 최근 문의글 10개 불러오기
 	public List<QuestionVO> newQuestion(int product_code) throws Exception;
 	
+	// 문의 상세정보 
+	public QuestionVO questionDetail(int q_code) throws Exception;
+	
 }

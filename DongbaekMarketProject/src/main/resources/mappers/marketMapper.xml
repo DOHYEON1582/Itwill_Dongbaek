@@ -102,17 +102,27 @@
   		select * from question
   		where product_code = #{product_code}
   		order by regdate desc
-  		limit #{page},5
+  		limit #{page},10
   	]]>
-	</select>
 
-	<!-- 최근 문의글 10개 불러오기 -->
-	<select id="newQuestion" resultType="QuestionVO">
-		select * from question
-		where product_code = #{product_code}
-		order by regdate desc
-		limit 0,10;
-	</select>
-
-
-</mapper>
+  </select>
+  
+  <!-- 최근 문의글 10개 불러오기  -->
+  <select id="newQuestion" resultType="QuestionVO">
+  	select * from question
+  	where product_code = #{product_code}
+  	order by regdate desc
+  	limit 0,10;
+  </select>
+  
+  <!-- 문의 상세정보 불러오기 -->
+  <select id="questionDetail" resultType="QuestionVO">
+  	select * from question
+  	where q_code = #{q_code}
+  </select>
+  
+  
+  
+  
+  
+  </mapper>

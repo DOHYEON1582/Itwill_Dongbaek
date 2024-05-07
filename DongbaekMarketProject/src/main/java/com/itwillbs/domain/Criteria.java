@@ -38,7 +38,7 @@ public class Criteria {
 	
 	public Criteria() {
 		this.page = 1;
-		this.pageSize = 5;
+		this.pageSize = 10;
 	}
 
 	public void setPage(int page) {

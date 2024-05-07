@@ -105,6 +105,11 @@ public class MarketDAOImpl implements MarketDAO{
 		return sqlSession.selectList(NAMESPACE + ".newQuestion", product_code);
 	}
 
+	@Override
+	public QuestionVO questionDetail(int q_code) throws Exception {
+		return sqlSession.selectOne(NAMESPACE + ".questionDetail", q_code);
+	}
+
 	
 	
 }

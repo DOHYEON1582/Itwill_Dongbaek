@@ -11,7 +11,7 @@
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <!-- Bootstrap icons-->
-    <link href="https://fastly.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
     
@@ -122,49 +122,7 @@
     max-width: 600px;
 }
 
-/* 모달 닫기 버튼 스타일 */
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
 
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-.form-group {
-    text-align: left;
-    font-size: 20px;
-}
-    .star-rating {
-        unicode-bidi: bidi-override;
-        color: #f8ce0b;
-        font-size: 25px;
-        display: inline-block;
-    }
-
-    .star-rating::before {
-        content: '\2605';
-        position: absolute;
-        z-index: 0;
-        top: 0;
-        left: 0;
-        overflow: hidden;
-        width: 0;
-    }
-
-    .star-rating span {
-        position: absolute;
-        top: 0;
-        left: 0;
-        overflow: hidden;
-        width: 0;
-        color: #000;
-    }
     table {
         width: 100%;
         border-collapse: collapse;
@@ -187,6 +145,23 @@
     tr:hover {
         background-color: #dddddd;
     }
+    .pagination {
+        display: inline-block;
+    }
+
+    .pagination li {
+        display: inline;
+        padding: 0 5px;
+    }
+
+    .pagination li.active {
+        font-weight: bold;
+    }
+
+    .pagination li.disabled {
+        pointer-events: none;
+        cursor: default;
+    }
 </style>
 <script type="text/javascript">
 // 맨 위로 스크롤되도록 설정
@@ -194,24 +169,6 @@ function topFunction() {
   document.body.scrollTop = 0; // For Safari
   document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 }
-
-function showStarRating() {
-    var starElements = document.getElementsByClassName('star-rating');
-    Array.prototype.forEach.call(starElements, function(starElement) {
-        var rating = parseInt(starElement.getAttribute('data-rating'), 10);
-        var stars = '';
-        for (var i = 0; i < 5; i++) {
-            if (i < rating) {
-                stars += '<span>&#x2605;</span>';
-            } else {
-                stars += '<span>&#x2606;</span>';
-            }
-        }
-        starElement.innerHTML = stars;
-    });
-}
-    showStarRating(); // 페이지가 로드될 때 별점 표시
-
 
 $(document).on("click", ".quantity-right-plus", function(e){
     // + 버튼을 클릭하면 수량 증가
@@ -242,30 +199,24 @@ function scrollFunction() {
 }
 
 
-//문의하기 버튼 클릭 시 폼 제출 및 모달 닫기 함수
-function submitFormAndCloseModal() {
+//문의하기 버튼 클릭 시 폼 제출 및 페이지 리로드 함수
+function submitFormAndReload() {
+    // 폼 요소 참조
     var form = document.getElementById('questionForm');
-    $.ajax({
-        type: "POST",
-        url: "/market/productMain",
-        data: $(form).serialize(),
-        success: function(data) {
-            closeModal(); // 모달 닫기
-            location.reload(); // 페이지 리로드
-        },
-        error: function(xhr, status, error) {
-            var errorMessage = xhr.status + ': ' + xhr.statusText;
-            alert('에러가 발생했습니다.\n' + errorMessage);
-        }
-    });
+
+    // 폼 제출
+    form.submit();
+
+    // 모달 닫기 및 폼 초기화
+    closeModal();
 }
 
-// 모달 열기 함수
+//모달 열기 함수
 function openModal() {
     document.getElementById('myModal').style.display = 'block';
 }
 
-// 모달 닫기 함수
+//모달 닫기 함수
 function closeModal() {
     document.getElementById('myModal').style.display = 'none';
     clearForm(); // 폼 요소 초기화 함수 호출
@@ -284,56 +235,40 @@ window.onclick = function(event) {
         closeModal(); // 모달 닫기 함수 호출
     }
 }
-//문의하기 버튼 클릭 이벤트 핸들러
-$(document).ready(function() {
-    $("#writeQuestion").click(function() {
-        alert("문의를 작성합니다.");
+
+$(document).ready(function(){
+	$("#writeQuestion").click(function(){
+		alert("문의를 작성합니다.");
         var currentDate = new Date();
         var formattedDate = currentDate.toISOString();
-        var question = {
-            "title": $("#title").val(),
-            "q_type": $("#q_type").val(),
-            "user_id": $("#user_id").val(),
-            "content": $("#content").val(),
-            "product_code": $("#product_code").val(),
-            "regdate": formattedDate
-        };
-        $.ajax({
-            type: "POST",
-            url: "/market/productMain",
-            data: JSON.stringify(question),
-            contentType: "application/json; charset=UTF-8",
-            success: function(data) {
-                closeModal(); // 모달 닫기
-                location.reload(); // 페이지 리로드
-            },
-            error: function(xhr, status, error) {
-                var errorMessage = xhr.status + ': ' + xhr.statusText;
-                alert('에러가 발생했습니다.\n' + errorMessage);
-            }
-        });
-      
-    });
-    $("td").click(function() {
-        openQuestionModal($(this).data('q_code'));
-    });
+		var question = {
+			"title" : $("#title").val(),
+			"q_type" : $("#q_type").val(),
+			"user_id" : $("#user_id").val(),
+			"content" : $("#content").val(),
+			"product_code" : $("#product_code").val(),
+			"regdate" : formattedDate
+		};
+	$.ajax({
+		type : "POST",
+		url : "/productMain",
+		data : JSON.stringify(question),
+		contentType : "application/json; charset=UTF-8",
+		success : function(data){
+			$("#title").val("");
+			$("#q_type").val("");
+			$("#user_id").val("");
+			$("#content").val("");
+			$("#product_code").val("");
+			$("#regdate").val("");
+		},
+		error : function(xhr, status, error){
+			var errorMessage = xhr.status + ': ' + xhr.statusText;
+			alert('에러가 발생했습니다.\n' + errorMessage);
+		}
+		});
 
-    function openQuestionModal(q_code) {
-        console.log("되나");
-        $.ajax({
-            type: "GET",
-            url: "/market/questionDetail?q_code=" + q_code,
-            success: function(data) {
-            	console.log("되나");
-                $("#questionDetailModal .modal-content").html(data); // 모달 내용을 가져와서 채웁니다
-                $("#questionDetailModal").modal("show"); // 모달을 엽니다
-            },
-            error: function(xhr, status, error) {
-            	console.log("error");
-            	console.error("Error fetching question details:", xhr.statusText);
-            }
-        });
-    }
+	});
 });
 </script>
 </head>
@@ -376,70 +311,17 @@ $(document).ready(function() {
     <div class="row nav">
         <nav id="middle_nav">
             <ul class="nav nav-tabs nav-justified">
-                <li id="about"><a href="#about1">상품 상세</a></li>
-                <li id="review"><a href="#review1">리뷰</a></li>
                 <li id="qna"><a href="#qna1">상품 문의</a></li>
             </ul>
         </nav>
     </div>
 </div>
 
-<div class="row" style="margin: 50px 0;">
-    <h1 class="jumbotron">
-        <div class="container1">
-            <small>This is product page.</small>
-        </div>
-    </h1>
-</div>
-
-<div class="row about_product" style="text-align: center;">
-    <h1 class="page-header" id="about1">상품 상세</h1>
-    <div style="text-align: center; margin: 0 auto;">
-    <img class="product-img2" src="${pageContext.request.contextPath}/resources/images/${product.img2}" style="width: 400px; height: 400px; margin: 10px; display: inline-block;"/>
-    <img class="product-img3" src="${pageContext.request.contextPath}/resources/images/${product.img3}" style="width: 400px; height: 400px; margin: 10px; display: inline-block;"/>
-	</div>
-</div>
 <div class="row reviews" style="text-align: center;"></div>
 
 
-<hr>
-
-<div class="container">
-    <h1 class="page-header" style="margin-bottom: 50px;" id="review1">Review</h1>
-    <table class="table table-bordered">
-    	<tbody>
-    		<tr>
-				<th>Title</th>
-				<th>Writer</th>
-				<th>Content</th>
-				<th>Star</th>
-				<th>img1</th>
-				<th>Regdate</th>
-    		</tr>
-		<c:forEach var="review" items="${review }">
-			<tr>
-				<td>${review.title }</td>
-				<td>${review.user_id }</td>
-				<td>${review.content }</td>
-		        <td>
-		            <span class="star-rating" data-rating = ${review.star }>
-		                <c:forEach begin="1" end="${review.star}">
-		                    &#9733; <!-- 별 모양의 아이콘 -->
-		                </c:forEach>
-		            </span>
-		        </td>
-				<td><img src="${pageContext.request.contextPath}/resources/images/${review.img1}" style="width: 100px; height: 100px;"></td>
-				<td><fmt:formatDate value="${review.regdate }"/></td>
-			</tr>
-		</c:forEach>    		
-    	</tbody>
-    </table>
-</div>
-
-<hr>
-
 <div class="container" style="text-align: center; height: 700px;">
-    <h1 class="page-header" id="qna1">상품 Q&A(최신 문의10개 출력) </h1>
+    <h1 class="page-header" id="qna1">상품 Q&A</h1>
 	 <table class="table table-bordered">
     	<tbody>
     		<tr>
@@ -452,14 +334,29 @@ $(document).ready(function() {
 			<tr>
 				<td>${question.q_type }</td>
 				<td>${question.user_id }</td>
-				<td onclick="openQuestionModal(${question.q_code}); return false;">${question.title}</td>
+				<td>${question.title }</td>
 				<td><fmt:formatDate value="${question.regdate }"/></td>
 			</tr>
 		</c:forEach>    		
     	</tbody>
     </table>
-<%--     /market/questionDetail?q_code=${question.q_code } --%>
-	<a href="/market/questionMain?product_code=${product.product_code }"> 전체 문의 보러가기</a>
+		<div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+			<ul class="pagination">
+				<c:if test="${pageVO.prev }">
+					<li class="paginate_button previous disabled" id="example2_previous">
+						<a href="/market/questionMain?product_code=${product.product_code }&page=${pageVO.startPage - 1 }">«</a></li>
+				</c:if>
+				<c:forEach var="idx" begin="${pageVO.startPage }" end="${pageVO.endPage }" step="1">
+					<li ${pageVO.cri.page == idx? "class=active":""}>
+					<a href="/market/questionMain?product_code=${product.product_code }&page=${idx }#qna1">${idx }</a></li>
+				</c:forEach>
+				<c:if test="${pageVO.next }">
+					<li><a href="/market/questionMain?product_code=${product.product_code }&page=${pageVO.endPage + 1 }">»</a></li>
+				</c:if>
+			</ul>
+		</div>
+
+		<a href="/market/productMain?product_code=${product.product_code }"> 상품 보러가기</a>
  		
     <button type="button" class="ask-button" onclick="openModal()">문의하기</button>
     <!-- 모달 -->
@@ -468,15 +365,12 @@ $(document).ready(function() {
             <span class="close" onclick="closeModal()">&times;</span>
             <!-- 문의할 수 있는 양식 등을 추가합니다. -->
             <h2>문의하기</h2>
-            <div method="post" id="questionForm">
+            <form action="" method="post" id="questionForm">
             <input type="hidden" id="product_code" name="product_code" value="${product.product_code }">
-            <input type="hidden" id="user_id" name="user_id" value="${sessionScope.userVO.user_id }">
-            <input type="hidden" id="user_id" name="user_id" value="${sessionScope.userVO.user_name }">
 				<div class="box-body">
 					<div class="form-group" style="margin-bottom: 20px;">
 						<label for="exampleInputPassword1">문의 유형</label> 
 							<select class="form-control" id="q_type" name="q_type">
-								<option value="">문의 유형을 선택하세요</option>
 								<option value="1">배송 문의</option>
 								<option value="2">상품 문의</option>
 							</select>
@@ -493,38 +387,11 @@ $(document).ready(function() {
 				<div class="box-footer">
 					<button type="submit" class="btn btn-primary" id="writeQuestion">글 쓰기</button>
 				</div>
-			</div>
-        </div>
-    </div>
-
-
-<!-- 문의 상세 정보를 표시하는 모달 -->
-<div id="questionDetailModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">문의 상세 정보</h4>
-            </div>
-            <div class="modal-body">
-                <div>
-					<h2>${detail.title}</h2>
-					<p>작성자: ${detail.user_id}</p>
-					<p>문의 유형: ${detail.q_type}</p>
-					<p>
-						작성일:
-						<fmt:formatDate value="${detail.regdate}" />
-					</p>
-					<p>내용: ${detail.content}</p>
-				</div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-            </div>
+			</form>
         </div>
     </div>
 </div>
+
 
 
 <!-- Scroll to Top button -->

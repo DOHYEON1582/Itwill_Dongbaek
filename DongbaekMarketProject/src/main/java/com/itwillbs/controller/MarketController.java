@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -81,9 +82,10 @@ public class MarketController {
 
 	// 상품 메인페이지
 	@RequestMapping(value = "/productMain", method = RequestMethod.GET)
-	public void productMain(@RequestParam("product_code") int product_code, Model model, HttpSession session, QuestionVO qvo, Criteria cri) throws Exception{
+	public void productMain(@RequestParam("product_code") int product_code, Model model, HttpSession session, QuestionVO qvo) throws Exception{
 		logger.debug(" productMain() 호출 ");
-
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+		String user_id = userVO.getUser_id();
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("product_code", product_code);
 		ProductVO product = mService.eachProduct(product_code);
@@ -95,21 +97,31 @@ public class MarketController {
 
 	}
 	
+	@RequestMapping(value = "/productMain", method = RequestMethod.POST, consumes = "application/json")
+	public void questionAdd(@RequestBody QuestionVO question, HttpSession session) throws Exception{
+		logger.debug(" questionAddPOST 실행 ");
+		logger.debug(" qvo : " + question);
+		mService.writeQuestion(question);
+	}
+	
+	
 	@RequestMapping(value = "/questionMain", method = RequestMethod.GET)
 	public void questionMain(@RequestParam("product_code") int product_code, Criteria cri, Model model) throws Exception {
 		PageVO pageVO = new PageVO();
 		pageVO.setCri(cri);
 		pageVO.setTotalCount(mService.questionCount());
 		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("product_code", product_code);
+		ProductVO product = mService.eachProduct(product_code);
 		paramMap.put("startPage", pageVO.getStartPage());
 		paramMap.put("pageSize", cri.getPageSize());
 	
 		List<QuestionVO> question = mService.getQuestion(paramMap);
-		
+		model.addAttribute("question", question);
+		model.addAttribute("product", product);
 		model.addAttribute("cri", cri);
 		model.addAttribute("pageVO", pageVO);
 	}
-	
 	
 	// 검색기능
 	@RequestMapping(value = "search", method = RequestMethod.GET)
@@ -131,14 +143,13 @@ public class MarketController {
 	    } 
 	    return "redirect:/"; // 기본 페이지로 리다이렉트
 	}
-	
-	
-//	// 상품 POST 페이지
-//	@RequestMapping(value = "/productMain", method = RequestMethod.POST)
-//	public void productMainPOST(@RequestParam("product_code") int product_code, Model model, HttpSession session, QuestionVO qvo) throws Exception{
-//		logger.debug(" productMainPOST() 호출 ");
-//		//mService.writeQuestion(qvo);
-//
-//	}
-	
+
+	@RequestMapping(value = "/questionDetail", method = RequestMethod.GET)
+	public String questionDetail(Model model, @RequestParam("q_code") int q_code) throws Exception{
+		logger.debug("questionDetil 호출 ");
+		QuestionVO detail = mService.questionDetail(q_code);
+		model.addAttribute("detail", detail);
+		logger.debug("detail >>>>>>>>>>>>" + detail);
+		return "/market/questionDetail";
+	}
 }

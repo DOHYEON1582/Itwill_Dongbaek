@@ -102,5 +102,10 @@ public class MarketServiceImpl implements MarketService{
 		return mdao.newQuestion(product_code);
 	}
 
+	@Override
+	public QuestionVO questionDetail(int q_code) throws Exception {
+		return mdao.questionDetail(q_code);
+	}
+
 
 }

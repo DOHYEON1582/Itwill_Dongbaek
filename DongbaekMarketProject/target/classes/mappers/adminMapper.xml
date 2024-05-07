@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.itwillbs.mapper.AdminMapper">
+
+<resultMap type="com.itwillbs.domain.AdminChatRoomVO" id="chatRoomMap">
+	<result property="room_idx" column="room_idx"/>
+	<result property="user_id" column="user_id"/>
+	<result property="to_id" column="to_id"/>
+	<result property="regdate" column="regdate"/>
+
+	<collection property="AdminMessageVO" resultMap="AdminMessageVO"/>
+	<collection property="UserVO" resultMap="UserVO"/>
+</resultMap>
+
+<resultMap type="com.itwillbs.domain.AdminMessageVO" id="AdminMessageVO">
+	<result property="message_idx" column="message_idx"/>
+	<result property="room_idx" column="room_idx"/>
+	<result property="user_id" column="user_id"/>
+	<result property="context" column="context"/>
+	<result property="regdate" column="regdate"/>
+
+</resultMap>
+
+<resultMap type="com.itwillbs.domain.UserVO" id="UserVO">
+	<result property="user_id" column="user_id"/>
+	<result property="phone" column="phone"/>
+	<result property="user_name" column="user_name"/>
+	<result property="sns_email" column="sns_email"/>
+	<result property="point" column="point"/>
+
+</resultMap>
+
+
+ <resultMap type="com.itwillbs.domain.AdminCartVO" id="cartMap">
+	<result property="cart_code" column="cart_code"/>
+	<result property="user_id" column="user_id"/>
+	<result property="product_code" column="product_code"/>
+	<result property="bundle_code" column="bundle_code"/>
+	<result property="count" column="count"/>
+	<result property="price" column="price"/>
+	<result property="delivery_fee" column="delivery_fee"/>
+	<result property="states" column="states"/>
+	<result property="refund_reason" column="refund_reason"/>
+	
+	<collection property="AdminProductVO" resultMap="AdminProductVO"/>
+</resultMap>
+
+<resultMap type="com.itwillbs.domain.AdminReviewVO" id="reviewMap">
+	<result property="review_code" column="review_code"/>
+	<result property="product_code" column="product_code"/>
+	<result property="regdate" column="regdate"/>
+	<result property="title" column="title"/>
+	<result property="content" column="content"/>
+	<result property="star" column="star"/>
+	<result property="img1" column="img1"/>
+	<result property="img2" column="img2"/>
+	<result property="img3" column="img3"/>
+	<result property="order_code" column="order_code"/>
+	<result property="user_id" column="user_id"/>
+	<result property="re_lev" column="re_lev"/>
+	<result property="re_ref" column="re_ref"/>
+	<result property="re_seq" column="re_seq"/>
+	
+	<collection property="AdminProductVO" resultMap="AdminProductVO"/>
+</resultMap>
+
+<resultMap type="com.itwillbs.domain.AdminStoreVO" id="storeMap">
+	<result property="store_code" column="store_code"/>
+	<result property="market_code" column="market_code"/>
+	<result property="seller_id" column="seller_id"/>
+	<result property="store_name" column="store_name"/>
+	<result property="store_value" column="store_value"/>
+	<result property="store_explain" column="store_explain"/>
+	<result property="img1" column="img1"/>
+	<result property="img2" column="img2"/>
+	<result property="img3" column="img3"/>
+	<result property="phone" column="phone"/>
+	<result property="store_addr1" column="store_addr1"/>
+	<result property="store_addr2" column="store_addr2"/>
+	<result property="min_price" column="min_price"/>
+	<result property="time" column="time"/>
+	<result property="status" column="status"/>
+	
+	<collection property="AdminSellerVO" resultMap="AdminSellerVO"/>
+</resultMap>
+
+<resultMap type="com.itwillbs.domain.AdminSubProductVO" id="subMap">
+	<result property="product_code" column="product_code"/>
+	<result property="user_id" column="user_id"/>
+	<result property="count" column="count"/>
+	
+	<collection property="AdminProductVO" resultMap="AdminProductVO"/>
+</resultMap>
+
+<resultMap type="com.itwillbs.domain.AdminProductVO" id="AdminProductVO">
+	<result property="product_code" column="product_code"/>
+	<result property="product_name" column="product_name"/>
+	<result property="viewcnt" column="viewcnt"/>
+	<result property="img1" column="img1"/>
+	<result property="img2" column="img2"/>
+	<result property="img3" column="img3"/>
+	<result property="product_explain" column="product_explain"/>
+	<result property="seller_id" column="seller_id"/>
+	<result property="country" column="country"/>
+	<result property="max_account" column="max_account"/>
+	<result property="category" column="category"/>
+	<result property="sub_product" column="sub_product"/>
+	<result property="unit" column="unit"/>
+	
+	<collection property="AdminStoreVO" resultMap="storeMap"/>
+</resultMap>
+
+<resultMap type="com.itwillbs.domain.AdminSellerVO" id="AdminSellerVO">
+	<result property="seller_id" column="seller_id"/>
+	<result property="store_code" column="store_code"/>
+	<result property="seller_pw" column="seller_pw"/>
+	<result property="salt" column="salt"/>
+	<result property="seller_phone" column="seller_phone"/>
+	<result property="seller_name" column="seller_name"/>
+	<result property="store_addr1" column="store_addr1"/>
+	<result property="store_addr2" column="store_addr2"/>
+	<result property="bank" column="bank"/>
+	<result property="account" column="account"/>
+	<result property="store_number" column="store_number"/>
+	<result property="mos_number" column="mos_number"/>
+	<result property="regdate" column="regdate"/>
+</resultMap>
+
+<!-- 로그인 -->
+<select id="login" resultType="String">
+	SELECT user_pw FROM user 
+	WHERE user_id = #{user_id}
+
+</select>
+
+
+<!-- 회원정보 조회 -->
+<select id="getUser" resultType="com.itwillbs.domain.UserVO">
+	SELECT * FROM user   
+	<choose>
+		<when test="user_id != null and user_id != ''">
+			WHERE user_id = #{user_id}
+		</when>
+		<when test="user_name != null and user_name != ''">
+			WHERE user_name = #{user_name}
+		</when>
+		<when test="phone != null and phone != ''">
+			WHERE phone = #{phone}
+		</when>
+	</choose>
+	
+
+</select>
+
+<!-- 회원 주문 정보(모음) 조회 -->
+<select id="getUserOrder" resultType="com.itwillbs.domain.AdminOrderVO">
+	SELECT * FROM order_info
+		<choose>
+			<when test="user_id != null and user_id != ''">
+				WHERE user_id = #{user_id}
+			</when>
+			<when test="user_name != null and user_name != ''">
+				WHERE user_name = #{user_name}
+			</when>
+			<when test="order_code != null and order_code != ''">
+				WHERE order_code = #{order_code}
+			</when>
+		</choose>
+		<choose>
+			<when test="startDate != null  and startDate != '' and endDate != null  and endDate != ''">
+				AND ordr_date between #{startDate} and #{endDate}
+			</when>
+			<when test="startDate != null  and startDate != '' and (endDate == null  or endDate == '')">
+				AND <![CDATA[#{startDate}  <= ordr_date ]]>
+			</when>
+			<when test="(startDate == null  or startDate == '') and endDate != null  and endDate != ''">
+				AND <![CDATA[ ordr_date <= #{endDate} ]]>
+			</when>
+		</choose>
+</select>
+
+<!-- 회원 주문정보 상세 조회 -->
+<select id="orderCart" resultMap="cartMap">
+	SELECT  * 
+	FROM cart c
+	JOIN product p  
+	ON c.product_code = p.product_code  
+	WHERE bundle_code = (SELECT bundle_code FROM order_info WHERE order_code = #{order_code});
+
+</select>
+
+<!-- 회원 리뷰리스트 조회 -->
+<select id="getReviewList" resultMap="reviewMap">
+	SELECT * 
+	FROM review r
+	JOIN product p 
+	ON r.product_code = p.product_code
+	<choose>
+		<when test="user_id != null and user_id != ''">
+			WHERE r.user_id = #{user_id}
+		</when>
+		<when test="user_name != null and user_name != ''">
+			WHERE r.user_id = (SELECT user_id FROM user WHERE user_name = #{user_name})
+		</when>
+	</choose>
+	<choose>
+			<when test="startDate != null  and startDate != '' and endDate != null  and endDate != ''">
+				AND regdate between #{startDate} and #{endDate}
+			</when>
+			<when test="startDate != null  and startDate != '' and (endDate == null  or endDate == '')">
+				AND <![CDATA[#{startDate}  <= regdate ]]>
+			</when>
+			<when test="(startDate == null  or startDate == '') and endDate != null  and endDate != ''">
+				AND <![CDATA[ regdate <= #{endDate} ]]>
+			</when>
+	</choose>
+
+</select>
+
+<!-- 리뷰 상세보기  -->
+<select id="getReview" resultMap="reviewMap">
+	SELECT * 
+	FROM review r 
+	JOIN product p 
+	ON r.product_code = p.product_code 
+	WHERE review_code = #{review_code}
+	
+</select>
+
+<!-- 가게 검색 -->
+<select id="getStoreList" resultMap="storeMap">
+	SELECT * 
+	FROM store s 
+	JOIN seller sel
+	ON s.store_code = sel.store_code
+	<choose>
+		<when test="store_name != null and store_name != ''">
+			WHERE s.store_name = #{store_name}
+		</when>
+		<when test="store_number != null and store_number != ''">
+			WHERE s.store_code = (SELECT store_code FROM seller WHERE store_number = #{store_number})
+		</when>
+		<when test="seller_name != null and seller_name != ''">
+			WHERE s.store_code = (SELECT store_code FROM seller WHERE seller_name = #{seller_name})
+		</when>
+	</choose>
+
+</select>
+
+<!-- 가게 상세 보기 -->
+<select id="getStore" resultMap="storeMap">
+	SELECT * 
+	FROM store s
+	JOIN seller sel 
+	ON s.store_code = sel.store_code 
+	WHERE sel.store_number = #{store_number}
+
+</select>
+
+<!-- 업체 주문 정보(모음) 조회 -->
+<select id="getStoreOrderList" resultType="com.itwillbs.domain.AdminOrderVO">
+	SELECT * FROM order_info
+		<choose>
+			<when test="con == 'store_code'">
+				WHERE store_code = #{search}
+			</when>
+			<when test="con == 'store_name'">
+				WHERE store_code = (SELECT store_code FROM store WHERE store_name = #{search})
+			</when>
+		</choose>
+		<choose>
+			<when test="startDate != null  and startDate != '' and endDate != null  and endDate != ''">
+				AND ordr_date between #{startDate} and #{endDate}
+			</when>
+			<when test="startDate != null  and startDate != '' and (endDate == null  or endDate == '')">
+				AND <![CDATA[#{startDate}  <= ordr_date ]]>
+			</when>
+			<when test="(startDate == null  or startDate == '') and endDate != null  and endDate != ''">
+				AND <![CDATA[ ordr_date <= #{endDate} ]]>
+			</when>
+		</choose>
+</select>
+
+<!-- 매일 자동 정산  -->
+<update id="updateCal" parameterType="com.itwillbs.domain.SchedulerVO">
+	UPDATE  order_info 
+	SET cal_check = #{calDate}
+	WHERE <![CDATA[ #{yesterday} <= ordr_date ]]> AND <![CDATA[ ordr_date < #{calDate} ]]> AND cal_check = '정산예정'
+</update>
+
+<!-- 회원 구독 정보 -->
+<select id="subInfo" resultType="com.itwillbs.domain.AdminSubPayVO">
+	SELECT * 
+	FROM subscribe_pay 
+	<choose>
+		<when test="user_id != null and user_id != ''">
+			WHERE user_id = #{user_id}
+		</when>
+		<when test="user_name != null and user_name != ''">
+			WHERE user_id = (SELECT user_id FROM user WHERE user_name = #{user_name})
+		</when>
+		<when test="phone != null and phone != ''">
+			WHERE user_id = (SELECT user_id FROM user WHERE phone = #{phone})
+		</when>
+	</choose>
+
+</select>
+
+
+<!-- 회원 구독 물품 리스트 -->
+<select id="subList" resultMap="subMap">
+	SELECT * 
+	FROM product p 
+	JOIN subscrbe_product s
+	ON p.product_code = s.product_code
+	WHERE user_id = #{user_id}
+
+</select>
+
+<!-- 구독 물품 업로드 -->
+<insert id="insertSubProduct">
+	INSERT INTO product (product_code,store_code,price,product_name,img1,product_explain,seller_id,country,max_account,category,sub_product,unit) 
+	VALUES ((SELECT product_code FROM (SELECT IFNULL(MAX(product_code), 0) + 1 as product_code FROM product) as t),
+			#{store_code},#{price},#{product_name},#{img1},#{product_explain},#{seller_id},#{country},#{max_account},#{category},#{sub_product},#{unit})
+
+</insert>
+
+<!-- 구독 물품 검색 -->
+<select id="getSubProduct" resultType="com.itwillbs.domain.AdminProductVO">
+	SELECT * FROM product 
+	<choose>
+		<when test="product_name != null and product_name != ''">
+			WHERE product_name = #{product_name} AND sub_product = '구독'
+		</when>
+		<when test="product_code != null and product_code != ''">
+			WHERE product_code = #{product_code} AND sub_product = '구독'
+		</when>
+		<when test="product_code = null and product_code = '' and product_name = null and product_name = ''">
+			WHERE sub_product = '구독'
+		</when>
+	</choose>
+</select>
+
+<!-- 구독 물품 상세 검색 -->
+<select id="getSubProInfo" resultMap="AdminProductVO">
+	SELECT * 
+	FROM product p
+	JOIN store s
+	ON p.store_code = s.store_code
+	WHERE product_code = #{product_code}
+</select>
+
+<!-- 공지사항 작성 -->
+<insert id="insertNotice">
+	INSERT INTO question (q_code, user_id, user_name, title, content, q_type, regdate)
+	VALUE ((SELECT q_code FROM (SELECT IFNULL(MAX(q_code), 0) + 1 as q_code FROM question) as t),
+			#{user_id},#{user_name},#{title},#{content},#{q_type},now())
+
+</insert>
+
+<!-- 공지사항 검색 -->
+<select id="searchNotice" resultType="com.itwillbs.domain.AdminNoticeVO">
+	SELECT * FROM question 
+	WHERE content LIKE CONCAT('%',#{content},'%')
+	ORDER BY q_code desc 
+</select>
+
+<!-- 공지사항 상세 보기 -->
+<select id="noticeInfo" resultType="com.itwillbs.domain.AdminNoticeVO">
+	SELECT * FROM question 
+	WHERE q_code = #{q_code}
+</select>
+
+<!-- 채팅방 리스트 가져오기 -->
+<select id="chatRoomList" resultMap="chatRoomMap">
+	SELECT * FROM chat_room c
+	JOIN user u
+	ON c.user_id = u.user_id
+	<choose>
+		<when test="user_id != null and user_id != ''">
+			WHERE user_id = #{user_id}
+		</when>
+		<when test="user_name != null and user_name != ''">
+			WHERE user_id = (SELECT user_id FROM user WHERE user_name = #{user_name})
+		</when>
+	</choose>
+</select>
+
+<!-- 채팅방 생성 -->
+<insert id="createRoom">
+	INSERT INTO chat_room (room_idx, user_id, to_id, regdate)
+	VALUES ((SELECT room_idx FROM (SELECT IFNULL(MAX(room_idx), 0) + 1 as room_idx FROM chat_room) as t),#{user_id},'admin',now())
+
+</insert>
+
+<!-- 마지막 채팅방 가져오기 -->
+<select id="lastRoom" resultType="int">
+	SELECT MAX(room_idx) FROM chat_room WHERE user_id = #{user_id}
+</select>
+
+<!-- 차트 매출 가져오기 -->
+<select id="totalsell" resultType="String">
+	SELECT SUM(total_price) FROM order_info 
+	WHERE ordr_date LIKE CONCAT('%',#{date},'%') 
+</select>
+
+<!-- 날짜별 고객수 가져오기 -->
+<select id="totalUser" resultType="String">
+	SELECT COUNT(*) FROM user 
+	WHERE <![CDATA[ regdate <= #{date}]]>
+
+</select>
+
+<!-- 날짜별 사장님수 가져오기 -->
+<select id="totalSeller" resultType="String">
+	SELECT COUNT(*) FROM seller 
+	WHERE <![CDATA[ regdate <= #{date}]]>
+</select>
+
+<!-- id 중복 체크 -->
+<select id="idCheck" resultType="int">
+	SELECT COUNT(*) FROM seller 
+	WHERE seller_id = #{seller_id}
+</select>
+
+
+
+
+
+
+</mapper>
