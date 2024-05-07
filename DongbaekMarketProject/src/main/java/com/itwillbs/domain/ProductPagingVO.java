@@ -14,7 +14,7 @@ public class ProductPagingVO {
 	private boolean prev; // 이전버튼
 	private boolean next; // 다음버튼
 
-	private int pageBlock = 10; // 페이지 블럭의 개수
+	private int pageBlock = 2; // 페이지 블럭의 개수
 	
 	private ProductCri cri;
 
@@ -22,33 +22,41 @@ public class ProductPagingVO {
 		this.cri = cri;
 		logger.debug(" 페이징 처리에 필요한 정보를 계산 - 시작 ");
 		
-		pageCalc();
+//		pageCalc(cri);
 		
 		logger.debug(" 페이징 처리에 필요한 정보를 계산 - 끝 ");
 	}
 	
+
+	
 	public void pageCalc() {
 		// endPage
 		endPage = (int) Math.ceil(cri.getPage() / (double) pageBlock) * pageBlock;
-		
+
+		logger.debug(" endPage ",endPage);
+		System.out.println(endPage);
+		System.out.println(totalCount);
+		System.out.println((double) cri.getPageSize());
 		// startPage
 		startPage = (endPage - pageBlock) + 1;
-		
-		// tmpEndPage (실제 endPage)
+
 		int tmpEndPage = (int) Math.ceil(totalCount / (double) cri.getPageSize());
-		
+
 		if (endPage > tmpEndPage) { // 글이 없음
-			endPage = tmpEndPage;
+		    endPage = tmpEndPage;
 		}
-		
+
+		System.out.println(endPage);
+
 		// prev
 		// prev = startPage == 1? false : true;
 		prev = startPage != 1;
-		
+
 		// next
 		// next = endPage * cri.getPageSize() >= totalCount? false : true;
 		next = endPage * cri.getPageSize() < totalCount;
 	}
+
 	
 	public int getTotalCount() {
 		return totalCount;
@@ -56,6 +64,7 @@ public class ProductPagingVO {
 
 	public void setTotalCount(int totalCount) {
 		this.totalCount = totalCount;
+		pageCalc();
 	}
 
 	public int getStartPage() {

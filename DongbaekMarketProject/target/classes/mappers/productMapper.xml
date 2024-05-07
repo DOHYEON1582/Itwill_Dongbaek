@@ -34,25 +34,30 @@
 
 	<!-- 판매자가 등록한 상품 목록 조회 -->
 	<select id="getProductPage" parameterType="map" resultMap="product">
+	    <![CDATA[
 	    SELECT * FROM product
 	    WHERE store_code = #{store_code}
 	    ORDER BY product_code DESC
 	    LIMIT #{startPage}, #{pageSize}
+	    ]]>
 	</select>
+
 
 
     
 	<!-- 상품 등록 -->
 	<insert id="productRegist" parameterType="com.itwillbs.domain.ProductVO">
-		INSERT INTO product (category, product_name, unit, price, img1, img2, img3, product_explain, max_account, country, store_code)
-        VALUES (#{category}, #{product_name}, #{unit}, #{price}, #{img1}, #{img2}, #{img3}, #{product_explain}, #{max_account}, #{country}, #{store_code})
+	    INSERT INTO product (category, product_name, unit, price, img1, img2, img3, product_explain, max_account, country, store_code)
+	    VALUES (#{category}, #{product_name}, #{unit}, #{price}, #{img1}, #{img2}, #{img3}, #{product_explain}, #{max_account}, #{country}, #{store_code})
 	</insert>
+
 
 	<!-- 이미지파일 저장 -->
 	<insert id="setFile" parameterType="map">
-   		INSERT INTO product (img1, img2, img3)
-    	VALUES (#{originalFilename}, #{savedFilename}, #{product_code})
+	    INSERT INTO product_img (originalFilename, savedFilename, product_code)
+	    VALUES (#{originalFilename}, #{savedFilename}, #{product_code})
 	</insert>
+
 
 	<!-- 이미지와 같이 들어온 상품코드 -->
 	<select id="getProductCode" resultType="int">

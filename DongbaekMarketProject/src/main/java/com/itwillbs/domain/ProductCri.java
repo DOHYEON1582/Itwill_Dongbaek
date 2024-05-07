@@ -37,7 +37,7 @@ public class ProductCri {
 	
 	public ProductCri() {
 		this.page=1;
-		this.pageSize=9;
+		this.pageSize=3;
 	}
 
 	public int getStore_code() {
