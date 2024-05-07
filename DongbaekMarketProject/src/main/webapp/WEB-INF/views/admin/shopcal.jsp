@@ -79,7 +79,7 @@
 					var orderList = data.orderList[0];
 					var cartList = data.cartList;
 					
-					//console.log(orderList);
+					//console.log(orderList); 
 					//console.log(cartList);
 					
 					var currentDate = new Date(orderList.ordr_date);
