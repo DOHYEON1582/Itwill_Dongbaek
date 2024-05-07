@@ -36,15 +36,15 @@
         });
         
         $("#markStore").click(function(){
-        	alert("즐겨찾기 하시겠습니까 ?");
+        	alert("즐겨찾기 하시겠습니까 ?" + $("#store_code").val() + $("#user_id").val());
         	var mvo = {
-        			"mark_code":$("#mark_code").val(),
+        			/* "mark_code":$("#mark_code").val(), */
         			"store_code":$("#store_code").val(),
         			"user_id":$("#user_id").val()
         	};
         	$.ajax({
         		type: "POST",
-        		url: "/storeMain",
+        		url: "/market/storeMain",
                 data: JSON.stringify(mvo),
                 contentType: "application/json; charset=UTF-8",  
                 success: function(data){
@@ -53,6 +53,7 @@
                 error: function(xhr, status, error) {
                     var errorMessage = xhr.status + ': ' + xhr.statusText;
                     alert('에러가 발생했습니다.\n' + errorMessage);
+                    console.log(" error "+ error);
                 }
         	});
         });
@@ -343,6 +344,8 @@ h3 {
 		                </div>
 		            </span>
 		        </button>
+		        <input type="hidden" id="store_code" value="${store.store_code }">
+				<input type="hidden" id="user_id" value="${user_id }">
 		    </div>
 		</div>
 			<div class="sij_sub_name" style="font-size: 25px;">${store.store_explain }</div>

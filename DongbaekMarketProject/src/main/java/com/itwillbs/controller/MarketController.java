@@ -74,6 +74,7 @@ public class MarketController {
 		List<ProductVO> product = mService.productOnStore(orderBy, store_code);
 		model.addAttribute("store", store);
 		model.addAttribute("product", product);
+		model.addAttribute("user_id", user_id);
 		int status = (Integer)session.getAttribute("viewUpdateStatus");
 		if(status == 1) {
 			// 글 조회수 1 증가
@@ -158,7 +159,7 @@ public class MarketController {
 	
 	
 	@RequestMapping(value = "/storeMain", method = RequestMethod.POST, consumes = "application/json")
-	public void storeMainPOST(@RequestParam("store_code") int store_code,  HttpSession session, @RequestBody MarkVO mvo) throws Exception{
+	public void storeMainPOST(HttpSession session, @RequestBody MarkVO mvo) throws Exception{
 		logger.debug("storeMainPOST 호출 ");
 		UserVO userVO = (UserVO) session.getAttribute("userVO");
 		String user_id = userVO.getUser_id();
