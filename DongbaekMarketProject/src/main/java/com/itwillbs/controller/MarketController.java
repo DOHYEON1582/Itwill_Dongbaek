@@ -132,6 +132,7 @@ public class MarketController {
 				.contentType(MediaType.valueOf("text/plain; charset=UTF-8"))
 				.body("성공");
 	}
+	
 	@PostMapping("/checkDuplicateAnswer")
 	public ResponseEntity<String> checkDuplicateAnswer(@RequestParam("q_code") int q_code) throws Exception {
 	    logger.debug(" checkDuplicateAnswer() 실행 ");
