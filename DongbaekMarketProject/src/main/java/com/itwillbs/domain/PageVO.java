@@ -1,6 +1,12 @@
 package com.itwillbs.domain;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class PageVO {
+	
+	
+	private static final Logger logger = LoggerFactory.getLogger(PageVO.class);
 	
 	private int totalCount;	 // 전체 글의 수 
 	private int startPage;	 // 블럭 시작 번호
@@ -26,7 +32,9 @@ public class PageVO {
 		endPage = (int) Math.ceil(cri.getPage() / (double) pageBlock) * pageBlock;
 		// startPage
 		startPage = (endPage - pageBlock) + 1;
-
+		System.out.println(cri);
+		System.out.println(endPage);
+		System.out.println(startPage);
 		// tmpEndPage(실제 endPage)
 		int tmpEndPage = (int) Math.ceil(totalCount / (double) cri.getPageSize());
 		if (endPage > tmpEndPage) { // 글이 없음 모지람
@@ -37,8 +45,8 @@ public class PageVO {
 		// next
 		next = endPage * cri.getPageSize() < totalCount;
 		
-	    setStartPage(startPage);
-	    setEndPage(endPage);
+//	    setStartPage(startPage);
+//	    setEndPage(endPage);
 	}
 	
 	public int getTotalCount() {

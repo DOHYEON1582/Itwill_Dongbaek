@@ -1,5 +1,6 @@
 package com.itwillbs.controller;
 
+import java.io.PrintWriter;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -21,10 +22,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.MarketVO;
-import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.ReviewVO;
-import com.itwillbs.domain.StoreVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.domain.WishVO;
 import com.itwillbs.service.MainService;
@@ -49,10 +48,10 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "search", method = RequestMethod.GET)
-	public String search(@RequestParam("query") String query, @RequestParam("type") String type, Model model) throws Exception {
+	public String search(@RequestParam("query") String query, @RequestParam("type") String type,
+			Model model)
+	        throws Exception {
 	    logger.debug("search() 호출");
-	    
-	    // type에 따라 다른 페이지로 리다이렉트
 	    if (type.equals("market")) {
 	        if (query.contains("자갈치")) {
 	            return "redirect:/market/marketMain?market_code=2";
@@ -62,13 +61,12 @@ public class UserController {
 	            return "redirect:/";
 	        }
 	    } else if (type.equals("product")) {
-	    	
-	        return "redirect:/member/product"; // productMain.jsp 페이지로 리다이렉트
-	    } 
-	    return "redirect:/"; // 기본 페이지로 리다이렉트
+	        return "redirect:/member/product";
+	    }
+	    return "redirect:/";
 	}
 
-	
+
 	@ResponseBody
 	@PostMapping(value = "/get")
 	public MarketVO getMarketPOST(@RequestParam("market_code") int market_code) throws Exception{

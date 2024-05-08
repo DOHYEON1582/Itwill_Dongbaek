@@ -10,7 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+
 import com.itwillbs.domain.CartVO;
+import com.itwillbs.domain.AnswerVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.MarketVO;
@@ -85,11 +87,6 @@ public class MarketServiceImpl implements MarketService{
 		mdao.writeQuestion(qvo);
 	}
 
-//	@Override
-//	public List<QuestionVO> selectQuestion(Criteria cri) throws Exception {
-//		return mdao.getQuestion(cri);
-//	}
-	
 	@Override
 	public int questionCount() throws Exception {
 		return mdao.questionCount();
@@ -106,7 +103,7 @@ public class MarketServiceImpl implements MarketService{
 	}
 
 	@Override
-	public QuestionVO questionDetail(int q_code) throws Exception {
+	public List<QuestionVO> questionDetail(int q_code) throws Exception {
 		return mdao.questionDetail(q_code);
 	}
 
@@ -130,6 +127,24 @@ public class MarketServiceImpl implements MarketService{
 		mdao.insertCart(cart);
 	}
 
-	
 
+	public void qAnswer(AnswerVO avo) throws Exception {
+		logger.debug(" qAnswer(AnswerVO avo) 실행 ");
+		mdao.qAnswer(avo);
+	}
+
+	@Override
+	public List<AnswerVO> selectAnswer(int q_code) throws Exception {
+		logger.debug(" selectAnswer(int q_code) 실행 ");
+		return mdao.selectAnswer(q_code);
+	}
+
+	@Override
+	public boolean isDuplicateAnswer(int q_code) throws Exception {
+		logger.debug(" isDuplicateAnswer(int q_code) 실행 ");
+		int count = mdao.checkDuplicateAnswer(q_code);
+		logger.debug(" q_code : " + q_code);
+		logger.debug(" count : " + count);
+		return count > 0;
+  }
 }

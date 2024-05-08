@@ -3,18 +3,45 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+<link href="/resources/css/projectCSS.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>동백마켓</title>
 </head>
 <body>
-	<h1> customLogin.jsp </h1>
+
+<div id="container">
+	<div id="loginBox" style="margin-top: 100px;">
+		<img id="mainImg" src="/resources/images/logo1.png">	
 	
-	<form action="/member/login" method="post">
-		아이디 : <input type="text" name="user_id" > <br>
-		비밀번호 : <input type="password" name="user_pw" > <br>
-		<button type="submit">Login</button>
-	</form>
+	<div>
+		<form action="/member/login" method="post">
+			<input class="loginInput" type="text"  name="user_id" placeholder="아이디">
+			<input class="loginInput" type="password"  name="user_pw" placeholder="비밀번호"><br>
+			<input  id="loginBtn" type="submit" value="로그인"/>
+		</form>
+	</div>
+	<br>
+	<hr>
+</div>
+	<div id="loginBox2">
+		계정이 없으신가요? <a href="/member/register">가입하기</a>
+	</div>
 	
-	<a href="/"> 메인으로 </a>
+</div>
+
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		
+		
+		
+	});//document.ready
+
+
+</script>
+
 </body>
 </html>

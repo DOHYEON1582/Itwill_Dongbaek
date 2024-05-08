@@ -273,7 +273,7 @@
 	                        <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
 	                            <li class="nav-item active"><a href="/market/marketMain" class="nav-link">시장소개</a></li>
 	                            <li class="nav-item dropdown"><a href="#men" class="nav-link">제철음식</a></li>
-	                            <li class="nav-item"><a href="member/product?orderBy=popularity" class="nav-link">인기음식</a></li>
+	                            <li class="nav-item"><a href="/member/product?orderBy=popularity" class="nav-link">인기음식</a></li>
 	                            <li class="nav-item"><a href="#accessories" class="nav-link">알뜰쇼핑</a></li>
 	                            <li class="nav-item"><a href="#brand" class="nav-link">특가/혜택</a></li>
 	                            <li class="nav-item"><a href="#brand" class="nav-link">구독상품</a></li>
@@ -291,7 +291,7 @@
 	    document.addEventListener("DOMContentLoaded", function() {
 	        var searchForm = document.getElementById("searchForm");
 	        var searchBtn = document.getElementById("search-btn");
-	
+	        
 	        // 검색 버튼 클릭 시 이벤트 처리
 	        searchBtn.addEventListener("click", function(event) {
 	            event.preventDefault(); // 기본 동작 방지 (페이지 새로고침 방지)
@@ -313,7 +313,6 @@
 // 	            location.href = "/search?keyword=" + encodeURIComponent(keyword) + "&type=" + type;
 
 	            searchForm.submit();
-	            
 	        });
 	    });
 	</script>

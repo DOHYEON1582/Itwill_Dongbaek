@@ -1,5 +1,7 @@
 package com.itwillbs.domain;
 
+import java.util.Arrays;
+
 public class Criteria {
 	private int page; // 페이지 번호
 	private int pageSize; // 페이지 크기
@@ -40,6 +42,11 @@ public class Criteria {
 		this.page = 1;
 		this.pageSize = 10;
 	}
+	
+	public Criteria(int page, int pageSize) {
+		this.page = page;
+		this.pageSize = pageSize;
+	}
 
 	public void setPage(int page) {
 		if(page <= 0) { // 페이지 번호가 음수일 경우
@@ -71,7 +78,8 @@ public class Criteria {
 	
 	@Override
 	public String toString() {
-		return "Criteria [page=" + page + ", pageSize=" + pageSize + "]";
+		return "Criteria [page=" + page + ", pageSize=" + pageSize + ", keyword=" + keyword + ", type=" + type
+				+ ", typeArr=" + Arrays.toString(typeArr) + "]";
 	}
 
 
