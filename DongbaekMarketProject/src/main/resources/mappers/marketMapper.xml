@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.itwillbs.mapper.MarketMapper">
+  
+  
+  <!-- 시장 조회 -->
+  <select id="marketList" resultType="MarketVO">
+  	select * from market
+  	where market_code = 0
+  </select>
+  
+  <!-- 가게 조회 -->
+  <select id="storeList" resultType="StoreVO">
+  	select * from store
+  	<!-- where market_code = #{market_code} -->
+  </select>
+  
+  <!-- marekt_code에 따른 시장 조회 -->
+  <select id="marketListCode" resultType="MarketVO">
+  	select * from market
+  	where market_code = 1
+  </select>
+  
+  <!-- 메인 페이지 인기상품 정렬 -->
+  <select id="selectProduct" resultType="ProductVO">
+  	select * from product
+  	<!-- where market_code = #{market_code} -->
+  	order by viewcnt desc 
+  	limit 0,10
+  </select>
+  
+  
+  
+  </mapper>
