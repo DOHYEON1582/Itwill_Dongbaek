@@ -127,7 +127,7 @@
   	values (#{store_code}, #{user_id})
   </insert>
   
-  <!-- 찜에 넣기 -->
+  <!-- 찜에 넣기 --> 
   <insert id="wishProduct">
   	insert into wish(product_code, user_id)
   	values (#{product_code}, #{user_id})
