@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.itwillbs.domain.CartVO;
-import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.Cart2VO;
+import com.itwillbs.domain.MyPageCriteria;
 import com.itwillbs.domain.PageMaker;
 import com.itwillbs.service.MyPageService;
 
@@ -35,10 +35,10 @@ public class MyPageController {
 	// 장바구니 상품 목록
 	@GetMapping(value = "/cart")
 	public String cartListGET(HttpSession session, HttpServletRequest request, HttpServletResponse response,
-			@ModelAttribute("cri") Criteria cri, Model model) throws Exception {
+			@ModelAttribute("cri") MyPageCriteria cri, Model model) throws Exception {
 		logger.debug(" === cartListGET() 실행 ===");
 
-		CartVO cvo = new CartVO();
+		Cart2VO cvo = new Cart2VO();
 
 		// 세션 가져오기
 		String userid = (String) session.getAttribute("user_id");
@@ -50,7 +50,7 @@ public class MyPageController {
 		cvo.setBundle_code(bundleCode);
 
 		// 장바구니 리스트
-		List<CartVO> cartList = mService.selectCartList(cvo);
+		List<Cart2VO> cartList = mService.selectCartList(cvo);
 
 		PageMaker pageMaker = new PageMaker();
 
@@ -86,7 +86,7 @@ public class MyPageController {
 										HttpServletResponse response) throws Exception {
 		logger.debug(" === deleteAllCartProducts() 실행 ===");
 		
-		CartVO cvo = new CartVO();
+		Cart2VO cvo = new Cart2VO();
 		// 세션 가져오기
 		String userid = (String) session.getAttribute("user_id");
 		String bundleCode = (String) session.getAttribute("cart");
@@ -115,7 +115,7 @@ public class MyPageController {
 											@RequestParam("newCount") int newCount) throws Exception {
 		logger.debug(" === updateCartProductsCount() 실행 ===");
 		
-		CartVO cvo = new CartVO();
+		Cart2VO cvo = new Cart2VO();
 		cvo.setCart_code(cartCode);
 		cvo.setCount(newCount);
 		

@@ -3,7 +3,7 @@ package com.itwillbs.domain;
 import lombok.Data;
 
 @Data
-public class CartVO {
+public class Cart2VO {
 
 	private int cart_code;				// 장바구니코드
 	private String user_id;				// 회원아이디
