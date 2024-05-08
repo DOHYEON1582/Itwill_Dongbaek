@@ -415,7 +415,7 @@ function topFunction() {
                         <span class="price"><fmt:formatNumber value="${product.price}" pattern="#,##0" />원</span>
                         <span class="total-price">총 가격</span>
                         <div class="input-group product-qty d-flex align-items-center justify-content-between">
-                            <div class="input-group product-qty">
+                            <div class="input-group product-qty"> 
                                 <!-- - 버튼 -->
                                 <span class="input-group-btn">
                                     <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
