@@ -113,7 +113,7 @@
 	</table>
 	
 	<!-- 아이디, 묶음번호, 가게코드, 배달비, 총 결제금액, 적립 포인트, 예약여부..?  -->
-	<%-- <input type="hidden" id="user_id" name="user_id" value="${sessionScope.user_id }">  --%>
+	<input type="hidden" id="user_id" name="user_id" value="${sessionScope.user_id }"> 
 	<input type="hidden" id="name" name="name" value="${sessionScope.user_name }">
 	<input type="hidden" id="bundle_code" name="bundle_code" value="${sessionScope.cart }">
 	<input type="hidden" id="store_code" name="store_code" value="${cartList.store_code }">
@@ -215,112 +215,117 @@
 				}).open();
 	}
 	
-	// 제이쿼리 시작
-	$(document).ready(function(){
-		
-		// 주문 할 상품 가격의 합
-		$('#totalPrice').text(function(){		
-		    var totalPrice = 0;
-		    $('#productList tbody tr').each(function(){
-		        var price = parseInt($(this).closest('tr').find('td:eq(2)').text());
-		        totalPrice += price;
-		    });
-		    return totalPrice;
-		});
-
-		// 사용한 적립금
-		$('#usePoint').text(function(){		
-		    var reducePoint = $('#reduce_point').val();
-		    return reducePoint;
-		});
-		
-		// 배송비 처리
-		$('#deliveryFee').text(function(){
-		    var totalPrice = parseInt($('#totalPrice').text());
-		    var deliveryFee = 0;
-		    if(totalPrice > 50000){ // 5만원 이상시 배달비 무료
-		        deliveryFee = 0;
-		    } else if(totalPrice < 50000){ // 5만원 미만 배달비 2500원 배달비는 2500원으로 고정
-		        deliveryFee = 2500; 
-		    }
-		    return deliveryFee;
-		});
-		
-		// 결제예정금액
-		$('#payAmount').text(function(){
-		    var totalPrice = parseInt($('#totalPrice').text());
-		    var usePoint = parseInt($('#usePoint').text());
-		    var deliveryFee = parseInt($('#deliveryFee').text());
-		    var payAmount = totalPrice - usePoint + deliveryFee;
-		    return payAmount;
-		});
-
-		// input 값 넣기 (수정 필요)
-		$('#delivery').val($('#deliveryFee').text());
-		$('#amount').val($('#payAmount').text());
-		$('#rcv_phone').val(function(){
-		    var phone1 = $('#rcv_phone1').val();
-		    var phone2 = $('#rcv_phone2').val();
-		    var phone3 = $('#rcv_phone3').val();
-		    return phone1 + phone2 + phone3;
-		});
-		
-	  	// addr2, addr3, rcv_phone1, rcv_phone2, rcv_phone3, productNum 폼 제출 막기
-        $('#addr2, #addr3, #rcv_phone1, #rcv_phone2, #rcv_phone3, #productNum').change(function(){
-            $('#orderFrm').off('submit').submit(function(event){
-                event.preventDefault();
-            });
+	document.addEventListener('DOMContentLoaded', function() {
+        // 주문 할 상품 가격의 합
+        var totalPriceElem = document.getElementById('totalPrice');
+        var totalPrice = 0;
+        document.querySelectorAll('#productList tbody tr').forEach(function(row) {
+            var price = parseInt(row.querySelector('td:nth-child(3)').textContent);
+            totalPrice += price;
         });
+        totalPriceElem.textContent = totalPrice;
+
+        // 사용한 적립금
+        var reducePointElem = document.getElementById('usePoint');
+        var reducePoint = document.getElementById('reduce_point').value;
+        reducePointElem.textContent = reducePoint;
+
+        // 배송비 처리
+        var deliveryFeeElem = document.getElementById('deliveryFee');
+        var totalPriceValue = parseInt(totalPriceElem.textContent);
+        var deliveryFee = 0;
+        if (totalPriceValue > 50000) {
+            deliveryFee = 0;
+        } else if (totalPriceValue < 50000) {
+            deliveryFee = 2500;
+        }
+        deliveryFeeElem.textContent = deliveryFee;
+
+        // 결제예정금액
+        var payAmountElem = document.getElementById('payAmount');
+        var payAmount = totalPriceValue - reducePoint + deliveryFee;
+        payAmountElem.textContent = payAmount;
+
+        // input 값 넣기
+        var deliveryElem = document.getElementById('delivery');
+        deliveryElem.value = deliveryFee;
+        var amountElem = document.getElementById('amount');
+        amountElem.value = payAmount;
+        var rcvPhoneElem = document.getElementById('rcv_phone');
+        var rcvPhone1 = document.getElementById('rcv_phone1').value;
+        var rcvPhone2 = document.getElementById('rcv_phone2').value;
+        var rcvPhone3 = document.getElementById('rcv_phone3').value;
+        rcvPhoneElem.value = rcvPhone1 + rcvPhone2 + rcvPhone3;
+
+        // addr2, addr3, rcv_phone1, rcv_phone2, rcv_phone3, productNum 폼 제출 막기
+        var form = document.getElementById('orderFrm');
+        var preventSubmit = function(event) {
+            event.preventDefault();
+        };
+        document.getElementById('addr2').addEventListener('change', preventSubmit);
+        document.getElementById('addr3').addEventListener('change', preventSubmit);
+        document.getElementById('rcv_phone1').addEventListener('change', preventSubmit);
+        document.getElementById('rcv_phone2').addEventListener('change', preventSubmit);
+        document.getElementById('rcv_phone3').addEventListener('change', preventSubmit);
+        document.getElementById('productNum').addEventListener('change', preventSubmit);
 	  	
-		// 주문하기
-		$('#payBtn').click(function(){
-			var orderInfo = $('#orderFrm').serialize();
-			
-			$.ajax({
-				url: '/order/pay',
-				type: 'POST',
-				dataType: "text",
-				success: function(data){
-					requestPay(data)
-				},
-				error: function(){
-					alert("오류가 발생했습니다.");
-				}
-			});
-			
-			function requestPay(data){
-				var IMP = window.IMP;
-				IMP.init("imp68706306");
-				
-				IMP.request_pay({
-					pg : "html5_inicis",
-					pay_method : 'card',
-					merchant_uid : data,
-					name : '상품명',
-					amount : $('#amount').val(),
-					buyer_name : $('#name').val(),
-					buyer_tel : $('#rcv_phone').val(), // 없으면 오류
-					buyer_addr : '',
-					buyer_postcode : '',
-				}, function(rsp){
-					if(rsp.success){
-						$.ajax({
-							type: 'POST',
-							url: '/order/success',
-							data: JSON.stringify(orderInfo),
-							contentType: 'application/json; charset=utf-8',
-						});
-					}else{
-						alert("오류가 발생했습니다.");
-						history.bakc()
-					} // if문 끝
-				}
-				});
-			}
-			
-		});
-		
-		
-		
-	}); // 제이쿼리 끝 
+     	// 상품명 및 상품 갯수 수집
+        var firstProductName = '';
+        var productCount = 0;
+        document.querySelectorAll('#productList tbody tr').forEach(function(row, index) {
+            var productName = row.querySelector('td:nth-child(2)').textContent;
+            if (index === 0) {
+                firstProductName = productName;
+            }
+            productCount++;
+        });
+        var productNameText = productCount > 1 ? `${firstProductName} 외 ${productCount - 1}개` : firstProductName;
+        
+        // 주문하기
+        document.getElementById('payBtn').addEventListener('click', function() {
+            var orderInfo = new FormData(form);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/order/pay');
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    requestPay(xhr.responseText);
+                } else {
+                    alert('오류가 발생했습니다.');
+                }
+            };
+            xhr.onerror = function() {
+                alert('오류가 발생했습니다.');
+            };
+            xhr.send(new URLSearchParams(new FormData(form)));
+
+            function requestPay(data) {
+                var IMP = window.IMP;
+                IMP.init("imp68706306");
+
+                IMP.request_pay({
+                    pg: "html5_inicis",
+                    pay_method: 'card',
+                    merchant_uid: data,
+                    name: productNameText,
+                    amount: amountElem.value,
+                    buyer_name: form.name.value,
+                    buyer_tel: rcvPhoneElem.value,
+                    buyer_addr: document.getElementById('rcv_addr1').value + ' ' + document.getElementById('addr2').value + ' ' + document.getElementById('addr3').value, // 수정
+                    buyer_postcode: document.getElementById('rcv_zip').value, // 수정
+                }, function(rsp) {
+                    if (rsp.success) {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('POST', '/order/success');
+                        xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+                        xhr.send(JSON.stringify(orderInfo));
+                    } else {
+                        alert('오류가 발생했습니다.');
+                        history.back();
+                    }
+                });
+            }
+        });
+    });
 </script>
