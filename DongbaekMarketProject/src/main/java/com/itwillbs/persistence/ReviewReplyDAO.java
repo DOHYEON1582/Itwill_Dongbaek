@@ -17,7 +17,7 @@ public interface ReviewReplyDAO {
 
 	public void addReply(ReviewVO rvo) throws Exception; // 리뷰 답글 작성
     
-	//public void replyModify(ReviewVO rvo) throws Exception; // 리뷰 답글 수정
+	public void replyModify(ReviewVO rvo) throws Exception; // 리뷰 답글 수정
 	
 	
 }

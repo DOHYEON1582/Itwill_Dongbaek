@@ -47,6 +47,7 @@ public class ReviewReplyDAOImpl implements ReviewReplyDAO {
 
     @Override
     public void addReply(ReviewVO rvo) throws Exception{
+    	logger.debug(" addReply(ReviewVO rvo) 실행 ");
         // 기존 리뷰의 re_ref 값을 사용하여 그룹 번호 설정
         rvo.setRe_ref(rvo.getReview_code());
         // 기존 리뷰의 re_lev 값에 1을 더하여 계층 설정
@@ -57,6 +58,14 @@ public class ReviewReplyDAOImpl implements ReviewReplyDAO {
         // 매퍼를 통해 리뷰 답글 추가
         sqlSession.insert(NAMESPACE+".addReply", rvo);
     }
+
+	@Override
+	public void replyModify(ReviewVO rvo) throws Exception {
+		logger.debug(" replyModify(ReviewVO rvo) 실행 ");
+
+		sqlSession.update(NAMESPACE + ".replyModify", rvo);
+		
+	}
 
 	
 	

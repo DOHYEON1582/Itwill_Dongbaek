@@ -44,7 +44,11 @@ public class ReviewReplyServiceImpl implements ReviewReplyService {
 		rdao.addReply(rvo);
 	}
 
-	
+	@Override
+    public void replyModify(ReviewVO rvo) throws Exception {
+		logger.debug(" replyModify(ReviewVO rvo) 호출 ");
+        rdao.replyModify(rvo);
+    }
 
 	
 	

@@ -372,7 +372,18 @@ public class SellerPageController {//판매자 페이지 컨트롤러
     }
 
 
-
+    // 리뷰 답글 수정 처리
+    @ResponseBody
+    @RequestMapping(value = "/ReplyModify", method = RequestMethod.POST)
+    public String ReplyModify(@RequestBody ReviewVO rvo) {
+        try {
+            rService.replyModify(rvo);
+            return "success"; // 수정 성공
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "error"; // 수정 실패
+        }
+    }
 		
 		
     

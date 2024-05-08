@@ -383,9 +383,52 @@ body {
 	
 	
 	
+<!-- 리뷰 상세 정보 표시 -->
+<h1>리뷰 상세 정보</h1>
+<div>
+    <!-- 리뷰 정보 표시 -->
+    <p>리뷰 내용: ${review.content}</p>
+    <!-- 리뷰 수정 폼 -->
+    <form id="reviewModifyForm">
+        <input type="hidden" id="reviewCode" value="${review.review_code}"> <!-- 리뷰 코드 전달 -->
+        <textarea id="modifiedContent">${review.content}</textarea> <!-- 수정할 내용 입력 -->
+        <button type="button" onclick="modifyReview()">수정</button> <!-- 수정 버튼 -->
+    </form>
+</div>	
 	
-	
-	
+<script>
+    // 리뷰 수정 함수
+    function modifyReview() {
+        var reviewCode = $("#reviewCode").val(); // 리뷰 코드 가져오기
+        var modifiedContent = $("#modifiedContent").val(); // 수정된 내용 가져오기
+
+        // 수정할 내용이 비어 있는지 확인
+        if (modifiedContent.trim() === "") {
+            alert("수정할 내용을 입력하세요.");
+            return;
+        }
+
+        // AJAX를 통해 서버에 리뷰 수정 요청 전송
+        $.ajax({
+            url: "/seller/ReplyModify",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ review_code: reviewCode, content: modifiedContent }),
+            success: function(response) {
+                if (response === "success") {
+                    alert("리뷰가 성공적으로 수정되었습니다.");
+                    window.location.reload(); // 페이지 새로고침
+                } else {
+                    alert("리뷰 수정에 실패했습니다.");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                alert("서버 오류가 발생했습니다. 다시 시도해주세요.");
+            }
+        });
+    }
+</script>	
 	
 
 

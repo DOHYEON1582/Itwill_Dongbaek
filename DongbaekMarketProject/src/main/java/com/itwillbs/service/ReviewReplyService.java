@@ -15,4 +15,6 @@ public interface ReviewReplyService {
 	public ReviewVO getReviewByCode(int review_code) throws Exception; // 특정 리뷰 상세 정보 가져오기
 	
 	public void addReply(ReviewVO rvo) throws Exception; // 리뷰 답글 작성
+	
+	public void replyModify(ReviewVO rvo) throws Exception; // 리뷰 답글 수정
 }

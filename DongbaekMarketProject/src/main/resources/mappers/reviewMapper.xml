@@ -47,7 +47,12 @@
 	<!-- 리뷰 답글 추가 -->
     <insert id="addReply" parameterType="com.itwillbs.domain.ReviewVO">
         INSERT INTO review (review_code,product_code, regdate, title, content, star, user_id, img1, img2, img3, order_code, re_lev, re_ref, re_seq)
-        VALUES (#{review_code}+1000000,#{product_code}, #{regdate}, #{title}, #{content}, #{star}, #{user_id}, #{img1}, #{img2}, #{img3}, #{order_code}, #{re_lev}, #{re_ref}, #{re_seq})
+        VALUES (#{review_code}+0.1,#{product_code}, #{regdate}, #{title}, #{content}, #{star}, #{user_id}, #{img1}, #{img2}, #{img3}, #{order_code}, #{re_lev}, #{re_ref}, #{re_seq})
     </insert>
- 	
+ 	<!-- 리뷰 답글 수정 -->
+	<update id="replyModify" parameterType="com.itwillbs.domain.ReviewVO">
+	    UPDATE review
+	    SET content = #{content} -- Assuming 'content' is the field you want to modify
+	    WHERE review_code = #{review_code}
+	</update>
 </mapper>
