@@ -23,8 +23,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
+
+import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.AnswerVO;
 import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.MarketVO;
 import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.ProductVO;
@@ -32,6 +35,7 @@ import com.itwillbs.domain.QuestionVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
 import com.itwillbs.domain.UserVO;
+import com.itwillbs.domain.WishVO;
 import com.itwillbs.service.MarketService;
 
 @Controller
@@ -60,6 +64,15 @@ public class MarketController {
     		MarketVO marketList = mService.getMarketListCode();
 	        model.addAttribute("marketList", marketList);
     	}
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+		// 사용자 찜상품 표시
+		if(userVO != null) {
+		String user_id = userVO.getUser_id();
+		model.addAttribute("user_id", user_id);
+		List<WishVO> userWishList = mService.selectWish(user_id);
+		model.addAttribute("userWishList", userWishList);
+		logger.debug("userWishList>>>>>>>>>" + userWishList);
+		}
 		session.setAttribute("viewUpdateStatus", 1);
     }
 	
@@ -69,10 +82,13 @@ public class MarketController {
 	public void storeMain(@RequestParam(name = "orderBy", required = false, defaultValue = "popularity") String orderBy, 
 			@RequestParam("store_code") int store_code, Model model, HttpSession session) throws Exception{
 		logger.debug(" storeMain() 호출 ");
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+		String user_id = userVO.getUser_id();
 		StoreVO store = mService.selectStore(store_code);
 		List<ProductVO> product = mService.productOnStore(orderBy, store_code);
 		model.addAttribute("store", store);
 		model.addAttribute("product", product);
+		model.addAttribute("user_id", user_id);
 		int status = (Integer)session.getAttribute("viewUpdateStatus");
 		if(status == 1) {
 			// 글 조회수 1 증가
@@ -185,12 +201,33 @@ public class MarketController {
 	    return "redirect:/"; // 기본 페이지로 리다이렉트
 	}
 
-//	@RequestMapping(value = "/questionDetail", method = RequestMethod.GET)
-//	public String questionDetail(Model model, @RequestParam("q_code") int q_code) throws Exception{
-//		logger.debug("questionDetil 호출 ");
-//		QuestionVO detail = mService.questionDetail(q_code);
-//		model.addAttribute("detail", detail);
-//		logger.debug("detail >>>>>>>>>>>>" + detail);
-//		return "/market/questionDetail";
-//	}
+
+	@RequestMapping(value = "/storeMain", method = RequestMethod.POST, consumes = "application/json")
+	public void storeMainPOST(HttpSession session, @RequestBody MarkVO mvo) throws Exception{
+		logger.debug("storeMainPOST 호출 ");
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+		String user_id = userVO.getUser_id();
+		mService.markStore(mvo);
+		logger.debug("mvo " + mvo);
+	}
+	
+	@RequestMapping(value = "/addWish", method = RequestMethod.POST, consumes = "application/json")
+	public void addWish(HttpSession session, @RequestBody WishVO wish) throws Exception{
+		logger.debug(" addWish 호출 ");
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+		String user_id = userVO.getUser_id();
+		wish.setUser_id(user_id);
+		mService.wishProduct(wish);
+		logger.debug("wish >>>>>>>>>>>>>" + wish);
+	}
+	
+	@RequestMapping(value = "/addCart", method = RequestMethod.POST, consumes = "application/json")
+	public void addCart(@RequestBody CartVO cart, HttpSession session) throws Exception{
+		logger.debug(" addCart 호출 ");
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+		String user_id = userVO.getUser_id();
+		cart.setUser_id(user_id);
+		mService.insertCart(cart);
+		logger.debug(" cart >>>>>>>>>>>>> " + cart);
+	}
 }

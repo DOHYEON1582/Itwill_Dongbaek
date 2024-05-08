@@ -34,7 +34,64 @@
                 $(this).parent().next().val(quantity - 1);
             }
         });
+        
+        // 찜 상품 
+        $(".btn-wishlist").click(function(){
+        	
+/*             if(isAlreadyWished()) {
+                alert("이미 찜한 상품입니다.");
+                return; // 중복인 경우 아무 작업도 하지 않음
+            } */
+        	alert("찜에 등록됩니다 !" + $("#product_code").val() + $("#user_id").val());
+            var btn = $(this); // 클릭된 버튼을 저장
+            var productCode = btn.siblings("#product_code").val();
+            var userId = btn.siblings("#user_id").val();
+            
+            var wish = {
+                "product_code": productCode,
+                "user_id": userId
+            };
+        	$.ajax({
+        		type: "POST",
+        		url: "/market/addWish",
+        		data: JSON.stringify(wish),
+        		contentType: "application/json; charset=UTF-8",
+        	     success: function(data){
+        	            // 찜 상태 업데이트 후 UI 업데이트
+        	            var isWished = data.isWished; // 서버에서 반환한 찜 상태 정보
+        	            if (isWished) {
+        	                // 찜 상태인 경우
+        	                btn.addClass("wished"); // 찜 상태를 나타내는 클래스 추가
+        	                console.log(isWished);
+        	            } else {
+        	                // 찜 상태가 아닌 경우
+        	                btn.removeClass("wished"); // 찜 상태를 나타내는 클래스 제거
+        	            }
+        	        },
+        	        error: function(xhr, status, error) {
+        	            var errorMessage = xhr.status + ': ' + xhr.statusText;
+        	            console.log(" error "+ error);
+        	        }        		
+        	});
+        });
+
+/*         function isAlreadyWished() {
+            var productCode = $("#product_code").val(); // 상품 코드 가져오기
+            var userId = $("#user_id").val(); // 사용자 ID 가져오기
+            
+            // 이미 찜한 상품들을 모두 가져와서 현재 상품과 사용자 ID와 비교
+            var wishedProducts = $(".product-item").filter(function() {
+                return $(this).find("#product_code").val() == productCode && $(this).find("#user_id").val() == userId;
+            });
+            
+            // 이미 찜한 상품이 있는지 여부를 반환
+            return wishedProducts.length > 0;
+        } */
+        
+		 
+        
     });
+    
 </script>
 
 <style> 
@@ -185,6 +242,10 @@
     .store-link:hover {
         color: purple; /* 마우스 오버시 텍스트 색상 */
     }
+	.wished {
+	    background: red; /* 텍스트 색상을 빨간색으로 변경 */
+	    /* 또는 필요에 따라 다른 스타일을 적용할 수 있습니다. */
+	}
 </style>
 <!-- 시장정보 -->
 <section class="py-2 mb-1" style="background: url(${pageContext.request.contextPath}/resources/images/background-pattern.jpg);">
@@ -252,14 +313,18 @@
             <c:forEach items="${productList}" var="product">
                 <div class="col" style="width: 19%;">
                     <div class="product-item">
-                        <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
+                        <button id="wishProduct" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></button>
+		        <input type="hidden" id="product_code" value="${product.product_code }">
+				<input type="hidden" id="user_id" value="${user_id }">                        
                         <figure>
                             <a href="productMain?product_code=${product.product_code }" title="Product Title">
                                 <img src="${pageContext.request.contextPath}/resources/images/carrot.jpg" alt="Product Thumbnail" class="tab-image" style="width : 180px">
                             </a>
                         </figure>
                         <h4>${product.product_name}</h4>
-                        <span class="qty">${product.unit}</span><span class="rating"><svg width="24" height="24" class="text-primary"><use xlink:href="#star-solid"></use></svg> 4.5</span>
+                        <span class="qty">${product.unit}</span>
+                        <span class="rating"><svg width="24" height="24" class="text-primary">
+                        <use xlink:href="#star-solid"></use></svg> 4.5</span>
                         <span class="price"><fmt:formatNumber value="${product.price}" pattern="#,##0" />원</span>
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="input-group product-qty">

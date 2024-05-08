@@ -393,7 +393,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <div class="row" style="margin: 50px 0;">
     <h1 class="jumbotron">
         <div class="container1">
-            <small>This is product page.</small>
+           
         </div>
     </h1>
 </div>

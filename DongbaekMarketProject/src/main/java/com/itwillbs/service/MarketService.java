@@ -3,13 +3,17 @@ package com.itwillbs.service;
 import java.util.List;
 import java.util.Map;
 
+
+import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.AnswerVO;
 import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.MarketVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.QuestionVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
+import com.itwillbs.domain.WishVO;
 
 public interface MarketService {
 	
@@ -52,8 +56,13 @@ public interface MarketService {
 	
 	// 최근 문의글 10개 들고오기
 	public List<QuestionVO> newQuestion(int product_code) throws Exception;
+		
+	// 즐겨찾기에 넣기
+	public void markStore(MarkVO mvo) throws Exception;
 	
-	// 문의 상세정보 들고오기
+	// 찜에 넣기
+	public void wishProduct(WishVO wish) throws Exception;
+
 	public List<QuestionVO> questionDetail(int q_code) throws Exception;
 	// 문의 답글 달기
 	public void qAnswer(AnswerVO avo) throws Exception;
@@ -61,10 +70,11 @@ public interface MarketService {
 	public List<AnswerVO> selectAnswer(int q_code) throws Exception;
 	// 문의 답글 중복체크
 	public boolean isDuplicateAnswer(int q_code) throws Exception;
+
+	// 찜 목록 들고오기
+	public List<WishVO> selectWish(String user_id) throws Exception;
 	
-	
-	
-	
-	
+	// 카트에 넣기
+	public void insertCart(CartVO cart) throws Exception;
 	
 }

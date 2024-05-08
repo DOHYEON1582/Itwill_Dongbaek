@@ -3,13 +3,17 @@ package com.itwillbs.persistence;
 import java.util.List;
 import java.util.Map;
 
+
+import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.AnswerVO;
 import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.MarketVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.QuestionVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
+import com.itwillbs.domain.WishVO;
 
 public interface MarketDAO {
 
@@ -39,7 +43,6 @@ public interface MarketDAO {
 	public void writeQuestion(QuestionVO qvo) throws Exception;
 	
 	// 상품별 문의 글 불러오기
-	//public List<QuestionVO> getQuestion(Criteria cri, int product_code) throws Exception;
 	public List<QuestionVO> getQuestion(Map<String, Object> paramMap) throws Exception;
 	
 	// 문의 글 개수 계산
@@ -59,5 +62,18 @@ public interface MarketDAO {
 	public List<AnswerVO> selectAnswer(int q_code) throws Exception;
 	// 문의 답글 중복체크
 	public int checkDuplicateAnswer(int q_code) throws Exception;
+	
+	// 즐겨찾기에 넣기
+	public void markStore(MarkVO mvo) throws Exception;
+	
+	// 찜 넣기
+	public void wishProduct(WishVO wish) throws Exception;
+	
+	// 찜 상품 표시
+	public List<WishVO> selectWish(String user_id) throws Exception;
+	
+	// 카트에 넣기
+	public void insertCart(CartVO cart) throws Exception;
+	
 	
 }
