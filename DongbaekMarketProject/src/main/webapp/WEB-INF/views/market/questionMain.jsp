@@ -322,6 +322,8 @@ $(document).ready(function(){
 
 <div class="container" style="text-align: center; height: 700px;">
     <h1 class="page-header" id="qna1">상품 Q&A</h1>
+    cri : ${cri }
+    pageVO : ${pageVO }
 	 <table class="table table-bordered">
     	<tbody>
     		<tr>
@@ -344,14 +346,20 @@ $(document).ready(function(){
 			<ul class="pagination">
 				<c:if test="${pageVO.prev }">
 					<li class="paginate_button previous disabled" id="example2_previous">
-						<a href="/market/questionMain?product_code=${product.product_code }&page=${pageVO.startPage - 1 }">«</a></li>
+						<a href="/market/questionMain?product_code=${product.product_code }&page=${pageVO.startPage - 1 }&pageSize=${cri.pageSize}"
+						aria-controls="example2" data-dt-idx="0"
+                            tabindex="0">«</a></li>
 				</c:if>
 				<c:forEach var="idx" begin="${pageVO.startPage }" end="${pageVO.endPage }" step="1">
-					<li ${pageVO.cri.page == idx? "class=active":""}>
-					<a href="/market/questionMain?product_code=${product.product_code }&page=${idx }#qna1">${idx }</a></li>
+					<li ${pageVO.cri.page == idx? "class='active'":""}>
+					<a href="/market/questionMain?product_code=${product.product_code }&page=${idx }&pageSize=${cri.pageSize}"
+					aria-controls="example2" data-dt-idx="1" tabindex="0">${idx }</a></li>
 				</c:forEach>
 				<c:if test="${pageVO.next }">
-					<li><a href="/market/questionMain?product_code=${product.product_code }&page=${pageVO.endPage + 1 }">»</a></li>
+					<li class="paginate_button next" id="example2_next">
+						<a href="/market/questionMain?product_code=${product.product_code }&page=${pageVO.endPage + 1 }&pageSize=${cri.pageSize}"
+						aria-controls="example2" data-dt-idx="7" tabindex="0">»</a>
+					</li>
 				</c:if>
 			</ul>
 		</div>

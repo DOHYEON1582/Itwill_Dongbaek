@@ -9,6 +9,6 @@ public class AnswerVO {
 	private int answer_code;
 	private int q_code;
 	private String answer_content;
-	private String seller_id;
+	private String writer;
 	private Timestamp regdate;
 }
