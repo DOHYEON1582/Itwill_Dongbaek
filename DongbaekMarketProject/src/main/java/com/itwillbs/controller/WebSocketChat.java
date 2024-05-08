@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -18,9 +19,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 
+import com.itwillbs.service.AdminService;
+
 @Controller
 @ServerEndpoint(value="/chat/{room_idx}/{sender}")
 public class WebSocketChat {
+	
+	@Inject
+	private AdminService aService;
     
 	private static final Map<Integer, List<Session>> rooms = new HashMap<>();
     private static final Logger logger = LoggerFactory.getLogger(WebSocketChat.class);
@@ -109,7 +115,7 @@ public class WebSocketChat {
             roomSessions.remove(session);
             if (roomSessions.isEmpty()) {
                 rooms.remove(room_idx);
-                // 나중에 디비 지우기
+                
             }
         }
     }

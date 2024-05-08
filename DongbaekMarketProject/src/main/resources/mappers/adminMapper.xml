@@ -426,7 +426,27 @@
 	WHERE seller_id = #{seller_id}
 </select>
 
+<!-- 사업자 회원가입 -->
+<insert id="insertSeller">
+	INSERT INTO seller (seller_id, store_code, seller_pw, salt, seller_phone, seller_name, store_addr1, store_addr2, bank, account, store_number, regdate )
+	VALUES (#{seller_id},#{store_code},#{seller_pw},'100',#{seller_phone},#{seller_name},#{store_addr1},#{store_addr2},#{bank},#{account},#{store_number},now())
+</insert>
 
+<!-- 가게 정보 등록 -->
+<insert id="insertStore">
+	INSERT INTO store (store_code, market_code, seller_id, store_name, store_value,store_explain, phone, store_addr1, store_addr2, min_price)
+	VALUES (#{store_code},#{market_code},#{seller_id},#{store_name},#{store_value},#{store_explain},#{phone},#{store_addr1},#{store_addr2},#{min_price})
+</insert>
+
+<!-- 가게 코드 가져오기 -->
+<select id="getStore_code" resultType="int">
+	SELECT MAX(store_code)+1 FROM store;
+</select>
+
+<!-- 채팅방 삭제하기 -->
+<delete id="deleteChatRoom">
+	DELETE FROM chat_room WHERE room_idx = #{room_idx}
+</delete>
 
 
 

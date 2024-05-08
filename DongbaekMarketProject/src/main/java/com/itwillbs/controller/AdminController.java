@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,6 +28,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itwillbs.domain.AdminNoticeVO;
 import com.itwillbs.domain.AdminProductVO;
+import com.itwillbs.domain.AdminSellerVO;
+import com.itwillbs.domain.AdminStoreVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.AdminService;
 
@@ -257,5 +260,42 @@ public class AdminController {
 		
 	}
 	
+	@PostMapping(value = "/admin/insertupload")
+	public ResponseEntity insertSeller(AdminSellerVO vo,AdminStoreVO svo)throws Exception{
+		logger.debug(" insertSeller(AdminSellerVO vo) 호출 ");
+		logger.debug(" seller값 : "+vo);
+		logger.debug("store값 : "+svo);
+		
+		int success = 0; 
+		String result = "";
+		HttpHeaders respHeaders = new HttpHeaders();
+		respHeaders.add("Content-Type", "text/html; charset=utf-8");
+		
+		vo.setStore_code(aService.getStoreCode());
+		svo.setStore_code(vo.getStore_code());
+		
+		success += aService.insertSeller(vo);
+		success += aService.insertStore(svo);
+		
+		
+		if(success == 2) {
+			result = "<script>";
+			result += " alert('사업자회원 등록 완료!'); ";
+			result += " location.href='http://localhost:8088/admin/shop';";
+			result += "</script>";
+		}else {
+			result = "<script>";
+			result += " alert('사업자회원 등록 실패!'); ";
+			result += " location.href='http://localhost:8088/admin/shop';";
+			result += "</script>";
+		}
+		
+		return new ResponseEntity(result,respHeaders,HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/admin/chatbot")
+	public void chatbot()throws Exception {
+		
+	}
 	
 }//endController

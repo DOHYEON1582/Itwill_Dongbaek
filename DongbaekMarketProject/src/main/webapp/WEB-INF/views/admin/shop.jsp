@@ -138,7 +138,7 @@
 			
 			$('#modal-table1 tbody').append(
 				   `<tr>
-						<td style="background-color: rgb(245,247,250);"><h6>업체아이디</h6></td>
+						<td style="background-color: rgb(245,247,250);"><h6>아이디</h6></td>
 						<td><input id="seller_id" style="border: none" type="text" name="seller_id"><label id="label1" style="font-size: 15px;"></label><button id="idCheck" type="button">중복검사</button></td>
 						<td style="background-color: rgb(245,247,250);"><h6>비밀번호</h6></td>
 						<td><input style="border: none" type="password" name="seller_pw"></td>
@@ -158,8 +158,24 @@
 						<td><input style="border: none" type="text" name="bank"></td>
 						<td style="background-color: rgb(245,247,250);"><h6>계좌번호</h6></td>
 						<td><input style="border: none" type="text" name="account"></td>
+						<td style="background-color: rgb(245,247,250);"><h6>사업자번호</h6></td>
+						<td colspan="2"><input style="border: none" type="text" name="store_number"></td>
+					</tr>
+					<tr>
+						<td style="background-color: rgb(245,247,250);"><h6>마켓코드</h6></td>
+						<td><input style="border: none" type="text" name="market_code"></td>
+						<td style="background-color: rgb(245,247,250);"><h6>가게이름</h6></td>
+						<td><input style="border: none" type="text" name="store_name"></td>
+						<td style="background-color: rgb(245,247,250);"><h6>가게종류</h6></td>
+						<td colspan="2"><input style="border: none" type="text" name="store_value"></td>
+					</tr>
+					<tr>
+						<td style="background-color: rgb(245,247,250);"><h6>가게설명</h6></td>
+						<td><input style="border: none" type="text" name="store_explain"></td>
 						<td style="background-color: rgb(245,247,250);"><h6>가게전화번호</h6></td>
-						<td colspan="2"><input style="border: none" type="text" name="store_addr2"></td>
+						<td><input style="border: none" type="text" name="phone"></td>
+						<td style="background-color: rgb(245,247,250);"><h6>최소주문금액</h6></td>
+						<td colspan="2"><input style="border: none" type="text" name="min_price"></td>
 					</tr>
 					<tr>
 						<td colspan="6"><button class="btnFile" id="btnUpload" type="button">등록하기</button></td>
@@ -173,10 +189,10 @@
 		
 		
 		$('.chocolat-close').click(function(){
-			$('#modal-table1 thead').empty();
-			$('#modal-table1 tbody').empty();
-			$('#modal-table2 tbody').empty();
-			$('#modal-table2 tfoot').empty();
+			$('#modal-table1').empty();
+			$('#modal-table2').empty();
+			$('#h1tag').empty();
+			
 			$('#chocolat-content-0').attr('class','chocolat-wrapper');
 			$('#second').attr('class','chocolat-overlay');
 		});// 모달 클로즈
@@ -214,7 +230,7 @@
 		
 		// 제품 등록하기 submit
 		$(document).on('click','#btnUpload',function(){
-			$("#uploadForm").attr("action","/admin/sublist").submit();
+			$("#uploadForm").attr("action","/admin/insertupload").submit();
 		});
 		
 		$('.col-1').on('mouseover',function() {
