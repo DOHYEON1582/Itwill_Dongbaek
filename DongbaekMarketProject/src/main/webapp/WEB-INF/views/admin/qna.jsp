@@ -104,11 +104,26 @@
 			
 		});// 채팅하기 모달 오픈
 		
+		$('#chatBot').click(function(){
+			
+			$('#modal-table1 thead').append(
+				   `<tr style="height: 10%;">
+						<td><h6 style="margin: 10px;">챗봇 물어보기</h6></td>
+					</tr>`
+			);
+	
+			$('#chocolat-content-1').attr('class','chocolat-wrapper chocolat-visible');
+			$('#first').attr('class','chocolat-overlay chocolat-visible');
+			
+		});// 챗봇 모달 오픈
+		
 		
 		$('.chocolat-close').click(function(){
 			$('.custom_closeModal').css('display','block');
 			$('#chocolat-content-0').attr('class','chocolat-wrapper');
+			$('#chocolat-content-1').attr('class','chocolat-wrapper');
 			$('#second').attr('class','chocolat-overlay');
+			$('#first').attr('class','chocolat-overlay');
 		});// 모달 클로즈
 		
 		$('#closeCheck_body2').click(function(){
@@ -207,11 +222,11 @@
 		<div class="chocolat-center">
 			<div class="chocolat-image-canvas chocolat-visible" >
 				<div class="chocolat-image-wrapper" style="width: 868px; height: 868px; background-image:url(/resources/images/modal_back.jpg); text-align: center; color: black; padding: 20px;">
-					<h1>상품추천 챗봇</h1>
+					<h1>챗봇 상품 문의</h1>
 					<div style="width: 100%; height: 100%; height: 750px; overflow: scroll; overflow-x:hidden; ">
 						<form id="uploadForm" action=""  method="post" enctype="multipart/form-data">
-							<table id="modal-table1" class="modal-table"  style="border:1px solid black; background-color: rgb(255, 220, 220); width: 400px; height:100%; margin: auto;">
-								<thead style="height: 50px;">
+							<table id="modal-table1" class="modal-table"  style="border:2px solid black; background-color: rgb(255, 220, 220); width: 400px; height:100%; margin: auto;">
+								<thead style="height: 50px; overflow: scroll; overflow-x:hidden;">
 								</thead>
 								
 								<tbody style="font-size:13px; display: block; height:540px; max-height: 540px; overflow-y: auto; flex-direction:column_reverse; background-color: white;">
@@ -219,7 +234,7 @@
 								
 								<tfoot>
 									<tr style="padding: 0px;">
-										<td><input id="chatbot-message" type="text"style="width: 300px; height: 100px; float: left; text-align: left;"><button type="button" id="sendChat">보내기</button></td>
+										<td><input id="chatBot-message" type="text"style="width: 300px; height: 100px; float: left; text-align: left; margin-right: 3px;"><button type="button" id="chatBot-send" style="margin:5px 0px 10px 0px">물어보기</button><button type="button" id="produce-search">상품조회</button></td>
 									</tr>
 								</tfoot>
 							</table>
@@ -316,18 +331,20 @@
 	<li class="page-item"><a class="page-link border-0" href="#">3</a></li>
 	<li class="page-item">
 		<a class="page-link border-0" href="#" aria-label="Next">
-		<span aria-hidden="true">»</span> 
+		<span aria-hidden="true">»</span>
 		</a>
 	</li>
 </ul>     
 </div>
 
-
 <script>
 //소켓 함수 모음
 
 	 $(document).ready(function() {
+            //$("#joinBtn").click(openSocket);
+            //$("#leaveBtn").click(closeSocket);
             $("#sendChat").click(send);
+            //$("#clearBtn").click(clearText);
         });
 		
 	 var ws;
@@ -431,44 +448,12 @@
 //소켓 함수 모음
 
 // 챗봇 함수 모음
-	 $(document).ready(function() {
-			$('#chatBot').click(function(){
-			
-			$('#modal-table1 thead').append(
-				  `<input type="text" id="sender" value="${sessionScope.id}" style="display: none;">
-				   <tr style="height: 10%;">
-						<td><h6 style="margin: 10px;">챗봇 문의</h6></td>
-					</tr>`
-			);
-	
-			$('#chocolat-content-1').attr('class','chocolat-wrapper chocolat-visible');
-			$('#first').attr('class','chocolat-overlay chocolat-visible');
-			
-		});// 채팅하기 모달 오픈
-		
-	 });
-	 	// 채팅 메시지를 표시할 DOM
-	    const chatMessages = document.querySelector('#chat-messages');
-	    // 사용자 입력 필드
-	    const userInput = $('#chatbot-message').val();
-	    // 전송 버튼
-	    const sendButton = document.querySelector('#user-input button');
-	    // 발급받은 OpenAI API 키를 변수로 저장
+	    const userInput = $('#chatBot-message');
 	    const apiKey = 'sk-proj-e7YSQUgIZKE2B2P7vuERT3BlbkFJyckkhRKXgLe9bDIE7YFN';
-	    // OpenAI API 엔드포인트 주소를 변수로 저장
 	    const apiEndpoint = 'https://api.openai.com/v1/chat/completions'
-	    function addMessage(sender, message) {
-	        // 새로운 div 생성
-	        const messageElement = document.createElement('div');
-	        // 생성된 요소에 클래스 추가
-	        messageElement.className = 'message';
-	         // 채팅 메시지 목록에 새로운 메시지 추가
-	        messageElement.textContent = `${sender}: ${message}`;
-	        chatMessages.prepend(messageElement);
-	    }
 	    // ChatGPT API 요청
 	    async function fetchAIResponse(prompt) {
-	        // API 요청에 사용할 옵션을 정의
+	        
 	        const requestOptions = {
 	            method: 'POST',
 	            // API 요청의 헤더를 설정
@@ -477,25 +462,23 @@
 	                'Authorization': `Bearer sk-proj-e7YSQUgIZKE2B2P7vuERT3BlbkFJyckkhRKXgLe9bDIE7YFN`
 	            },
 	            body: JSON.stringify({
-	                model: "gpt-3.5-turbo",  // 사용할 AI 모델
+	                model: "gpt-3.5-turbo", 
 	                messages: [{
-	                    role: "user", // 메시지 역할을 user로 설정
-	                    content: prompt // 사용자가 입력한 메시지
+	                    role: "user",
+	                    content: prompt
 	                }, ],
-	                temperature: 0.8, // 모델의 출력 다양성
-	                max_tokens: 1024, // 응답받을 메시지 최대 토큰(단어) 수 설정
-	                top_p: 1, // 토큰 샘플링 확률을 설정
-	                frequency_penalty: 0.5, // 일반적으로 나오지 않는 단어를 억제하는 정도
-	                presence_penalty: 0.5, // 동일한 단어나 구문이 반복되는 것을 억제하는 정도
-	                stop: ["Human"], // 생성된 텍스트에서 종료 구문을 설정
+	                temperature: 0.8,
+	                max_tokens: 1024,
+	                top_p: 1, 
+	                frequency_penalty: 0.5, 
+	                presence_penalty: 0.5, 
+	                 
 	            }),
 	        };
 	        // API 요청후 응답 처리
 	        try {
 	            const response = await fetch(apiEndpoint, requestOptions);
-	            console.log(response);
 	            const data = await response.json();
-	            console.log("!!!!"+data);
 	            const aiResponse = data.choices[0].message.content;
 	            return aiResponse;
 	        } catch (error) {
@@ -503,28 +486,26 @@
 	            return 'OpenAI API 호출 중 오류 발생';
 	        }
 	    }
-	    // 전송 버튼 클릭 이벤트 처리
-	    sendButton.addEventListener('click', async function(){
-	        // 사용자가 입력한 메시지
-	        const message = userInput.value.trim();
-	        // 메시지가 비어있으면 리턴
+	    	// 전송 버튼 클릭 이벤트
+	    $('#chatBot-send').on('click', async function(){
+	        
+	        const message = $('#chatBot-message').val();
 	        if (message.length === 0) return;
-	        // 사용자 메시지 화면에 추가
-	        addMessage('나', message);
 	        console.log(message);
-	        userInput.value = '';
-	        //ChatGPT API 요청후 답변을 화면에 추가
+	        $('#modal-table1 tbody').append(
+				"<tr style='border:none;'><td style='text-align: right; width: 501px; border:none;'>"+message+"</td></tr>"
+			);
+	        
+	        $('#chatBot-message').val(" ");
 	        const aiResponse = await fetchAIResponse(message);
 	        console.log(aiResponse);
-	        $('#user-input').append(aiResponse);
-	        addMessage('챗봇', aiResponse);
+	        $('#modal-table1 tbody').append(
+					"<tr style='border:none;'><td style='text-align: left; width: 501px; border:none;'><label style='color:blue'>동백AI</label>:"
+					+aiResponse+"<br><label style='color: red;'>주문하시려면 상품조회 클릭!</label></td></tr>"
+				);
+	        
 	    });
-	    // 사용자 입력 필드에서 Enter 키 이벤트를 처리
-	    userInput.addEventListener('keydown', function(event){
-	        if (event.key === 'Enter') {
-	            sendButton.click();
-	        }
-	    });
+
 
 
 
