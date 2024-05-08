@@ -23,7 +23,7 @@ import com.itwillbs.service.AdminService;
 
 @Controller
 @ServerEndpoint(value="/chat/{room_idx}/{sender}")
-public class WebSocketChat {
+public class WebSocketChat {  
 	
 	@Inject
 	private AdminService aService;
