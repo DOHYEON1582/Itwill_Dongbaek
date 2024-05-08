@@ -71,7 +71,7 @@
 			var order_code = $(this).find('td:eq(0)').text();
 			
 			$.ajax({
-				url : "/admin/shoporder/"+order_code,
+				url : "/admin/shoporder/"+order_code, 
 				type : "GET",
 				success : function(data){
 					//console.log(data);
