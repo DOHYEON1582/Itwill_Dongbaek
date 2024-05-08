@@ -218,6 +218,7 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	@RequestMapping(value = "/productmodify",method = RequestMethod.GET)
 	public void productmodify() throws Exception{
 		logger.debug(" productmodify() 실행 ");
+		
 	}
 
 
