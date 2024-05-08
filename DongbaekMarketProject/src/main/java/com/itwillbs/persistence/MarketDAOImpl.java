@@ -16,6 +16,7 @@ import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.QuestionVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
+import com.itwillbs.domain.WishVO;
 
 
 @Repository
@@ -108,6 +109,20 @@ public class MarketDAOImpl implements MarketDAO{
 	@Override
 	public QuestionVO questionDetail(int q_code) throws Exception {
 		return sqlSession.selectOne(NAMESPACE + ".questionDetail", q_code);
+	}
+
+	@Override
+	public List<ProductVO> getSubProductList() throws Exception {
+		logger.debug(" getSubProductList() 호출 ");
+		
+		return sqlSession.selectList(NAMESPACE+".getSubList");
+	}
+
+	@Override
+	public List<WishVO> getUserWish(String user_id) throws Exception {
+		logger.debug(" getUserWish(String user_id) 호출 ");
+		
+		return sqlSession.selectList(NAMESPACE+".getUserWish", user_id);
 	}
 
 	

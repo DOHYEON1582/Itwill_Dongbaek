@@ -104,6 +104,7 @@
   		order by regdate desc
   		limit #{page},10
   	]]>
+
   </select>
   
   <!-- 최근 문의글 10개 불러오기  -->
@@ -119,5 +120,20 @@
   	select * from question
   	where q_code = #{q_code}
   </select>
+  
+  <!-- 구독 상품 리스트 가져오기 -->
+  <select id="getSubList" resultType="com.itwillbs.domain.ProductVO">
+  	SELECT * FROM product 
+  	WHERE sub_product = '구독'
+  	
+  </select>
+  
+  <!-- 위시리스트 가져오기 -->
+  <select id="getUserWish" resultType="com.itwillbs.domain.WishVO">
+  	SELECT * FROM wish 
+  	WHERE user_id = #{user_id}
+  </select>
+  
+  
   
   </mapper>
