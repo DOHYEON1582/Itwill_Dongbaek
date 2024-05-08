@@ -410,6 +410,7 @@ function topFunction() {
                                 <img src="${pageContext.request.contextPath}/resources/images/carrot.jpg" alt="Product Thumbnail" class="tab-image" style="width : 180px">
                             </a>
                         </figure>
+                        
                         <h4>${product.product_name}</h4>
                         <span class="price"><fmt:formatNumber value="${product.price}" pattern="#,##0" />원</span>
                         <span class="total-price">총 가격</span>
