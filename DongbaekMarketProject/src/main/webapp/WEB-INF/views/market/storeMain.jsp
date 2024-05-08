@@ -471,6 +471,7 @@ h3 {
 
 <div class="bootstrap-tabs product-tabs">
     <h3>가게 상품</h3>
+	<div class="container">
 	<form action="" method="get">
         <select name="orderBy">
             <option value="popularity" ${param.orderBy == 'popularity' ? 'selected' : ''}>인기순</option>
@@ -480,7 +481,6 @@ h3 {
         <input type="hidden" name="store_code" value="${store.store_code }">
         <input type="submit" value="정렬">
     </form>
-	<div class="container">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-6 justify-content-center gap-3">
             <c:forEach items="${product}" var="product">
                 <div class="col" style="width: 19%;">

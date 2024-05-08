@@ -1,15 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="../include/header.jsp"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 	<script src="./resources/js/jquery-2.1.1.js"></script>
 	<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
-	    <!-- Favicon-->
+    
+    <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <!-- Bootstrap icons-->
     <link href="https://fastly.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="css/styles.css" rel="stylesheet" />
+    <link href="./resources/css/styles.css" rel="stylesheet" />
 <style> 
   #scrollToTopBtn {
     display: none; /* 초기에는 숨김 */
@@ -431,7 +432,7 @@ function topFunction() {
                                     </button>
                                 </span>
                                 <!-- 장바구니 버튼 -->
-                                <button>장바구니<svg width="18" height="18"><use xlink:href="#cart"></use></svg></button>
+                                <button class="cart">장바구니<svg width="18" height="18"><use xlink:href="#cart"></use></svg></button>
                             </div>
                         </div>
                     </div>

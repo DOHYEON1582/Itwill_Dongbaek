@@ -201,16 +201,6 @@ public class MarketController {
 	    return "redirect:/"; // 기본 페이지로 리다이렉트
 	}
 
-
-	@RequestMapping(value = "/questionDetail", method = RequestMethod.GET)
-	public String questionDetail(Model model, @RequestParam("q_code") int q_code) throws Exception{
-		logger.debug("questionDetil 호출 ");
-		QuestionVO detail = mService.questionDetail(q_code);
-		model.addAttribute("detail", detail);
-		logger.debug("detail >>>>>>>>>>>>" + detail);
-		return "/market/questionDetail";
-	}
-	
 	@ResponseBody
 	@RequestMapping(value = "/storeMain", method = RequestMethod.POST, consumes = "application/json")
 	public void storeMainPOST(HttpSession session, @RequestBody MarkVO mvo) throws Exception{

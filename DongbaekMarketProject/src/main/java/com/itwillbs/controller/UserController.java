@@ -1,6 +1,5 @@
 package com.itwillbs.controller;
 
-import java.io.PrintWriter;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -66,7 +65,6 @@ public class UserController {
 	    return "redirect:/";
 	}
 
-
 	@ResponseBody
 	@PostMapping(value = "/get")
 	public MarketVO getMarketPOST(@RequestParam("market_code") int market_code) throws Exception{
@@ -117,6 +115,7 @@ public class UserController {
         }
 	}
 	
+
 	@GetMapping(value = "member/logout")
 	public String logoutGET(HttpSession session) throws Exception{
 		logger.debug(" logoutGET(HttpSession session) 실행 ");
