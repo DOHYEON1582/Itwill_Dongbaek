@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.MarketVO;
@@ -17,6 +18,7 @@ import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.QuestionVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
+import com.itwillbs.domain.WishVO;
 import com.itwillbs.persistence.MarketDAO;
 
 @Service
@@ -113,5 +115,21 @@ public class MarketServiceImpl implements MarketService{
 		mdao.markStore(mvo);
 	}
 
+	@Override
+	public void wishProduct(WishVO wish) throws Exception {
+		mdao.wishProduct(wish);
+	}
+
+	@Override
+	public List<WishVO> selectWish(String user_id) throws Exception {
+		return mdao.selectWish(user_id);
+	}
+
+	@Override
+	public void insertCart(CartVO cart) throws Exception {
+		mdao.insertCart(cart);
+	}
+
+	
 
 }

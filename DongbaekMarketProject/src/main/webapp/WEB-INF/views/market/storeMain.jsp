@@ -35,8 +35,41 @@
             }
         });
         
+        $(".cart").click(function(){
+        	alert("장바구니에 담으시겠습니까 ?");
+            var productCode = $(this).data("product_code"); // 제품 코드 가져오기
+            var userId = $(this).data("user_id"); // 사용자 ID 가져오기
+            var quantity = $(this).parent().find(".quantity").val(); // 수량 가져오기
+            var price = $(this).data("price");
+
+            var cart = {
+                "user_id": userId,
+                "product_code": productCode,
+                "count": quantity,
+                "price": price
+            };        	
+            
+            $.ajax({
+            	type: "POST",
+            	url: "/market/addCart",
+            	data: JSON.stringify(cart),
+            	contentType: "application/json; charset=UTF-8",
+            	success: function(data){
+            		alert("제품이 장바구니에 추가되었습니다");
+            		location.reload();
+            	},
+                error: function(xhr, status, error) {
+                    var errorMessage = xhr.status + ': ' + xhr.statusText;
+                    alert('에러가 발생했습니다.\n' + errorMessage);
+                    console.log(" error "+ error);
+                }            	
+            });
+            
+        });
+        
+        
         $("#markStore").click(function(){
-        	alert("즐겨찾기 하시겠습니까 ?" + $("#store_code").val() + $("#user_id").val());
+        	alert("즐겨찾기 하시겠습니까 ?");
         	var mvo = {
         			/* "mark_code":$("#mark_code").val(), */
         			"store_code":$("#store_code").val(),
@@ -55,6 +88,47 @@
                     alert('에러가 발생했습니다.\n' + errorMessage);
                     console.log(" error "+ error);
                 }
+        	});
+        });
+        
+        
+        // 찜 상품 
+        $(".btn-wishlist").click(function(){
+        	
+/*             if(isAlreadyWished()) {
+                alert("이미 찜한 상품입니다.");
+                return; // 중복인 경우 아무 작업도 하지 않음
+            } */
+        	alert("찜에 등록됩니다 !" + $("#product_code").val() + $("#user_id").val());
+            var btn = $(this); // 클릭된 버튼을 저장
+            var productCode = btn.siblings("#product_code").val();
+            var userId = btn.siblings("#user_id").val();
+            
+            var wish = {
+                "product_code": productCode,
+                "user_id": userId
+            };
+        	$.ajax({
+        		type: "POST",
+        		url: "/market/addWish",
+        		data: JSON.stringify(wish),
+        		contentType: "application/json; charset=UTF-8",
+        	     success: function(data){
+        	            // 찜 상태 업데이트 후 UI 업데이트
+        	            var isWished = data.isWished; // 서버에서 반환한 찜 상태 정보
+        	            if (isWished) {
+        	                // 찜 상태인 경우
+        	                btn.addClass("wished"); // 찜 상태를 나타내는 클래스 추가
+        	                console.log(isWished);
+        	            } else {
+        	                // 찜 상태가 아닌 경우
+        	                btn.removeClass("wished"); // 찜 상태를 나타내는 클래스 제거
+        	            }
+        	        },
+        	        error: function(xhr, status, error) {
+        	            var errorMessage = xhr.status + ': ' + xhr.statusText;
+        	            console.log(" error "+ error);
+        	        }        		
         	});
         });
         
@@ -393,7 +467,8 @@ h3 {
             <c:forEach items="${product}" var="product">
                 <div class="col" style="width: 19%;">
                     <div class="product-item">
-                        <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
+                        <button id="wishProduct" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></button>
+                         <input type="hidden" id="product_code" value="${product.product_code }">
                         <figure>
                             <a href="productMain?product_code=${product.product_code }" title="Product Title">
                                 <img src="${pageContext.request.contextPath}/resources/images/product/${product.img1}" alt="Product Thumbnail" class="tab-image" style="width : 180px">
@@ -416,7 +491,7 @@ h3 {
                                     </button>
                                 </span>
                             </div>
-                            <a href="#" class="nav-link">장바구니<svg width="18" height="18"><use xlink:href="#cart"></use></svg></a>
+                            <button class="cart">장바구니<svg width="18" height="18"><use xlink:href="#cart"></use></svg></button>
                         </div>
                     </div>
                 </div>

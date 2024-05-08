@@ -3,6 +3,7 @@ package com.itwillbs.service;
 import java.util.List;
 import java.util.Map;
 
+import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.MarketVO;
@@ -10,6 +11,7 @@ import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.QuestionVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
+import com.itwillbs.domain.WishVO;
 
 public interface MarketService {
 	
@@ -56,12 +58,16 @@ public interface MarketService {
 	// 문의 상세정보 들고오기
 	public QuestionVO questionDetail(int q_code) throws Exception;
 	
-	// 찜에 넣기
+	// 즐겨찾기에 넣기
 	public void markStore(MarkVO mvo) throws Exception;
 	
+	// 찜에 넣기
+	public void wishProduct(WishVO wish) throws Exception;
 	
+	// 찜 목록 들고오기
+	public List<WishVO> selectWish(String user_id) throws Exception;
 	
-	
-	
+	// 카트에 넣기
+	public void insertCart(CartVO cart) throws Exception;
 	
 }

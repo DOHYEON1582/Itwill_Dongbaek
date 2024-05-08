@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.MarketVO;
@@ -17,6 +18,7 @@ import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.QuestionVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
+import com.itwillbs.domain.WishVO;
 
 
 @Repository
@@ -114,6 +116,21 @@ public class MarketDAOImpl implements MarketDAO{
 	@Override
 	public void markStore(MarkVO mvo) throws Exception {
 		sqlSession.insert(NAMESPACE + ".markStore", mvo);
+	}
+
+	@Override
+	public void wishProduct(WishVO wish) throws Exception {
+		sqlSession.insert(NAMESPACE + ".wishProduct", wish);
+	}
+
+	@Override
+	public List<WishVO> selectWish(String user_id) throws Exception {
+		return sqlSession.selectList(NAMESPACE + ".selectWish", user_id);
+	}
+
+	@Override
+	public void insertCart(CartVO cart) throws Exception {
+		sqlSession.insert(NAMESPACE + ".insertCart", cart);
 	}
 
 	

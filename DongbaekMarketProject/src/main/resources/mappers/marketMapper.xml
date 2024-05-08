@@ -121,12 +121,28 @@
   	where q_code = #{q_code}
   </select>
   
-  <!-- 찜에 넣기 -->
+  <!-- 즐겨찾기에 넣기 -->
   <insert id="markStore">
   	insert into mark(store_code, user_id)
   	values (#{store_code}, #{user_id})
   </insert>
   
+  <!-- 찜에 넣기 -->
+  <insert id="wishProduct">
+  	insert into wish(product_code, user_id)
+  	values (#{product_code}, #{user_id})
+  </insert>
   
+  <!-- 찜 상품 다르게 표시하기 -->
+  <select id="selectWish" resultType="WishVO">
+  	select * from wish
+  	where user_id = #{user_id}
+  </select>
+  
+  <!-- 카트에 넣기 -->
+  <insert id="insertCart">
+  	insert into cart(user_id,product_code,count,price)
+  	values (#{user_id},#{product_code},#{count},#{price})
+  </insert>
   
   </mapper>
