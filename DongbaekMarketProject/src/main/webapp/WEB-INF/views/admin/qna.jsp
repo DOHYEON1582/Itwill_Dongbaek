@@ -209,7 +209,7 @@
 			<span class="chocolat-description">Calm Before The Storm (One Shoe Photography Ltd.)</span><span class="chocolat-pagination">1/1</span><span class="chocolat-set-title"></span><span class="chocolat-fullscreen"></span>
 		</div>
 	</div>
-</div>
+</div> 
 
 <!-- 챗봇 모달 -->
 <div id="chocolat-content-1" class="chocolat-wrapper">
