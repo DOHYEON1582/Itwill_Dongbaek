@@ -198,25 +198,30 @@ function scrollFunction() {
   }
 }
 
-
-//문의하기 버튼 클릭 시 폼 제출 및 페이지 리로드 함수
-function submitFormAndReload() {
-    // 폼 요소 참조
+//문의하기 버튼 클릭 시 폼 제출 및 모달 닫기 함수
+function submitFormAndCloseModal() {
     var form = document.getElementById('questionForm');
-
-    // 폼 제출
-    form.submit();
-
-    // 모달 닫기 및 폼 초기화
-    closeModal();
+    $.ajax({
+        type: "POST",
+        url: "/market/productMain",
+        data: $(form).serialize(),
+        success: function(data) {
+            closeModal(); // 모달 닫기
+            location.reload(); // 페이지 리로드
+        },
+        error: function(xhr, status, error) {
+            var errorMessage = xhr.status + ': ' + xhr.statusText;
+            alert('에러가 발생했습니다.\n' + errorMessage);
+        }
+    });
 }
 
-//모달 열기 함수
+// 모달 열기 함수
 function openModal() {
     document.getElementById('myModal').style.display = 'block';
 }
 
-//모달 닫기 함수
+// 모달 닫기 함수
 function closeModal() {
     document.getElementById('myModal').style.display = 'none';
     clearForm(); // 폼 요소 초기화 함수 호출
@@ -235,40 +240,38 @@ window.onclick = function(event) {
         closeModal(); // 모달 닫기 함수 호출
     }
 }
-
-$(document).ready(function(){
-	$("#writeQuestion").click(function(){
-		alert("문의를 작성합니다.");
+//문의하기 버튼 클릭 이벤트 핸들러
+$(document).ready(function() {
+    $("#writeQuestion").click(function() {
+        alert("문의를 작성합니다.");
         var currentDate = new Date();
         var formattedDate = currentDate.toISOString();
-		var question = {
-			"title" : $("#title").val(),
-			"q_type" : $("#q_type").val(),
-			"user_id" : $("#user_id").val(),
-			"content" : $("#content").val(),
-			"product_code" : $("#product_code").val(),
-			"regdate" : formattedDate
-		};
-	$.ajax({
-		type : "POST",
-		url : "/productMain",
-		data : JSON.stringify(question),
-		contentType : "application/json; charset=UTF-8",
-		success : function(data){
-			$("#title").val("");
-			$("#q_type").val("");
-			$("#user_id").val("");
-			$("#content").val("");
-			$("#product_code").val("");
-			$("#regdate").val("");
-		},
-		error : function(xhr, status, error){
-			var errorMessage = xhr.status + ': ' + xhr.statusText;
-			alert('에러가 발생했습니다.\n' + errorMessage);
-		}
-		});
-
-	});
+        var question = {
+            "title": $("#title").val(),
+            "q_type": $("#q_type").val(),
+            "user_id": $("#user_id").val(),
+            "user_name": $("#user_name").val(),
+            "content": $("#content").val(),
+            "product_code": $("#product_code").val(),
+            "regdate": formattedDate
+        };
+        $.ajax({
+            type: "POST",
+            url: "/market/productMain",
+            data: JSON.stringify(question),
+            contentType: "application/json; charset=UTF-8",
+            success: function(data) {
+                closeModal(); // 모달 닫기
+                location.reload(); // 페이지 리로드
+            },
+            error: function(xhr, status, error) {
+                var errorMessage = xhr.status + ': ' + xhr.statusText;
+                alert('에러가 발생했습니다.\n' + errorMessage);
+            }
+        });
+      
+    });
+    
 });
 </script>
 </head>
@@ -322,8 +325,6 @@ $(document).ready(function(){
 
 <div class="container" style="text-align: center; height: 700px;">
     <h1 class="page-header" id="qna1">상품 Q&A</h1>
-    cri : ${cri }
-    pageVO : ${pageVO }
 	 <table class="table table-bordered">
     	<tbody>
     		<tr>
@@ -373,12 +374,15 @@ $(document).ready(function(){
             <span class="close" onclick="closeModal()">&times;</span>
             <!-- 문의할 수 있는 양식 등을 추가합니다. -->
             <h2>문의하기</h2>
-            <form action="" method="post" id="questionForm">
+            <div method="post" id="questionForm">
             <input type="hidden" id="product_code" name="product_code" value="${product.product_code }">
+            <input type="hidden" id="user_id" name="user_id" value="${sessionScope.userVO.user_id }">
+            <input type="hidden" id="user_name" name="user_name" value="${sessionScope.userVO.user_name }">
 				<div class="box-body">
 					<div class="form-group" style="margin-bottom: 20px;">
 						<label for="exampleInputPassword1">문의 유형</label> 
 							<select class="form-control" id="q_type" name="q_type">
+								<option value="">문의 유형을 선택하세요</option>
 								<option value="1">배송 문의</option>
 								<option value="2">상품 문의</option>
 							</select>
@@ -395,10 +399,9 @@ $(document).ready(function(){
 				<div class="box-footer">
 					<button type="submit" class="btn btn-primary" id="writeQuestion">글 쓰기</button>
 				</div>
-			</form>
+			</div>
         </div>
     </div>
-</div>
 
 
 

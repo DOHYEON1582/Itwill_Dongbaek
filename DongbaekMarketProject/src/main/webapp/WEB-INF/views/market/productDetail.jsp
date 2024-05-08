@@ -52,6 +52,7 @@
 			</c:forEach>
 		</tr>
 	</table>
+	
 	<fieldset>
 		<legend>답글</legend>
 		<table>
@@ -89,6 +90,10 @@
 	
 	<script type="text/javascript">
 		$(document).ready(function(){
+			var answerRows = $("table#answerTable tr").length;
+	        if (answerRows === 1) {
+	            $("fieldset").hide(); // 답글이 없는 경우 필드셋 숨기기
+	        }
 			$("#answerForm").submit(function(event){
 				event.preventDefault(); // 기본 이벤트 방지
 				

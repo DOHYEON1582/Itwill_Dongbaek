@@ -3,22 +3,34 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link href="/resources/css/projectCSS.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
-<h1> login.jsp </h1>
 
-	<form action="" method="post">
-		아이디 <input type="text" id="user_id" name="user_id"> <br>
-		비밀번호 <input type="password" id="user_pw" name="user_pw"> <br>
-		전화번호 <input type="text" id="phone" name="phone"> <br>
-		이름 : <input type="text" id="user_name" name="user_name"> <br>
-		주소 : <input type="text" id="addr1" name="addr1"> <br>
-		상세주소 : <input type="text" id="addr2" name="addr2"> <br>
+	<div id="container">
+		<div id="loginBox">
+			<img id="mainImg" src="/resources/images/logo1.png">
+			<div>
+				<form action="" method="post">
+					<input class="loginInput" type="text"  name="user_id" id="user_id" placeholder="아이디">
+					<input class="loginInput" type="password"  name="user_pw" id="user_pw" placeholder="비밀번호"><br>
+					<input class="loginInput" type="text"  name="phone" id="phone" placeholder="휴대폰 번호">
+					<input class="loginInput" type="text"  name="user_name" id="user_name" placeholder="성명">
+					<input class="loginInput" type="text"  name="addr1" id="addr1" placeholder="주소">
+					<input class="loginInput" type="text"  name="addr2" id="addr2" placeholder="상세 주소">
+					<input  id="loginBtn" type="submit" value="가입"/>
+				</form>
+			</div>
+		</div>
 		
-		<input type="submit" value="회원가입">
-	</form>
-	
+		<div id="loginBox2">
+			계정이 있으신가요? <a href="/member/login">로그인</a>
+		</div>
+	</div>
+
 </body>
 </html>
