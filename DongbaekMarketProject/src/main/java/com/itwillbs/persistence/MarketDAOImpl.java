@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.itwillbs.domain.AnswerVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MarketVO;
 import com.itwillbs.domain.ProductVO;
@@ -106,9 +107,29 @@ public class MarketDAOImpl implements MarketDAO{
 	}
 
 	@Override
-	public QuestionVO questionDetail(int q_code) throws Exception {
-		return sqlSession.selectOne(NAMESPACE + ".questionDetail", q_code);
+	public List<QuestionVO> questionDetail(int q_code) throws Exception {
+		return sqlSession.selectList(NAMESPACE + ".questionDetail", q_code);
 	}
+
+	@Override
+	public void qAnswer(AnswerVO avo) throws Exception {
+		logger.debug(" qAnswer(AnswerVO avo) 호출 ");
+		sqlSession.insert(NAMESPACE + ".qAnswer", avo);
+	}
+
+	@Override
+	public List<AnswerVO> selectAnswer(int q_code) throws Exception {
+		logger.debug(" selectAnswer(int q_code) 호출 ");
+		return sqlSession.selectList(NAMESPACE + ".selectAnswer", q_code);
+	}
+
+	@Override
+	public int checkDuplicateAnswer(int q_code) throws Exception {
+		logger.debug(" checkDuplicateAnswer(int q_code) 호출");
+		logger.debug(" q_code : " + q_code);
+		return sqlSession.selectOne(NAMESPACE + ".checkDuplicateAnswer", q_code);
+	}
+	
 
 	
 	

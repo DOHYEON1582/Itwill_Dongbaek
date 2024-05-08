@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
+import com.itwillbs.domain.AnswerVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MarketVO;
 import com.itwillbs.domain.PageVO;
@@ -82,19 +84,17 @@ public class MarketController {
 
 	// 상품 메인페이지
 	@RequestMapping(value = "/productMain", method = RequestMethod.GET)
-	public void productMain(@RequestParam("product_code") int product_code, Model model, HttpSession session, QuestionVO qvo) throws Exception{
+	public void productMain(@RequestParam("product_code") int product_code, Model model, HttpSession session) throws Exception{
 		logger.debug(" productMain() 호출 ");
-		UserVO userVO = (UserVO) session.getAttribute("userVO");
-		String user_id = userVO.getUser_id();
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("product_code", product_code);
 		ProductVO product = mService.eachProduct(product_code);
 		model.addAttribute("product", product);
 		List<QuestionVO> question = mService.newQuestion(product_code);
 		List<ReviewVO> review = mService.productReview(product_code);
+		
 		model.addAttribute("question", question);
 		model.addAttribute("review", review);
-
 	}
 	
 	@RequestMapping(value = "/productMain", method = RequestMethod.POST, consumes = "application/json")
@@ -104,6 +104,44 @@ public class MarketController {
 		mService.writeQuestion(question);
 	}
 	
+	// 제품 상세보기
+	@RequestMapping(value = "/productDetail", method = RequestMethod.GET)
+	public void productDetailGET(@RequestParam("q_code") int q_code, Model model) throws Exception {
+		logger.debug(" productDetailGET() 제품 상세보기 실행 ");
+		logger.debug("q_code : " + q_code);
+		
+		List<QuestionVO> detailList = mService.questionDetail(q_code);
+		List<AnswerVO> answerList = mService.selectAnswer(q_code);
+		logger.debug("list.size : " + detailList.size());
+		
+		model.addAttribute("detailList", detailList);
+		model.addAttribute("answerList", answerList);
+	}
+	@PostMapping(value = "/productDetail")
+	public ResponseEntity<String> qAnswer(@RequestBody AnswerVO avo) throws Exception {
+		logger.debug(" qAnswer() 실행 ");
+        
+		try {
+			mService.qAnswer(avo);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest()
+					.contentType(MediaType.valueOf("text/plain; charset=UTF-8"))
+					.body("실패");
+		}
+		return ResponseEntity.ok()
+				.contentType(MediaType.valueOf("text/plain; charset=UTF-8"))
+				.body("성공");
+	}
+	@PostMapping("/checkDuplicateAnswer")
+	public ResponseEntity<String> checkDuplicateAnswer(@RequestParam("q_code") int q_code) throws Exception {
+	    logger.debug(" checkDuplicateAnswer() 실행 ");
+	    boolean isDuplicate = mService.isDuplicateAnswer(q_code);
+	    if (isDuplicate) {
+	        return ResponseEntity.ok("true");
+	    } else {
+	        return ResponseEntity.ok("false");
+	    }
+	}
 	
 	@RequestMapping(value = "/questionMain", method = RequestMethod.GET)
 	public void questionMain(@RequestParam("product_code") int product_code, Criteria cri, Model model) throws Exception {
@@ -147,12 +185,12 @@ public class MarketController {
 	    return "redirect:/"; // 기본 페이지로 리다이렉트
 	}
 
-	@RequestMapping(value = "/questionDetail", method = RequestMethod.GET)
-	public String questionDetail(Model model, @RequestParam("q_code") int q_code) throws Exception{
-		logger.debug("questionDetil 호출 ");
-		QuestionVO detail = mService.questionDetail(q_code);
-		model.addAttribute("detail", detail);
-		logger.debug("detail >>>>>>>>>>>>" + detail);
-		return "/market/questionDetail";
-	}
+//	@RequestMapping(value = "/questionDetail", method = RequestMethod.GET)
+//	public String questionDetail(Model model, @RequestParam("q_code") int q_code) throws Exception{
+//		logger.debug("questionDetil 호출 ");
+//		QuestionVO detail = mService.questionDetail(q_code);
+//		model.addAttribute("detail", detail);
+//		logger.debug("detail >>>>>>>>>>>>" + detail);
+//		return "/market/questionDetail";
+//	}
 }

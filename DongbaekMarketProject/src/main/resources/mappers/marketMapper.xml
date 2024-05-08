@@ -8,7 +8,8 @@
 	<!-- 시장 조회 -->
 	<select id="marketList" resultType="MarketVO">
 		select * from market
-		where market_code = 1
+		where
+		market_code = 1
 	</select>
 
 	<!-- marekt_code에 따른 시장 조회 -->
@@ -23,7 +24,6 @@
 		select * from product
 	</select>
 
-
 	<!-- 전체 가게 조회 -->
 	<select id="storeList" resultType="StoreVO">
 		select * from store
@@ -35,7 +35,8 @@
 	<!-- 각 가게 정보 조회 -->
 	<select id="selectStore" resultType="StoreVO">
 		select * from store
-		where store_code = #{store_code}
+		where
+		store_code = #{store_code}
 	</select>
 
 	<!-- 가게별 상품 조회 -->
@@ -59,19 +60,22 @@
 	<!-- 가게 조회수 증가 -->
 	<update id="updateViewcnt">
 		update store set viewcnt = viewcnt + 1
-		where store_code = #{store_code}
+		where
+		store_code = #{store_code}
 	</update>
 
 	<!-- 각 상품 불러오기 -->
 	<select id="eachProduct" resultType="ProductVO">
 		select * from product
-		where product_code = #{product_code}
+		where
+		product_code = #{product_code}
 	</select>
 
 	<!-- 상품별 리뷰 불러오기 -->
 	<select id="productReview" resultType="ReviewVO">
 		select * from review
-		where product_code = #{prouct_code}
+		where
+		product_code = #{prouct_code}
 	</select>
 
 	<!-- 문의 작성하기 -->
@@ -93,7 +97,8 @@
 
 	<!-- 전체 글 계산 -->
 	<select id="totalCount" resultType="int">
-		select count(q_code) from question;
+		select count(q_code) from
+		question;
 	</select>
 
 	<!-- 문의 글 목록 페이징처리 -->
@@ -105,24 +110,36 @@
   		limit #{page},10
   	]]>
 
-  </select>
-  
-  <!-- 최근 문의글 10개 불러오기  -->
-  <select id="newQuestion" resultType="QuestionVO">
-  	select * from question
-  	where product_code = #{product_code}
-  	order by regdate desc
-  	limit 0,10;
-  </select>
-  
-  <!-- 문의 상세정보 불러오기 -->
-  <select id="questionDetail" resultType="QuestionVO">
-  	select * from question
-  	where q_code = #{q_code}
-  </select>
-  
-  
-  
-  
-  
-  </mapper>
+	</select>
+
+	<!-- 최근 문의글 10개 불러오기 -->
+	<select id="newQuestion" resultType="QuestionVO">
+		select * from question
+		where product_code = #{product_code}
+		order by regdate desc
+		limit 0,10;
+	</select>
+
+	<!-- 문의 상세정보 불러오기 -->
+	<select id="questionDetail" resultType="QuestionVO">
+		select * from question
+		where q_code = #{q_code}
+	</select>
+	<!-- 문의 답글 달기 -->
+	<insert id="qAnswer">
+		insert into answer
+		values(#{answer_code}, #{q_code}, #{answer_content}, #{writer}, now())
+	</insert>
+	<!-- 문의 답글 조회 -->
+	<select id="selectAnswer" resultType="AnswerVO">
+		select * from answer where q_code = #{q_code}
+	</select>
+	<!-- 문의 답글 중복체크 -->
+	<select id="checkDuplicateAnswer" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM answer WHERE q_code = #{q_code}
+	</select>
+
+
+
+
+</mapper>

@@ -314,28 +314,34 @@ $(document).ready(function() {
         });
       
     });
-    $("td").click(function() {
-        openQuestionModal($(this).data('q_code'));
-    });
-
-    function openQuestionModal(q_code) {
-        console.log("되나");
-        $.ajax({
-            type: "GET",
-            url: "/market/questionDetail?q_code=" + q_code,
-            success: function(data) {
-            	console.log("되나");
-                $("#questionDetailModal .modal-content").html(data); // 모달 내용을 가져와서 채웁니다
-                $("#questionDetailModal").modal("show"); // 모달을 엽니다
-            },
-            error: function(xhr, status, error) {
-            	console.log("error");
-            	console.error("Error fetching question details:", xhr.statusText);
-            }
-        });
-    }
+    
 });
 </script>
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+    var qCodes = document.querySelectorAll('td[data-q-code]');
+    qCodes.forEach(function(td) {
+        td.addEventListener('click', function() {
+            var qCode = String(td.dataset.qCode); // 제품 코드를 문자열로 변환
+            var popupUrl = '/market/productDetail?q_code=' + encodeURIComponent(qCode);
+            
+            // 팝업창을 가운데에 띄우기 위해 추가한 코드
+            var width = 600;
+            var height = 600;
+            var left = (window.innerWidth - width) / 2;
+            var top = (window.innerHeight - height) / 2;
+            var popupWindow = window.open(popupUrl, '_blank', 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top);
+            
+            // 팝업창이 차단되었을 때 대비하여 체크
+            if (window.focus) {
+                popupWindow.focus();
+            }
+        });
+    });
+});
+</script>
+
 </head>
 
 <body>
@@ -440,19 +446,20 @@ $(document).ready(function() {
 
 <div class="container" style="text-align: center; height: 700px;">
     <h1 class="page-header" id="qna1">상품 Q&A(최신 문의10개 출력) </h1>
+    ${answer }
 	 <table class="table table-bordered">
     	<tbody>
     		<tr>
 				<th>문의유형</th>
 				<th>작성자</th>
-				<th>문의제목</th>
+				<th>문의제목(클릭 시 상세보기)</th>
 				<th>작성일</th>
     		</tr>
 		<c:forEach var="question" items="${question }">
 			<tr>
 				<td>${question.q_type }</td>
 				<td>${question.user_id }</td>
-				<td onclick="openQuestionModal(${question.q_code}); return false;">${question.title}</td>
+				<td data-q-code = "${question.q_code}">${question.title}</td>
 				<td><fmt:formatDate value="${question.regdate }"/></td>
 			</tr>
 		</c:forEach>    		

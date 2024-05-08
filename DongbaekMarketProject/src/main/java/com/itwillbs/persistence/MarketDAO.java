@@ -3,6 +3,7 @@ package com.itwillbs.persistence;
 import java.util.List;
 import java.util.Map;
 
+import com.itwillbs.domain.AnswerVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MarketVO;
 import com.itwillbs.domain.ProductVO;
@@ -51,6 +52,12 @@ public interface MarketDAO {
 	public List<QuestionVO> newQuestion(int product_code) throws Exception;
 	
 	// 문의 상세정보 
-	public QuestionVO questionDetail(int q_code) throws Exception;
+	public List<QuestionVO> questionDetail(int q_code) throws Exception;
+	// 문의 답글 달기
+	public void qAnswer(AnswerVO avo) throws Exception;
+	// 문의 답글 조회
+	public List<AnswerVO> selectAnswer(int q_code) throws Exception;
+	// 문의 답글 중복체크
+	public int checkDuplicateAnswer(int q_code) throws Exception;
 	
 }
