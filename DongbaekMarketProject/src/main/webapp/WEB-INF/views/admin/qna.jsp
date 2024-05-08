@@ -459,7 +459,7 @@
 	            // API 요청의 헤더를 설정
 	            headers: {
 	            	'Content-Type': 'application/json',
-	                'Authorization': `API  키`
+	                'Authorization': ``
 	            },
 	            body: JSON.stringify({
 	                model: "gpt-3.5-turbo", 
