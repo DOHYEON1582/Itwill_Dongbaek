@@ -449,7 +449,7 @@
 
 // 챗봇 함수 모음
 	    const userInput = $('#chatBot-message');
-	    const apiKey = 'sk-proj-e7YSQUgIZKE2B2P7vuERT3BlbkFJyckkhRKXgLe9bDIE7YFN';
+	    
 	    const apiEndpoint = 'https://api.openai.com/v1/chat/completions'
 	    // ChatGPT API 요청
 	    async function fetchAIResponse(prompt) {

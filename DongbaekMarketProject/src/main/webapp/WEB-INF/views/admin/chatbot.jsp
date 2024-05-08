@@ -69,7 +69,7 @@
 	    // 전송 버튼
 	    const sendButton = document.querySelector('#user-input button');
 	    // 발급받은 OpenAI API 키를 변수로 저장
-	    const apiKey = 'sk-proj-e7YSQUgIZKE2B2P7vuERT3BlbkFJyckkhRKXgLe9bDIE7YFN';
+	  
 	    // OpenAI API 엔드포인트 주소를 변수로 저장
 	    const apiEndpoint = 'https://api.openai.com/v1/chat/completions'
 	    function addMessage(sender, message) {
@@ -89,7 +89,7 @@
 	            // API 요청의 헤더를 설정
 	            headers: {
 	            	'Content-Type': 'application/json',
-	                'Authorization': `Bearer sk-proj-e7YSQUgIZKE2B2P7vuERT3BlbkFJyckkhRKXgLe9bDIE7YFN`
+	                'Authorization': ``
 	            },
 	            body: JSON.stringify({
 	                model: "gpt-3.5-turbo",  // 사용할 AI 모델
