@@ -21,8 +21,16 @@
     </resultMap>
 
     <!-- 모든 리뷰 조회 -->
-    <select id="getAllReviews" resultMap="review">
-        SELECT * FROM review
+	<select id="getAllReviews" resultMap="review">
+	    SELECT * FROM review
+	    ORDER BY regdate DESC
+	    LIMIT #{startRecord}, #{pageSize}
+	</select>
+
+
+	<!-- 리뷰 총 개수 조회 -->
+    <select id="countReviews" resultType="int">
+        SELECT COUNT(*) FROM review
     </select>
 
     <!-- 리뷰 코드로 리뷰 조회 -->
@@ -36,8 +44,10 @@
         VALUES (#{product_code}, #{regdate}, #{title}, #{content}, #{star}, #{user_id}, #{img1}, #{img2}, #{img3}, #{order_code}, #{re_lev}, #{re_ref}, #{re_seq})
     </insert>
 
-    <!-- 답글 순서 조정 -->
-    <update id="updateReplyOrder" parameterType="int">
-        UPDATE review SET re_seq = re_seq + 1 WHERE re_ref = #{re_ref} AND re_seq > #{re_seq}
-    </update>
+	<!-- 리뷰 답글 추가 -->
+    <insert id="addReply" parameterType="com.itwillbs.domain.ReviewVO">
+        INSERT INTO review (review_code,product_code, regdate, title, content, star, user_id, img1, img2, img3, order_code, re_lev, re_ref, re_seq)
+        VALUES (#{review_code}+1000000,#{product_code}, #{regdate}, #{title}, #{content}, #{star}, #{user_id}, #{img1}, #{img2}, #{img3}, #{order_code}, #{re_lev}, #{re_ref}, #{re_seq})
+    </insert>
+ 	
 </mapper>

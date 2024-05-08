@@ -25,6 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,6 +36,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.itwillbs.domain.ProductCri;
 import com.itwillbs.domain.ProductPagingVO;
 import com.itwillbs.domain.ProductVO;
+import com.itwillbs.domain.ReviewCri;
+import com.itwillbs.domain.ReviewPagingVO;
+import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.service.ProductService;
 import com.itwillbs.service.ReviewReplyService;
 
@@ -252,6 +256,17 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 		logger.debug(" ordercancel() 실행 ");
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	// 판매자 배송페이지
 	//	http://localhost:8088/seller/dilivery
 	@RequestMapping(value = "/dilivery",method = RequestMethod.GET)
@@ -259,14 +274,116 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 		logger.debug(" dilivery() 실행 ");
 	}
 
-	// 판매자 리뷰페이지
-		//	http://localhost:8088/seller/review
-		@RequestMapping(value = "/review",method = RequestMethod.GET)
-		public String getAllReviews(Model model) throws Exception{
-	        model.addAttribute("reviews", rService.getAllReviews());
-	        return "/seller/review"; // 리뷰 목록 페이지로 이동
-	    }
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// 판매자 리뷰페이지
+	// http://localhost:8088/seller/review
+	@RequestMapping(value = "/review", method = RequestMethod.GET)
+	public String getAllReviews(@ModelAttribute("cri") ReviewCri cri, Model model) throws Exception {
+	    // 페이지 번호와 페이지당 표시할 리뷰 수를 설정한 ReviewCri 객체를 이용하여 페이징된 리뷰 목록을 가져옴
+	    List<ReviewVO> reviewList = rService.getAllReviews(cri);
+
+	    // 페이징 처리된 리뷰 목록을 모델에 추가
+	    model.addAttribute("reviews", reviewList);
+
+	    // 페이징 정보도 함께 모델에 추가하여 화면에 전달
+	    ReviewPagingVO pagingVO = new ReviewPagingVO();
+	    pagingVO.setCri(cri);
+	    pagingVO.setTotalCount(rService.countReviews()); // 리뷰 총 개수를 가져와 설정
+	    model.addAttribute("pagingVO", pagingVO);
+
+	    return "/seller/review"; // 리뷰 목록 페이지로 이동
+	}
+
+
+	// 판매자 리뷰페이지 상세페이지
+	// http://localhost:8088/seller/reviewDetail
+	@RequestMapping(value = "/reviewDetail", method = RequestMethod.GET)
+	public String getReviewDetail(ReviewCri cri,@RequestParam("review_code") int review_code, Model model, HttpSession session) throws Exception {
+		logger.debug(" /seller/reviewDetail 호출 ");
+		
+		// 전달 정보 저장
+		logger.debug(" id : "+review_code);
+	    // 특정 리뷰의 상세 정보를 가져옴
+	    ReviewVO review = rService.getReviewByCode(review_code);
+	    model.addAttribute("review", review);
+	    
+	    model.addAttribute("cri", cri);
+
+	    return "seller/reviewDetail"; // 리뷰 상세 페이지로 이동
+	}
+	
+	// 리뷰에 대한 답글 작성 페이지로 이동
+	// http://localhost:8088/seller/reviewReply
+    @RequestMapping(value = "/reviewReply", method = RequestMethod.GET)
+    public String reviewReplyPage(int review_code, Model model) throws Exception {
+        // 특정 리뷰에 대한 답글 작성 페이지로 이동
+        model.addAttribute("review", rService.getReviewByCode(review_code));
+        return "seller/reviewReply";
+    }
+
+
+    // 리뷰에 대한 답글 작성 처리
+    @ResponseBody
+    @RequestMapping(value = "/reviewReplySubmit", method = RequestMethod.POST)
+    public String reviewReplySubmit(ReviewVO rvo, HttpSession session) throws Exception {
+    	logger.debug("asdass13213213213231");
+        try {
+            // 부모 리뷰의 코드를 세션에서 가져와서 설정
+            //Integer parentReviewCode = (Integer) session.getAttribute("parentReviewCode");
+            Integer parentReviewCode = rvo.getReview_code();
+            
+            // 부모 리뷰의 코드가 유효한지 확인
+            if (parentReviewCode != null && parentReviewCode > 0) {
+                // 부모 리뷰의 코드를 설정
+                rvo.setReview_code(parentReviewCode);
+
+                // 답글 작성 서비스 호출
+                rService.addReply(rvo);
+                logger.debug("답글 작성 성공");
+
+                // 리뷰 상세 페이지로 리다이렉트
+//                return "redirect:/seller/reviewDetail?review_code=" + parentReviewCode;
+                return "/seller/reviewDetail?review_code=" + parentReviewCode;
+            } else { 
+                logger.debug("답글 작성 실패: 부모 리뷰 코드가 유효하지 않음");
+              
+               return "/seller/review";
+//               return "redirect:/seller/review";
+            }
+        } catch (Exception e) {
+            logger.error("답글 작성 실패: " + e.getMessage());
+            return "/seller/review";
+//            return "redirect:/seller/review";
+        }
+    }
+
+
+
+		
+		
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 	// 판매자 매출페이지
 	//	http://localhost:8088/seller/sales
 	@RequestMapping(value = "/sales",method = RequestMethod.GET)

@@ -385,75 +385,67 @@ body {
 	
 	
 	
-	
-	<%-- 리뷰 목록을 표시하는 부분 --%>
-<div style="text-align: center; margin: 0 auto; width: 80%;">
-    <div style="overflow-x: auto;">
-        <table style="width: 100%; border-collapse: collapse; border: 1px solid #ccc;">
 
-            <thead>
-                <tr style="background-color: #f2f2f2;">
-                    <th style="padding: 10px; border: 1px solid #000;">리뷰 코드</th>
-                    <th style="padding: 10px; border: 1px solid #000;">상품 코드</th>
-                    <th style="padding: 10px; border: 1px solid #000;">작성일</th>
-                    <th style="padding: 10px; border: 1px solid #000;">제목</th>                
-                    <th style="padding: 10px; border: 1px solid #000;">별점</th>
-                    <th style="padding: 10px; border: 1px solid #000;">사용자 아이디</th>
-                    <!-- 다른 열 제목들 -->
-                </tr>
-            </thead>
-            <tbody>
-                <!-- 리뷰 목록 데이터가 담긴 reviews를 반복하여 테이블에 출력합니다 -->
-                <c:forEach var="review" items="${reviews}">
-                    <tr>
-                        <td style="padding: 10px; border: 1px solid #000;">${review.review_code}</td>
-                        <td style="padding: 10px; border: 1px solid #000;">${review.product_code}</td>
-                        <td style="padding: 10px; border: 1px solid #000;">
-                            <script>
-                                var regDate = new Date("${review.regdate}");
-                                document.write(regDate.toLocaleDateString());
-                            </script>
-                        </td>
-                        <td style="padding: 10px; border: 1px solid #000;">
-                            <a href="/seller/reviewDetail?review_code=${review.review_code}&page=${pagingVO.cri.page}&pageSize=${pagingVO.cri.pageSize}" style=" color: #2591fc;">${review.title}</a>
-                        </td>
-                        <td style="padding: 10px; border: 1px solid #000;">
-                            <%-- 별점을 별 개수로 표시하는 부분 --%>
-                            <c:forEach begin="1" end="${review.star}">
-                                <span style="display: inline-block; margin-right: 5px; color: gold;">&#9733;</span> <%-- 별 모양을 표시하는 유니코드 --%>
-                            </c:forEach>
-                        </td>
-                        <td style="padding: 10px; border: 1px solid #000;">${review.user_id}</td>
-                        <!-- 다른 열 데이터들 -->
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
+<div style="display: flex; justify-content: center; align-items: center; margin: 0;">
+    <div class="container" style="text-align: center;">
+        <h2 style="font-family: Arial, sans-serif; color: #333333;">리뷰 답글 작성</h2>
+        <form id="replyForm" action="/seller/reviewReplySubmit" method="post" style="margin-top: 20px;">
+<!--             <input type="hidden" name="review_code" value="100"> -->
+            <input type="hidden" name="review_code" value="${param.review_code}">
+            <input type="hidden" name="user_id" value="itwill">
+            <input type="hidden" name="regdate" value="${review.regdate }">
+<%--             <input type="hidden" name="user_id" value="${user_id}"> --%>
+            <input type="text" id="title" name="title" placeholder="리뷰 제목" style="font-family: Arial, sans-serif; padding: 5px; border: 1px solid #CCCCCC; margin-bottom: 10px;">
+            <br>
+            <textarea id="replyContent" name="content" rows="5" cols="50" placeholder="리뷰 답글을 입력하세요" style="font-family: Arial, sans-serif; padding: 5px; border: 1px solid #CCCCCC; margin-bottom: 10px;"></textarea>
+            <br>
+            <input type="button" id="submitBtn" value="답글 작성" style="font-family: Arial, sans-serif; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 3px; cursor: pointer;">
+        </form>
     </div>
+</div>
 
-<!-- 페이지 링크 추가 -->
-<div class="pageCri">
-    <ul style="margin-top: 20px; list-style: none; display: flex; justify-content: center;">
-        <c:if test="${pagingVO.prev}">
-            <li style="margin: 0 5px;">
-                <a href="/seller/review?page=${pagingVO.cri.page - 1}" style="color: #000;">이전</a>
-            </li>
-        </c:if>
-        
-        <c:forEach var="idx" begin="${pagingVO.startPage}" end="${pagingVO.endPage}" step="1">
-            <li style="margin: 0 5px;">
-                <a href="/seller/review?page=${idx }" style="${pagingVO.cri.page == idx ? 'color: #000; background-color: #c9c9c9; border-color: #007bff;' : 'color: #000;'}">${idx }</a>
-            </li>
-        </c:forEach>
-        
-        <c:if test="${pagingVO.next}">
-            <li style="margin: 0 5px;">
-                <a href="/seller/review?page=${pagingVO.cri.page + 1}" style="color: #000;">다음</a>
-            </li>
-        </c:if>
-    </ul>
-</div>
-</div>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#submitBtn').click(function() {
+            var title = $('#title').val();
+            var replyContent = $('#replyContent').val();
+            
+            // 필수 입력 필드 확인
+            if (!title || !replyContent) {
+                alert('제목과 내용을 입력하세요.');
+                return;
+            }
+
+            // AJAX를 이용하여 서버로 폼 데이터 전송
+            $.ajax({
+                url: "/seller/reviewReplySubmit",
+                type: "POST",
+                data: $('#replyForm').serialize(), // 폼 데이터 직렬화하여 전송
+                success: function(data) {
+                    // 서버에서의 응답 처리 (예: 리다이렉트 등)
+                    console.log(data);
+                    alert('답글 작성이 완료되었습니다.');
+                    window.location.href = data; // 리다이렉트 URL 사용 예시
+                    
+                },
+                error: function(xhr, status, error) {
+                    // 오류 처리
+                    console.error(error);
+                    alert('답글 작성 중 오류가 발생했습니다.');
+                }
+            });
+        });
+    });
+</script>
+
+
+
+
+
+
+	
+
 
 
 

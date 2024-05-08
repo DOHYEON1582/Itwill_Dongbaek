@@ -384,76 +384,54 @@ body {
 	
 	
 	
-	
-	
-	<%-- 리뷰 목록을 표시하는 부분 --%>
-<div style="text-align: center; margin: 0 auto; width: 80%;">
-    <div style="overflow-x: auto;">
-        <table style="width: 100%; border-collapse: collapse; border: 1px solid #ccc;">
-
-            <thead>
-                <tr style="background-color: #f2f2f2;">
-                    <th style="padding: 10px; border: 1px solid #000;">리뷰 코드</th>
-                    <th style="padding: 10px; border: 1px solid #000;">상품 코드</th>
-                    <th style="padding: 10px; border: 1px solid #000;">작성일</th>
-                    <th style="padding: 10px; border: 1px solid #000;">제목</th>                
-                    <th style="padding: 10px; border: 1px solid #000;">별점</th>
-                    <th style="padding: 10px; border: 1px solid #000;">사용자 아이디</th>
-                    <!-- 다른 열 제목들 -->
-                </tr>
-            </thead>
-            <tbody>
-                <!-- 리뷰 목록 데이터가 담긴 reviews를 반복하여 테이블에 출력합니다 -->
-                <c:forEach var="review" items="${reviews}">
-                    <tr>
-                        <td style="padding: 10px; border: 1px solid #000;">${review.review_code}</td>
-                        <td style="padding: 10px; border: 1px solid #000;">${review.product_code}</td>
-                        <td style="padding: 10px; border: 1px solid #000;">
-                            <script>
-                                var regDate = new Date("${review.regdate}");
-                                document.write(regDate.toLocaleDateString());
-                            </script>
-                        </td>
-                        <td style="padding: 10px; border: 1px solid #000;">
-                            <a href="/seller/reviewDetail?review_code=${review.review_code}&page=${pagingVO.cri.page}&pageSize=${pagingVO.cri.pageSize}" style=" color: #2591fc;">${review.title}</a>
-                        </td>
-                        <td style="padding: 10px; border: 1px solid #000;">
-                            <%-- 별점을 별 개수로 표시하는 부분 --%>
-                            <c:forEach begin="1" end="${review.star}">
-                                <span style="display: inline-block; margin-right: 5px; color: gold;">&#9733;</span> <%-- 별 모양을 표시하는 유니코드 --%>
-                            </c:forEach>
-                        </td>
-                        <td style="padding: 10px; border: 1px solid #000;">${review.user_id}</td>
-                        <!-- 다른 열 데이터들 -->
-                    </tr>
+<div style="margin: 20px; text-align: center;">
+    <h2>리뷰 상세 정보</h2>
+    <table style="width: 50%; margin: 0 auto;">
+        <tr>
+            <th style="padding: 10px; border: 1px solid #000;">리뷰 코드</th>
+            <td style="padding: 10px; border: 1px solid #000;">${review.review_code}</td>
+        </tr>
+        <tr>
+            <th style="padding: 10px; border: 1px solid #000;">상품 코드</th>
+            <td style="padding: 10px; border: 1px solid #000;">${review.product_code}</td>
+        </tr>
+        <tr>
+            <th style="padding: 10px; border: 1px solid #000;">작성일</th>
+            <td style="padding: 10px; border: 1px solid #000;">${review.regdate}</td>
+        </tr>
+        <tr>
+            <th style="padding: 10px; border: 1px solid #000;">제목</th>
+            <td style="padding: 10px; border: 1px solid #000;">${review.title}</td>
+        </tr>
+        <tr>
+            <th style="padding: 10px; border: 1px solid #000;">내용</th>
+            <td style="padding: 10px; border: 1px solid #000;">${review.content}</td>
+        </tr>
+        <tr>
+            <th style="padding: 10px; border: 1px solid #000;">별점</th>
+            <td style="padding: 10px; border: 1px solid #000;">
+                <c:forEach begin="1" end="${review.star}">
+                    <span style="display: inline-block; font-size: 20px; color: gold;">&#9733;</span>
                 </c:forEach>
-            </tbody>
-        </table>
-    </div>
+            </td>
+        </tr>
+        <tr>
+            <th style="padding: 10px; border: 1px solid #000;">사용자 아이디</th>
+            <td style="padding: 10px; border: 1px solid #000;">${review.user_id}</td>
+        </tr>
+        <tr>
+            <td colspan="2" style="padding: 10px;">
+                <button onclick="location.href='/seller/reviewReply?review_code=${review.review_code}'">답글 달기</button>
+            </td>
+        </tr>
+    </table>
+</div>
 
-<!-- 페이지 링크 추가 -->
-<div class="pageCri">
-    <ul style="margin-top: 20px; list-style: none; display: flex; justify-content: center;">
-        <c:if test="${pagingVO.prev}">
-            <li style="margin: 0 5px;">
-                <a href="/seller/review?page=${pagingVO.cri.page - 1}" style="color: #000;">이전</a>
-            </li>
-        </c:if>
-        
-        <c:forEach var="idx" begin="${pagingVO.startPage}" end="${pagingVO.endPage}" step="1">
-            <li style="margin: 0 5px;">
-                <a href="/seller/review?page=${idx }" style="${pagingVO.cri.page == idx ? 'color: #000; background-color: #c9c9c9; border-color: #007bff;' : 'color: #000;'}">${idx }</a>
-            </li>
-        </c:forEach>
-        
-        <c:if test="${pagingVO.next}">
-            <li style="margin: 0 5px;">
-                <a href="/seller/review?page=${pagingVO.cri.page + 1}" style="color: #000;">다음</a>
-            </li>
-        </c:if>
-    </ul>
-</div>
-</div>
+
+
+
+	
+
 
 
 

@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.itwillbs.domain.ReviewCri;
 import com.itwillbs.domain.ReviewVO;
 
 @Repository
@@ -20,11 +21,17 @@ public class ReviewReplyDAOImpl implements ReviewReplyDAO {
 	private static final Logger logger = LoggerFactory.getLogger(ReviewReplyDAOImpl.class);
 	private static final String NAMESPACE = "com.itwillbs.mapper.ReviewMapper";
 	@Override
-    public List<ReviewVO> getAllReviews() throws Exception{
+    public List<ReviewVO> getAllReviews(ReviewCri cri) throws Exception{
 		logger.debug(" getAllReviews() 실행 ");
-        return sqlSession.selectList(NAMESPACE + ".getAllReviews");
+        return sqlSession.selectList(NAMESPACE + ".getAllReviews", cri);
     }
 
+	@Override
+    public int countReviews() throws Exception {
+        logger.debug(" countReviews() 호출 ");
+        return sqlSession.selectOne(NAMESPACE + ".countReviews");
+    }
+	
     @Override
     public ReviewVO getReviewByCode(int review_code) throws Exception{
     	logger.debug(" getReviewByCode(int review_code) 실행 ");
@@ -38,13 +45,18 @@ public class ReviewReplyDAOImpl implements ReviewReplyDAO {
         return result;
     }
 
-
-	@Override
-	public void updateReplyOrder(int re_ref, int re_seq) throws Exception {
-		logger.debug(" updateReplyOrder(int re_ref, int re_seq) 실행 ");
-		// 답글 순서를 조정하는 SQL 쿼리 실행
-        sqlSession.update(NAMESPACE + ".updateReplyOrder", re_ref);
-	}
+    @Override
+    public void addReply(ReviewVO rvo) throws Exception{
+        // 기존 리뷰의 re_ref 값을 사용하여 그룹 번호 설정
+        rvo.setRe_ref(rvo.getReview_code());
+        // 기존 리뷰의 re_lev 값에 1을 더하여 계층 설정
+        rvo.setRe_lev(rvo.getRe_lev() + 1);
+        // 기존 리뷰의 re_seq 값에 1을 더하여 순서 설정
+        rvo.setRe_seq(rvo.getRe_seq() + 1);
+        
+        // 매퍼를 통해 리뷰 답글 추가
+        sqlSession.insert(NAMESPACE+".addReply", rvo);
+    }
 
 	
 	

@@ -10,7 +10,7 @@ public class ReviewVO {
 	private String title; //리뷰 제목
 	private String content; //리뷰 내용
 	private int star; //별점
-	private int user_id; //회원아이디
+	private String user_id; //회원아이디
 	private String img1; //이미지1
 	private String img2; //이미지2
 	private String img3; //이미지3
@@ -54,10 +54,10 @@ public class ReviewVO {
 	public void setStar(int star) {
 		this.star = star;
 	}
-	public int getUser_id() {
+	public String getUser_id() {
 		return user_id;
 	}
-	public void setUser_id(int user_id) {
+	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
 	public String getImg1() {

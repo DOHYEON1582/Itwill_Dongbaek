@@ -8,9 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import com.itwillbs.domain.ReviewCri;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.persistence.ReviewReplyDAO;
-import com.itwillbs.persistence.ReviewReplyDAOImpl;
 
 @Repository
 public class ReviewReplyServiceImpl implements ReviewReplyService {
@@ -21,11 +21,17 @@ public class ReviewReplyServiceImpl implements ReviewReplyService {
 	private static final Logger logger = LoggerFactory.getLogger(ReviewReplyServiceImpl.class);
 	
 	@Override
-	public List<ReviewVO> getAllReviews() throws Exception {
+	public List<ReviewVO> getAllReviews(ReviewCri cri) throws Exception {
 		logger.debug(" getAllReviews() 호출 ");
-		return rdao.getAllReviews();
+		return rdao.getAllReviews(cri);
 	}
 
+	@Override
+    public int countReviews() throws Exception {
+        logger.debug(" countReviews() 호출 ");
+        return rdao.countReviews();
+    }
+	
 	@Override
 	public ReviewVO getReviewByCode(int review_code) throws Exception {
 		logger.debug(" getReviewByCode(int review_code) 호출 ");
@@ -33,10 +39,13 @@ public class ReviewReplyServiceImpl implements ReviewReplyService {
 	}
 
 	@Override
-	public int addReplyToReview(ReviewVO rvo) throws Exception {
-		logger.debug(" addReplyToReview(ReviewVO rvo) 호출 ");
-		return rdao.insertReview(rvo);
+	public void addReply(ReviewVO rvo) throws Exception {
+		logger.debug(" addReply(ReviewVO reply) 호출 ");
+		rdao.addReply(rvo);
 	}
+
+	
+
 	
 	
 	

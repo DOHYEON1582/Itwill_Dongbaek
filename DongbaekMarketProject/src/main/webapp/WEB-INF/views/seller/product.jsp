@@ -422,11 +422,11 @@ body {
                                         </c:otherwise>
                                     </c:choose>
                                     <div style="margin-top: 10px;"> <!-- 상품 이름 아래에 여백 추가 -->
-                                        <p>${product.product_name}</p> <!-- 상품 이름에 상단 여백 추가 -->
-                                        <p>${product.price}</p>
+                                        <p style="color: #000">${product.product_name}</p> <!-- 상품 이름에 상단 여백 추가 -->
+                                        <p style="color: #000">${product.price}</p>
                                         <p>
-                                            <a href="/seller/productmodify?id=${product.product_code}">수정</a> |
-                                            <a href="#" onclick="deleteProduct(${product.product_code})">삭제</a>
+                                            <a href="/seller/productmodify?id=${product.product_code}" style="color: #000">수정</a> |
+                                            <a href="#" onclick="deleteProduct(${product.product_code})" style="color: #000">삭제</a>
                                         </p>
                                         <!-- 필요한 다른 정보를 여기에 추가할 수 있습니다 -->
                                     </div>
@@ -458,7 +458,7 @@ body {
         
         <c:forEach var="idx" begin="${pagingVO.startPage}" end="${pagingVO.endPage}" step="1">
             <li style="margin: 0 5px;">
-                <a href="/seller/product?page=${idx }" style="${pagingVO.cri.page == idx? 'color: #fff; background-color: #007bff; border-color: #007bff;' : 'color: #007bff;'}">${idx }</a>
+                <a href="/seller/product?page=${idx }" style="${pagingVO.cri.page == idx? 'color: #fff; background-color: #007bff; border-color: #007bff;' : 'color: #000;'}">${idx }</a>
             </li>
         </c:forEach>
         
