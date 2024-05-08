@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,9 +22,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
+import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MarketVO;
+import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.ProductVO;
+import com.itwillbs.domain.QuestionVO;
+import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
+import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.MarketService;
 
 @Controller
@@ -36,52 +43,113 @@ public class MarketController {
 
 	
 	// http://localhost:8088/market/marketMain
-	@RequestMapping(value = "/marketMain", method = RequestMethod.GET) 
-	public void marketMain(Model model) throws Exception {
+	@RequestMapping(value = "/marketMain", method = {RequestMethod.GET, RequestMethod.POST}) 
+	public void marketMain(@RequestParam(name = "orderBy", required = false, defaultValue = "popularity") String orderBy,
+			Model model,@RequestParam(defaultValue = "1") int market_code, HttpSession session, ProductVO pvo) throws Exception {
 	    logger.debug(" marketMain 호출 ");
-	        MarketVO marketList = mService.getMarketList();
-	        List<StoreVO> storeList = mService.getStoreList();
-	        List<ProductVO> productList = mService.getProductList();
-	        
+	    List<StoreVO> storeList = mService.getStoreList();
+	    List<ProductVO> productList = mService.getProductAll(pvo);
+	    model.addAttribute("storeList", storeList);
+	    model.addAttribute("productList", productList);
+    	if(market_code == 1) {
+    		MarketVO marketList = mService.getMarketList();
+ 	        model.addAttribute("marketList", marketList);
+    	} else if(market_code == 2) {
+    		MarketVO marketList = mService.getMarketListCode();
 	        model.addAttribute("marketList", marketList);
-	        model.addAttribute("storeList", storeList);
-	        model.addAttribute("productList", productList);
-	       logger.debug(" productList : " + productList.size());
-	    }
+    	}
+		session.setAttribute("viewUpdateStatus", 1);
+    }
 	
+	// http://localhost:8088/market/storeMain
+	// 가게 메인페이지
+	@RequestMapping(value = "/storeMain", method = RequestMethod.GET)
+	public void storeMain(@RequestParam(name = "orderBy", required = false, defaultValue = "popularity") String orderBy, 
+			@RequestParam("store_code") int store_code, Model model, HttpSession session) throws Exception{
+		logger.debug(" storeMain() 호출 ");
+		StoreVO store = mService.selectStore(store_code);
+		List<ProductVO> product = mService.productOnStore(orderBy, store_code);
+		model.addAttribute("store", store);
+		model.addAttribute("product", product);
+		int status = (Integer)session.getAttribute("viewUpdateStatus");
+		if(status == 1) {
+			// 글 조회수 1 증가
+			mService.updateViewcnt(store_code);
+			// 조회수 상태 0으로 만들기
+			session.setAttribute("viewUpdateStatus", 0);
+		}
+	}
 
-//	@RequestMapping(value = "/marketMain", method = RequestMethod.POST)
-//	public void marketMainPost(Model model, @RequestParam(value = "market_code") int market_code) throws Exception{
-//		logger.debug(" marketMain POST 호출 ");
-//		
-//        List<MarketVO> marketList = mService.getMarketListCode(market_code);
-//        model.addAttribute("marketList", marketList);
-//	}
-	 	
-	public ResponseEntity<Map<String, Object>> marketMain(@RequestParam(value = "market_code", required = false) Integer market_code) throws Exception {
-	      logger.info("marketMain 호출");
-	      logger.info("market_code " + market_code);
-	       if (market_code != null) {
-	           // market_code에 해당하는 시장 정보를 가져와서 JSON 형태로 반환
-	           MarketVO marketInfo = (MarketVO) mService.getMarketList();
-	           logger.info("market_code " + market_code);
-	           if (marketInfo != null) {
-	               return ResponseEntity.ok(Collections.singletonMap("marketInfo", marketInfo));
-	           } else {
-	               return ResponseEntity.notFound().build();
-	           }
-	      } else {
-	         // 전체 시장 및 가게 목록을 가져와서 페이지에 렌더링
-	         logger.info("market_code " + market_code);
-	         MarketVO marketList = mService.getMarketList();
-	         List<StoreVO> storeList = mService.getStoreList();
-	        
-	         Map<String, Object> responseData = new HashMap<>();
-	         responseData.put("marketList", marketList);
-	         responseData.put("storeList", storeList);
-	         return ResponseEntity.ok(responseData);
-	      }
-	   }
+	// 상품 메인페이지
+	@RequestMapping(value = "/productMain", method = RequestMethod.GET)
+	public void productMain(@RequestParam("product_code") int product_code, Model model, HttpSession session, QuestionVO qvo) throws Exception{
+		logger.debug(" productMain() 호출 ");
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+		String user_id = userVO.getUser_id();
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("product_code", product_code);
+		ProductVO product = mService.eachProduct(product_code);
+		model.addAttribute("product", product);
+		List<QuestionVO> question = mService.newQuestion(product_code);
+		List<ReviewVO> review = mService.productReview(product_code);
+		model.addAttribute("question", question);
+		model.addAttribute("review", review);
+
+	}
 	
+	@RequestMapping(value = "/productMain", method = RequestMethod.POST, consumes = "application/json")
+	public void questionAdd(@RequestBody QuestionVO question, HttpSession session) throws Exception{
+		logger.debug(" questionAddPOST 실행 ");
+		logger.debug(" qvo : " + question);
+		mService.writeQuestion(question);
+	}
+	
+	
+	@RequestMapping(value = "/questionMain", method = RequestMethod.GET)
+	public void questionMain(@RequestParam("product_code") int product_code, Criteria cri, Model model) throws Exception {
+		PageVO pageVO = new PageVO();
+		pageVO.setCri(cri);
+		pageVO.setTotalCount(mService.questionCount());
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("product_code", product_code);
+		ProductVO product = mService.eachProduct(product_code);
+		paramMap.put("startPage", pageVO.getStartPage());
+		paramMap.put("pageSize", cri.getPageSize());
+	
+		List<QuestionVO> question = mService.getQuestion(paramMap);
+		model.addAttribute("question", question);
+		model.addAttribute("product", product);
+		model.addAttribute("cri", cri);
+		model.addAttribute("pageVO", pageVO);
+	}
+	
+	// 검색기능
+	@RequestMapping(value = "search", method = RequestMethod.GET)
+	public String search(@RequestParam("query") String query, @RequestParam("type") String type, Model model) throws Exception {
+	    logger.debug("search() 호출");
+	    
+	    // type에 따라 다른 페이지로 리다이렉트
+	    if (type.equals("market")) {
+	        if (query.contains("자갈치")) {
+	            return "redirect:/market/marketMain?market_code=2";
+	        } else if (query.contains("구포")) {
+	            return "redirect:/market/marketMain?market_code=1";
+	        } else {
+	            return "redirect:/";
+	        }
+	    } else if (type.equals("product")) {
+	    	
+	        return "redirect:/member/product"; // productMain.jsp 페이지로 리다이렉트
+	    } 
+	    return "redirect:/"; // 기본 페이지로 리다이렉트
+	}
 
+	@RequestMapping(value = "/questionDetail", method = RequestMethod.GET)
+	public String questionDetail(Model model, @RequestParam("q_code") int q_code) throws Exception{
+		logger.debug("questionDetil 호출 ");
+		QuestionVO detail = mService.questionDetail(q_code);
+		model.addAttribute("detail", detail);
+		logger.debug("detail >>>>>>>>>>>>" + detail);
+		return "/market/questionDetail";
+	}
 }

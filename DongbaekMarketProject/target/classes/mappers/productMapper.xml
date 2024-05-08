@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.itwillbs.mapper.ProductMapper">
+  
+  <!-- 상품정렬 -->
+
+	<!-- 최신순 정렬 -->
+	<select id="late" resultType="ProductVO">
+		select * from product
+		where store_code = #{store_code}
+		order by product_code desc
+	</select>
+	
+	<!-- 인기순 정렬 -->
+	<select id="pop" resultType="ProductVO">
+		select * from product
+		where store_code = #{store_code}
+		order by viewcnt desc
+	</select>
+	
+	<!-- 낮은 가격순 -->
+	<select id="lowPrice">
+		select * from product
+		where store_code = #{store_code}
+		order by price asc
+	</select>
+	
+	<!-- 높은 가격순 -->
+	<select id="highPrice">
+		select * from product
+		where store_code = #{store_code}
+		order by price desc
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	</mapper>
+  

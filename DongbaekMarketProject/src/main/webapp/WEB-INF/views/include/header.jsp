@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +13,10 @@
 <meta name="keywords" content="">
 <meta name="description" content="">
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" href="./resources/css/vendor.css">
@@ -20,99 +25,86 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Hahmlet&display=swap" rel="stylesheet">
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" >
 <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet">
 
 </head>
 <style>
-.c {
-	margin: 10px 100px;
-}
-.container-fluid2 {
-	padding-left: 100px;
-	padding-right: auto;
-}
-.search1{
-	margin-left: 10px;
-}
-.search-bar input[type="text"] {
-	border: none;
-	border-radius: 20px;
-	padding: 10px auto;
-}
-.search-bar{
-	padding: 10px auto;
-}
-.main-menu .menu-list .nav-item {
-	margin-right: 15px;
-}
-
-@media ( max-width : 767px) {
-	.main-menu .menu-list .nav-item:last-child {
-		margin-right: 0;
+	.c {
+		margin: 10px 100px;
 	}
-	.main-menu .navbar-toggler {
+	.container-fluid2 {
+		padding-left: 100px;
+		padding-right: auto;
+	}
+	.search1{
+		margin-left: 10px;
+	}
+	.search-bar input[type="text"] {
+		border: none;
+		border-radius: 20px;
+		padding: 10px auto;
+	}
+	.search-bar{
+		padding: 10px auto;
+	}
+	.main-menu .menu-list .nav-item {
 		margin-right: 15px;
 	}
-}
 
-.offcanvas-body, .text-center {
-	font-family: 'Hahmlet', sans-serif; /* 햄릿(Hahmlet) 글꼴 적용 */
-	font-size: 20px;
-}
-
-.main-logo{
-	width: 300px;
-	height: 100px;
-	font-size: 20px;
-	padding-left: 70px; /* 왼쪽 여백 추가 */
-}
-.mylogo2 {
-	width: 300px;
-	height: 100px;
-}
-
-.login, .join, .service {
-	text-decoration-line: none;
-	font-family: 'Hahmlet', sans-serif; /* 햄릿(Hahmlet) 글꼴 적용 */
-}
-#ct{
-	padding: 0 auto;
-	margin: 0 auto;
-}
-
-.mylogo {
-	width: 200px;
-	height: 70px;
-}
-
-.footer-menu {
-	width: 200px;
-	height: 110px;
-	font-family: 'Hahmlet', sans-serif; /* 햄릿(Hahmlet) 글꼴 적용 */
-	font-size: 15px;
-	padding: 15px;
-}
-
-#r {
-	height: 100px;
-	margin: 0 auto;
-}
+	@media ( max-width : 767px) {
+		.main-menu .menu-list .nav-item:last-child {
+			margin-right: 0;
+		}
+		.main-menu .navbar-toggler {
+			margin-right: 15px;
+		}
+	}
+	
+	.offcanvas-body, .text-center {
+		font-family: 'Hahmlet', sans-serif; /* 햄릿(Hahmlet) 글꼴 적용 */
+		font-size: 20px;
+	}
+	
+	.main-logo{
+		width: 300px;
+		height: 100px;
+		font-size: 20px;
+		padding-left: 70px; /* 왼쪽 여백 추가 */
+	}
+	.mylogo2 {
+		width: 300px;
+		height: 100px;
+	}
+	
+	.login, .join, .service {
+		text-decoration-line: none;
+		font-family: 'Hahmlet', sans-serif; /* 햄릿(Hahmlet) 글꼴 적용 */
+	}
+	#ct{
+		padding: 0 auto;
+		margin: 0 auto;
+	}
+	
+	.mylogo {
+		width: 200px;
+		height: 70px;
+	}
+	.footer-menu {
+		width: 200px;
+		height: 110px;
+		font-family: 'Hahmlet', sans-serif; /* 햄릿(Hahmlet) 글꼴 적용 */
+		font-size: 15px;
+		padding: 15px;
+	}
+	
+	#r {
+		height: 100px;
+		margin: 0 auto;
+	}
 </style>
 
-
-<body>
-
+  <body>
 	<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
       <defs>
         <symbol xmlns="http://www.w3.org/2000/svg" id="link" viewBox="0 0 24 24">
@@ -162,6 +154,8 @@
         </symbol>
       </defs>
     </svg>
+    
+    
 
 	<div class="preloader-wrapper">
 		<div class="preloader"></div>
@@ -174,48 +168,10 @@
 		<div class="offcanvas-body">
 			<div class="order-md-last">
 				<h4 class="d-flex justify-content-between align-items-center mb-3">
-					<span class="text-primary">Your cart</span> <span class="badge bg-primary rounded-pill">3</span>
+					<span class="text-primary">장바구니</span> <span class="badge bg-primary rounded-pill">0</span>
 				</h4>
-				<ul class="list-group mb-3">
-					<li class="list-group-item d-flex justify-content-between lh-sm">
-						<div>
-							<h6 class="my-0">Growers cider</h6>
-							<small class="text-body-secondary">Brief description</small>
-						</div> <span class="text-body-secondary">$12</span>
-					</li>
-					<li class="list-group-item d-flex justify-content-between lh-sm">
-						<div>
-							<h6 class="my-0">Fresh grapes</h6>
-							<small class="text-body-secondary">Brief description</small>
-						</div> <span class="text-body-secondary">$8</span>
-					</li>
-					<li class="list-group-item d-flex justify-content-between lh-sm">
-						<div>
-							<h6 class="my-0">Heinz tomato ketchup</h6>
-							<small class="text-body-secondary">Brief description</small>
-						</div> <span class="text-body-secondary">$5</span>
-					</li>
-					<li class="list-group-item d-flex justify-content-between"><span>Total (USD)</span> <strong>$20</strong></li>
-				</ul>
 
 				<button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
-			</div>
-		</div>
-	</div>
-
-	<div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasSearch" aria-labelledby="Search">
-		<div class="offcanvas-header justify-content-center">
-			<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-		</div>
-		<div class="offcanvas-body">
-			<div class="order-md-last">
-				<h4 class="d-flex justify-content-between align-items-center mb-3">
-					<span class="text-primary">Search</span>
-				</h4>
-				<form role="search" action="index.html" method="get" class="d-flex mt-3 gap-0">
-					<input class="form-control rounded-start rounded-0 bg-light" type="email" placeholder="What are you looking for?" aria-label="What are you looking for?">
-					<button class="btn btn-dark rounded-end rounded-0" type="submit">Search</button>
-				</form>
 			</div>
 		</div>
 	</div>
@@ -226,47 +182,69 @@
 			<div class="row py-3 border-bottom">
 				<div class="col-sm-4 col-lg-3 text-center text-sm-start">
 					<div class="main-logo">
-						<a href="index.html"> <img src="${pageContext.request.contextPath }/resources/images/mylogo2.png" alt="logo" class="mylogo2">
+						<a href="/"> <img src="${pageContext.request.contextPath }/resources/images/mylogo2.png" alt="logo" class="mylogo2">
 						</a>
 					</div>
 				</div>
-
-				<div class="col-sm-4 offset-sm-2 offset-md-0 col-lg-5 d-none d-lg-block" class="search1">
-					<div class="search-bar row bg-light p-2 my-4 rounded-4">
-						<div class="col-9 col-md-8 align-self-center">
-							<form id="search-form" class="text-center" action="search.html" method="post">
-								<input type="text" class="form-control border-0 bg-transparent" placeholder="찾고 싶은 음식, 시장을 검색해보세요!" />
-							</form>
-						</div>
-						<div class="col-3 col-md-4 align-self-center text-end">
-							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-               					<path fill="currentColor" d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z" />
-							</svg>
-						</div>
-					</div>
+				
+				<!-- 검색 -->
+				<div class="col-sm-4 offset-sm-2 offset-md-0 col-lg-5 d-none d-lg-block">
+				    <div class="search-bar row bg-light p-2 my-4 rounded-4">
+				        <div class="col-9 col-md-8 align-self-center">
+				            <form id="searchForm" class="text-center" action="search" method="get">
+				                <div class="input-group">
+				                    <div class="input-group-prepend">
+				                    	<table>
+				                    	<tr>
+				                    		<td>
+				                    			<select id="categorySelect" name="type" class="form-control select2 select2-hidden-accessible"
+							                            style="width: 100%; margin-bottom: 5px;" data-select2-id="1"	 tabindex="-1"
+							                            aria-hidden="true">
+							                        <option value="market"
+							                        	<c:out value = "${pageVO.cri.type eq 'market'?'selected':'' }"/>>시장</option>
+							                        <option value="product"
+							                        	<c:out value = "${pageVO.cri.type eq 'product'?'selected':'' }"/>>음식</option>
+				                    			</select>
+				                    		</td>
+				                    	</tr>
+				                    	</table>
+				                    </div>
+				                    <input type="text" id="searchInput" class="form-control border-0 bg-transparent" placeholder="찾고 싶은 음식, 시장을 검색해보세요!" 
+				                    		name="query" value = "${cri.keyword }"/>
+				                </div>
+				            </form>
+				        </div>
+				        <div class="col-3 col-md-4 align-self-center text-end">
+				            <button id="search-btn" type="submit" form="search-form" class="btn btn-sm btn-primary search-btn">검색</button>
+				        </div>
+				    </div>
 				</div>
+
+
 				<div class="col-sm-8 col-lg-3 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
 				    <div>
-				        <div class="align-items-center">
-				            <a href="#" class="login">로그인</a>
-				            <a href="#" class="join">회원가입</a>
-				            <a href="#" class="service">고객센터</a>
-				        </div>
+				    	<c:if test="${sessionScope.userVO.user_id == null }">
+					        <div class="align-items-center">
+					            <a href="/member/login" class="login">로그인</a>
+					            <a href="/member/register" class="join">회원가입</a>
+					            <a href="#" class="service">고객센터</a>
+					        </div>
+				    	</c:if>
+				    	<c:if test="${sessionScope.userVO.user_id != null }">
+					        <div class="align-items-center">
+					            로그인 id : ${sessionScope.userVO.user_id }
+					            <a href="#" class="service">고객센터</a>
+					            <input type="button" value="로그아웃" onclick="location.href='/member/logout';">
+					        </div>
 				        <ul class="d-flex justify-content-end list-unstyled m-3">
-				            <li><a href="#" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
+				            <li><a href="/member/info" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
 				                        <use xlink:href="#user"></use></svg>
 				                </a></li>
-				            <li><a href="#" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
+				            <li><a href="/member/wish" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
 				                        <use xlink:href="#heart"></use></svg>
 				                </a></li>
 				        </ul>
-				    </div>
-				
-				    <!-- 장바구니 아이콘 -->
-				    <div class="cart text-end d-none d-lg-block dropdown">
-				        <button class="border-0 bg-transparent d-flex flex-column gap-2 lh-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
-				            <span class="fs-6 text-muted dropdown-toggle">Your Cart</span>
-				        </button>
+				    	</c:if>
 				    </div>
 				</div>
 			</div>
@@ -282,17 +260,20 @@
 	                    <div class="offcanvas-header justify-content-center">
 	                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 	                    </div>
+	                    
 	                    <div class="offcanvas-body">
 	                    	<form id="marketForm" action="/market/marketMain" method="post">
-		                        <select id="market_code" class="filter-categories border-0 mb-0 me-5" class="market_codeOption">
-		                            <option value="0">구포시장</option>
-		                            <option value="1">자갈치시장</option>
+		                        <select id="market_code" name="market_code" class="filter-categories border-0 mb-0 me-5" class="market_codeOption">
+		                            <option value="1">구포시장</option>
+		                            <option value="2">자갈치시장</option>
 		                        </select>
+		                        <input type="submit" value="이동">
 	                        </form>
+
 	                        <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
-	                            <li class="nav-item active"><a href="#women" class="nav-link">시장소개</a></li>
+	                            <li class="nav-item active"><a href="/market/marketMain" class="nav-link">시장소개</a></li>
 	                            <li class="nav-item dropdown"><a href="#men" class="nav-link">제철음식</a></li>
-	                            <li class="nav-item"><a href="#kids" class="nav-link">인기음식</a></li>
+	                            <li class="nav-item"><a href="member/product?orderBy=popularity" class="nav-link">인기음식</a></li>
 	                            <li class="nav-item"><a href="#accessories" class="nav-link">알뜰쇼핑</a></li>
 	                            <li class="nav-item"><a href="#brand" class="nav-link">특가/혜택</a></li>
 	                            <li class="nav-item"><a href="#brand" class="nav-link">구독상품</a></li>
@@ -303,32 +284,37 @@
 	        </div>
 	    </div>
 	</div>
-
 	</header>
 	</div>
-	
+
 	<script>
-	$(document).ready(function(){
-		
-		console.log($('#market_code').val());
-		$('#market_code').change(function(){
-			console.log($('#market_code').val());
-			var number = {
-					"market_code" : $('#market_code').val()
-					};
-			$.ajax({
-				type: 'POST',
-				url: '/market/marketMain',
-				data : JSON.stringify(number),
-				contentType : "application/json; charset=UTF-8",
-				success: function(response){
-					alert("!!!!!!!!!!!");
-					console.log(response);
-				}
-				
-			});
-		});
-		
-	});
+	    document.addEventListener("DOMContentLoaded", function() {
+	        var searchForm = document.getElementById("searchForm");
+	        var searchBtn = document.getElementById("search-btn");
 	
+	        // 검색 버튼 클릭 시 이벤트 처리
+	        searchBtn.addEventListener("click", function(event) {
+	            event.preventDefault(); // 기본 동작 방지 (페이지 새로고침 방지)
+	            
+	            // 검색어 입력 요소 가져오기
+	            var searchInput = document.getElementById("searchInput");
+	            
+	            // 검색어에서 공백 제거
+	            var keyword = searchInput.value.trim();
+	            
+	            if (keyword === "") {
+	                alert("검색어를 입력해주세요.");
+	                return false;
+	            }
+	            // 선택된 카테고리 가져오기
+	            var type = document.getElementById("categorySelect").value;
+	
+	            // 새로운 URL로 이동
+// 	            location.href = "/search?keyword=" + encodeURIComponent(keyword) + "&type=" + type;
+
+	            searchForm.submit();
+	            
+	        });
+	    });
 	</script>
+	<!-- 검색기능 구현 스크립트 추가 -->
