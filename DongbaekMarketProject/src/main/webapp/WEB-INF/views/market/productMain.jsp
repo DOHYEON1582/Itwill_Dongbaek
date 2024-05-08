@@ -471,7 +471,7 @@ $(document).ready(function() {
             <div method="post" id="questionForm">
             <input type="hidden" id="product_code" name="product_code" value="${product.product_code }">
             <input type="hidden" id="user_id" name="user_id" value="${sessionScope.userVO.user_id }">
-            <input type="hidden" id="user_id" name="user_id" value="${sessionScope.userVO.user_name }">
+            <input type="hidden" id="user_name" name="user_name" value="${sessionScope.userVO.user_name }">
 				<div class="box-body">
 					<div class="form-group" style="margin-bottom: 20px;">
 						<label for="exampleInputPassword1">문의 유형</label> 

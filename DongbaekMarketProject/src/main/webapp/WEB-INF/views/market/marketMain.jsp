@@ -4,97 +4,36 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 	<script src="./resources/js/jquery-2.1.1.js"></script>
 	<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
-
-<script>
-    $(document).ready(function(){
-        $('.bxslider').bxSlider({
-            infiniteLoop: false,
-            hideControlOnEnd: true,
-            slideWidth: 500
-        });
-
-        $('.slider5').bxSlider({
-            slideWidth: 200,
-            minSlides: 6,
-            maxSlides: 6,
-            moveSlides: 6,
-            slideMargin: 10,
-            adaptiveHeight: true, // 높이를 자동 조정하여 일관된 높이 유지
-            pager: false,
-            touchEnabled: false
-        });
-        // 수량 증가
-        $(".quantity-right-plus").click(function(e){
-        	var quantity = parseInt($(this).parent().prev().val());
-        	$(this).parent().prev().val(quantity + 1);
-        });
-        $(".quantity-left-minus").click(function(e){
-        	var quantity = parseInt($(this).parent().next().val());
-            if(quantity > 1){
-                $(this).parent().next().val(quantity - 1);
-            }
-        });
-        
-        // 찜 상품 
-        $(".btn-wishlist").click(function(){
-        	
-/*             if(isAlreadyWished()) {
-                alert("이미 찜한 상품입니다.");
-                return; // 중복인 경우 아무 작업도 하지 않음
-            } */
-        	alert("찜에 등록됩니다 !" + $("#product_code").val() + $("#user_id").val());
-            var btn = $(this); // 클릭된 버튼을 저장
-            var productCode = btn.siblings("#product_code").val();
-            var userId = btn.siblings("#user_id").val();
-            
-            var wish = {
-                "product_code": productCode,
-                "user_id": userId
-            };
-        	$.ajax({
-        		type: "POST",
-        		url: "/market/addWish",
-        		data: JSON.stringify(wish),
-        		contentType: "application/json; charset=UTF-8",
-        	     success: function(data){
-        	            // 찜 상태 업데이트 후 UI 업데이트
-        	            var isWished = data.isWished; // 서버에서 반환한 찜 상태 정보
-        	            if (isWished) {
-        	                // 찜 상태인 경우
-        	                btn.addClass("wished"); // 찜 상태를 나타내는 클래스 추가
-        	                console.log(isWished);
-        	            } else {
-        	                // 찜 상태가 아닌 경우
-        	                btn.removeClass("wished"); // 찜 상태를 나타내는 클래스 제거
-        	            }
-        	        },
-        	        error: function(xhr, status, error) {
-        	            var errorMessage = xhr.status + ': ' + xhr.statusText;
-        	            console.log(" error "+ error);
-        	        }        		
-        	});
-        });
-
-/*         function isAlreadyWished() {
-            var productCode = $("#product_code").val(); // 상품 코드 가져오기
-            var userId = $("#user_id").val(); // 사용자 ID 가져오기
-            
-            // 이미 찜한 상품들을 모두 가져와서 현재 상품과 사용자 ID와 비교
-            var wishedProducts = $(".product-item").filter(function() {
-                return $(this).find("#product_code").val() == productCode && $(this).find("#user_id").val() == userId;
-            });
-            
-            // 이미 찜한 상품이 있는지 여부를 반환
-            return wishedProducts.length > 0;
-        } */
-        
-		 
-        
-    });
-    
-</script>
-
+	    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Bootstrap icons-->
+    <link href="https://fastly.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/styles.css" rel="stylesheet" />
 <style> 
+  #scrollToTopBtn {
+    display: none; /* 초기에는 숨김 */
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 99;
+    width: 100px; /* 버튼 크기 조정 */
+    height: 100px; /* 버튼 크기 조정 */
+    border: none;
+    outline: none;
+    background-color: transparent;
+    cursor: pointer;
+    border-radius: 50%; /* 원형 버튼을 위한 테두리 반경 설정 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+  }
+
+  #scrollToTopBtn i {
+    color: #007bff;
+  }
+
+  #scrollToTopBtn:hover i {
+    color: #0056b3;
+  }
 	.bxslider{
  		display: inline-block;
         margin-right: 20px; /* 이미지 슬라이더 오른쪽에 공간 추가 */
@@ -179,7 +118,7 @@
 	  line-height: 18px;
 	  letter-spacing: 0.02em;
 	  text-transform: uppercase;
-	  color: #9D9D9D;
+	  color: #9D9D9D;S
 	}
 	.product-item .rating {
 	  font-weight: 600;
@@ -200,9 +139,7 @@
 	  text-transform: capitalize;
 	  color: #222222;
 	}
-	.product-item .product-qty {
-	  width: 85px;
-	}
+
 	.product-item .btn-link {
 	  text-decoration: none;
 	}
@@ -247,6 +184,158 @@
 	    /* 또는 필요에 따라 다른 스타일을 적용할 수 있습니다. */
 	}
 </style>
+<script type="text/javascript">
+function topFunction() {
+    document.body.scrollTop = 0; // Safari 지원
+    document.documentElement.scrollTop = 0; // Chrome, Firefox, IE 및 Opera 지원
+}
+
+    $(document).ready(function(){
+        $('.bxslider').bxSlider({
+            infiniteLoop: false,
+            hideControlOnEnd: true,
+            slideWidth: 500
+        });
+        
+    // 스크롤 위치가 일정 위치 이상인 경우 버튼을 표시
+    window.onscroll = function() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("scrollToTopBtn").style.display = "block";
+        } else {
+            document.getElementById("scrollToTopBtn").style.display = "none";
+        }
+    };
+        
+        $('.slider5').bxSlider({
+            slideWidth: 200,
+            minSlides: 6,
+            maxSlides: 6,
+            moveSlides: 6,
+            slideMargin: 10,
+            adaptiveHeight: true, // 높이를 자동 조정하여 일관된 높이 유지
+            pager: false,
+            touchEnabled: false
+        });
+        // 수량을 변경할 때마다 총 가격을 계산하여 보여주는 함수
+        function updateTotalPrice(element) {
+            var quantity = parseInt(element.val()); // 수량을 가져옴
+            var price = parseInt(element.closest('.product-item').find(".price").text().replace(/[^\d]/g, '')); // 상품의 가격을 가져와서 숫자로 변환
+            var totalPrice = quantity * price; // 총 가격 계산
+            element.closest('.product-item').find(".total-price").text(totalPrice.toLocaleString() + "원"); // 총 가격을 화면에 표시
+        }
+
+        // 수량을 감소하는 버튼에 대한 이벤트 처리
+        $(".quantity-left-minus").click(function() {
+            var input = $(this).closest('.product-item').find(".quantity");
+            var currentValue = parseInt(input.val());
+            if (currentValue > 1) {
+                input.val(currentValue - 1);
+                updateTotalPrice(input);
+            }
+        });
+
+        // 수량을 증가하는 버튼에 대한 이벤트 처리
+        $(".quantity-right-plus").click(function() {
+            var input = $(this).closest('.product-item').find(".quantity");
+            var currentValue = parseInt(input.val());
+            input.val(currentValue + 1);
+            updateTotalPrice(input);
+        });
+        
+        $(".cart").click(function(){
+        	alert("장바구니에 담으시겠습니까 ?");
+            var productCode = $(this).closest('.product-item').find("#product_code").val();
+            var userId = $(this).closest('.product-item').find("#user_id").val();
+            var quantity = $(this).closest('.product-item').find(".quantity").val();
+            var price = parseInt($(this).closest('.product-item').find(".price").text().replace(/[^\d]/g, ''));
+
+            var totalPrice = quantity * price; // 총 가격 계산
+
+            var cart = {
+                "user_id": userId,
+                "product_code": productCode,
+                "count": quantity,
+                "price": totalPrice
+            };        	
+            
+            $.ajax({
+            	type: "POST",
+            	url: "/market/addCart",
+            	data: JSON.stringify(cart),
+            	contentType: "application/json; charset=UTF-8",
+            	success: function(data){
+            		alert("제품이 장바구니에 추가되었습니다");
+            		location.reload();
+            	},
+                error: function(xhr, status, error) {
+                    var errorMessage = xhr.status + ': ' + xhr.statusText;
+                    alert('에러가 발생했습니다.\n' + errorMessage);
+                    console.log(" error "+ error);
+                }            	
+            });
+            
+        });
+        
+        // 찜 상품 
+        $(".btn-wishlist").click(function(){
+        	
+/*             if(isAlreadyWished()) {
+                alert("이미 찜한 상품입니다.");
+                return; // 중복인 경우 아무 작업도 하지 않음
+            } */
+        	alert("찜에 등록됩니다 !" + $("#product_code").val() + $("#user_id").val());
+            var btn = $(this); // 클릭된 버튼을 저장
+            var productCode = btn.siblings("#product_code").val();
+            var userId = btn.siblings("#user_id").val();
+            
+            var wish = {
+                "product_code": productCode,
+                "user_id": userId
+            };
+        	$.ajax({
+        		type: "POST",
+        		url: "/market/addWish",
+        		data: JSON.stringify(wish),
+        		contentType: "application/json; charset=UTF-8",
+        	     success: function(data){
+        	            // 찜 상태 업데이트 후 UI 업데이트
+        	            var isWished = data.isWished; // 서버에서 반환한 찜 상태 정보
+        	            if (isWished) {
+        	                // 찜 상태인 경우
+        	                btn.addClass("wished"); // 찜 상태를 나타내는 클래스 추가
+        	                console.log(isWished);
+        	            } else {
+        	                // 찜 상태가 아닌 경우
+        	                btn.removeClass("wished"); // 찜 상태를 나타내는 클래스 제거
+        	            }
+        	        },
+        	        error: function(xhr, status, error) {
+        	            var errorMessage = xhr.status + ': ' + xhr.statusText;
+        	            console.log(" error "+ error);
+        	        }        		
+        	});
+        });
+
+/*         function isAlreadyWished() {
+            var productCode = $("#product_code").val(); // 상품 코드 가져오기
+            var userId = $("#user_id").val(); // 사용자 ID 가져오기
+            
+            // 이미 찜한 상품들을 모두 가져와서 현재 상품과 사용자 ID와 비교
+            var wishedProducts = $(".product-item").filter(function() {
+                return $(this).find("#product_code").val() == productCode && $(this).find("#user_id").val() == userId;
+            });
+            
+            // 이미 찜한 상품이 있는지 여부를 반환
+            return wishedProducts.length > 0;
+        } */
+        
+		 
+        
+    });
+    
+</script>
+
+
 <!-- 시장정보 -->
 <section class="py-2 mb-1" style="background: url(${pageContext.request.contextPath}/resources/images/background-pattern.jpg);">
 
@@ -314,33 +403,35 @@
                 <div class="col" style="width: 19%;">
                     <div class="product-item">
                         <button id="wishProduct" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></button>
-		        <input type="hidden" id="product_code" value="${product.product_code }">
-				<input type="hidden" id="user_id" value="${user_id }">                        
+                        <input type="hidden" id="product_code" value="${product.product_code }">
+                        <input type="hidden" id="user_id" value="${user_id }">                        
                         <figure>
                             <a href="productMain?product_code=${product.product_code }" title="Product Title">
                                 <img src="${pageContext.request.contextPath}/resources/images/carrot.jpg" alt="Product Thumbnail" class="tab-image" style="width : 180px">
                             </a>
                         </figure>
                         <h4>${product.product_name}</h4>
-                        <span class="qty">${product.unit}</span>
-                        <span class="rating"><svg width="24" height="24" class="text-primary">
-                        <use xlink:href="#star-solid"></use></svg> 4.5</span>
                         <span class="price"><fmt:formatNumber value="${product.price}" pattern="#,##0" />원</span>
-                        <div class="d-flex align-items-center justify-content-between">
+                        <span class="total-price">총 가격</span>
+                        <div class="input-group product-qty d-flex align-items-center justify-content-between">
                             <div class="input-group product-qty">
+                                <!-- - 버튼 -->
                                 <span class="input-group-btn">
                                     <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
                                         <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
                                     </button>
                                 </span>
-                                <input type="text" name="quantity" class="form-control input-number quantity" value="1">
+                                <!-- 수량 입력 -->
+                                <input type="text" name="quantity" class="form-control input-number quantity" value="1" style="width: 60px;">
+                                <!-- + 버튼 -->
                                 <span class="input-group-btn">
                                     <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
                                         <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
                                     </button>
                                 </span>
+                                <!-- 장바구니 버튼 -->
+                                <button>장바구니<svg width="18" height="18"><use xlink:href="#cart"></use></svg></button>
                             </div>
-                            <a href="#" class="nav-link">장바구니<svg width="18" height="18"><use xlink:href="#cart"></use></svg></a>
                         </div>
                     </div>
                 </div>
@@ -348,5 +439,11 @@
         </div>
     </div>
 </div>
+
+
+<!-- Scroll to Top button -->
+<button onclick="topFunction()" id="scrollToTopBtn" title="맨 위로 이동">
+  <i class="bi bi-arrow-up-circle-fill" style="font-size: 24px;"></i>
+</button>
 
 <%@ include file="../include/footer.jsp"%>

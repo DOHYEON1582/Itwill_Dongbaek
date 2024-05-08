@@ -168,7 +168,7 @@ public class MarketController {
 		return "/market/questionDetail";
 	}
 	
-	
+	@ResponseBody
 	@RequestMapping(value = "/storeMain", method = RequestMethod.POST, consumes = "application/json")
 	public void storeMainPOST(HttpSession session, @RequestBody MarkVO mvo) throws Exception{
 		logger.debug("storeMainPOST 호출 ");
@@ -178,6 +178,7 @@ public class MarketController {
 		logger.debug("mvo " + mvo);
 	}
 	
+	@ResponseBody
 	@RequestMapping(value = "/addWish", method = RequestMethod.POST, consumes = "application/json")
 	public void addWish(HttpSession session, @RequestBody WishVO wish) throws Exception{
 		logger.debug(" addWish 호출 ");
@@ -188,6 +189,7 @@ public class MarketController {
 		logger.debug("wish >>>>>>>>>>>>>" + wish);
 	}
 	
+	@ResponseBody
 	@RequestMapping(value = "/addCart", method = RequestMethod.POST, consumes = "application/json")
 	public void addCart(@RequestBody CartVO cart, HttpSession session) throws Exception{
 		logger.debug(" addCart 호출 ");
