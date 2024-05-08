@@ -316,7 +316,7 @@
 	<li class="page-item"><a class="page-link border-0" href="#">3</a></li>
 	<li class="page-item">
 		<a class="page-link border-0" href="#" aria-label="Next">
-		<span aria-hidden="true">»</span>
+		<span aria-hidden="true">»</span> 
 		</a>
 	</li>
 </ul>     
