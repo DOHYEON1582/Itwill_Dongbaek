@@ -9,7 +9,7 @@ public class CartVO {
 	private int product_code;
 	private String bundle_code;
 	private int count;
-	private String price;
+	private int price;
 	private String delivery_fee;
 	private String refund_reason;
 }

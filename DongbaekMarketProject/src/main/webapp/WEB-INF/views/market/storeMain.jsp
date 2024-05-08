@@ -24,29 +24,46 @@
             touchEnabled: false
         });
         
-        $(".quantity-right-plus").click(function(e){
-        	var quantity = parseInt($(this).parent().prev().val());
-        	$(this).parent().prev().val(quantity + 1);
-        });
-        $(".quantity-left-minus").click(function(e){
-        	var quantity = parseInt($(this).parent().next().val());
-            if(quantity > 1){
-                $(this).parent().next().val(quantity - 1);
+     // 수량을 변경할 때마다 총 가격을 계산하여 보여주는 함수
+        function updateTotalPrice(element) {
+            var quantity = parseInt(element.val()); // 수량을 가져옴
+            var price = parseInt(element.closest('.product-item').find(".price").text().replace(/[^\d]/g, '')); // 상품의 가격을 가져와서 숫자로 변환
+            var totalPrice = quantity * price; // 총 가격 계산
+            element.closest('.product-item').find(".total-price").text(totalPrice.toLocaleString() + "원"); // 총 가격을 화면에 표시
+        }
+
+        // 수량을 감소하는 버튼에 대한 이벤트 처리
+        $(".quantity-left-minus").click(function() {
+            var input = $(this).closest('.product-item').find(".quantity");
+            var currentValue = parseInt(input.val());
+            if (currentValue > 1) {
+                input.val(currentValue - 1);
+                updateTotalPrice(input);
             }
+        });
+
+        // 수량을 증가하는 버튼에 대한 이벤트 처리
+        $(".quantity-right-plus").click(function() {
+            var input = $(this).closest('.product-item').find(".quantity");
+            var currentValue = parseInt(input.val());
+            input.val(currentValue + 1);
+            updateTotalPrice(input);
         });
         
         $(".cart").click(function(){
         	alert("장바구니에 담으시겠습니까 ?");
-            var productCode = $(this).data("product_code"); // 제품 코드 가져오기
-            var userId = $(this).data("user_id"); // 사용자 ID 가져오기
-            var quantity = $(this).parent().find(".quantity").val(); // 수량 가져오기
-            var price = $(this).data("price");
+            var productCode = $(this).closest('.product-item').find("#product_code").val();
+            var userId = $(this).closest('.product-item').find("#user_id").val();
+            var quantity = $(this).closest('.product-item').find(".quantity").val();
+            var price = parseInt($(this).closest('.product-item').find(".price").text().replace(/[^\d]/g, ''));
+
+            var totalPrice = quantity * price; // 총 가격 계산
 
             var cart = {
                 "user_id": userId,
                 "product_code": productCode,
                 "count": quantity,
-                "price": price
+                "price": totalPrice
             };        	
             
             $.ajax({
@@ -81,6 +98,7 @@
                 data: JSON.stringify(mvo),
                 contentType: "application/json; charset=UTF-8",  
                 success: function(data){
+                	alert("즐겨찾기 성공");
                 	location.reload();
                 },
                 error: function(xhr, status, error) {
@@ -477,6 +495,7 @@ h3 {
                         <h4>${product.product_name}</h4>
                         <span class="qty">${product.unit}</span><span class="rating"><svg width="24" height="24" class="text-primary"><use xlink:href="#star-solid"></use></svg> 4.5</span>
                         <span class="price"><fmt:formatNumber value="${product.price}" pattern="#,##0" />원</span>
+                        <span class="total-price">총 가격</span>
                         <div class="d-flex align-items-center justify-content-between">
                             <div class="input-group product-qty">
                                 <span class="input-group-btn">
