@@ -293,5 +293,9 @@ public class AdminController {
 		return new ResponseEntity(result,respHeaders,HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/admin/chatbot")
+	public void chatbot()throws Exception {
+		
+	}
 	
 }//endController
