@@ -8,7 +8,7 @@ public class OrderInfoVO {
 	private int order_code;			// 주문번호
 	private String user_id;			// 회원아이디
 	private String bundel_code;		// 묶음번호(장바구니 이름)
-	private int store_code;			// 가게 번호
+	private String store_code;		// 가게 번호
 	private String ordr_date;		// 주문 날짜
 	private String rcv_zip;			// 수취인 우편번호
 	private String rcv_name;		// 수취인명

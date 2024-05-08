@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<%@ include file="../include/header.jsp"%>
+<%-- <%@ include file="../include/header.jsp"%> --%>
 
 <style>
 	.productList th{
@@ -17,9 +17,13 @@
 		width: 1300px;
 	}
 	
+	.orderFormTbl th {
+		border: 1px solid black;
+	}
 	.orderFormTbl td {
 		border: 1px solid black;
 	}
+	
 	
 	/* Chrome, Safari, Edge, Opera */
 	input::-webkit-outer-spin-button,
@@ -113,10 +117,10 @@
 	</table>
 	
 	<!-- 아이디, 묶음번호, 가게코드, 배달비, 총 결제금액, 적립 포인트, 예약여부..?  -->
-	<input type="hidden" id="user_id" name="user_id" value="${sessionScope.user_id }"> 
+	<%-- <input type="hidden" id="user_id" name="user_id" value="${sessionScope.user_id }">  --%>
 	<input type="hidden" id="name" name="name" value="${sessionScope.user_name }">
 	<input type="hidden" id="bundle_code" name="bundle_code" value="${sessionScope.cart }">
-	<input type="hidden" id="store_code" name="store_code" value="${cartList.store_code }">
+	<%-- <input type="hidden" id="store_code" name="store_code" value="${cartList.store_code }"> --%>
 	<input type="hidden" id="delivery" name="deleivery_fee">
 	<input type="hidden" id="amount" name="total_price">
 	<input type="hidden" id="add_point" name="add_point" value="">
@@ -148,11 +152,11 @@
 <!-- 금액 보여주기 끝 -->
 
 <button id="cancelBtn">취소하기</button>
-<button id="payBtn">결제하기</button>
+<input type="button" id="payBtn" value="결제하기">
 
 </div>
 
-<%@ include file="../include/footer.jsp"%>
+<%-- <%@ include file="../include/footer.jsp"%> --%>
 
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
