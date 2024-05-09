@@ -260,6 +260,7 @@
         </choose>
 	</select>
 	
+<<<<<<< Upstream, based on origin/develop
 	<!-- 구독내역 보여주기 -->
 	<select id="showsub" resultMap="subMap">
 		select * 
@@ -296,7 +297,15 @@
 	<delete id="deleteSubAll">
 		delete from subscribe_product where user_id = #{user_id}
 	</delete>
+=======
+	<!-- 0509 cart 세션 생성을 위한 쿼리 -->
+	<!-- 장바구니 상품 갯수 조회 -->
+	<select id="selectCountCart" resultType="int">
+		select count(*) from cart where user_id=#{user_id} and states='장바구니';
+	</select>
+>>>>>>> e434b17 cart session 생성, cart.jsp 오류 수정 / cart.jsp 금액 수정해야함
 	
+<<<<<<< Upstream, based on origin/develop
 	
 	
 	
@@ -304,3 +313,13 @@
 	
 	
 </mapper> 
+=======
+	<!-- bundle_code 가져오기 -->
+	<select id="selectBundleCode" resultType="CartVO">
+		select user_id,bundle_code from cart 
+		where user_id=#{user_id} and states='장바구니' 
+		group by bundle_code;
+	</select>
+
+</mapper>
+>>>>>>> e434b17 cart session 생성, cart.jsp 오류 수정 / cart.jsp 금액 수정해야함

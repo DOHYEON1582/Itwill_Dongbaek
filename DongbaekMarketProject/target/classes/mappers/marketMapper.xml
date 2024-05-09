@@ -220,6 +220,7 @@
 		SELECT COUNT(*) FROM answer WHERE q_code = #{q_code}
 	</select>
 
+<<<<<<< Upstream, based on origin/develop
 	<!-- 찜 중복체크 -->
 <!-- 	<select id="checkDuplicateWish" parameterType="map" -->
 <!-- 		resultType="int"> -->
@@ -236,6 +237,16 @@
 		resultType="int">
 		select count(*) from mark where store_code
 	</select>
+=======
+	<!-- 0509 카트 번호 생성 -->
+	<!-- maxCartCode 가져오기 -->
+	<select id="selectMaxCartCode" resultType="int">
+		SELECT Ifnull(Max(cart_code), 0) AS cart_code
+		FROM   cart   
+	</select>
+	
+</mapper>
+>>>>>>> e434b17 cart session 생성, cart.jsp 오류 수정 / cart.jsp 금액 수정해야함
 
 
 </mapper>

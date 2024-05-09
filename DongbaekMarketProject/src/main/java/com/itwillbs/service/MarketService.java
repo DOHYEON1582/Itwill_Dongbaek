@@ -96,7 +96,12 @@ public interface MarketService {
 	// 카트에 넣기
 	public void insertCart(CartVO cart) throws Exception;
 	
+
 	// 찜 중복체크
 	public boolean isDuplicateWish(int product_code, String user_id) throws Exception;
+
+	// 0509 카트 번호 생성
+	// maxCartCode 가져오기
+	public int selectMaxCartCode() throws Exception;
 
 }

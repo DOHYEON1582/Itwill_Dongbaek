@@ -1,5 +1,6 @@
 package com.itwillbs.controller;
-import java.util.Collections;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +11,6 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,11 +26,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
-
-import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.AnswerVO;
+import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.MarketVO;
@@ -219,6 +217,19 @@ public class MarketController {
 	    return "redirect:/"; // 기본 페이지로 리다이렉트
 	}
 
+
+	@RequestMapping(value = "/questionDetail", method = RequestMethod.GET)
+	public String questionDetail(Model model, @RequestParam("q_code") int q_code) throws Exception{
+		logger.debug("questionDetil 호출 ");
+		 QuestionVO detail = mService.questionDetail(q_code); 
+		
+		  model.addAttribute("detail", detail); 
+		  logger.debug("detail >>>>>>>>>>>>" + detail);
+		 
+		return "/market/questionDetail";
+	}
+	
+
 	@ResponseBody
 	@RequestMapping(value = "/storeMain", method = RequestMethod.POST, consumes = "application/json")
 	public void storeMainPOST(HttpSession session, @RequestBody MarkVO mvo) throws Exception{
@@ -276,11 +287,38 @@ public class MarketController {
 	@RequestMapping(value = "/addCart", method = RequestMethod.POST, consumes = "application/json")
 	public void addCart(@RequestBody CartVO cart, HttpSession session) throws Exception{
 		logger.debug(" addCart 호출 ");
+		
 		UserVO userVO = (UserVO) session.getAttribute("userVO");
 		String user_id = userVO.getUser_id();
+		
+		/* 0509 추가 시작 */
+		String bundleCode = (String)session.getAttribute("cart");
+		// cartCode 추가 
+		// 오늘 날짜 불러오기
+		LocalDate today = LocalDate.now();
+		// 날짜 형식 변환
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyMMdd");
+		String formatDate = today.format(dateFormatter);
+		int result = mService.selectMaxCartCode();
+		int cartCode = 0;
+		String date = "";
+		if(result == 0) {
+			date = formatDate + "001";
+			cartCode = Integer.parseInt(date);
+		}else if(result != 0) {
+			cartCode = result + 1;
+		}
+		logger.debug("cartCode : " + cartCode);
+		cart.setCart_code(cartCode);
+		cart.setBundle_code(bundleCode);
+		cart.setDelivery_fee("2500");
+		cart.setStates("장바구니");
+		/* 0509 추가 끝 */
+		
 		cart.setUser_id(user_id);
 		mService.insertCart(cart);
 		logger.debug(" cart >>>>>>>>>>>>> " + cart);
+
 	}
 	
 

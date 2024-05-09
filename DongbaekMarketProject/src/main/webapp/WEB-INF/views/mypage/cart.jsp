@@ -50,7 +50,6 @@
 				<td>${total}</td>
 				<td>
 					<button type="button" id="orderProduct">주문하기(주문하기 페이지로)</button><br> 
-					<!-- <button type="button" id="addWish">관심상품등록(위시리스트로)</button><br>  -->
 					<button type="button" id="deleteProduct">삭제(삭제)</button><br> 
 				</td>
 			</tr>
@@ -138,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function() {
             checkList.forEach(function(value) {
                 var input = document.createElement('input');
                 input.type = 'hidden';
-                input.name = 'checkList[]';
+                input.name = 'checkList';
                 input.value = value;
                 form.appendChild(input);
             });
@@ -151,12 +150,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // 전체 상품 삭제
     document.getElementById('deleteAll').addEventListener('click', function() {
         if (confirm("장바구니를 비우시겠습니까?")) {
-            var form = document.createElement('form');
+        	
+        	location.href="/mypage/cart/deletAll";
+            /* var form = document.createElement('form');
             form.method = 'POST';
-            form.action = '/mypage/cart/deleteAll';
+            form.action = '/mypage/cart/deleteAll'; */
 
-            document.body.appendChild(form);
-            form.submit();
+            /* document.body.appendChild(form);
+            form.submit(); */
         }
     });
 
