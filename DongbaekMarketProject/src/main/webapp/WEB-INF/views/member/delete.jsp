@@ -9,7 +9,7 @@
     	font-size: 22px;
     	font-weight: bold;
         width: 30%;
-        margin: 0 auto;
+        margin: 0 auto; 
         border: 2px solid #ccc;
         border-radius: 10px;
         padding: 20px;
