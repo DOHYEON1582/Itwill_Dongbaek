@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ include file="../include/header.jsp"%>
+<%-- <%@ include file="../include/header.jsp"%> --%>
 <style>
 	.productList {
 		width: 1300px;
@@ -106,190 +106,211 @@
 	
 </div>
 	
- <%@ include file="../include/footer.jsp"%>
+<%--  <%@ include file="../include/footer.jsp"%> --%>
  
 <script>
-	$(document).ready(function(){
-		
-		// 전체 선택, 해제
-		$('#allCheck').change(function(){
-			$('.ap_check').prop('checked',$(this).prop('checked'));
-		});
-		
-		// 선택된 상품 삭제
-		$('#deleteChecked').click(function(){
-			var checkList = $('.ap_check:checked').map(function(){
-				return $(this).val();
-			}).get();
-			
-			if(checkList.length === 0){
-				alert("선택된 상품이 없습니다.");
-				return;
-			}
-			
-			if(confirm("삭제하시겠습니까?")){
-				$.ajax({
-					url: '/mypage/cart/deleteChecked',
-					type: 'POST',
-					data: {"checkList":checkList},
-					success: function(data){
-						alert("삭제되었습니다.");
-						// 새로고침 해야하나... 
-					},
-					error: function(){
-						alert("오류가 발생했습니다.");
-					}
-				});
-			}
-			
-		});
-		
-		// 전체 상품 삭제
-		$('#deleteAll').click(function(){
-			if(confirm("장바구니를 비우시겠습니까?")){
-				$.ajax({
-					url: '/mypage/cart/deleteAll',
-					type: 'POST',
-					success: function(data){
-						alert("모든 상품이 삭제되었습니다.");
-					},
-					error: function(){
-						
-					}
-				});
-			}
-		});
-		
-		// 개별 상품 삭제
-		$('#productList').on('click','#deleteProduct',function(){
-			var row = $(this).closest('tr');
-			var cartCode = row.find('.ap_check').val();
-			
-			if(confirm("해당 상품을 삭제하시겠습니까?")){
-				$.ajax({
-					url: '/mypage/cart/delete',
-					type: 'POST',
-					data: {"cartCode":cartCode},
-					success: function(data){
-						row.remove();
-						alert("모든 상품이 삭제되었습니다.");
-					},
-					error: function(){
-						
-					}
-				});
-			}
-		});
-		
-		// 상품 수량 변경
-	  $('#productList').on('click', '#countUpdate', function() {
-	        var cartCode = $(this).closest('tr').find('.ap_check').val(); // 상품 코드 가져오기
-	        var newCount = $(this).closest('tr').find('#count').val(); // 변경된 수량 가져오기
+document.addEventListener('DOMContentLoaded', function() {
 
-	        $.ajax({
-	            url: '/mypage/cart/updateCount', 
-	            type: 'POST',
-	            data: {"cartCode": cartCode, "newCount": newCount}, 
-	            success: function(data) {
-	                alert("상품 수량이 변경되었습니다.");
-	            },
-	            error: function() {
-	                
-	            }
-	        });
-	    });
-		
-		// 선택된 상품 가격의 합
-		$('#totalPrice').text(function(){
-			/* var checkList = $('.ap_check:checked').map(function(){
-				return $(this).val();
-			}).get(); */
-			
-			var totalPrice = 0;
-			$('.ap_check:checked').each(function(){
-				var price = parseInt($(this).closest('tr').find('td:eq(3)').text());
-				totalPrice += price;
-			});
-			return totalPrice;
-		});
-		
-		// 배송비 처리
-		$('#deliveryFee').text(function(){
-			var totalPrice = $('#totalPrice').val();
-			var deliveryFee = 0;
-			if(totalPrice > 50000){ // 5만원 이상시 배달비 무료.. ㅠ? 각 가게별로 count... 
-				deliveryFee = 0;
-			} else if(totalPrice < 50000){ // 5만원 미만 배달비 2500원 배달비는 2500원으로 고정
-				deliveryFee = 2500; 
-			}
-			return deliveryFee;
-		});
-		
-		// 결제예정금액
-		$('#payAmount').text(function(){
-			var totalPrice = $('#totalPrice').val();
-			var deliveryFee = $('#deliveryFee').val();
-			var payAmount = totalPrice + deliveryFee;
-			
-			return payAmount;
-		});
-		
-		// 선택 주문
-		$('#orderChecked').click(function(){
-			var checkList = $('.ap_check:checked').map(function(){
-				return $(this).val();
-			}).get();
-			
-			if(checkList.length === 0){
-				alert("선택된 상품이 없습니다.");
-				return;
-			}else {
-				$.ajax({
-					url: '/order/orderChecked', // 주소 수정 필요! 
-					type: 'POST',
-					data: {"checkList":checkList},
-					success: function(data){
-						
-					},
-					error: function(){
-						
-					}
-				});
-			}	
-		});
-		
-		// 전체 주문
-		$('#orderAll').click(function(){
-			$.ajax({
-				url: '/order/orderAll',
-				type: 'POST',
-				success: function(data){
-					
-				},
-				error: function(){
-					
-				}
-			});
-		});
-		
-		// 개별 주문
-		$('#productList').on('click','#orderProduct',function(){
-			var row = $(this).closest('tr');
-			var cartCode = row.find('.ap_check').val();
-			
-			$.ajax({
-				url: '/order/orderProduct',
-				type: 'POST',
-				data: {"cartCode":cartCode},
-				success: function(data){
-					
-				},
-				error: function(){
-					
-				}
-			});
-		});
-		
-	});//끝 
+    // 전체 선택, 해제
+    document.getElementById('allCheck').addEventListener('change', function() {
+        var checkboxes = document.querySelectorAll('.ap_check');
+        checkboxes.forEach(function(checkbox) {
+            checkbox.checked = this.checked;
+        }.bind(this));
+    });
+
+    // 선택된 상품 삭제
+    document.getElementById('deleteChecked').addEventListener('click', function() {
+        var checkList = Array.from(document.querySelectorAll('.ap_check:checked')).map(function(checkbox) {
+            return checkbox.value;
+        });
+
+        if (checkList.length === 0) {
+            alert("선택된 상품이 없습니다.");
+            return;
+        }
+
+        if (confirm("삭제하시겠습니까?")) {
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/mypage/cart/deleteChecked';
+
+            checkList.forEach(function(value) {
+                var input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'checkList[]';
+                input.value = value;
+                form.appendChild(input);
+            });
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+
+    // 전체 상품 삭제
+    document.getElementById('deleteAll').addEventListener('click', function() {
+        if (confirm("장바구니를 비우시겠습니까?")) {
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/mypage/cart/deleteAll';
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+
+    // 개별 상품 삭제
+    document.getElementById('productList').addEventListener('click', function(event) {
+        if (event.target && event.target.id === 'deleteProduct') {
+            var row = event.target.closest('tr');
+            var cartCode = row.querySelector('.ap_check').value;
+            if (confirm("해당 상품을 삭제하시겠습니까?")) {
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/mypage/cart/delete';
+
+                var input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'cartCode';
+                input.value = cartCode;
+                form.appendChild(input);
+
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+    });
+
+    // 상품 수량 변경
+    document.getElementById('productList').addEventListener('click', function(event) {
+        if (event.target && event.target.id === 'countUpdate') {
+            var cartCode = event.target.closest('tr').querySelector('.ap_check').value;
+            var newCount = event.target.closest('tr').querySelector('#count').value;
+
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/mypage/cart/updateCount';
+
+            var cartCodeInput = document.createElement('input');
+            cartCodeInput.type = 'hidden';
+            cartCodeInput.name = 'cartCode';
+            cartCodeInput.value = cartCode;
+            form.appendChild(cartCodeInput);
+
+            var newCountInput = document.createElement('input');
+            newCountInput.type = 'hidden';
+            newCountInput.name = 'newCount';
+            newCountInput.value = newCount;
+            form.appendChild(newCountInput);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+    
+ 	// 선택된 상품 가격의 합
+    document.getElementById('totalPrice').textContent = (function() {
+        var totalPrice = 0;
+        var checkboxes = document.querySelectorAll('.ap_check:checked');
+        checkboxes.forEach(function(checkbox) {
+            var price = parseInt(checkbox.closest('tr').querySelector('td:nth-child(4)').textContent);
+            totalPrice += price;
+        });
+        return totalPrice;
+    })();
+
+    // 배송비 처리
+    document.getElementById('deliveryFee').textContent = (function() {
+        var totalPrice = parseFloat(document.getElementById('totalPrice').textContent);
+        var deliveryFee = 0;
+        if (totalPrice > 50000) {
+            deliveryFee = 0;
+        } else {
+            deliveryFee = 2500;
+        }
+        return deliveryFee;
+    })();
+
+    // 결제예정금액
+    document.getElementById('payAmount').textContent = (function() {
+        var totalPrice = parseFloat(document.getElementById('totalPrice').textContent);
+        var deliveryFee = parseFloat(document.getElementById('deliveryFee').textContent);
+        var payAmount = totalPrice + deliveryFee;
+        return payAmount;
+    })();
+
+
+
+ 	// 선택 주문
+    document.getElementById('orderChecked').addEventListener('click', function() {
+        var checkList = [];
+        var checkboxes = document.querySelectorAll('.ap_check:checked');
+        checkboxes.forEach(function(checkbox) {
+            checkList.push(checkbox.value);
+        });
+        
+        if (checkList.length === 0) {
+            alert("선택된 상품이 없습니다.");
+            return;
+        }
+
+        // form 요소 생성
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/order/orderChecked';
+
+        // hidden input 요소 추가
+        checkList.forEach(function(cartCode) {
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'checkList';
+            input.value = cartCode;
+            form.appendChild(input);
+        });
+
+        // form을 body에 추가하고 submit
+        document.body.appendChild(form);
+        form.submit();
+    });
+
+    // 전체 주문
+    document.getElementById('orderAll').addEventListener('click', function() {
+        // form 요소 생성
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/order/orderAll';
+
+        // form을 body에 추가하고 submit
+        document.body.appendChild(form);
+        form.submit();
+    });
+
+    // 개별 주문
+    document.getElementById('productList').addEventListener('click', function(event) {
+        if (event.target && event.target.id === 'orderProduct') {
+            var cartCode = event.target.closest('tr').querySelector('.ap_check').value;
+
+            // form 요소 생성
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/order/orderProduct';
+
+            // hidden input 요소 추가
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'cartCode';
+            input.value = cartCode;
+            form.appendChild(input);
+
+            // form을 body에 추가하고 submit
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+
+
+});
+
 </script>
  

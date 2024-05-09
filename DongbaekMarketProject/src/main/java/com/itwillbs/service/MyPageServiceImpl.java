@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.itwillbs.domain.Cart2VO;
+import com.itwillbs.domain.CartVO;
 import com.itwillbs.persistence.MyPageDAO;
 
 @Service
@@ -21,21 +21,21 @@ public class MyPageServiceImpl implements MyPageService {
 	
 	// 장바구니에 담긴 상품 수 세어오기
 	@Override
-	public int selectCountCart(Cart2VO vo) throws Exception {
+	public int selectCountCart(CartVO vo) throws Exception {
 		logger.debug(" === S : selectCountCart(CartVO vo) 실행 === ");
 		return mdao.selectCountCart(vo);
 	}
 
 	// 장바구니 목록 가져오기
 	@Override
-	public List<Cart2VO> selectCartList(Cart2VO vo) throws Exception {
+	public List<CartVO> selectCartList(CartVO vo) throws Exception {
 		logger.debug(" === S : selectCartList(CartVO vo) 실행 === ");
 		return mdao.selectCartList(vo);
 	}
 
 	// 장바구니 상품 수량 변경
 	@Override
-	public void updateProductCount(Cart2VO vo) throws Exception {
+	public void updateProductCount(CartVO vo) throws Exception {
 		logger.debug(" === S : updateProductCount(int cart_code) 실행 === ");
 		mdao.updateProductCount(vo);
 	}
@@ -49,7 +49,7 @@ public class MyPageServiceImpl implements MyPageService {
 	
 	// 장바구니 비우기
 	@Override
-	public void deleteCartAllProduct(Cart2VO vo) throws Exception {
+	public void deleteCartAllProduct(CartVO vo) throws Exception {
 		logger.debug(" === S : deleteCartAllProduct(CartVO vo) 실행 === ");
 		mdao.deleteCartAllProduct(vo);
 	}
