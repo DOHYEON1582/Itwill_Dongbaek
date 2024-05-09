@@ -25,8 +25,6 @@
  	  }
 </script>
 
-
-
 <div id="container">
 	<div id="loginBox" style="margin-top: 100px;">
 		<img id="mainImg" src="/resources/images/logo1.png">	
@@ -50,9 +48,6 @@
 		계정이 없으신가요? <a href="/member/register">가입하기</a>
 	</div>
 </div>
-
-
-
 
 </body>
 </html>
