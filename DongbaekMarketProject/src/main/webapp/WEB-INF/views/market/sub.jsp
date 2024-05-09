@@ -260,7 +260,7 @@ $(document).ready(function(){
 	    	$(this).parent().prev().val(quantity + 1);
 	    });
 	    $(".quantity-left-minus").click(function(e){
-	    	var quantity = parseInt($(this).parent().next().val());
+	    	var quantity = parseInt($(this).parent().next().val());  
 	        if(quantity > 1){
 	            $(this).parent().next().val(quantity - 1);
 	        }
