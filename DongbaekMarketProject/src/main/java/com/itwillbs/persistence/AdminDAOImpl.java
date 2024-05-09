@@ -239,6 +239,14 @@ public class AdminDAOImpl implements AdminDAO {
 		
 		return sql.delete(NAMESPACE+".deleteChatRoom",room_idx);
 	}
+
+	@Override
+	public List<AdminProductVO> searchProduct(String product_name) throws Exception {
+		logger.debug(" searchProduct(String product_name) 호출 ");
+		
+		return sql.selectList(NAMESPACE+".searchProChat", product_name);
+	}
+	
 	
 	
 	

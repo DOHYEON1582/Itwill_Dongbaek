@@ -448,7 +448,12 @@
 	DELETE FROM chat_room WHERE room_idx = #{room_idx}
 </delete>
 
-
+<!-- 챗봇 상품 검색 -->
+<select id="searchProChat" resultType="com.itwillbs.domain.AdminProductVO">
+	SELECT * FROM product 
+	WHERE product_name LIKE CONCAT('%',#{product_name},'%')
+	
+</select>
 
 
 </mapper>

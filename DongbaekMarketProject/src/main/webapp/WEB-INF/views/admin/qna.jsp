@@ -234,7 +234,8 @@
 								
 								<tfoot>
 									<tr style="padding: 0px;">
-										<td><input id="chatBot-message" type="text"style="width: 300px; height: 100px; float: left; text-align: left; margin-right: 3px;"><button type="button" id="chatBot-send" style="margin:5px 0px 10px 0px">물어보기</button><button type="button" id="produce-search">상품조회</button></td>
+										<td><input id="chatBot-message" type="text"style="width: 300px; height: 100px; float: left; text-align: left; margin-right: 3px;">
+											<button type="button" id="chatBot-send" style="margin:5px 0px 10px 0px">물어보기</button><button type="button" id="product-search">상품조회</button></td>
 									</tr>
 								</tfoot>
 							</table>
@@ -300,7 +301,6 @@
       </div>
 </div>
 
-
 <table class="listTable" style="width: 99%; border-collapse: collapse; margin-left: 19px; background-color: white;">
     <thead>
         <tr>
@@ -326,9 +326,8 @@
 		<span aria-hidden="true">«</span>
 		</a>
 	</li>
+	
 	<li class="page-item active" aria-current="page"><a class="page-link border-0" href="#">1</a></li>
-	<li class="page-item"><a class="page-link border-0" href="#">2</a></li>
-	<li class="page-item"><a class="page-link border-0" href="#">3</a></li>
 	<li class="page-item">
 		<a class="page-link border-0" href="#" aria-label="Next">
 		<span aria-hidden="true">»</span>
@@ -339,8 +338,7 @@
 
 <script>
 //소켓 함수 모음
-
-	 $(document).ready(function() {
+$(document).ready(function() {
             //$("#joinBtn").click(openSocket);
             //$("#leaveBtn").click(closeSocket);
             $("#sendChat").click(send);
@@ -493,17 +491,49 @@
 	        if (message.length === 0) return;
 	        console.log(message);
 	        $('#modal-table1 tbody').append(
-				"<tr style='border:none;'><td style='text-align: right; width: 501px; border:none;'>"+message+"</td></tr>"
+				"<tr style='border:none;'><td colspan='7' style='text-align: right; width: 501px; border:none;'>"+message+"</td></tr>"
 			);
 	        
-	        $('#chatBot-message').val(" ");
+	        $('#chatBot-message').val("");
 	        const aiResponse = await fetchAIResponse(message);
 	        console.log(aiResponse);
 	        $('#modal-table1 tbody').append(
-					"<tr style='border:none;'><td style='text-align: left; width: 501px; border:none;'><label style='color:blue'>동백AI</label>:"
+					"<tr style='border:none;'><td colspan='7' style='text-align: left; width: 501px; border:none;'><label style='color:blue'>동백AI</label>:"
 					+aiResponse+"<br><label style='color: red;'>주문하시려면 상품조회 클릭!</label></td></tr>"
 				);
+	        $('#modal-table1 tbody').scrollTop($('#modal-table1 tbody')[0].scrollHeight);
 	        
+	        });
+	    
+	    $('#product-search').on('click',function(){
+	    	const product = $('#chatBot-message').val();
+	    	if (product.length === 0) return;
+	        console.log(product);
+	        
+	        $.ajax({
+	        	url : "/admin/prosearch/"+product,
+	        	type : "GET",
+	        	contentType : "charset=UTF-8",
+	        	success : function(data){
+	        		$('#chatBot-message').val("");
+	        		//alert(product);
+	        		console.log(data);
+	        		
+	        		$(data).each(function(idx,item){
+		        		$('#modal-table1 tbody').append(
+		        				"<tr style='border:none; width: 501px;'><td style= 'border:none;'>"+item.product_code
+								 +"</td><td style= 'border:none;'>"+item.product_name
+								 +"</td><td style= 'border:none;'><a href='http://localhost:8088/'><img style='width: 40px; height: 40px;' src='/resources/upload1/"+item.img1+"'></a>"
+								 +"</td><td style= 'border:none;'>"+item.price+"원"
+								 +"</td><td style= 'border:none;'>"+item.unit
+								 +"</td><td style= 'border:none;'>"+item.country
+								 +"</td><td style= 'border:none;'>"+item.category
+								 +"</td></tr>");
+	        		});
+	        		
+	        		$('#modal-table1 tbody').scrollTop($('#modal-table1 tbody')[0].scrollHeight);
+	        	}
+	        });
 	    });
 
 
