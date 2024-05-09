@@ -16,6 +16,8 @@ import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.QuestionVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
+import com.itwillbs.domain.SubscrbeProductVO;
+import com.itwillbs.domain.WishVO;
 import com.itwillbs.persistence.MarketDAO;
 
 @Service
@@ -107,5 +109,43 @@ public class MarketServiceImpl implements MarketService{
 		return mdao.questionDetail(q_code);
 	}
 
+	@Override
+	public List<ProductVO> getSubProductList() throws Exception {
+		logger.debug(" getSubProductList() 호출 ");
+		
+		return mdao.getSubProductList();
+	}
 
+	@Override
+	public List<WishVO> getUserWish(String user_id) throws Exception {
+		logger.debug(" getUserWish(String user_id) 호출 ");
+		
+		return mdao.getUserWish(user_id);
+	}
+
+	@Override
+	public int userProductWish(int product_code, String user_id) throws Exception {
+		logger.debug(" userProductWish(int product_code, String user_id) 호출 ");
+		int result = mdao.userProductWish(product_code, user_id);
+		if(result == 1) { // 찜 있음
+			mdao.deleteProductWish(product_code, user_id);
+			result = 0;
+		}else {
+			mdao.insertProductWish(product_code, user_id);
+			result = 1;
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int insertSubProduct(SubscrbeProductVO vo) throws Exception {
+		logger.debug(" insertSubProduct(SubscrbeProductVO vo) 호출 ");
+		
+		return mdao.insertSubProduct(vo);
+	}
+	
+	
+	
+	
 }
