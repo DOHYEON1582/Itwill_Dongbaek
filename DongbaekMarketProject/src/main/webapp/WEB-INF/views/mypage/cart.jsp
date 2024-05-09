@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+
 <%-- <%@ include file="../include/header.jsp"%> --%>
 <style>
 	.productList {
@@ -49,13 +52,13 @@
 							<td id="cart_code${list.cart_code }"><input type="checkbox" id="ap_check" name="ap_check" class="ap_check" value="${list.cart_code }"></td>
 							<td><img src="${pageContext.request.contextPath}/resources/images/product/${list.img1}" alt="Product Thumbnail" class="tab-image" style="width : 180px"></td>
 							<td>${list.store_name}<br>${list.product_name}</td><!-- 가게명, 상품명 -->
-							<td>${list.price }</td>
+							<td><fmt:formatNumber value="${list.price }" pattern="#,###"/></td>
 							<td>
-								<input type="number" id="count" name="count" value="${list.count }">
+								<input type="number" id="count" name="count" value="${list.count }" max="${list.max_account}">
 								<button type="button" id="countUpdate">변경</button>
 							</td>
 							<c:set var="total" value="${list.price * list.count }"/>
-							<td>${total}</td>
+							<td><fmt:formatNumber value="${total}" pattern="#,###"/></td>
 							<td>
 								<button type="button" id="orderProduct">주문하기(주문하기 페이지로)</button><br> 
 								<button type="button" id="deleteProduct">삭제(삭제)</button><br> 
@@ -123,7 +126,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 
-    // 전체 선택, 해제
+	// 전체 선택, 해제
     document.getElementById('allCheck').addEventListener('change', function() {
         var checkboxes = document.querySelectorAll('.ap_check');
         checkboxes.forEach(function(checkbox) {
@@ -165,12 +168,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (confirm("장바구니를 비우시겠습니까?")) {
         	
         	location.href="/mypage/cart/deleteAll";
-            /* var form = document.createElement('form');
-            form.method = 'POST';
-            form.action = '/mypage/cart/deleteAll'; */
-
-            /* document.body.appendChild(form);
-            form.submit(); */
         }
     });
 
@@ -223,20 +220,55 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
- 	// 선택된 상품 가격의 합
-    document.getElementById('totalPrice').textContent = (function() {
+ 	// 전체 선택, 해제
+    var allCheck = document.getElementById('allCheck');
+    var checkboxes = document.querySelectorAll('.ap_check');
+    
+    allCheck.addEventListener('change', function() {
+        checkboxes.forEach(function(checkbox) {
+            checkbox.checked = allCheck.checked;
+        });
+        calculatePrices(); // 전체 선택 및 해제 시 가격 재계산
+    });
+
+    checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            if (!checkbox.checked) {
+                allCheck.checked = false;
+            } else {
+                var allChecked = true;
+                checkboxes.forEach(function(cb) {
+                    if (!cb.checked) {
+                        allChecked = false;
+                    }
+                });
+                allCheck.checked = allChecked;
+            }
+            calculatePrices(); // 체크박스 선택 변경 시 가격 재계산
+        });
+    });
+
+    // 초기화 시 가격 계산
+    calculatePrices();
+
+    // 가격 계산 함수
+    function calculatePrices() {
         var totalPrice = 0;
         var checkboxes = document.querySelectorAll('.ap_check:checked');
         checkboxes.forEach(function(checkbox) {
             var price = parseInt(checkbox.closest('tr').querySelector('td:nth-child(4)').textContent);
             totalPrice += price;
         });
-        return totalPrice;
-    })();
+        var deliveryFee = calculateDeliveryFee(totalPrice);
+        var payAmount = totalPrice + deliveryFee;
 
-    // 배송비 처리
-    document.getElementById('deliveryFee').textContent = (function() {
-        var totalPrice = parseFloat(document.getElementById('totalPrice').textContent);
+        document.getElementById('totalPrice').textContent = addCommas(totalPrice);
+        document.getElementById('deliveryFee').textContent = checkboxes.length > 0 ? addCommas(deliveryFee) : 0; // 선택된 상품이 없으면 배송비를 0으로 설정
+        document.getElementById('payAmount').textContent = addCommas(payAmount);
+    }
+
+    // 배송비 계산 함수
+    function calculateDeliveryFee(totalPrice) {
         var deliveryFee = 0;
         if (totalPrice > 50000) {
             deliveryFee = 0;
@@ -244,19 +276,14 @@ document.addEventListener('DOMContentLoaded', function() {
             deliveryFee = 2500;
         }
         return deliveryFee;
-    })();
+    }
 
-    // 결제예정금액
-    document.getElementById('payAmount').textContent = (function() {
-        var totalPrice = parseFloat(document.getElementById('totalPrice').textContent);
-        var deliveryFee = parseFloat(document.getElementById('deliveryFee').textContent);
-        var payAmount = totalPrice + deliveryFee;
-        return payAmount;
-    })();
+    // 콤마 추가 함수
+    function addCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
 
-
-
- 	// 선택 주문
+    // 선택 주문
     document.getElementById('orderChecked').addEventListener('click', function() {
         var checkList = [];
         var checkboxes = document.querySelectorAll('.ap_check:checked');
@@ -272,7 +299,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // form 요소 생성
         var form = document.createElement('form');
         form.method = 'POST';
-        form.action = '/order/orderChecked';
+        form.action = '/order/orderform';
 
         // hidden input 요소 추가
         checkList.forEach(function(cartCode) {
@@ -293,7 +320,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // form 요소 생성
         var form = document.createElement('form');
         form.method = 'POST';
-        form.action = '/order/orderAll';
+        form.action = '/order/orderform';
 
         // form을 body에 추가하고 submit
         document.body.appendChild(form);
@@ -308,7 +335,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // form 요소 생성
             var form = document.createElement('form');
             form.method = 'POST';
-            form.action = '/order/orderProduct';
+            form.action = '/order/orderform';
 
             // hidden input 요소 추가
             var input = document.createElement('input');

@@ -53,6 +53,7 @@ public class MyPageController {
 
 		// 장바구니 리스트
 		List<CartVO> cartList = mService.selectCartList(cvo);
+		logger.debug("cartList : " + cartList);
 
 		PageMaker pageMaker = new PageMaker();
 
