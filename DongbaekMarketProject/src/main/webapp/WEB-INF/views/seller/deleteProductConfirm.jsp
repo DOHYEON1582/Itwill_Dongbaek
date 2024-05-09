@@ -1,9 +1,6 @@
-<%@page import="com.itwillbs.domain.ReviewVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="java.util.*" %>
-<%@ page import="com.itwillbs.domain.ReviewVO" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="en">
 <head>
 <title>동백마켓</title>
@@ -46,9 +43,9 @@ a{
   display: none;
 }
 
-/* 사이트의 높이를 5000px로 만들어 스크롤 생성 */
+/* 사이트의 높이를 1500px로 만들어 스크롤 생성 */
 body {
-  height: 5000px;
+  height: 1500px;
 }
 
 /* 사이드바의 너비와 높이를 변수를 통해 통제 */
@@ -107,6 +104,11 @@ body {
   transform: translate(-20px, 0);   /* 둥근 모서리의 너비만큼 X축 이동, Y축 고정 */
 }
 /* 출처: https://me-in-journey.com/entry/HTMLCSS-사이드바-메뉴-만들기-나타나는-2차-메뉴-만들기-feat-transform-translate [내 코딩 여정:티스토리] */
+
+.buy-btn:hover {
+            background-color: #0056b3;
+        }
+/* form태그 */
 
 
 .mylogo {
@@ -382,89 +384,52 @@ body {
   </ul>
 </aside>
 
-	
-	
-<%
-    // 세션에서 사용자의 아이디를 가져옴
-    String loggedInUserId = (String) session.getAttribute("userId");
-%>
-	
-<div style="margin: 20px; text-align: center;">
-    <h2>리뷰 상세 정보</h2>
-    <table style="width: 50%; margin: 0 auto;">
-        <tr>
-            <th style="padding: 10px; border: 1px solid #000;">리뷰 코드</th>
-            <td style="padding: 10px; border: 1px solid #000;">${review.review_code}</td>
-        </tr>
-        <tr>
-            <th style="padding: 10px; border: 1px solid #000;">상품 코드</th>
-            <td style="padding: 10px; border: 1px solid #000;">${review.product_code}</td>
-        </tr>
-        <tr>
-            <th style="padding: 10px; border: 1px solid #000;">작성일</th>
-            <td style="padding: 10px; border: 1px solid #000;">${review.regdate}</td>
-        </tr>
-        <tr>
-            <th style="padding: 10px; border: 1px solid #000;">제목</th>
-            <td style="padding: 10px; border: 1px solid #000;">${review.title}</td>
-        </tr>
-        <tr>
-            <th style="padding: 10px; border: 1px solid #000;">내용</th>
-            <td style="padding: 10px; border: 1px solid #000;">${review.content}</td>
-        </tr>
-        <tr>
-            <th style="padding: 10px; border: 1px solid #000;">별점</th>
-            <td style="padding: 10px; border: 1px solid #000;">
-                <c:forEach begin="1" end="${review.star}">
-                    <span style="display: inline-block; font-size: 20px; color: gold;">&#9733;</span>
-                </c:forEach>
-            </td>
-        </tr>
-        <tr>
-            <th style="padding: 10px; border: 1px solid #000;">사용자 아이디</th>
-            <td style="padding: 10px; border: 1px solid #000;">${review.user_id}</td>
-        </tr>
-        <tr>
-            <td colspan="2" style="padding: 10px;">
-                <button onclick="location.href='/seller/reviewReply?review_code=${review.review_code}'">답글 달기</button>
-                <!-- 수정 삭제 버튼 -->
-	        <c:if test="${review.user_id eq loggedInUserId}">
-	            <button onclick="location.href='/seller/replymodify?review_code=${review.review_code}'">수정</button>
-	            <button onclick="deleteReview('${review.review_code}')">삭제</button>
-	        </c:if>
-            </td>
-        </tr>
-    </table>
+
+<div id="deleteConfirm" style="text-align: center; font-size: 24px; margin-bottom: 20px;">상품 삭제 확인</div>
+    <div class="form-container" style="background-color: white; padding: 20px; max-width: 400px; margin: 0 auto; border: 1px solid #ccc;">
+        <form action="/seller/deleteProduct" method="post" style="max-width: 400px; margin: 0 auto;">
+            <p>다음 상품을 삭제하시겠습니까?</p>
+            <p>상품명: ${product.product_name}</p>
+            <p>가격: ${product.price}</p>
+            <p>카테고리: ${product.category}</p>
+            <p>원산지: ${product.country}</p>
+            <p>상품 설명: ${product.product_explain}</p>
+            <input type="hidden" name="product_code" value="${product.product_code}">
+            <div class="button-group" style="display: flex;">
+                <button type="submit" style="flex-grow: 1; padding: 15px; background-color: #4CAF50; color: white; border: none; cursor: pointer; font-size: 18px; text-decoration: none; margin: 0 5px; text-align: center;">삭제</button>
+                <a href="/seller/product" style="flex-grow: 1; padding: 15px; background-color: #4CAF50; color: white; border: none; cursor: pointer; font-size: 18px; text-decoration: none; margin: 0 5px; text-align: center;">취소</a>
+            </div>
+        </form>
 </div>
 
 
 
 
-	
 
 
 
 
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	<footer style="font-family: 'Roboto', sans-serif; padding-bottom: 0;">
 
     <div class="row justify-content-center" id="r">

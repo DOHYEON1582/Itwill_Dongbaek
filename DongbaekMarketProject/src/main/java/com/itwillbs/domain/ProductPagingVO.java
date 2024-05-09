@@ -14,7 +14,7 @@ public class ProductPagingVO {
 	private boolean prev; // 이전버튼
 	private boolean next; // 다음버튼
 
-	private int pageBlock = 2; // 페이지 블럭의 개수
+	private int pageBlock = 3; // 페이지 블럭의 개수
 	
 	private ProductCri cri;
 

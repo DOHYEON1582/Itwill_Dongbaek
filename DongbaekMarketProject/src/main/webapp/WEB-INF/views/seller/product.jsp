@@ -275,16 +275,17 @@ body {
 				</div>
 
 				<div class="col-sm-4 offset-sm-2 offset-md-0 col-lg-5 d-none d-lg-block" class="search1">
-					<div class="search-bar row bg-light p-2 my-4 rounded-4">
+					<div>
+<!-- 					<div class="search-bar row bg-light p-2 my-4 rounded-4" > -->
 						<div class="col-9 col-md-8 align-self-center">
-							<form id="search-form" class="text-center" action="search.html" method="post">
-								<input type="text" class="form-control border-0 bg-transparent" placeholder="찾고 싶은 음식, 시장을 검색해보세요!" />
-							</form>
+<!-- 							<form id="search-form" class="text-center" action="search.html" method="post"> -->
+<!-- 								<input type="text" class="form-control border-0 bg-transparent" placeholder="찾고 싶은 음식, 시장을 검색해보세요!" /> -->
+<!-- 							</form> -->
 						</div>
 						<div class="col-3 col-md-4 align-self-center text-end">
-							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-               					<path fill="currentColor" d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z" />
-							</svg>
+<!-- 							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"> -->
+<!--                					<path fill="currentColor" d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z" /> -->
+<!-- 							</svg> -->
 						</div>
 					</div>
 				</div>
@@ -353,7 +354,6 @@ body {
       <ul>
         <li><a href="/seller/product">상품 목록</a></li>
         <li><a href="/seller/productregist">상품 등록</a></li>
-        <li><a href="/seller/productmodify">상품 수정</a></li>
       </ul>
     </li>
     <li>
@@ -406,27 +406,27 @@ body {
                     <td style="padding: 8px;">
                         <div style="text-align: center;">
                             <div style="margin-bottom: 20px;"> <!-- 여기서 간격 조정 -->
-                                <a href="/seller/productDetail?id=${product.product_code}" style="display: inline-block; padding: 10px; text-decoration: none;"> <!-- 패딩 추가 -->
+                                <a href="/seller/productDetail?product_code=${product.product_code}" style="display: inline-block; padding: 10px; text-decoration: none;"> <!-- 패딩 추가 -->
                                     <c:choose>
-                                        <c:when test="${not empty product.img1}">
-                                            <img src="<c:url value='/resources/images/${product.img1}' />" alt="상품 이미지" style="max-width: 100px; max-height: 100px;">
-                                        </c:when>
-                                        <c:when test="${not empty product.img2}">
-                                            <img src="<c:url value='/resources/images/${product.img2}' />" alt="상품 이미지" style="max-width: 100px; max-height: 100px;">
-                                        </c:when>
-                                        <c:when test="${not empty product.img3}">
-                                            <img src="<c:url value='/resources/images/${product.img3}' />" alt="상품 이미지" style="max-width: 100px; max-height: 100px;">
-                                        </c:when>
-                                        <c:otherwise>
-                                            <img src="/resources/images/noimg.png" alt="상품 이미지 없음" style="max-width: 100px; max-height: 100px;">
-                                        </c:otherwise>
-                                    </c:choose>
+									    <c:when test="${not empty product.img1}">
+									        <img src="/seller/download?fileName=${product.img1 }" alt="상품 이미지" style="max-width: 200px; max-height: 200px;">
+									    </c:when>
+									    <c:when test="${not empty product.img2}">
+									        <img src="/seller/download?fileName=${product.img2 }" alt="상품 이미지" style="max-width: 200px; max-height: 200px;">
+									    </c:when>
+									    <c:when test="${not empty product.img3}">
+									        <img src="/seller/download?fileName=${product.img3 }" alt="상품 이미지" style="max-width: 200px; max-height: 200px;">
+									    </c:when>
+									    <c:otherwise>
+									        <img src="/resources/images/noimg.png" alt="상품 이미지 없음" style="max-width: 100px; max-height: 100px;">
+									    </c:otherwise>
+									</c:choose>
                                     <div style="margin-top: 10px;"> <!-- 상품 이름 아래에 여백 추가 -->
                                         <p style="color: #000">${product.product_name}</p> <!-- 상품 이름에 상단 여백 추가 -->
                                         <p style="color: #000">${product.price}</p>
                                         <p>
-                                            <a href="/seller/productmodify?id=${product.product_code}" style="color: #000">수정</a> |
-                                            <a href="#" onclick="deleteProduct(${product.product_code})" style="color: #000">삭제</a>
+                                            <a href="/seller/productmodify?product_code=${product.product_code}" style="color: #000">수정</a> |
+                                            <a href="#" onclick="confirmDelete(${product.product_code})" style="color: #000">삭제</a>
                                         </p>
                                         <!-- 필요한 다른 정보를 여기에 추가할 수 있습니다 -->
                                     </div>
@@ -473,7 +473,14 @@ body {
 </div>
 
 
+<script type="text/javascript">
+function confirmDelete(productCode) {
+    if (confirm("상품을 삭제하시겠습니까?")) {
+        window.location.href = "/seller/deleteProduct?product_code=" + productCode;
+    }
+}
 
+</script>
 
 
 

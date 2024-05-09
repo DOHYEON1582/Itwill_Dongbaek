@@ -61,12 +61,28 @@ public class ProductDAOImpl implements ProductDAO {
 	
 	@Override
     public int getProductCode() throws Exception {
+		logger.debug(" getProductCode() 실행 ");
         return sqlSession.selectOne(NAMESPACE + ".getProductCode");
     }
 	
 	@Override
     public String getImagePathByProductCode(int product_code) throws Exception {
+		logger.debug(" getImagePathByProductCode(int product_code) 실행 ");
         return sqlSession.selectOne(NAMESPACE + ".getImagePathByProductCode", product_code);
     }
+	
+	@Override
+    public void updateProduct(ProductVO product) throws Exception {
+		logger.debug(" updateProduct(ProductVO product) 실행 ");
+        sqlSession.update(NAMESPACE + ".updateProduct", product);
+    }
+
+	@Override
+	public void deleteProduct(int product_code) throws Exception {
+		logger.debug(" deleteProduct(int product_code) 실행 ");
+		sqlSession.delete(NAMESPACE+".deleteProduct", product_code);
+		
+	}
+	
 	
 }

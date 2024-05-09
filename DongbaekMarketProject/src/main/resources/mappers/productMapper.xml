@@ -68,6 +68,22 @@
     	SELECT MAX(product_code) FROM product
 	</select>
 
+	<!-- 상품 수정 -->
+	<update id="updateProduct" parameterType="com.itwillbs.domain.ProductVO">
+	    UPDATE product
+	    SET category = #{category}, 
+	        product_name = #{product_name}, 
+	        unit = #{unit}, 
+	        price = #{price}, 
+	        img1 = #{img1}, 
+	        img2 = #{img2}, 
+	        img3 = #{img3}, 
+	        product_explain = #{product_explain}, 
+	        max_account = #{max_account}, 
+	        country = #{country}
+	    WHERE product_code = #{product_code}
+	</update>
+
 
 	<!-- 상품 삭제 -->
     <delete id="deleteProduct" parameterType="int">

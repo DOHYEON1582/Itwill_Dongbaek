@@ -20,4 +20,6 @@ public interface ReviewReplyDAO {
 	public void replyModify(ReviewVO rvo) throws Exception; // 리뷰 답글 수정
 	
 	public ReviewVO getReviewByParams(String userId, int productCode, int orderCode) throws Exception;
+	
+	
 }

@@ -20,4 +20,8 @@ public interface ProductService {
     public int getProductCode() throws Exception; // 이미지와 같이 들어온 상품 코드
 
     public String getImagePathByProductCode(int product_code) throws Exception; // 이미지 파일 경로를 저장하고 조회하는 메서드
+    
+    public void updateProduct(ProductVO product) throws Exception; // 상품 수정
+    
+    public void deleteProduct(int product_code) throws Exception; // 상품 삭제
 }

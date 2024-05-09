@@ -74,8 +74,24 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
     public String getImagePathByProductCode(int product_code) throws Exception {
-        logger.debug("getImagePathByProductCode(int product_code) 호출");
+        logger.debug(" getImagePathByProductCode(int product_code) 호출");
         return pdao.getImagePathByProductCode(product_code);
     }
+	
+	@Override
+    public void updateProduct(ProductVO product) throws Exception {
+		logger.debug(" updateProduct(ProductVO product) 호출");
+        pdao.updateProduct(product);
+    }
+
+
+	@Override
+	public void deleteProduct(int product_code) throws Exception {
+		logger.debug(" deleteProduct(int product_code) 호출");
+		pdao.deleteProduct(product_code);
+		
+	}
+	
+	
 	
 }

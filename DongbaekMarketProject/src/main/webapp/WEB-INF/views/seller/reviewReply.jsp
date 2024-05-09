@@ -271,16 +271,17 @@ body {
 				</div>
 
 				<div class="col-sm-4 offset-sm-2 offset-md-0 col-lg-5 d-none d-lg-block" class="search1">
-					<div class="search-bar row bg-light p-2 my-4 rounded-4">
+					<div>
+<!-- 					<div class="search-bar row bg-light p-2 my-4 rounded-4" > -->
 						<div class="col-9 col-md-8 align-self-center">
-							<form id="search-form" class="text-center" action="search.html" method="post">
-								<input type="text" class="form-control border-0 bg-transparent" placeholder="찾고 싶은 음식, 시장을 검색해보세요!" />
-							</form>
+<!-- 							<form id="search-form" class="text-center" action="search.html" method="post"> -->
+<!-- 								<input type="text" class="form-control border-0 bg-transparent" placeholder="찾고 싶은 음식, 시장을 검색해보세요!" /> -->
+<!-- 							</form> -->
 						</div>
 						<div class="col-3 col-md-4 align-self-center text-end">
-							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-               					<path fill="currentColor" d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z" />
-							</svg>
+<!-- 							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"> -->
+<!--                					<path fill="currentColor" d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z" /> -->
+<!-- 							</svg> -->
 						</div>
 					</div>
 				</div>
@@ -393,7 +394,7 @@ body {
 <!--             <input type="hidden" name="review_code" value="100"> -->
             <input type="hidden" name="review_code" value="${param.review_code}">
             <input type="hidden" name="user_id" value="itwill">
-            <input type="hidden" name="regdate" value="${review.regdate }">
+            <input type="hidden" name="regdate" value="">
 <%--             <input type="hidden" name="user_id" value="${user_id}"> --%>
             <input type="text" id="title" name="title" placeholder="리뷰 제목" style="font-family: Arial, sans-serif; padding: 5px; border: 1px solid #CCCCCC; margin-bottom: 10px;">
             <br>
@@ -407,6 +408,13 @@ body {
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
     $(document).ready(function() {
+    	// 페이지가 로드될 때 실행되는 함수
+        var currentDate = new Date();
+        // 날짜를 YYYY-MM-DD 형식으로 변환
+        var formattedDate = currentDate.toISOString().split('T')[0];
+        // regdate 필드에 날짜 채우기
+        $('#regdate').val(formattedDate);
+        
         $('#submitBtn').click(function() {
             var title = $('#title').val();
             var replyContent = $('#replyContent').val();

@@ -270,16 +270,17 @@ body {
 				</div>
 
 				<div class="col-sm-4 offset-sm-2 offset-md-0 col-lg-5 d-none d-lg-block" class="search1">
-					<div class="search-bar row bg-light p-2 my-4 rounded-4">
+					<div>
+<!-- 					<div class="search-bar row bg-light p-2 my-4 rounded-4" > -->
 						<div class="col-9 col-md-8 align-self-center">
-							<form id="search-form" class="text-center" action="search.html" method="post">
-								<input type="text" class="form-control border-0 bg-transparent" placeholder="찾고 싶은 음식, 시장을 검색해보세요!" />
-							</form>
+<!-- 							<form id="search-form" class="text-center" action="search.html" method="post"> -->
+<!-- 								<input type="text" class="form-control border-0 bg-transparent" placeholder="찾고 싶은 음식, 시장을 검색해보세요!" /> -->
+<!-- 							</form> -->
 						</div>
 						<div class="col-3 col-md-4 align-self-center text-end">
-							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-               					<path fill="currentColor" d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z" />
-							</svg>
+<!-- 							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"> -->
+<!--                					<path fill="currentColor" d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z" /> -->
+<!-- 							</svg> -->
 						</div>
 					</div>
 				</div>
@@ -348,7 +349,6 @@ body {
       <ul>
         <li><a href="/seller/product">상품 목록</a></li>
         <li><a href="/seller/productregist">상품 등록</a></li>
-        <li><a href="/seller/productmodify">상품 수정</a></li>
       </ul>
     </li>
     <li>
