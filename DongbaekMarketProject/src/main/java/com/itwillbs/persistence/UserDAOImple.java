@@ -1,7 +1,5 @@
 package com.itwillbs.persistence;
 
-import java.security.MessageDigest;
-import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
-import com.itwillbs.domain.AuthVO;
+import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.ReviewVO;
@@ -183,16 +181,17 @@ public class UserDAOImple implements UserDAO {
 	    return sql.selectList(NAMESPACE + ".selectProduct", map);
 	}
 	
-	
+	// cart session 생성을 위한 코드
+	// 장바구니 상품 갯수 조회
+	@Override
+	public int selectCountCart(String user_id) throws Exception {
+		return sql.selectOne(NAMESPACE+".selectCountCart",user_id);
+	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	// bundle_code 가져오기
+	@Override
+	public CartVO selectBundleCode(String user_id) throws Exception {
+		return sql.selectOne(NAMESPACE+".selectBundleCode",user_id);
+	}
+
 }

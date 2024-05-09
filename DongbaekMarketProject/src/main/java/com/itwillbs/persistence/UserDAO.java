@@ -3,6 +3,7 @@ package com.itwillbs.persistence;
 import java.util.List;
 import java.util.Map;
 
+import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.ReviewVO;
@@ -57,4 +58,12 @@ public interface UserDAO {
 	// 상품
 	public List<ProductVO> productList(int product_code, String orderBy) throws Exception;
 
+	// cart session 생성을 위한 코드
+	// 장바구니 상품 갯수 조회
+	public int selectCountCart(String user_id) throws Exception;
+		
+	// bundle_code 가져오기
+	public CartVO selectBundleCode(String user_id) throws Exception;
+
+		
 }

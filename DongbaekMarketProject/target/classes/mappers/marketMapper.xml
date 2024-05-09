@@ -162,5 +162,12 @@
 		SELECT COUNT(*) FROM answer WHERE q_code = #{q_code}
 	</select>
 
+	<!-- 0509 카트 번호 생성 -->
+	<!-- maxCartCode 가져오기 -->
+	<select id="selectMaxCartCode" resultType="int">
+		SELECT Ifnull(Max(cart_code), 0) AS cart_code
+		FROM   cart   
+	</select>
+	
 </mapper>
 

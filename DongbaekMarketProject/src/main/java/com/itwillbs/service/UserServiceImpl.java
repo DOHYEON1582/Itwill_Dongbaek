@@ -8,11 +8,10 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.itwillbs.domain.AuthVO;
+import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.ReviewVO;
@@ -148,11 +147,17 @@ public class UserServiceImpl implements UserService {
 		return udao.selectProductOrderBy(map);
 	}
 	
-	
+	// 0509 cart session 생성을 위한 코드
+	// 장바구니 상품 갯수 조회
+	@Override
+	public int selectCountCart(String user_id) throws Exception {
+		return udao.selectCountCart(user_id);
+	}
 
-	
+	// bundle_code 가져오기
+	@Override
+	public CartVO selectBundleCode(String user_id) throws Exception {
+		return udao.selectBundleCode(user_id);
+	}
 
-	
-
-	
 }

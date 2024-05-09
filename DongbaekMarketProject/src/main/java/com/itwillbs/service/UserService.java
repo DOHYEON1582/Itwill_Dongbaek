@@ -2,6 +2,7 @@ package com.itwillbs.service;
 
 import java.util.List;
 
+import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.ReviewVO;
@@ -57,7 +58,12 @@ public interface UserService {
 	//public List<ProductVO> getProduct(int product_code) throws Exception;
 	public List<ProductVO> getProduct(int product_code, String orderBy) throws Exception;
 
-	
+	// 0509 cart session 생성을 위한 코드
+	// 장바구니 상품 갯수 조회
+	public int selectCountCart(String user_id) throws Exception;
+		
+	// bundle_code 가져오기
+	public CartVO selectBundleCode(String user_id) throws Exception;
 	
 	
 	

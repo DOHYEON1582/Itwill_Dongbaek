@@ -146,5 +146,13 @@ public class MarketServiceImpl implements MarketService{
 		logger.debug(" q_code : " + q_code);
 		logger.debug(" count : " + count);
 		return count > 0;
-  }
+	}
+	
+	// 0509 카트 번호 생성
+	// maxCartCode 가져오기
+	@Override
+	public int selectMaxCartCode() throws Exception {
+		logger.debug(" selectMaxCartCode() 실행 ");
+		return mdao.selectMaxCartCode();
+	}
 }

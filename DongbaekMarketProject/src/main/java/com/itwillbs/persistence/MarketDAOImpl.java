@@ -153,4 +153,12 @@ public class MarketDAOImpl implements MarketDAO{
 		return sqlSession.selectOne(NAMESPACE + ".checkDuplicateAnswer", q_code);
 	}
 	
+	// 0509 카트 번호 생성
+	// maxCartCode 가져오기
+	@Override
+	public int selectMaxCartCode() throws Exception {
+		logger.debug(" selectMaxCartCode() 호출");
+		return sqlSession.selectOne(NAMESPACE+".selectMaxCartCode");
+	}
+		
 }
