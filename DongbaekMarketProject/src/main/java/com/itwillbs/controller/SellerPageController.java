@@ -329,52 +329,61 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	// 리뷰에 대한 답글 작성 페이지로 이동
 	// http://localhost:8088/seller/reviewReply
     @RequestMapping(value = "/reviewReply", method = RequestMethod.GET)
-    public String reviewReplyPage(int review_code, Model model) throws Exception {
-        // 특정 리뷰에 대한 답글 작성 페이지로 이동
-        model.addAttribute("review", rService.getReviewByCode(review_code));
-        return "seller/reviewReply";
-    }
+    public String reviewReplyPage(@RequestParam("user_id") String user_id,
+            @RequestParam("product_code") int product_code,
+            @RequestParam("order_code") int order_code,
+            Model model) throws Exception{
+	ReviewVO parentReview = rService.getReviewByParams(user_id, product_code, order_code);
+	model.addAttribute("parentReview", parentReview);
+	return "seller/reviewReply"; // 답글 작성 페이지로 이동
+	}
 
 
     // 리뷰에 대한 답글 작성 처리
     @ResponseBody
     @RequestMapping(value = "/reviewReplySubmit", method = RequestMethod.POST)
-    public String reviewReplySubmit(ReviewVO rvo, HttpSession session) throws Exception {
-    	logger.debug("asdass13213213213231");
-        try {
-            // 부모 리뷰의 코드를 세션에서 가져와서 설정
+    public String replySubmit(ReviewVO rvo) throws Exception{
+        rService.addReply(rvo);
+        return "redirect:/reviewDetail?review_code=" + rvo.getReview_code(); // 답글이 추가된 리뷰 상세 페이지로 이동
+    }
+//    @ResponseBody
+//    @RequestMapping(value = "/reviewReplySubmit", method = RequestMethod.POST)
+//    public String reviewReplySubmit(ReviewVO rvo, HttpSession session) throws Exception {
+//    	logger.debug("asdass13213213213231");
+//        try {
+//            // 부모 리뷰의 코드를 세션에서 가져와서 설정
             //Integer parentReviewCode = (Integer) session.getAttribute("parentReviewCode");
-            Integer parentReviewCode = rvo.getReview_code();
+//            Integer parentReviewCode = rvo.getReview_code();
             
             // 부모 리뷰의 코드가 유효한지 확인
-            if (parentReviewCode != null && parentReviewCode > 0) {
+//            if (parentReviewCode != null && parentReviewCode > 0) {
                 // 부모 리뷰의 코드를 설정
-                rvo.setReview_code(parentReviewCode);
+//                rvo.setReview_code(parentReviewCode);
 
                 // 답글 작성 서비스 호출
-                rService.addReply(rvo);
-                logger.debug("답글 작성 성공");
+//                rService.addReply(rvo);
+//                logger.debug("답글 작성 성공");
 
                 // 리뷰 상세 페이지로 리다이렉트
 //                return "redirect:/seller/reviewDetail?review_code=" + parentReviewCode;
-                return "/seller/reviewDetail?review_code=" + parentReviewCode;
-            } else { 
-                logger.debug("답글 작성 실패: 부모 리뷰 코드가 유효하지 않음");
-              
-               return "/seller/review";
+//                return "/seller/reviewDetail?review_code=" + parentReviewCode;
+//            } else { 
+//                logger.debug("답글 작성 실패: 부모 리뷰 코드가 유효하지 않음");
+//              
+//               return "/seller/review";
 //               return "redirect:/seller/review";
-            }
-        } catch (Exception e) {
-            logger.error("답글 작성 실패: " + e.getMessage());
-            return "/seller/review";
+//            }
+//        } catch (Exception e) {
+//            logger.error("답글 작성 실패: " + e.getMessage());
+//            return "/seller/review";
 //            return "redirect:/seller/review";
-        }
-    }
+//        }
+//    }
 
 
     // 리뷰 답글 수정 처리
     @ResponseBody
-    @RequestMapping(value = "/ReplyModify", method = RequestMethod.POST)
+    @RequestMapping(value = "/replymodify", method = RequestMethod.POST)
     public String ReplyModify(@RequestBody ReviewVO rvo) {
         try {
             rService.replyModify(rvo);

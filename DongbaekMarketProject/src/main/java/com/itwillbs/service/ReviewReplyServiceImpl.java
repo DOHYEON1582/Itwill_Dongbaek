@@ -41,6 +41,12 @@ public class ReviewReplyServiceImpl implements ReviewReplyService {
 	@Override
 	public void addReply(ReviewVO rvo) throws Exception {
 		logger.debug(" addReply(ReviewVO reply) 호출 ");
+		// 기존 리뷰의 re_ref 값을 사용하여 그룹 번호 설정
+        rvo.setRe_ref(rvo.getReview_code());
+        // 기존 리뷰의 re_lev 값에 1을 더하여 계층 설정
+        rvo.setRe_lev(rvo.getRe_lev() + 1);
+        // 기존 리뷰의 re_seq 값에 1을 더하여 순서 설정
+        rvo.setRe_seq(rvo.getRe_seq() + 1);
 		rdao.addReply(rvo);
 	}
 
@@ -50,7 +56,10 @@ public class ReviewReplyServiceImpl implements ReviewReplyService {
         rdao.replyModify(rvo);
     }
 
-	
+	@Override
+    public ReviewVO getReviewByParams(String userId, int productCode, int orderCode) throws Exception{
+        return rdao.getReviewByParams(userId, productCode, orderCode);
+    }
 	
 	
 }

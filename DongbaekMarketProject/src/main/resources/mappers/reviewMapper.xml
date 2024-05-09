@@ -45,14 +45,26 @@
     </insert>
 
 	<!-- 리뷰 답글 추가 -->
-    <insert id="addReply" parameterType="com.itwillbs.domain.ReviewVO">
-        INSERT INTO review (review_code,product_code, regdate, title, content, star, user_id, img1, img2, img3, order_code, re_lev, re_ref, re_seq)
-        VALUES (#{review_code}+0.1,#{product_code}, #{regdate}, #{title}, #{content}, #{star}, #{user_id}, #{img1}, #{img2}, #{img3}, #{order_code}, #{re_lev}, #{re_ref}, #{re_seq})
-    </insert>
+	<!-- 	<insert id="addReply" parameterType="com.itwillbs.domain.ReviewVO"> -->
+	<!-- 	    INSERT INTO review (product_code, regdate, title, content, star, user_id, img1, img2, img3, order_code, re_lev, re_ref, re_seq) -->
+	<!-- 	    VALUES (#{product_code}, #{regdate}, #{title}, #{content}, #{star}, #{user_id}, #{img1}, #{img2}, #{img3}, #{order_code}, #{re_lev}, #{re_ref}, #{re_seq}) -->
+	<!-- 	</insert> -->
+    
  	<!-- 리뷰 답글 수정 -->
 	<update id="replyModify" parameterType="com.itwillbs.domain.ReviewVO">
 	    UPDATE review
-	    SET content = #{content} -- Assuming 'content' is the field you want to modify
+	    SET content = #{content}
 	    WHERE review_code = #{review_code}
 	</update>
+	
+	<select id="getReviewByParams" parameterType="map" resultMap="review">
+        SELECT * FROM review
+        WHERE user_id = #{user_id} AND product_code = #{product_code} AND order_code = #{order_code}
+    </select>
+
+	<!-- 리뷰 답글 추가 -->
+    <insert id="addReply" parameterType="com.itwillbs.domain.ReviewVO">
+        INSERT INTO review (user_id, product_code, order_code, content, star, ...) 
+        VALUES (#{user_id}, #{product_code}, #{order_code}, #{content}, #{star}, ...)
+    </insert>
 </mapper>

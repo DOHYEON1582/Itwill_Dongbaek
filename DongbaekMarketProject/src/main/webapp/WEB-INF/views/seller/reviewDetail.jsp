@@ -2,6 +2,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="java.util.*" %>
+<%@ page import="com.itwillbs.domain.ReviewVO" %>
 <html lang="en">
 <head>
 <title>동백마켓</title>
@@ -382,7 +384,10 @@ body {
 
 	
 	
-	
+<%
+    // 세션에서 사용자의 아이디를 가져옴
+    String loggedInUserId = (String) session.getAttribute("userId");
+%>
 	
 <div style="margin: 20px; text-align: center;">
     <h2>리뷰 상세 정보</h2>
@@ -422,6 +427,11 @@ body {
         <tr>
             <td colspan="2" style="padding: 10px;">
                 <button onclick="location.href='/seller/reviewReply?review_code=${review.review_code}'">답글 달기</button>
+                <!-- 수정 삭제 버튼 -->
+	        <c:if test="${review.user_id eq loggedInUserId}">
+	            <button onclick="location.href='/seller/replymodify?review_code=${review.review_code}'">수정</button>
+	            <button onclick="deleteReview('${review.review_code}')">삭제</button>
+	        </c:if>
             </td>
         </tr>
     </table>

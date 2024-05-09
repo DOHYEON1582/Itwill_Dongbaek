@@ -1,6 +1,8 @@
 package com.itwillbs.persistence;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -48,6 +50,7 @@ public class ReviewReplyDAOImpl implements ReviewReplyDAO {
     @Override
     public void addReply(ReviewVO rvo) throws Exception{
     	logger.debug(" addReply(ReviewVO rvo) 실행 ");
+    	
         // 기존 리뷰의 re_ref 값을 사용하여 그룹 번호 설정
         rvo.setRe_ref(rvo.getReview_code());
         // 기존 리뷰의 re_lev 값에 1을 더하여 계층 설정
@@ -67,7 +70,14 @@ public class ReviewReplyDAOImpl implements ReviewReplyDAO {
 		
 	}
 
-	
+	@Override
+    public ReviewVO getReviewByParams(String userId, int productCode, int orderCode) throws Exception{
+        Map<String, Object> params = new HashMap<>();
+        params.put("user_id", userId);
+        params.put("product_code", productCode);
+        params.put("order_code", orderCode);
+        return sqlSession.selectOne(NAMESPACE+".getReviewByParams", params);
+    }
 	
 	
 	
