@@ -4,7 +4,6 @@
 
 
 <%-- <%@ include file="../include/header.jsp"%> --%>
-
 <style>
 	.productList {
 		width: 1300px;
@@ -18,6 +17,8 @@
 		border: 1px solid black;
 	}
 </style>
+<!-- 제이쿼리 -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 
 <div class="container">
 
@@ -28,7 +29,7 @@
 	<table id="productList" class="productList" border=1>
 		<thead>
 			<tr>
-				<th><input type="checkbox" id="allCheck" name="allCheck" class="allCheck"></th>
+				<th><input type="checkbox" id="allCheck" name="allCheck" class="allCheck"></td>
 				<th colspan="2">상품정보</th>
 				<th>판매가</th>
 				<th>수량</th>
@@ -37,7 +38,8 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:set var="num" value="${pageMaker.totalCount - (pageMaker.cri.page - 1) * pageMaker.cri.perPageNum }" />		
+			<c:set var="num" value="${pageMaker.totalCount - (pageMaker.cri.page - 1) * pageMaker.cri.perPageNum }" />
+			
 			<c:choose>
 				<c:when test="${empty cartList}">
 					<tr>
@@ -66,6 +68,9 @@
 					</c:forEach>
 				</c:otherwise>
 			</c:choose>
+			
+			
+			
 		</tbody>
 	</table>
 	
@@ -118,10 +123,9 @@
 	
 <%--  <%@ include file="../include/footer.jsp"%> --%>
  
-<!-- 제이쿼리 -->
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+
 	// 전체 선택, 해제
     document.getElementById('allCheck').addEventListener('change', function() {
         var checkboxes = document.querySelectorAll('.ap_check');
@@ -247,13 +251,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // 초기화 시 가격 계산
     calculatePrices();
 
-    // 가격 계산 함수
+ 	// 가격 계산 함수
     function calculatePrices() {
         var totalPrice = 0;
         var checkboxes = document.querySelectorAll('.ap_check:checked');
         checkboxes.forEach(function(checkbox) {
-            var price = parseInt(checkbox.closest('tr').querySelector('td:nth-child(4)').textContent);
-            totalPrice += price;
+            var price = parseInt(checkbox.closest('tr').querySelector('td:nth-child(4)').textContent.replace(',', '')); // 콤마 제거 후 정수형으로 변환
+            var count = parseInt(checkbox.closest('tr').querySelector('input[type="number"]').value);
+            totalPrice += price * count; // 가격 * 수량을 누적하여 총 상품 금액 계산
         });
         var deliveryFee = calculateDeliveryFee(totalPrice);
         var payAmount = totalPrice + deliveryFee;
@@ -295,7 +300,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // form 요소 생성
         var form = document.createElement('form');
         form.method = 'POST';
-        form.action = '/order/orderform';
+        form.action = '/order/ordersession';
 
         // hidden input 요소 추가
         checkList.forEach(function(cartCode) {
@@ -313,14 +318,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 전체 주문
     document.getElementById('orderAll').addEventListener('click', function() {
-        // form 요소 생성
-        var form = document.createElement('form');
+        
+    	location.href="/order/ordersession";
+    	// form 요소 생성
+        /* var form = document.createElement('form');
         form.method = 'POST';
         form.action = '/order/orderform';
 
         // form을 body에 추가하고 submit
         document.body.appendChild(form);
-        form.submit();
+        form.submit(); */
     });
 
     // 개별 주문
@@ -331,7 +338,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // form 요소 생성
             var form = document.createElement('form');
             form.method = 'POST';
-            form.action = '/order/orderform';
+            form.action = '/order/ordersession';
 
             // hidden input 요소 추가
             var input = document.createElement('input');

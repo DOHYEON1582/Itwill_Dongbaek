@@ -26,7 +26,7 @@ public class OrderDAOImpl implements OrderDAO{
 	@Override
 	public List<CartVO> selectCartList(CartVO vo) throws Exception {
 		logger.debug(" === D : selectCartList(CartVO vo) 실행 === ");
-		return sqlSession.selectList(NAMESPACE+".selectProductInfo");
+		return sqlSession.selectList(NAMESPACE+".selectProductInfo", vo);
 	}
 	
 	// 장바구니 상품 수 세어오기
@@ -40,14 +40,14 @@ public class OrderDAOImpl implements OrderDAO{
 	@Override
 	public CartVO selectProductInfo(int cart_code) throws Exception {
 		logger.debug(" === D : selectProductInfo(int cart_code) 실행 === ");
-		return sqlSession.selectOne(NAMESPACE+".selectProductInfo");
+		return sqlSession.selectOne(NAMESPACE+".selectProductInfo",cart_code);
 	}
 
 	// 적립금 가져오기
 	@Override
 	public String selectUserPoint(String user_id) throws Exception {
 		logger.debug(" === D : selectUserPoint(String user_id) 실행 === ");
-		return sqlSession.selectOne(NAMESPACE+".selectUserPoint");
+		return sqlSession.selectOne(NAMESPACE+".selectUserPoint",user_id);
 	}
 
 	// 주문 번호 최대값 가져오기

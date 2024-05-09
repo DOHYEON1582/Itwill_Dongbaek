@@ -164,8 +164,187 @@
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 
 <!-- 제이쿼리 -->
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 <script>
+	function sample6_execDaumPostcode() {
+		new daum.Postcode(
+				{
+					oncomplete : function(data) {
+						// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+						// 각 주소의 노출 규칙에 따라 주소를 조합한다.
+						// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+						var addr = ''; // 주소 변수
+						var extraAddr = ''; // 참고항목 변수
+
+						//사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+						if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+							addr = data.roadAddress;
+						} else { // 사용자가 지번 주소를 선택했을 경우(J)
+							addr = data.jibunAddress;
+						}
+
+						// 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+						if (data.userSelectedType === 'R') {
+							// 법정동명이 있을 경우 추가한다. (법정리는 제외)
+							// 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+							if (data.bname !== ''
+									&& /[동|로|가]$/g.test(data.bname)) {
+								extraAddr += data.bname;
+							}
+							// 건물명이 있고, 공동주택일 경우 추가한다.
+							if (data.buildingName !== ''
+									&& data.apartment === 'Y') {
+								extraAddr += (extraAddr !== '' ? ', '
+										+ data.buildingName : data.buildingName);
+							}
+							// 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+							if (extraAddr !== '') {
+								extraAddr = ' (' + extraAddr + ')';
+							}
+							// 조합된 참고항목을 해당 필드에 넣는다.
+							document.getElementById("sample6_extraAddress").value = extraAddr;
+
+						} else {
+							document.getElementById("sample6_extraAddress").value = '';
+						}
+
+						// 우편번호와 주소 정보를 해당 필드에 넣는다.
+						document.getElementById('sample6_postcode').value = data.zonecode;
+						document.getElementById("sample6_address").value = addr;
+						// 커서를 상세주소 필드로 이동한다.
+						document.getElementById("sample6_detailAddress")
+								.focus();
+					}
+				}).open();
+	}
+	
+	// 제이쿼리 시작
+	$(document).ready(function(){
+		
+		// 주문 할 상품 가격의 합
+		$('#totalPrice').text(function(){		
+		    var totalPrice = 0;
+		    $('#productList tbody tr').each(function(){
+		        var price = parseInt($(this).closest('tr').find('td:eq(2)').text());
+		        totalPrice += price;
+		    });
+		    return totalPrice;
+		});
+
+		// 사용한 적립금
+		$('#usePoint').text(function(){		
+		    var reducePoint = $('#reduce_point').val();
+		    return reducePoint;
+		});
+		
+		// 배송비 처리
+		$('#deliveryFee').text(function(){
+		    var totalPrice = parseInt($('#totalPrice').text());
+		    var deliveryFee = 0;
+		    if(totalPrice > 50000){ // 5만원 이상시 배달비 무료
+		        deliveryFee = 0;
+		    } else if(totalPrice < 50000){ // 5만원 미만 배달비 2500원 배달비는 2500원으로 고정
+		        deliveryFee = 2500; 
+		    }
+		    return deliveryFee;
+		});
+		
+		// 결제예정금액
+		$('#payAmount').text(function(){
+		    var totalPrice = parseInt($('#totalPrice').text());
+		    var usePoint = parseInt($('#usePoint').text());
+		    var deliveryFee = parseInt($('#deliveryFee').text());
+		    var payAmount = totalPrice - usePoint + deliveryFee;
+		    return payAmount;
+		});
+
+		// 대표 상품명과 추가 상품의 수 계산
+        var productNames = [];
+        $('#productList tbody tr').each(function(){
+            var productName = $(this).find('td:eq(1)').text().trim();
+            productNames.push(productName);
+        });
+
+        var uniqueProductNames = Array.from(new Set(productNames));
+        var representativeProductName = uniqueProductNames[0];
+        var additionalProductCount = uniqueProductNames.length - 1;
+
+        // 상품명 표시
+        if (additionalProductCount > 0) {
+            $('#productName').text(representativeProductName + " 외 " + additionalProductCount + "개");
+        } else {
+            $('#productName').text(representativeProductName);
+        }
+        
+		// input 값 넣기 (수정 필요)
+		$('#delivery').val($('#deliveryFee').text());
+		$('#amount').val($('#payAmount').text());
+		$('#rcv_phone').val(function(){
+		    var phone1 = $('#rcv_phone1').val();
+		    var phone2 = $('#rcv_phone2').val();
+		    var phone3 = $('#rcv_phone3').val();
+		    return phone1 + phone2 + phone3;
+		});
+		
+	  	// addr2, addr3, rcv_phone1, rcv_phone2, rcv_phone3, productNum 폼 제출 막기
+        $('#addr2, #addr3, #rcv_phone1, #rcv_phone2, #rcv_phone3, #productNum').change(function(){
+            $('#orderFrm').off('submit').submit(function(event){
+                event.preventDefault();
+            });
+        });
+	  	
+		// 주문하기
+		$('#payBtn').click(function(){
+			var orderInfo = $('#orderFrm').serialize();
+			
+			$.ajax({
+				url: '/order/pay',
+				type: 'POST',
+				dataType: "text",
+				success: function(data){
+					requestPay(data)
+				},
+				error: function(){
+					alert("오류가 발생했습니다.");
+				}
+			});
+			
+			function requestPay(data){
+				var IMP = window.IMP;
+				IMP.init("imp68706306");
+				
+				IMP.request_pay({
+					pg : "html5_inicis",
+					pay_method : 'card',
+					merchant_uid : data,
+					name : $('#productName').text(), // 대표 상품명 및 추가 상품 개수 표시
+					amount : $('#amount').val(),
+					buyer_name : $('#name').val(),
+					buyer_tel : $('#rcv_phone').val(), // 없으면 오류
+					buyer_addr : $('#rcv_addr1').val() + ' ' + $('#addr2').val(), // 주소
+		            buyer_postcode : $('#rcv_zip').val() // 우편번호
+				}, function(rsp){
+					if(rsp.success){
+						$.ajax({
+							type: 'POST',
+							url: '/order/success',
+							data: JSON.stringify(orderInfo),
+							contentType: 'application/json; charset=utf-8',
+						});
+					}else{
+						alert("오류가 발생했습니다.");
+						history.back();
+					} // if문 끝
+				}
+				});
+			}
+			
+		});
+
+	}); // 제이쿼리 끝 
+</script>
+<!-- <script>
 	function sample6_execDaumPostcode() {
 		new daum.Postcode(
 				{
@@ -302,7 +481,7 @@
             xhr.onerror = function() {
                 alert('오류가 발생했습니다.');
             };
-            xhr.send(new URLSearchParams(new FormData(form)));
+            xhr.send(new FormData(form));
 
             function requestPay(data) {
                 var IMP = window.IMP;
@@ -332,4 +511,4 @@
             }
         });
     });
-</script>
+</script> -->
