@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.MyPageCriteria;
 import com.itwillbs.domain.PageMaker;
+import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.MyPageService;
 
 @Controller
@@ -41,12 +42,13 @@ public class MyPageController {
 		CartVO cvo = new CartVO();
 
 		// 세션 가져오기
-		String userid = (String) session.getAttribute("user_id");
-		String username = (String) session.getAttribute("user_name");
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+		String user_id = userVO.getUser_id();
+		String user_name = userVO.getUser_name();
 		String bundleCode = (String) session.getAttribute("cart");
 
 		// cvo 담기...
-		cvo.setUser_id(userid);
+		cvo.setUser_id(user_id);
 		cvo.setBundle_code(bundleCode);
 
 		// 장바구니 리스트
@@ -80,7 +82,7 @@ public class MyPageController {
 	}
 
 	// 장바구니 상품 전체 삭제
-	@PostMapping(value = "/cart/deleteAll")
+	@GetMapping(value = "/cart/deleteAll")
 	public String deleteAllCartProducts(HttpSession session, 
 										HttpServletRequest request, 
 										HttpServletResponse response) throws Exception {
@@ -88,10 +90,11 @@ public class MyPageController {
 		
 		CartVO cvo = new CartVO();
 		// 세션 가져오기
-		String userid = (String) session.getAttribute("user_id");
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+		String user_id = userVO.getUser_id();
 		String bundleCode = (String) session.getAttribute("cart");
 
-		cvo.setUser_id(userid);
+		cvo.setUser_id(user_id);
 		cvo.setBundle_code(bundleCode);
 		
 		mService.deleteCartAllProduct(cvo);
