@@ -36,25 +36,38 @@
 		</thead>
 		<tbody>
 			<c:set var="num" value="${pageMaker.totalCount - (pageMaker.cri.page - 1) * pageMaker.cri.perPageNum }" />
-			<c:forEach var="list" items="${cartList }">
-			<tr>
-				<td id="cart_code${list.cart_code }"><input type="checkbox" id="ap_check" name="ap_check" class="ap_check" value="${list.cart_code }"></td>
-				<td><img alt="" src="">경로확인 후 값 넣기</td>
-				<td>${list.store_name}<br>${list.product_name}</td><!-- 가게명, 상품명 -->
-				<td>${list.price }</td>
-				<td>
-					<input type="number" id="count" name="count" value="${list.count }">
-					<button type="button" id="countUpdate">변경</button>
-				</td>
-				<c:set var="total" value="${list.price * list.count }"/>
-				<td>${total}</td>
-				<td>
-					<button type="button" id="orderProduct">주문하기(주문하기 페이지로)</button><br> 
-					<button type="button" id="deleteProduct">삭제(삭제)</button><br> 
-				</td>
-			</tr>
-			<c:set var="num" value="${number -1 }"/>
-			</c:forEach>
+			
+			<c:choose>
+				<c:when test="${empty cartList}">
+					<tr>
+						<td colspan="7"> 장바구니에 담김 상품이 없습니다.</td>
+					</tr>
+				</c:when>
+				<c:otherwise>
+					<c:forEach var="list" items="${cartList }">
+						<tr>
+							<td id="cart_code${list.cart_code }"><input type="checkbox" id="ap_check" name="ap_check" class="ap_check" value="${list.cart_code }"></td>
+							<td><img src="${pageContext.request.contextPath}/resources/images/product/${list.img1}" alt="Product Thumbnail" class="tab-image" style="width : 180px"></td>
+							<td>${list.store_name}<br>${list.product_name}</td><!-- 가게명, 상품명 -->
+							<td>${list.price }</td>
+							<td>
+								<input type="number" id="count" name="count" value="${list.count }">
+								<button type="button" id="countUpdate">변경</button>
+							</td>
+							<c:set var="total" value="${list.price * list.count }"/>
+							<td>${total}</td>
+							<td>
+								<button type="button" id="orderProduct">주문하기(주문하기 페이지로)</button><br> 
+								<button type="button" id="deleteProduct">삭제(삭제)</button><br> 
+							</td>
+						</tr>
+						<c:set var="num" value="${number -1 }"/>
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
+			
+			
+			
 		</tbody>
 	</table>
 	
@@ -151,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('deleteAll').addEventListener('click', function() {
         if (confirm("장바구니를 비우시겠습니까?")) {
         	
-        	location.href="/mypage/cart/deletAll";
+        	location.href="/mypage/cart/deleteAll";
             /* var form = document.createElement('form');
             form.method = 'POST';
             form.action = '/mypage/cart/deleteAll'; */
@@ -173,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 var input = document.createElement('input');
                 input.type = 'hidden';
-                input.name = 'cartCode';
+                input.name = 'ap_check';
                 input.value = cartCode;
                 form.appendChild(input);
 
