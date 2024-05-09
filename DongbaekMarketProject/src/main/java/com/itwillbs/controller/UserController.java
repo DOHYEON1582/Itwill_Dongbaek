@@ -8,6 +8,8 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itwillbs.domain.AuthVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.MarketVO;
@@ -92,6 +95,7 @@ public class UserController {
 		logger.debug(" 회원가입 정보 : " + uvo);
 		
 		uService.userInsert(uvo);
+		
 		return "redirect:/member/login";
 	}
 	
@@ -114,6 +118,46 @@ public class UserController {
             return "/member/login";
         }
 	}
+	
+	@RequestMapping(value="/member/callBack", method=RequestMethod.GET)
+	public String callBack(){
+		logger.debug(" callBack() 호출 ");
+		return "/member/callBack";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/member/confirm", method = RequestMethod.POST)
+	public ResponseEntity<Integer> idCheckPOST(String user_id) throws Exception {
+	    logger.debug("idCheckPOST(String user_id) 호출");
+	    int result = 0;
+	    if(user_id != null && !user_id.isEmpty()) {
+	        logger.debug("조회된 아이디2 : " + uService.checkId(user_id));
+	        result = uService.checkId(user_id);
+	    }
+	    return new ResponseEntity<Integer>(result, HttpStatus.OK);
+	}
+	
+	// 카카오 로그인
+	@RequestMapping(value = "/registerkakao", method = {RequestMethod.GET,  RequestMethod.POST})
+	public String registerKakaoGET(@RequestParam("code") String code, HttpSession session) throws Exception {
+		logger.debug(" registerKakaoGET() 호출");
+		logger.debug(" code : " + code);
+		UserVO uvo = uService.kakaoInfo(code);
+		logger.debug(" kakao info : " + uvo);
+		UserVO cvo = uService.getUser(uvo);
+		UserVO userVO = uService.loginUser(uvo);
+		session.setAttribute("userVO", userVO);
+		logger.debug(" 로그인 정보 : " + userVO);
+		if(cvo == null) {
+			uService.userKakaoInsert(uvo);
+			logger.debug(" 카카오 회원가입 성공! ");
+			cvo = uService.kakaoUserGet(uvo);
+			session.setAttribute("userVO", userVO);
+		}
+		
+		return "redirect:/";
+	}
+
 	
 
 	@GetMapping(value = "member/logout")

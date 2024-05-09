@@ -192,7 +192,7 @@
 				            <form id="searchForm" class="text-center" action="search" method="get">
 				                <div class="input-group">
 				                    <div class="input-group-prepend">
-				                    	<table>
+				                    	<table class="main">
 				                    	<tr>
 				                    		<td>
 				                    			<select id="categorySelect" name="type" class="form-control select2 select2-hidden-accessible"

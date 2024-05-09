@@ -13,7 +13,18 @@ import com.itwillbs.domain.WishVO;
 public interface UserDAO {
 	// 회원가입
 	public void insertUser(UserVO uvo) throws Exception;
+	// 카카오 로그인
+	public void insertKakao(UserVO uvo) throws Exception;
+	public String getToken(String code) throws Exception;
+	public UserVO getUserInfo(String token) throws Exception;
+	public UserVO getUser(UserVO uvo) throws Exception;
+	
+	// 아이디 중복체크
+	public int checkId(String user_id) throws Exception;
+	// 권한주기
 	public void authUser(UserVO uvo) throws Exception;
+	// 관리자권한
+	public void adminAuth(UserVO uvo) throws Exception;
 	
 	public UserVO loginUser(UserVO uvo) throws Exception;
 	

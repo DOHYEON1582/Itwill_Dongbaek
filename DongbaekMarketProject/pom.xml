@@ -171,7 +171,6 @@
    			<version>5.0.6.RELEASE</version>
 		</dependency> 
 		
-		
 		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -236,6 +235,10 @@
 		    <artifactId>HikariCP</artifactId>
 		    <version>4.0.3</version>
 		</dependency>
+		
+		
+
+		
 		
 		<!-- 외부 라이브러리 추가 영역 -->
 		

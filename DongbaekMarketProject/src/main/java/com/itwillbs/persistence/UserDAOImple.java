@@ -1,7 +1,12 @@
 package com.itwillbs.persistence;
 
-import java.security.MessageDigest;
-import java.security.SecureRandom;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
-import com.itwillbs.domain.AuthVO;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.ReviewVO;
@@ -39,14 +45,144 @@ public class UserDAOImple implements UserDAO {
 	@Override
 	public void insertUser(UserVO uvo) throws Exception {
 		logger.debug(" insertUser(UserVO uvo) 호출 ");
-		
 		sql.insert(NAMESPACE + ".insertUser", uvo);
+	}
+
+	@Override
+	public void insertKakao(UserVO uvo) throws Exception {
+		logger.debug(" insertKakao(UserVO uvo) 호출");
+		sql.insert(NAMESPACE + ".insertKakao" , uvo);
+	}
+
+	@Override
+	public String getToken(String code) throws Exception {
+		logger.debug(" getToken(String code) 호출 ");
+		String access_Token = "";
+        String refresh_Token = "";
+        String reqURL = "https://kauth.kakao.com/oauth/token";
+        
+        try {
+        	URL url = new URL(reqURL);
+        	HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+        	conn.setRequestMethod("POST");
+        	conn.setDoOutput(true);
+        	
+        	BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+            StringBuilder sb = new StringBuilder();
+            sb.append("grant_type=authorization_code");
+            sb.append("&client_id=809ade7f524b849d9b617cc2835efc68"); // 개인 REST IP
+            sb.append("&redirect_uri=http://localhost:8088/registerkakao");
+            sb.append("&code=" + code);
+            bw.write(sb.toString());
+            bw.flush();
+            
+            int responseCode = conn.getResponseCode();
+            logger.debug("responseCode : " + responseCode);
+            //요청을 통해 얻은 JSON 메세지 읽어오기
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line = "";
+            String result = "";
+
+            while ((line = br.readLine()) != null) {
+                result += line;
+            }
+            logger.debug("response body : " + result);
+
+            //Gson으로 JSON파싱 객체 생성
+            JsonParser parser = new JsonParser();
+            JsonElement element = parser.parse(result);
+            
+            access_Token = element.getAsJsonObject().get("access_token").getAsString();
+            //refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
+
+            logger.debug("access_token : " + access_Token);
+            logger.debug("refresh_token : " + refresh_Token);
+
+            br.close();
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return access_Token;
+	}
+
+	@Override
+	public UserVO getUserInfo(String token) throws Exception {
+		logger.debug(" getUserInfo(String token) 호출 ");
+		String reqURL = "https://kapi.kakao.com/v2/user/me";
+		UserVO uvo = new UserVO();
+		
+		uvo.setUser_pw("1234");
+		// access_token을 이용하여 사용자 정보 조회
+	    try {
+	       URL url = new URL(reqURL);
+	       HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+	       conn.setRequestMethod("POST");
+	       conn.setDoOutput(true);
+	       conn.setRequestProperty("Authorization", "Bearer " + token);
+
+	       int responseCode = conn.getResponseCode();
+	       logger.debug("responseCode : " + responseCode);
+
+	       // 요청을 통해 얻은 JSON 메세지 읽어오기
+	       BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+	       String line = "";
+	       String result = "";
+
+	       while ((line = br.readLine()) != null) {
+	           result += line;
+	       }
+	       logger.debug("response body : " + result);
+	       
+	       //Gson 라이브러리로 JSON파싱
+	       JsonParser parser = new JsonParser();
+	       JsonElement element = parser.parse(result);
+	  
+	       uvo.setUser_id(Integer.toString(element.getAsJsonObject().get("id").getAsInt()));
+	       
+//	       uvo.setUser_name(element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("name").getAsString());
+	       
+	       boolean hasEmail = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("has_email").getAsBoolean();
+	       if(hasEmail){
+	    	   uvo.setSns_email(element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("email").getAsString());
+	       }
+	       
+//	       boolean hasPhoneNumber = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("has_phone_number").getAsBoolean();
+//	       if(hasPhoneNumber){
+//	    	   uvo.setPhone(element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("phone_number").getAsString());
+//	       }
+	       br.close();
+
+	       } catch (IOException e) {
+	            e.printStackTrace();
+	       }
+		return uvo;
+	}
+
+	@Override
+	public UserVO getUser(UserVO uvo) throws Exception {
+		logger.debug(" getUser(UserVO uvo) 호출 ");
+		return sql.selectOne(NAMESPACE + ".getUser", uvo);
+	}
+
+	@Override
+	public int checkId(String user_id) throws Exception {
+		logger.debug(" checkId(String user_id) 호출 ");
+		return sql.selectOne(NAMESPACE + ".checkId", user_id);
 	}
 
 	@Override
 	public void authUser(UserVO uvo) throws Exception {
 		logger.debug(" authUser(String user_id) 호출 ");
 		sql.insert(NAMESPACE +".authUser", uvo);
+	}
+
+	@Override
+	public void adminAuth(UserVO uvo) throws Exception {
+		logger.debug(" adminAuth(UserVO uvo) 호출 ");
+		sql.insert(NAMESPACE + ".adminAuth", uvo);
 	}
 
 	@Override
