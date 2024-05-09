@@ -152,5 +152,11 @@ public class MarketDAOImpl implements MarketDAO{
 		logger.debug(" q_code : " + q_code);
 		return sqlSession.selectOne(NAMESPACE + ".checkDuplicateAnswer", q_code);
 	}
+
+	@Override
+	public int checkDuplicateWish(Map<String, Object> paramMap) throws Exception {
+		logger.debug(" checkDuplicateWish 호출 ");
+		return sqlSession.selectOne(NAMESPACE + ".checkDuplicateWish", paramMap);
+	}
 	
 }

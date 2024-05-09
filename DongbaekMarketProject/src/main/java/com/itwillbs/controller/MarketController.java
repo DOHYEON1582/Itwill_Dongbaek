@@ -148,6 +148,7 @@ public class MarketController {
 				.contentType(MediaType.valueOf("text/plain; charset=UTF-8"))
 				.body("성공");
 	}
+	
 	@PostMapping("/checkDuplicateAnswer")
 	public ResponseEntity<String> checkDuplicateAnswer(@RequestParam("q_code") int q_code) throws Exception {
 	    logger.debug(" checkDuplicateAnswer() 실행 ");
@@ -158,6 +159,9 @@ public class MarketController {
 	        return ResponseEntity.ok("false");
 	    }
 	}
+	
+
+ 	
 	
 	@RequestMapping(value = "/questionMain", method = RequestMethod.GET)
 	public void questionMain(@RequestParam("product_code") int product_code, Criteria cri, Model model) throws Exception {
@@ -201,16 +205,6 @@ public class MarketController {
 	    return "redirect:/"; // 기본 페이지로 리다이렉트
 	}
 
-
-	@RequestMapping(value = "/questionDetail", method = RequestMethod.GET)
-	public String questionDetail(Model model, @RequestParam("q_code") int q_code) throws Exception{
-		logger.debug("questionDetil 호출 ");
-		QuestionVO detail = mService.questionDetail(q_code);
-		model.addAttribute("detail", detail);
-		logger.debug("detail >>>>>>>>>>>>" + detail);
-		return "/market/questionDetail";
-	}
-	
 	@ResponseBody
 	@RequestMapping(value = "/storeMain", method = RequestMethod.POST, consumes = "application/json")
 	public void storeMainPOST(HttpSession session, @RequestBody MarkVO mvo) throws Exception{
@@ -229,8 +223,26 @@ public class MarketController {
 		String user_id = userVO.getUser_id();
 		wish.setUser_id(user_id);
 		mService.wishProduct(wish);
+		
 		logger.debug("wish >>>>>>>>>>>>>" + wish);
 	}
+	
+	@PostMapping("/checkDuplicateWish")
+	public ResponseEntity<String> checkDuplicateWish(@RequestParam("product_code") int product_code, HttpSession session) throws Exception{
+		logger.debug(" checkDuplicateWish 실행 ");
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+		String user_id = userVO.getUser_id();
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("product_code", product_code);
+		paramMap.put("user_id", user_id);
+		boolean isDulicate = mService.isDuplicateWish(paramMap);
+		if (isDulicate) {
+			return ResponseEntity.ok("true");
+		} else {
+			return ResponseEntity.ok("false");
+		}
+	}
+	
 	
 	@ResponseBody
 	@RequestMapping(value = "/addCart", method = RequestMethod.POST, consumes = "application/json")
@@ -242,4 +254,9 @@ public class MarketController {
 		mService.insertCart(cart);
 		logger.debug(" cart >>>>>>>>>>>>> " + cart);
 	}
+	
+	
+	
+	
+	
 }

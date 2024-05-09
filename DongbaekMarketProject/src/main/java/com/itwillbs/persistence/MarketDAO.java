@@ -75,5 +75,6 @@ public interface MarketDAO {
 	// 카트에 넣기
 	public void insertCart(CartVO cart) throws Exception;
 	
-	
+	// 찜 중복 체크
+	public int checkDuplicateWish(Map<String, Object> paramMap) throws Exception;
 }

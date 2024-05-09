@@ -161,6 +161,18 @@
 	<select id="checkDuplicateAnswer" parameterType="int" resultType="int">
 		SELECT COUNT(*) FROM answer WHERE q_code = #{q_code}
 	</select>
+	
+	<!-- 찜 중복체크 -->
+	<select id="checkDuplicateWish" parameterType="map" resultType="int">
+	    select count(*) from wish 
+	    where product_code = #{product_code, jdbcType=INTEGER} and user_id = #{user_id, jdbcType=VARCHAR}
+	</select>
+
+	<!-- 즐겨찾기 중복체크 -->
+	<select id="checkDuplicateMark" parameterType="int" resultType="int">
+		select count(*) from mark where store_code
+	</select>
+
 
 </mapper>
 
