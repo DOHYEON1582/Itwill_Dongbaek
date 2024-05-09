@@ -13,7 +13,14 @@ import com.itwillbs.domain.WishVO;
 public interface UserService {
 	// 회원가입
 	public void userInsert(UserVO uvo) throws Exception;
+	// 카카오 로그인
+	public void userKakaoInsert(UserVO uvo) throws Exception;
+	public UserVO kakaoInfo(String code) throws Exception;
+	public UserVO getUser(UserVO uvo) throws Exception;
+	public UserVO kakaoUserGet(UserVO uvo) throws Exception;
 	
+	// 아이디 중복체크
+	public int checkId(String user_id) throws Exception;
 	// 로그인
 	public UserVO loginUser(UserVO uvo) throws Exception;
 	

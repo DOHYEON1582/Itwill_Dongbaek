@@ -10,7 +10,6 @@ public class UserVO {
 	
 	private String user_id;
 	private String user_pw;
-	private String salt;
 	private String phone;
 	private String user_name;
 	private String addr1;
@@ -23,7 +22,7 @@ public class UserVO {
 	private Timestamp update_date;
 	private String auth;
 	
-  private int order_code;
+	private int order_code;
 	
 	private String startDate;
 	private String endDate;
