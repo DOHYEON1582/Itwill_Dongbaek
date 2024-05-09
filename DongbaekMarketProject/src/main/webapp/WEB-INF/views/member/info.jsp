@@ -82,6 +82,7 @@
 	    <a href="/member/delete" class="info-link">회원정보 삭제</a>
 	    <a href="/member/wish" class="info-link">찜 목록</a>
 	    <a href="/member/mark" class="info-link">즐겨찾기</a>
+	    <a href="/member/subscribe" class="info-link">구독 정보 조회</a>
 </div>
 
 <%@include file="../include/footer.jsp" %>

@@ -6,6 +6,7 @@ import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
+import com.itwillbs.domain.Subscrbe_productVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.domain.WishVO;
 
@@ -57,7 +58,8 @@ public interface UserService {
 	//public List<ProductVO> getProduct(int product_code) throws Exception;
 	public List<ProductVO> getProduct(int product_code, String orderBy) throws Exception;
 
-	
+	// 구독상품 보여주기
+	public List<Subscrbe_productVO> showsub(String user_id) throws Exception;
 	
 	
 	

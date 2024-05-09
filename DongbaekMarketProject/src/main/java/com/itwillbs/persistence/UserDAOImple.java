@@ -20,6 +20,7 @@ import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
+import com.itwillbs.domain.Subscrbe_productVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.domain.WishVO;
 
@@ -181,6 +182,11 @@ public class UserDAOImple implements UserDAO {
 
 	    // SQL 쿼리 실행
 	    return sql.selectList(NAMESPACE + ".selectProduct", map);
+	}
+
+	@Override
+	public List<Subscrbe_productVO> showsub(String user_id) throws Exception {
+		return sql.selectList(NAMESPACE + ".showsub", user_id);
 	}
 	
 	

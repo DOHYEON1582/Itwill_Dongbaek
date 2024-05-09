@@ -17,6 +17,7 @@ import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
+import com.itwillbs.domain.Subscrbe_productVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.domain.WishVO;
 import com.itwillbs.persistence.UserDAO;
@@ -146,6 +147,11 @@ public class UserServiceImpl implements UserService {
 		Map<String, Object> map = new HashMap<>();
 		map.put("orderBy", orderBy);
 		return udao.selectProductOrderBy(map);
+	}
+
+	@Override
+	public List<Subscrbe_productVO> showsub(String user_id) throws Exception {
+		return udao.showsub(user_id);
 	}
 	
 	
