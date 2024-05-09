@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.itwillbs.mapper.UserMapper">
+	<resultMap type="com.itwillbs.domain.UserVO" id="userMap">
+		<result property="user_id" column="user_id"/>
+		<result property="user_pw" column="user_pw"/>
+		<result property="phone" column="phone"/>
+		<result property="user_name" column="user_name"/>
+		<result property="addr1" column="addr1"/>
+		<result property="addr2" column="addr2"/>
+		<result property="sns_email" column="sns_email"/>
+		<result property="point" column="point"/>
+		<result property="identity" column="identity"/>
+		<result property="regdate" column="regdate"/>
+		<result property="auth" column="auth"/>
+	</resultMap>
+
+	<resultMap type="com.itwillbs.domain.AuthVO" id="authMap">
+		<result property="user_id" column="user_id"/>
+		<result property="auth" column="auth"/>
+	</resultMap>
+	
+	<resultMap type="com.itwillbs.domain.ProductVO" id="productMap">
+		<result property="product_code" column="product_code"/>
+		<result property="store_code" column="store_code"/>
+		<result property="price" column="price"/>
+		<result property="product_name" column="product_name"/>
+		<result property="viewcnt" column="viewcnt"/>
+		<result property="img1" column="img1"/>
+		<result property="img2" column="img2"/>
+		<result property="img3" column="img3"/>
+		<result property="product_explain" column="product_explain"/>
+		<result property="seller_id" column="seller_id"/>
+		<result property="country" column="country"/>
+		<result property="max_account" column="max_account"/>
+		<result property="category" column="category"/>
+		<result property="sub_product" column="sub_product"/>
+		<result property="unit" column="unit"/>
+		<collection property="storeVO" resultMap="storeMap"/>
+	</resultMap>
+	
+	<resultMap type="com.itwillbs.domain.WishVO" id="wishMap">
+		<result property="wish_code" column="wish_code"/>
+		<result property="product_code" column="product_code"/>
+		<result property="user_id" column="user_id"/>
+	</resultMap>
+	
+	<resultMap type="com.itwillbs.domain.StoreVO" id="storeMap">
+		<result property="store_code" column="store_code"/>
+		<result property="market_code" column="market_code"/>
+		<result property="seller_id" column="seller_id"/>
+		<result property="store_name" column="store_name"/>
+		<result property="store_value" column="store_value"/>
+		<result property="store_explain" column="store_explain"/>
+		<result property="img1" column="img1"/>
+		<result property="img2" column="img2"/>
+		<result property="img3" column="img3"/>
+		<result property="phone" column="phone"/>
+		<result property="store_addr1" column="store_addr1"/>
+		<result property="store_addr2" column="store_addr2"/>
+		<result property="min_price" column="min_price"/>
+		<result property="time" column="time"/>
+		<result property="status" column="status"/>
+	</resultMap>
+	
+	<resultMap type="com.itwillbs.domain.MarkVO" id="markMap">
+		<result property="mark_code" column="mark_code"/>
+		<result property="store_code" column="store_code"/>
+		<result property="user_id" column="user_id"/>
+		<collection property="storeVO" resultMap="storeMap"/>
+	</resultMap>
+	
+	<resultMap type="com.itwillbs.domain.Subscrbe_productVO" id="subMap">
+		<result property="product_code" column="product_code"/>
+		<result property="user_id" column="user_id"/>
+		<result property="count" column="count"/>
+		<collection property="productVO" resultMap="productMap"></collection>
+	</resultMap>
+	
+	<!-- 검색 -->
+	<sql id="criteria">
+		<trim prefix="where (" suffix=")" prefixOverrides="OR">
+			<choose>
+				<when test="type == 'market'.toString()">
+					market.market_name LIKE CONCAT('%',#{keyword},'%')
+				</when>
+				<when test="type == 'product'.toString()">
+					product.product_name LIKE CONCAT('%',#{keyword},'%')
+				</when>
+			</choose>
+		</trim>
+	</sql>
+	
+	
+	<!-- 회원가입 -->
+	<insert id="insertUser">
+		insert into user(user_id, user_pw, phone, user_name, addr1, addr2, regdate) 
+		values (#{user_id}, #{user_pw}, #{phone}, #{user_name}, #{addr1}, #{addr2}, now())
+	</insert>
+	<!-- 아이디 중복체크 -->
+	<select id="checkId" resultType="int">
+		select count(*) from user 
+		where user_id = #{user_id}
+	</select>
+	<!-- 회원가입 하면서 권한주기 -->
+	<insert id="authUser">
+		insert into user_auth (user_id, auth) 
+		value (#{user_id}, 'ROLE_USER')
+	</insert>
+	<!-- 회원가입 관리자 권한주기 -->
+	<insert id="adminAuth">
+		insert into user_auth (user_id, auth) 
+		value (#{user_id}, 'ROLE_ADMIN')
+	</insert>
+	<!-- 카카오 로그인 -->
+	<insert id="insertKakao">
+		insert into user (user_id, user_pw,sns_email, regdate) 
+		values (#{user_id}, #{user_pw}, #{sns_email}, now())
+	</insert>
+	<select id="getUser" resultMap="userMap">
+		select * 
+		from user u
+		left join user_auth a
+		on u.user_id = a.user_id
+		where u.user_id = #{user_id}
+	</select>
+	
+	<select id="loginUser" resultType="com.itwillbs.domain.UserVO">
+		select * 
+		from user 
+		where user_id = #{user_id} and user_pw = #{user_pw}
+	</select>
+	
+	<!-- 시장정보 가져오기(메인) -->
+	<select id="getMarket" resultType="com.itwillbs.domain.MarketVO">
+		select * from market
+	</select>
+	
+	<select id="getMarketCode" resultType="com.itwillbs.domain.MarketVO">
+		select * from market where market_code = #{market_code}
+	</select>
+	
+	<!-- 회원정보 조회-->
+	<select id="userInfo" resultType="com.itwillbs.domain.UserVO">
+		select * from user 
+		where user_id = #{user_id}
+	</select>
+	<!-- 회원정보 수정 -->
+	<update id="updateUser">
+		update user u, user_auth a 
+		set u.phone=#{phone}, u.user_name=#{user_name}, u.addr1=#{addr1}, u.addr2=#{addr2}, u.update_date=now() 
+		where u.user_id=#{user_id} and a.user_id=#{user_id}
+	</update>
+	<!-- 회원 비밀번호 조회 -->
+	<select id="getPass" resultType="string">
+		select user_pw from user 
+		where user_id = #{user_id}
+	</select>
+	<!-- 회원정보 삭제 -->
+	<delete id="deleteUser">
+		delete from user 
+		where user_id = #{user_id} and user_pw = #{user_pw}
+	</delete>
+	
+	<!-- 마이페이지 - 찜 목록 조회 -->
+	<select id="getWishList" resultMap="productMap">
+		select distinct p.*, s.store_name 
+		from wish w 
+		join product p 
+		on w.product_code = p.product_code 
+		join store s 
+		on s.store_code = p.store_code 
+		where user_id = #{user_id}
+	</select>
+	<!-- 마이페이지 - 찜 목록 조회 - 정렬 -->
+	<select id="getWish" resultMap="productMap" parameterType="map">
+		select * 
+		from wish w 
+		join product p 
+		on w.product_code = p.product_code 
+		join store s 
+		on s.store_code = p.store_code 
+		where user_id = #{user_id} 
+		<choose>
+			<when test="orderBy == 'popularity'">
+				ORDER BY p.viewcnt DESC
+			</when>
+			<when test="orderBy == 'lowPrice'">
+				ORDER BY p.price ASC
+			</when>
+			<when test="orderBy == 'highPrice'">
+				ORDER BY p.price DESC
+			</when>
+		</choose>
+	</select>
+	
+	<!-- 찜 목록 삭제 - 개별 -->
+	<delete id="deleteWish">
+		delete from wish 
+		where product_code = #{product_code}
+	</delete>
+	<!-- 찜목록 삭제 - 전체 -->
+	<delete id="deleteWishAll">
+		delete from wish
+	</delete>
+	
+	<!-- 즐겨찾기(가게) 조회 -->
+	<select id="getMark" resultMap="markMap">
+		select * 
+		from mark m 
+		join store s 
+		on m.store_code = s.store_code 
+		where user_id = #{user_id}
+	</select>
+	<!-- 줄겨찾기 해제 (개별) -->
+	<delete id="deleteMark">
+		delete from mark 
+		where store_code = #{store_code}
+	</delete>
+	<!-- 즐겨찾기 해제 (전체)-->
+	<delete id="deleteMarkAll">
+		delete from mark 
+		where user_id = #{user_id}
+	</delete>
+	
+	
+	<!-- 가게 목록 전체 조회 -->
+	<select id="getStore" resultType="com.itwillbs.domain.StoreVO">
+		select * from store
+	</select>
+	
+	
+	
+	
+	
+	<!-- 리뷰 -->
+	<select id="getReview" resultType="com.itwillbs.domain.ReviewVO">
+		select * from review 
+		where product_code = #{product_code}
+	</select>
+	<!-- 리뷰 제품 -->
+	<select id="getProduct" resultType="com.itwillbs.domain.ProductVO">
+		select * 
+		from product 
+		where product_code = #{product_code} 
+	</select>
+	
+	
+	<!-- 정렬 -->
+	<select id="selectProduct" parameterType="map" resultType="com.itwillbs.domain.ProductVO">
+	    SELECT *
+	    FROM product  
+        <choose>
+            <when test="orderBy == 'popularity'">
+                ORDER BY viewcnt DESC
+            </when>
+            <when test="orderBy == 'lowPrice'">
+                ORDER BY price ASC
+            </when>
+            <when test="orderBy == 'highPrice'">
+                ORDER BY price DESC
+            </when>
+        </choose>
+	</select>
+	
+	<!-- 구독내역 보여주기 -->
+	<select id="showsub" resultMap="subMap">
+		select * from product p 
+		join subscrbe_product s
+		on p.product_code = s.product_code
+		where user_id = #{user_id}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>

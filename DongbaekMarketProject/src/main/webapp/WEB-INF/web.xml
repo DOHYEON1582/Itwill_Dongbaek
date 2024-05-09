@@ -3,10 +3,14 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
+
 	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>/WEB-INF/spring/root-context.xml</param-value>
+		<param-value>
+			/WEB-INF/spring/root-context.xml
+			/WEB-INF/spring/security-context.xml
+		</param-value>
 	</context-param>
 	
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->
@@ -23,6 +27,7 @@
 			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
+		<async-supported>true</async-supported> <!-- 웹소켓을 위한 설정(비동기지원) -->
 	</servlet>
 		
 	<servlet-mapping>
@@ -46,6 +51,24 @@
 	</filter-mapping>
 <!-- 스프링 한글처리 필터 -->
 
+	<!-- 스프링 시큐리티 필터 -->
+<!-- 	<filter> -->
+<!-- 		<filter-name>SpringSecurityFilterChain</filter-name> -->
+<!-- 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class> -->
+<!-- 	</filter> -->
+	
+<!-- 	<filter-mapping> -->
+<!-- 		<filter-name>SpringSecurityFilterChain</filter-name> -->
+<!-- 		<url-pattern>/*</url-pattern> -->
+<!-- 	</filter-mapping> -->
+	<!-- 스프링 시큐리티 필터 -->
 
+	<multipart-config>
+	     <location>C:\\resources\\upload1</location>
+	     <max-file-size>20971520</max-file-size>
+	     <max-request-size>41943040</max-request-size>
+	     <file-size-threshold>20971520</file-size-threshold>
+     </multipart-config>
+<!-- 멀티파트 업로드 조건 -->
 
 </web-app>
