@@ -281,6 +281,13 @@ public class AdminServiceImpl implements AdminService {
 		return adao.deleteChatRoom(room_idx);
 	}
 
+	@Override
+	public List<AdminProductVO> searchProduct(String product_name) throws Exception {
+		logger.debug(" searchProduct(String product_name) 호출 ");
+		
+		return adao.searchProduct(product_name);
+	}
+
 	
 	
 	

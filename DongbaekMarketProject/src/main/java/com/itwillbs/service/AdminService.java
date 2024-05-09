@@ -99,4 +99,7 @@ public interface AdminService {
 	// 채팅방 삭제하기
 	public int deleteChatRoom(int room_idx)throws Exception;
 	
+	//챗봇 검색 상품 가져오기
+	public List<AdminProductVO> searchProduct(String product_name)throws Exception;
+	
 }//endService
