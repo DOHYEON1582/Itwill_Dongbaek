@@ -77,4 +77,6 @@ public interface MarketService {
 	// 카트에 넣기
 	public void insertCart(CartVO cart) throws Exception;
 	
+	// 찜 중복체크
+	public boolean isDuplicateWish(Map<String, Object> paramMap) throws Exception;
 }

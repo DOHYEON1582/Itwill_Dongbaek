@@ -30,78 +30,111 @@
 
 </head>
 <style>
+#header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999; /* 다른 요소 위에 보이도록 z-index 설정 */
+}
 	.c {
-		margin: 10px 100px;
+		margin: 10px 100px  ;
 	}
 	.container-fluid2 {
-		padding-left: 100px;
-		padding-right: auto;
+		padding-left: 100px ;
+		padding-right: auto ;
 	}
 	.search1{
-		margin-left: 10px;
+		margin-left: 10px ;
 	}
 	.search-bar input[type="text"] {
-		border: none;
-		border-radius: 20px;
+		border: none ;
+		border-radius: 20px ;
 		padding: 10px auto;
 	}
 	.search-bar{
 		padding: 10px auto;
 	}
 	.main-menu .menu-list .nav-item {
-		margin-right: 15px;
+		margin-right: 15px ;
 	}
 
 	@media ( max-width : 767px) {
 		.main-menu .menu-list .nav-item:last-child {
-			margin-right: 0;
+			margin-right: 0 ;
 		}
 		.main-menu .navbar-toggler {
-			margin-right: 15px;
+			margin-right: 15px ;
 		}
 	}
 	
 	.offcanvas-body, .text-center {
-		font-family: 'Hahmlet', sans-serif; /* 햄릿(Hahmlet) 글꼴 적용 */
-		font-size: 20px;
+		font-family: 'Hahmlet', sans-serif ; /* 햄릿(Hahmlet) 글꼴 적용 */
+		font-size: 20px ;
 	}
 	
 	.main-logo{
-		width: 300px;
-		height: 100px;
-		font-size: 20px;
-		padding-left: 70px; /* 왼쪽 여백 추가 */
+		width: 300px ;
+		height: 100px ;
+		font-size: 20px ;
+		padding-left: 70px ; /* 왼쪽 여백 추가 */
 	}
 	.mylogo2 {
-		width: 300px;
-		height: 100px;
+		width: 300px ;
+		height: 100px ;
 	}
 	
 	.login, .join, .service {
-		text-decoration-line: none;
-		font-family: 'Hahmlet', sans-serif; /* 햄릿(Hahmlet) 글꼴 적용 */
+		text-decoration-line: none ;
+		font-family: 'Hahmlet', sans-serif ; /* 햄릿(Hahmlet) 글꼴 적용 */
 	}
 	#ct{
-		padding: 0 auto;
-		margin: 0 auto;
+		padding: 0 auto ;
+		margin: 0 auto ;
 	}
 	
 	.mylogo {
-		width: 200px;
-		height: 70px;
+		width: 200px ;
+		height: 70px ;
 	}
 	.footer-menu {
-		width: 200px;
-		height: 110px;
-		font-family: 'Hahmlet', sans-serif; /* 햄릿(Hahmlet) 글꼴 적용 */
-		font-size: 15px;
-		padding: 15px;
+		width: 200px ;
+		height: 110px ;
+		font-family: 'Hahmlet', sans-serif ; /* 햄릿(Hahmlet) 글꼴 적용 */
+		font-size: 15px ;
+		padding: 15px ;
 	}
 	
 	#r {
-		height: 100px;
-		margin: 0 auto;
+		height: 100px ;
+		margin: 0 auto ;
 	}
+/* 검색창 크기 고정 */
+.search-bar {
+    width: 656px;
+    height: 66px;
+}
+
+/* 로고 크기 고정 */
+.mylogo2 {
+    width: 300px;
+    height: 100px;
+}
+    /* 검색창 스타일 */
+    .search-bar {
+        padding: 10px;
+    }
+
+    /* 검색 입력 필드 스타일 */
+    .search-bar .input-group {
+        margin-bottom: 10px;
+    }
+
+    /* 검색 버튼 스타일 */
+    .search-bar .btn {
+        padding: 5px 10px;
+        font-size: 14px;
+    }
 </style>
 
   <body>
@@ -208,7 +241,7 @@
 				                    	</table>
 				                    </div>
 				                    <input type="text" id="searchInput" class="form-control border-0 bg-transparent" placeholder="찾고 싶은 음식, 시장을 검색해보세요!" 
-				                    		name="query" value = "${cri.keyword }"/>
+				                    		name="query" value = "${cri.keyword }" />
 				                </div>
 				            </form>
 				        </div>

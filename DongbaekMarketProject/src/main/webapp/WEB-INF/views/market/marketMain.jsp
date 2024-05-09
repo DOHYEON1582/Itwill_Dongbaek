@@ -2,39 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="../include/header.jsp"%>
-	<script src="./resources/js/jquery-2.1.1.js"></script>
 	<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
-    
-    <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <!-- Bootstrap icons-->
-    <link href="https://fastly.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="./resources/css/styles.css" rel="stylesheet" />
-<style> 
-  #scrollToTopBtn {
-    display: none; /* 초기에는 숨김 */
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    z-index: 99;
-    width: 100px; /* 버튼 크기 조정 */
-    height: 100px; /* 버튼 크기 조정 */
-    border: none;
-    outline: none;
-    background-color: transparent;
-    cursor: pointer;
-    border-radius: 50%; /* 원형 버튼을 위한 테두리 반경 설정 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
-  }
-
-  #scrollToTopBtn i {
-    color: #007bff;
-  }
-
-  #scrollToTopBtn:hover i {
-    color: #0056b3;
-  }
+<!-- <link rel="stylesheet" href="marketMain.css"> -->
+<style>
 	.bxslider{
  		display: inline-block;
         margin-right: 20px; /* 이미지 슬라이더 오른쪽에 공간 추가 */
@@ -51,12 +21,12 @@
         justify-content: center; /* 페이지 가운데 정렬 */
         align-items: flex-start; /* 시장 정보 컨테이너를 상단에 정렬 */
     }
-    table {
+    .marketTable {
         border-collapse: separate;
         border-spacing: 0 20px; /* 상하로 30px 간격 지정 */
         margin-top: 10px; /* 테이블 위쪽에 20px 간격 추가 */
     }
-    th, td {
+    .marketTable th, td {
         padding-left: 8px; /* 셀 내부 왼쪽 간격 지정 */
     }
 	.slider-container {
@@ -152,7 +122,7 @@
 	  margin: 0;
 	  padding: 0;
 	}
-	.product-item .btn-number {
+	.product-item .btn-number1 {
 	  width: 26px;
 	  height: 26px;
 	  line-height: 1;
@@ -184,6 +154,14 @@
 	    background: red; /* 텍스트 색상을 빨간색으로 변경 */
 	    /* 또는 필요에 따라 다른 스타일을 적용할 수 있습니다. */
 	}
+	.cart {
+    width: 120px;
+    padding: 5px;
+    margin: 5px;
+    border: none;
+    background-color: lightyellow;
+    cursor: pointer;
+  	}
 </style>
 <script type="text/javascript">
 function topFunction() {
@@ -329,14 +307,11 @@ function topFunction() {
             // 이미 찜한 상품이 있는지 여부를 반환
             return wishedProducts.length > 0;
         } */
-        
-		 
-        
     });
-    
 </script>
 
 
+<body>
 <!-- 시장정보 -->
 <section class="py-2 mb-1" style="background: url(${pageContext.request.contextPath}/resources/images/background-pattern.jpg);">
 
@@ -357,7 +332,7 @@ function topFunction() {
 			<div class="sij_name" style="font-size: 30px; font-weight: bold;">▶ ${marketList.name }</div>
 			<div class="sij_sub_name" style="font-size: 25px;">${marketList.explain }</div>
 		</div>
-		<table>
+		<table class="marketTable">
 			<tbody>
 				<tr>
 					<th>주소</th>
@@ -443,9 +418,5 @@ function topFunction() {
 </div>
 
 
-<!-- Scroll to Top button -->
-<button onclick="topFunction()" id="scrollToTopBtn" title="맨 위로 이동">
-  <i class="bi bi-arrow-up-circle-fill" style="font-size: 24px;"></i>
-</button>
 
 <%@ include file="../include/footer.jsp"%>

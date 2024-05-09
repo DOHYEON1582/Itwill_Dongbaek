@@ -26,6 +26,7 @@ import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.MarketVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.ReviewVO;
+import com.itwillbs.domain.Subscrbe_productVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.domain.WishVO;
 import com.itwillbs.service.MainService;
@@ -294,6 +295,15 @@ public class UserController {
 		return "member/product";
 	}
 	
+	@RequestMapping(value = "/member/subscribe", method = RequestMethod.GET)
+	public void subscribe(HttpSession session, Model model) throws Exception{
+		logger.debug(" subscribe 구독상품페이지 호출 ");
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+		String user_id = userVO.getUser_id();
+		logger.debug(" id : " + user_id);
+		List<Subscrbe_productVO> sub = uService.showsub(user_id);
+		model.addAttribute("sub", sub);
+	}
 	
 	
 	

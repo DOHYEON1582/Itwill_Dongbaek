@@ -74,6 +74,13 @@
 		<collection property="storeVO" resultMap="storeMap"/>
 	</resultMap>
 	
+	<resultMap type="com.itwillbs.domain.Subscrbe_productVO" id="subMap">
+		<result property="product_code" column="product_code"/>
+		<result property="user_id" column="user_id"/>
+		<result property="count" column="count"/>
+		<collection property="productVO" resultMap="productMap"></collection>
+	</resultMap>
+	
 	<!-- 검색 -->
 	<sql id="criteria">
 		<trim prefix="where (" suffix=")" prefixOverrides="OR">
@@ -260,8 +267,13 @@
         </choose>
 	</select>
 	
-	
-	
+	<!-- 구독내역 보여주기 -->
+	<select id="showsub" resultMap="subMap">
+		select * from product p 
+		join subscrbe_product s
+		on p.product_code = s.product_code
+		where user_id = #{user_id}
+	</select>
 	
 	
 	

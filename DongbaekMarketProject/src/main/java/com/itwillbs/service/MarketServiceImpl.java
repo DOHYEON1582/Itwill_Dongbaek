@@ -147,4 +147,12 @@ public class MarketServiceImpl implements MarketService{
 		logger.debug(" count : " + count);
 		return count > 0;
   }
+
+	@Override
+	public boolean isDuplicateWish(Map<String, Object> paramMap) throws Exception {
+		logger.debug(" isDuplicateWish 실행 ");
+		int count = mdao.checkDuplicateWish(paramMap);
+		logger.debug("count >>>>>>>>> " + count);
+		return count > 0;
+	}
 }

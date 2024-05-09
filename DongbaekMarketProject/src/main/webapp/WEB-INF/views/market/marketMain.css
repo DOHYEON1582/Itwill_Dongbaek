@@ -1,0 +1,159 @@
+@charset "UTF-8";
+
+	.bxslider{
+ 		display: inline-block;
+        margin-right: 20px; /* 이미지 슬라이더 오른쪽에 공간 추가 */
+	}
+    #sijang_text {
+        display: inline-block;
+        vertical-align: top;
+        margin-left: 50px; /* 시장 정보 왼쪽에 공간 추가 */
+        font-family: 'Gowun Dodum', sans-serif;
+        font-size: 25px;
+    }
+    #sijamg_top {
+        display: flex;
+        justify-content: center; /* 페이지 가운데 정렬 */
+        align-items: flex-start; /* 시장 정보 컨테이너를 상단에 정렬 */
+    }
+    table {
+        border-collapse: separate;
+        border-spacing: 0 20px; /* 상하로 30px 간격 지정 */
+        margin-top: 10px; /* 테이블 위쪽에 20px 간격 추가 */
+    }
+    th, td {
+        padding-left: 8px; /* 셀 내부 왼쪽 간격 지정 */
+    }
+	.slider-container {
+	    display: flex;
+	    justify-content: center;
+	}
+	.product-item {
+	  position: relative;
+	  padding: 16px;
+	  background: #FFFFFF;
+	  border: 1px solid #FBFBFB;
+	  box-shadow: 0px 5px 22px rgba(0, 0, 0, 0.04);
+	  border-radius: 16px;
+	  margin-bottom: 30px;
+	  transition: box-shadow 0.3s ease-out;
+	}
+	.product-item:hover {
+	  box-shadow: 0px 21px 44px rgba(0, 0, 0, 0.08);
+	}
+	.product-item h3 {
+	  display: block;
+	  width: 100%;
+	  font-weight: 600;
+	  font-size: 18px;
+	  line-height: 25px;
+	  text-transform: capitalize;
+	  color: #333333;
+	  margin: 0;
+	}
+	.product-item figure {
+	  background: #F9F9F9;
+	  border-radius: 12px;
+	  text-align: center;
+	}
+	.product-item figure img {
+	  max-height: 210px;
+	  height: auto;
+	}
+	.product-item .btn-wishlist {
+	  position: absolute;
+	  top: 20px;
+	  right: 20px;
+	  width: 40px;
+	  height: 40px;
+	  border-radius: 50px;
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  background: #fff;
+	  border: 1px solid #d8d8d8;
+	  transition: all 0.3s ease-out;
+	}
+	.product-item .btn-wishlist:hover {
+	  background: rgb(240, 56, 56);
+	  color: #fff;
+	}
+	.product-item .qty {
+	  font-weight: 400;
+	  font-size: 13px;
+	  line-height: 18px;
+	  letter-spacing: 0.02em;
+	  text-transform: uppercase;
+	  color: #9D9D9D;S
+	}
+	.product-item .rating {
+	  font-weight: 600;
+	  font-size: 13px;
+	  line-height: 18px;
+	  text-transform: capitalize;
+	  color: #222222;
+	}
+	.product-item .rating iconify-icon {
+	  color: #FFC43F;
+	}
+	.product-item .price {
+	  display: block;
+	  width: 100%;
+	  font-weight: 600;
+	  font-size: 22px;
+	  line-height: 30px;
+	  text-transform: capitalize;
+	  color: #222222;
+	}
+
+	.product-item .btn-link {
+	  text-decoration: none;
+	}
+	.product-item #quantity {
+	  height: auto;
+	  width: 28px;
+	  text-align: center;
+	  border: none;
+	  margin: 0;
+	  padding: 0;
+	}
+	.product-item .btn-number {
+	  width: 26px;
+	  height: 26px;
+	  line-height: 1;
+	  text-align: center;
+	  background: #FFFFFF;
+	  border: 1px solid #E2E2E2;
+	  border-radius: 6px;
+	  color: #222;
+	  padding: 0;
+	}
+	
+	h3 {
+    padding-left: 320px; /* 왼쪽 여백을 20px로 설정 */
+    font-family: 'Gowun Dodum', sans-serif;
+    font-weight: bold;
+	}
+    .store-link {
+        text-decoration: none; /* 밑줄 제거 */
+        color: #333; /* 링크 색상 */
+        font-size: 16px; /* 글자 크기 */
+        font-weight: bold; /* 글자 굵기 */
+        font-family: 'Gowun Dodum', sans-serif;
+    }
+
+    .store-link:hover {
+        color: purple; /* 마우스 오버시 텍스트 색상 */
+    }
+	.wished {
+	    background: red; /* 텍스트 색상을 빨간색으로 변경 */
+	    /* 또는 필요에 따라 다른 스타일을 적용할 수 있습니다. */
+	}
+	.cart {
+    width: 120px;
+    padding: 5px;
+    margin: 5px;
+    border: none;
+    background-color: lightyellow;
+    cursor: pointer;
+  }
