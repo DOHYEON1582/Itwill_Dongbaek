@@ -8,6 +8,9 @@
 <head>
 <link href="/resources/css/projectCSS.css" rel="stylesheet" type="text/css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.2.js" charset="utf-8"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+
  
 <meta charset="UTF-8">
 <title>동백마켓</title>
@@ -41,6 +44,8 @@
 		<a id="kakao-login-btn" href="javascript:loginWithKakao()">
 			<img src="https://cs.kakao.com/img/cskakaocom/pc/thumb/thumb_kakaotalk.png" alt="kakao" style="width: 100px; height: 100px;">
 		</a> 
+		<div id="naver_id_login" style="text-align:center"><a href="${url}"><img width="223" src="${pageContext.request.contextPath}/resources/img/naver_Bn_Green.PNG"/></a></div>
+		<br>
 	</div>
 	
 </div>

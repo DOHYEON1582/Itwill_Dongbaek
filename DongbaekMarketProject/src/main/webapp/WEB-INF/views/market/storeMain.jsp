@@ -489,7 +489,7 @@ h3 {
             <option value="highPrice" ${param.orderBy == 'highPrice' ? 'selected' : ''}>높은 가격순</option>
         </select>
         <input type="hidden" name="store_code" value="${store.store_code }">
-        <input type="s\\[]ubmit" value="정렬">
+        <input type="submit" value="정렬">
     </form>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-6 justify-content-center gap-3">
             <c:forEach items="${product}" var="product">
