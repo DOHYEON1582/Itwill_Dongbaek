@@ -28,10 +28,6 @@
 	<task:scheduler id="jobscheduler" pool-size="10"/>
 	<task:annotation-driven scheduler="jobscheduler"/>
 	
-	<!-- fileupload -->
-	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
-	</beans:bean>
-
 	<!-- 파일업로드 관련 Mulitipart 설정 -->
     <beans:bean id="multipartResolver"
                 class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

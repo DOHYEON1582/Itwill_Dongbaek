@@ -3,8 +3,6 @@ package com.itwillbs.persistence;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.catalina.User;
-
 import com.itwillbs.domain.AdminCartVO;
 import com.itwillbs.domain.AdminChatRoomVO;
 import com.itwillbs.domain.AdminNoticeVO;

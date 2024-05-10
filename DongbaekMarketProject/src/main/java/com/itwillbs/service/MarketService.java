@@ -80,9 +80,6 @@ public interface MarketService {
 	// 찜 목록 들고오기
 	public List<WishVO> selectWish(String user_id) throws Exception;
   
-	// 문의 상세정보 들고오기
-	public QuestionVO questionDetail(int q_code) throws Exception;
-	
 	// 구독 제품 리스트 가져오기
 	public List<ProductVO> getSubProductList()throws Exception;
 	

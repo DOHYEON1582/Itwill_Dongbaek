@@ -1,8 +1,5 @@
 package com.itwillbs.controller;
 
-public class ProductRestController {
-
-
 import java.util.List;
 
 import javax.inject.Inject;
@@ -29,33 +26,7 @@ public class ProductRestController {
 	private static final Logger logger = LoggerFactory.getLogger(ProductRestController.class);
 	
 	@Inject
-	private ProductService pService;
-	
-	@Inject
 	private MarketService mService;
-	
-	@PostMapping("/product/sortProduct")
-	public List<ProductVO> sortProduct(@RequestParam("store_code") int store_code, @RequestParam("sortType") String sortType) {
-		
-		List<ProductVO> productList = null;
-		try {
-            // 정렬 방법에 따라 서비스 계층의 메서드 호출
-            if ("latest".equals(sortType)) {
-                productList = pService.lateProduct(store_code);
-            } else if ("popularity".equals(sortType)) {
-                productList = pService.popProduct(store_code);
-            } else if ("lowPrice".equals(sortType)) {
-                productList = pService.lowPrice(store_code);
-            } else if ("highPrice".equals(sortType)) {
-                productList = pService.highPrice(store_code);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-		
-		return productList;
-		
-	}
 	
 	@GetMapping(value = "/product/insertWish/{product_code}")
 	public int insertWish(@PathVariable("product_code") int product_code,HttpSession session)throws Exception{
