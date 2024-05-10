@@ -24,4 +24,5 @@ public class ProductVO {
 	
 	private List<StoreVO> storeVO;
 	private List<Subscrbe_productVO> subscrbe_productVO;
+
 }

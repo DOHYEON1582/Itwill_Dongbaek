@@ -15,7 +15,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+
 import org.springframework.web.bind.annotation.PostMapping;
+
+import org.springframework.web.bind.annotation.GetMapping;
+
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -224,6 +228,7 @@ public class MarketController {
 		logger.debug("mvo " + mvo);
 	}
 	
+
 	@ResponseBody
 	@RequestMapping(value = "/addWish", method = RequestMethod.POST, consumes = "application/json")
 	public void addWish(HttpSession session, @RequestBody WishVO wish) throws Exception{
@@ -264,6 +269,19 @@ public class MarketController {
 		logger.debug(" cart >>>>>>>>>>>>> " + cart);
 	}
 	
+
+	@GetMapping(value = "/sub")
+	public void marketSub(Model model,HttpSession session)throws Exception{
+		logger.debug(" marketSub() 호출 ");
+		UserVO vo = (UserVO) session.getAttribute("userVO");
+		
+		model.addAttribute("productList", mService.getSubProductList());
+		model.addAttribute("wishList", mService.getUserWish(vo.getUser_id()));
+		
+	}
+	
+	
+
 	
 	
 	

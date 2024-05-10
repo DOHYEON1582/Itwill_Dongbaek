@@ -20,6 +20,7 @@ import com.itwillbs.domain.AdminCartVO;
 import com.itwillbs.domain.AdminProductVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.persistence.AdminDAO;
+import com.itwillbs.persistence.MarketDAO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/root-context.xml"})
@@ -27,6 +28,9 @@ public class ProjectTest {
 
 	@Inject
 	private AdminDAO dao;
+	
+	@Inject
+	private MarketDAO mdao;
 	
 	private static final Logger logger = LoggerFactory.getLogger(ProjectTest.class);
 	
@@ -83,12 +87,22 @@ public class ProjectTest {
 		
 	}
 	
-	@Test
+	//@Test
 	public void 구독물품리스트테스트() throws Exception{
 		AdminProductVO vo = new AdminProductVO();
 		
 		logger.debug("결과!! : "+dao.getSubProductList(vo));
 		
 	}
+	
+	@Test
+	public void 찜유무테스트()throws Exception{
+		logger.debug(" 찜유무테스트() 호출 ");
+		int a = mdao.userProductWish(1, "itwill1");
+		logger.debug("결과 값 : "+a);
+	}
+	
+	
+	
 	
 }//endTest

@@ -71,7 +71,7 @@
 			var order_code = $(this).find('td:eq(0)').text();
 			
 			$.ajax({
-				url : "/admin/shoporder/"+order_code,
+				url : "/admin/shoporder/"+order_code, 
 				type : "GET",
 				success : function(data){
 					//console.log(data);
@@ -79,7 +79,7 @@
 					var orderList = data.orderList[0];
 					var cartList = data.cartList;
 					
-					//console.log(orderList);
+					//console.log(orderList); 
 					//console.log(cartList);
 					
 					var currentDate = new Date(orderList.ordr_date);
@@ -137,7 +137,7 @@
 					
 					$(cartList).each(function(i,cartList){
 						
-								var ProductVO = cartList.AdminProductVO[0];
+								var ProductVO = cartList.adminProductVO[0];
 								console.log(ProductVO);
 								
 								$('#modal-table2 tbody').append(

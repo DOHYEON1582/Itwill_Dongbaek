@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itwillbs.mapper.ReviewMapper">
+
+    <!-- resultMap 정의 -->
+    <resultMap type="com.itwillbs.domain.ReviewVO" id="review">
+        <id property="review_code" column="review_code" />
+        <result property="product_code" column="product_code" />
+        <result property="regdate" column="regdate" />
+        <result property="title" column="title" />
+        <result property="content" column="content" />
+        <result property="star" column="star" />
+        <result property="user_id" column="user_id" />
+        <result property="img1" column="img1" />
+        <result property="img2" column="img2" />
+        <result property="img3" column="img3" />
+        <result property="order_code" column="order_code" />
+        <result property="re_lev" column="re_lev" />
+        <result property="re_ref" column="re_ref" />
+        <result property="re_seq" column="re_seq" />
+    </resultMap>
+
+    <!-- 모든 리뷰 조회 -->
+	<select id="getAllReviews" resultMap="review">
+	    SELECT * FROM review
+	    ORDER BY regdate DESC
+	    LIMIT #{startRecord}, #{pageSize}
+	</select>
+
+
+	<!-- 리뷰 총 개수 조회 -->
+    <select id="countReviews" resultType="int">
+        SELECT COUNT(*) FROM review
+    </select>
+
+    <!-- 리뷰 코드로 리뷰 조회 -->
+    <select id="getReviewByCode" parameterType="int" resultMap="review">
+        SELECT * FROM review WHERE review_code = #{review_code}
+    </select>
+
+    <!-- 리뷰 추가 -->
+    <insert id="insertReview" parameterType="com.itwillbs.domain.ReviewVO">
+        INSERT INTO review (product_code, regdate, title, content, star, user_id, img1, img2, img3, order_code, re_lev, re_ref, re_seq)
+        VALUES (#{product_code}, #{regdate}, #{title}, #{content}, #{star}, #{user_id}, #{img1}, #{img2}, #{img3}, #{order_code}, #{re_lev}, #{re_ref}, #{re_seq})
+    </insert>
+
+	<!-- 리뷰 답글 추가 -->
+	<!-- 	<insert id="addReply" parameterType="com.itwillbs.domain.ReviewVO"> -->
+	<!-- 	    INSERT INTO review (product_code, regdate, title, content, star, user_id, img1, img2, img3, order_code, re_lev, re_ref, re_seq) -->
+	<!-- 	    VALUES (#{product_code}, #{regdate}, #{title}, #{content}, #{star}, #{user_id}, #{img1}, #{img2}, #{img3}, #{order_code}, #{re_lev}, #{re_ref}, #{re_seq}) -->
+	<!-- 	</insert> -->
+    
+ 	<!-- 리뷰 답글 수정 -->
+	<update id="replyModify" parameterType="com.itwillbs.domain.ReviewVO">
+	    UPDATE review
+	    SET content = #{content}
+	    WHERE review_code = #{review_code}
+	</update>
+	
+	<select id="getReviewByParams" parameterType="map" resultMap="review">
+        SELECT * FROM review
+        WHERE user_id = #{user_id} AND product_code = #{product_code} AND order_code = #{order_code}
+    </select>
+
+	<!-- 리뷰 답글 추가 -->
+    <insert id="addReply" parameterType="com.itwillbs.domain.ReviewVO">
+        INSERT INTO review (user_id, product_code, order_code, content, star, ...) 
+        VALUES (#{user_id}, #{product_code}, #{order_code}, #{content}, #{star}, ...)
+    </insert>
+</mapper>

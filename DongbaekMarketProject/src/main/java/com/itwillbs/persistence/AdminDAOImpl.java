@@ -211,6 +211,43 @@ public class AdminDAOImpl implements AdminDAO {
 		
 		return sql.selectOne(NAMESPACE+".idCheck", vo);
 	}
+
+	@Override
+	public int insertSeller(AdminSellerVO vo) throws Exception {
+		logger.debug(" insertSeller(AdminSellerVO vo) 호출 ");
+		
+		return sql.insert(NAMESPACE+".insertSeller", vo);
+	}
+
+	@Override
+	public int insertStore(AdminStoreVO vo) throws Exception {
+		logger.debug(" insertStore(AdminStoreVO vo) 호출 ");
+		
+		return sql.insert(NAMESPACE+".insertStore", vo);
+	}
+
+	@Override
+	public int getStoreCode() throws Exception {
+		logger.debug(" getStoreCode() 호출 ");
+		
+		return sql.selectOne(NAMESPACE+".getStore_code");
+	}
+
+	@Override
+	public int deleteChatRoom(int room_idx) throws Exception {
+		logger.debug(" deleteChatRoom(Integer room_idx) 호출 ");
+		
+		return sql.delete(NAMESPACE+".deleteChatRoom",room_idx);
+	}
+
+	@Override
+	public List<AdminProductVO> searchProduct(String product_name) throws Exception {
+		logger.debug(" searchProduct(String product_name) 호출 ");
+		
+		return sql.selectList(NAMESPACE+".searchProChat", product_name);
+	}
+	
+	
 	
 	
 

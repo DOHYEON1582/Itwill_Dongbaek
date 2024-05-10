@@ -253,6 +253,41 @@ public class AdminServiceImpl implements AdminService {
 		return adao.idCheck(vo);
 	}
 
+	@Override
+	public int insertSeller(AdminSellerVO vo) throws Exception {
+		logger.debug(" insertSeller(AdminSellerVO vo) 호출 ");
+		
+		return adao.insertSeller(vo);
+	}
+
+	@Override
+	public int insertStore(AdminStoreVO vo) throws Exception {
+		logger.debug(" insertStore(AdminStoreVO vo) 호출 ");
+		
+		return adao.insertStore(vo);
+	}
+
+	@Override
+	public int getStoreCode() throws Exception {
+		logger.debug(" getStoreCode() 호출 ");
+		
+		return adao.getStoreCode();
+	}
+
+	@Override
+	public int deleteChatRoom(int room_idx) throws Exception {
+		logger.debug(" deleteChatRoom(Integer room_idx) 호출 ");
+		
+		return adao.deleteChatRoom(room_idx);
+	}
+
+	@Override
+	public List<AdminProductVO> searchProduct(String product_name) throws Exception {
+		logger.debug(" searchProduct(String product_name) 호출 ");
+		
+		return adao.searchProduct(product_name);
+	}
+
 	
 	
 	

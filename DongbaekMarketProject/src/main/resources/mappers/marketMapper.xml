@@ -116,11 +116,67 @@
   	]]>
   </select>
   
+
   <!-- 즐겨찾기에 넣기 -->
   <insert id="markStore">
   	insert into mark(store_code, user_id)
   	values (#{store_code}, #{user_id})
   </insert>
+
+  <!-- 최근 문의글 10개 불러오기  -->
+  <select id="newQuestion" resultType="QuestionVO">
+  	select * from question
+  	where product_code = #{product_code}
+  	order by regdate desc
+  	limit 0,10;
+  </select>
+  
+  <!-- 문의 상세정보 불러오기 -->
+  <select id="questionDetail" resultType="QuestionVO">
+  	select * from question
+  	where q_code = #{q_code}
+  </select>
+  
+  <!-- 구독 상품 리스트 가져오기 -->
+  <select id="getSubList" resultType="com.itwillbs.domain.ProductVO">
+  	SELECT * FROM product 
+  	WHERE sub_product = '구독'
+  	
+  </select>
+  
+  <!-- 위시리스트 가져오기 -->
+  <select id="getUserWish" resultType="com.itwillbs.domain.WishVO">
+  	SELECT * FROM wish 
+  	WHERE user_id = #{user_id}
+  </select>
+  
+  <!-- 위시리스트 유무 체크 -->
+  <select id="userProductWish" resultType="int">
+  	SELECT COUNT(*) FROM wish 
+  	WHERE product_code = #{product_code} AND user_id = #{user_id}
+  </select>
+  
+  <!-- 위시 넣기 -->
+  <insert id="insertWish">
+  	INSERT INTO wish (product_code,user_id) 
+	VALUES (#{product_code},#{user_id});
+  </insert>
+  
+  <!-- 위시 삭제 -->
+  <delete id="deleteWish">
+  	DELETE FROM wish 
+  	WHERE product_code = #{product_code} AND user_id = #{user_id}
+  
+  </delete>
+  
+  <!-- 회원 구독 물품 추가 -->
+  <insert id="insertSubPro">
+  	INSERT INTO subscrbe_product (product_code, user_id, count)
+  	VALUES (#{product_code},#{user_id},#{count})
+  </insert>
+  
+  
+
   
   <!-- 찜에 넣기 -->
   <insert id="wishProduct">
