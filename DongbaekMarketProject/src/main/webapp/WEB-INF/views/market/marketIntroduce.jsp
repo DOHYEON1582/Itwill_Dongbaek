@@ -58,7 +58,6 @@ function topFunction() {
 });
 </script>
 
-
 <body>
 <!-- 시장정보 -->
 <section class="py-2 mb-1" style="background: url(${pageContext.request.contextPath}/resources/images/background-pattern.jpg);">
