@@ -110,27 +110,26 @@
 		<tr>
 			<th>결제방법</th>
 			<td>
-				<input type="radio" id="pay_method" name="pay_method" value="card">카드결제
-				<input type="radio" id="pay_method" name="pay_method" value="pay">ㅇㅅㅇ?
+				<input type="radio" name="pay_method" value="card">카드결제
+				<input type="radio" name="pay_method" value="pay">ㅇㅅㅇ?
 			</td>
 		</tr>
 	</table>
-	
 	<!-- 아이디, 묶음번호, 가게코드, 배달비, 총 결제금액, 적립 포인트, 예약여부..?  -->
-	<%-- <input type="hidden" id="user_id" name="user_id" value="${sessionScope.user_id }">  --%>
-	<input type="hidden" id="name" name="name" value="${sessionScope.user_name }">
-	<input type="hidden" id="bundle_code" name="bundle_code" value="${sessionScope.cart }">
-	<%-- <input type="hidden" id="store_code" name="store_code" value="${cartList.store_code }"> --%>
-	<input type="hidden" id="delivery" name="deleivery_fee">
-	<input type="hidden" id="amount" name="total_price">
-	<input type="hidden" id="add_point" name="add_point" value="">
+	<input type="text" id="user_id" name="user_id" value="${sessionScope.userVO.user_id }"> 
+	<input type="text" id="name" name="name" value="${sessionScope.userVO.user_name }">
+	<input type="text" id="bundle_code" name="bundle_code" value="${sessionScope.cart }">
+	<%-- <input type="text" id="store_code" name="store_code" value="${cartList.store_code }"> --%>
+	<input type="text" id="delivery" name="deleivery_fee">
+	<input type="text" id="amount" name="total_price">
+	<input type="text" id="add_point" name="add_point" value="">
 	
 	<!-- 합치기 -->
-	<input type="hidden" id="rcv_phone" name="rcv_phone">
-	<input type="hidden" id="rcv_addr2" name="rcv_addr2"><!-- 상세주소, 참고항목 합치기 -->
+	<input type="text" id="rcv_phone" name="rcv_phone">
+	<input type="text" id="rcv_addr2" name="rcv_addr2"><!-- 상세주소, 참고항목 합치기 -->
 	
 	<!-- 주문 상품 수량 -->
-	<input type="hidden" id="productNum" name="productNum" value="${productNum }">	
+	<input type="text" id="productNum" name="productNum" value="${productNum }">	
 	</form>
 
 	
@@ -164,7 +163,7 @@
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 
 <!-- 제이쿼리 -->
-<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 	function sample6_execDaumPostcode() {
 		new daum.Postcode(
@@ -203,23 +202,23 @@
 								extraAddr = ' (' + extraAddr + ')';
 							}
 							// 조합된 참고항목을 해당 필드에 넣는다.
-							document.getElementById("sample6_extraAddress").value = extraAddr;
+							document.getElementById("addr3").value = extraAddr;
 
 						} else {
-							document.getElementById("sample6_extraAddress").value = '';
+							document.getElementById("addr3").value = '';
 						}
 
 						// 우편번호와 주소 정보를 해당 필드에 넣는다.
-						document.getElementById('sample6_postcode').value = data.zonecode;
-						document.getElementById("sample6_address").value = addr;
+						document.getElementById('rcv_zip').value = data.zonecode;
+						document.getElementById("rcv_addr1").value = addr;
 						// 커서를 상세주소 필드로 이동한다.
-						document.getElementById("sample6_detailAddress")
+						document.getElementById("addr2")
 								.focus();
 					}
 				}).open();
 	}
 	
-	// 제이쿼리 시작
+	// 시작
 	$(document).ready(function(){
 		
 		// 주문 할 상품 가격의 합
@@ -237,7 +236,7 @@
 		    var reducePoint = $('#reduce_point').val();
 		    return reducePoint;
 		});
-		
+
 		// 배송비 처리
 		$('#deliveryFee').text(function(){
 		    var totalPrice = parseInt($('#totalPrice').text());
@@ -249,7 +248,7 @@
 		    }
 		    return deliveryFee;
 		});
-		
+
 		// 결제예정금액
 		$('#payAmount').text(function(){
 		    var totalPrice = parseInt($('#totalPrice').text());
@@ -270,14 +269,16 @@
         var representativeProductName = uniqueProductNames[0];
         var additionalProductCount = uniqueProductNames.length - 1;
 
-        // 상품명 표시
-        if (additionalProductCount > 0) {
-            $('#productName').text(representativeProductName + " 외 " + additionalProductCount + "개");
-        } else {
-            $('#productName').text(representativeProductName);
-        }
         
-		// input 값 넣기 (수정 필요)
+        var productName = "";
+    	// 상품명 표시
+        if (additionalProductCount > 0) {
+        	productName = $('#productName').text(representativeProductName + " 외 " + additionalProductCount + "개");
+        } else {
+        	productName = $('#productName').text(representativeProductName);
+        }
+
+     	// input 값 넣기 (수정 필요)
 		$('#delivery').val($('#deliveryFee').text());
 		$('#amount').val($('#payAmount').text());
 		$('#rcv_phone').val(function(){
@@ -286,63 +287,100 @@
 		    var phone3 = $('#rcv_phone3').val();
 		    return phone1 + phone2 + phone3;
 		});
-		
-	  	// addr2, addr3, rcv_phone1, rcv_phone2, rcv_phone3, productNum 폼 제출 막기
+
+		// addr2, addr3, rcv_phone1, rcv_phone2, rcv_phone3, productNum 폼 제출 막기
         $('#addr2, #addr3, #rcv_phone1, #rcv_phone2, #rcv_phone3, #productNum').change(function(){
             $('#orderFrm').off('submit').submit(function(event){
                 event.preventDefault();
             });
         });
-	  	
-		// 주문하기
-		$('#payBtn').click(function(){
-			var orderInfo = $('#orderFrm').serialize();
-			
+
+        $('#payBtn').click(function(){
 			$.ajax({
-				url: '/order/pay',
+				url: '/order/orderCode',
 				type: 'POST',
-				dataType: "text",
-				success: function(data){
-					requestPay(data)
+				/* dataType: data, */
+				success: function(response){
+					alert("dkdkdkdkdkdkdkdkdkdkdkdk : "+response);
+					
+					requestPay(response);
+					aaa(response);
 				},
 				error: function(){
+					alert("orderCode 못 받아옴");
 					alert("오류가 발생했습니다.");
 				}
 			});
 			
-			function requestPay(data){
-				var IMP = window.IMP;
-				IMP.init("imp68706306");
-				
-				IMP.request_pay({
-					pg : "html5_inicis",
-					pay_method : 'card',
-					merchant_uid : data,
-					name : $('#productName').text(), // 대표 상품명 및 추가 상품 개수 표시
-					amount : $('#amount').val(),
-					buyer_name : $('#name').val(),
-					buyer_tel : $('#rcv_phone').val(), // 없으면 오류
-					buyer_addr : $('#rcv_addr1').val() + ' ' + $('#addr2').val(), // 주소
-		            buyer_postcode : $('#rcv_zip').val() // 우편번호
-				}, function(rsp){
-					if(rsp.success){
-						$.ajax({
-							type: 'POST',
-							url: '/order/success',
-							data: JSON.stringify(orderInfo),
-							contentType: 'application/json; charset=utf-8',
-						});
-					}else{
-						alert("오류가 발생했습니다.");
-						history.back();
-					} // if문 끝
-				}
-				});
-			}
-			
-		});
-
+        });
+        
+        var IMP = window.IMP;
+		IMP.init("imp68706306");
+		
+		var productName = $('#productName').text();
+		var amount = $('#amount').val();
+		var name = productName;
+		var rcvPhone= $('#rcv_phone').val();
+		var addr = $('#rcv_addr1').val() + ' ' + $('#addr2').val();
+		var zipcode = $('#rcv_zip').val();
+		
+		
+		var orderInfo = $('#orderFrm').serialize();
+		
+		
+		function aaa(response){
+			alert("앙 / " + 
+					"response : " + response+" "+
+					"productName : " + productName+" "+ 
+					"amount : " + amount+" "+
+					"name : " + name+" "+
+					"rcvPhone : " + rcvPhone+" "+
+					"addr : " + addr+" "+
+					"zipcode : " + zipcode
+			);
+		}
+        function requestPay(response){
+        	alert("requestPay1");
+        	// IMP.request_pay(param, callback) 결제창 호출
+		    IMP.request_pay({ // param
+		        pg: "html5_inicis",
+		        pay_method: "card",
+		        merchant_uid: response,
+		        name: productName, // 대표 상품명 및 추가 상품 개수 표시
+		        amount: amount,
+		        buyer_name : name,
+				buyer_tel : rcvPhone, // 없으면 오류
+				buyer_addr : addr, // 주소
+	            buyer_postcode : zipcode // 우편번호
+		    }, function (rsp) { // callback
+		    	alert("requestPay2");
+		        if (rsp.success) {
+		        	alert("requestPay3");
+		            // 결제 성공 시 로직
+	    			$.ajax({
+	    				url: '/order/pay',
+	    				type: 'POST',
+	    				data: orderInfo,
+	    				dataType: "text",
+	    				success: function(text){
+	    					alert("requestPay4");
+	    					location.href="/order/success?orderCode="+text;
+	    				},
+	    				error: function(){
+	    					alert("requestPay5");
+	    					alert("오류가 발생했습니다.");
+	    				}
+	    			});
+		        } else {
+		        	alert("requestPay6");
+		            // 결제 실패 시 로직
+		        	alert("결제가 취소되었습니다.");
+		        }
+		    });
+        }
+        	
 	}); // 제이쿼리 끝 
+	
 </script>
 <!-- <script>
 	function sample6_execDaumPostcode() {
