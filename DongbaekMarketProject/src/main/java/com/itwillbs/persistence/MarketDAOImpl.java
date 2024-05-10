@@ -35,6 +35,12 @@ public class MarketDAOImpl implements MarketDAO{
 	
 	private static final Logger logger = LoggerFactory.getLogger(MarketDAOImpl.class);
 	private static final String NAMESPACE = "com.itwillbs.mapper.MarketMapper";
+	
+	@Override
+	public List<MarketVO> getMarketAll(MarketVO mvo) throws Exception {
+		logger.debug(" getMarketAll(MarketVO mvo) 호출 ");
+		return sqlSession.selectList(NAMESPACE + ".selectMarketAll", mvo);
+	}
 
 	@Override
 	public MarketVO getMarketList() throws Exception {

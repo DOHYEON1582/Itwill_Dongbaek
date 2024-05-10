@@ -19,6 +19,9 @@ import com.itwillbs.domain.WishVO;
 
 public interface MarketService {
 	
+	// 시장 정보 전체 가져오기
+	public List<MarketVO> getMarketAll(MarketVO mvo) throws Exception;
+	
 	// 시장 정보 가져오기
 	public MarketVO getMarketList() throws Exception;
 	

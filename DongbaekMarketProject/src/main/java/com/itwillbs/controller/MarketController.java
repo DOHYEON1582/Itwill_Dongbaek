@@ -80,6 +80,15 @@ public class MarketController {
 		session.setAttribute("viewUpdateStatus", 1);
     }
 	
+	// 메인에서 시장소개 버튼 클릭
+	@RequestMapping(value = "/marketIntroduce", method = {RequestMethod.GET, RequestMethod.POST})
+	public void marketIntroduce(Model model, MarketVO mvo) throws Exception {
+		logger.debug(" marketIntroduce 호출 ");
+		List<MarketVO> marketList = mService.getMarketAll(mvo);
+        model.addAttribute("marketList", marketList);
+	}
+	
+	
 	// http://localhost:8088/market/storeMain
 	// 가게 메인페이지
 	@RequestMapping(value = "/storeMain", method = RequestMethod.GET)

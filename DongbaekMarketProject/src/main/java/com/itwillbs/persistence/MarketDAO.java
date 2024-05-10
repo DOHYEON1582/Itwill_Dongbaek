@@ -19,6 +19,9 @@ import com.itwillbs.domain.SubscrbeProductVO;
 import com.itwillbs.domain.WishVO;
 
 public interface MarketDAO {
+	
+	// 마켓 전체 조회
+	public List<MarketVO> getMarketAll(MarketVO mvo) throws Exception;
 
 	public MarketVO getMarketList() throws Exception;
 	
