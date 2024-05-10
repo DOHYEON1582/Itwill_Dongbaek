@@ -7,7 +7,7 @@ public class OrderInfoVO {
 
 	private int order_code;			// 주문번호
 	private String user_id;			// 회원아이디
-	private String bundel_code;		// 묶음번호(장바구니 이름)
+	private String bundle_code;		// 묶음번호(장바구니 이름)
 	private String store_code;		// 가게 번호
 	private String ordr_date;		// 주문 날짜
 	private String rcv_zip;			// 수취인 우편번호
@@ -17,7 +17,7 @@ public class OrderInfoVO {
 	private String rcv_addr2;		// 수취인 상세주소	
 	private String rcv_msg;			// 배송메세지
 	private String pay_method;		// 결제방법
-	private String deleivery_fee;	// 배달비
+	private String delivery_fee;	// 배달비
 	private String total_price;		// 총 결제금액
 	private String point;			// ????
 	private String cal_check;		// 정산여부

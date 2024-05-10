@@ -62,10 +62,11 @@ public class OrderServiceImpl implements OrderService {
 		odao.insertOrderInfo(vo);
 	}
 
-	
-
-	
-	
-	
+	// cart 주문현황 변경 
+	@Override
+	public void updateStates(String bundle_code) throws Exception {
+		logger.debug(" === S : updateStates(String bundle_code) 실행 === ");
+		odao.updateStates(bundle_code);
+	}
 	
 }

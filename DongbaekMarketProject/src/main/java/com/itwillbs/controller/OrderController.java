@@ -15,12 +15,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itwillbs.domain.CartVO;
+import com.itwillbs.domain.OrderInfoVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.OrderService;
 import com.siot.IamportRestClient.IamportClient;
@@ -62,7 +64,7 @@ public class OrderController {
 
 		List<CartVO> cartList = new ArrayList<>();
 		int productNum = 0;
-		
+
 		CartVO cartVO = new CartVO();
 		cartVO.getStore_code();
 		// 개별 주문 상품 정보
@@ -154,11 +156,67 @@ public class OrderController {
 		return orderCode;
 	}
 
-	@GetMapping(value = "/pay")
-	public String orderPayGET(@RequestParam Map<String, Object> orderInfo) throws Exception {
+	// 임시
+	@PostMapping(value = "/payTest")
+	public String orderPayPOST(HttpSession session, OrderInfoVO ovo) throws Exception {
 		logger.debug("ㅇㅅㅇ??");
+		logger.debug(" ovo : " +  ovo );
 		
-		return null;
+		/* 주문번호 생성 */
+		// 오늘 날짜 가져오기
+		LocalDate now = LocalDate.now();
+		// 포맷 정의
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd");
+		// 포맷 적용
+		String today = now.format(formatter);
+		// 숫자 출력 서식 정하기
+		DecimalFormat dc = new DecimalFormat("000");
+		int orderCode = 0;
+		int result = oService.selectMaxOrderCode();
+		if (result == 0) {
+			logger.debug(" ===order_code=== : " + today + "001");
+			orderCode = (Integer.parseInt(today + "001"));
+		} else if (result != 0) {
+			logger.debug(" ===result=== : " + result);
+			logger.debug(" ===result + 1=== : " + (result + 1));
+			orderCode = (result + 1);
+		}
+		
+		String bundleCode = (String)session.getAttribute("cart");
+		
+		logger.debug(" ===orderCode=== : " + orderCode);
+		ovo.setOrder_code(orderCode);
+		
+		// 주문 정보 입력
+		oService.insertOrderInfo(ovo);
+		
+		// cart 주문현황 바꾸기
+		oService.updateStates(bundleCode);
+		
+		return "redirect:/order/success?orderCode="+orderCode;
+	}
+
+	// 결제 성공 페이지
+	@GetMapping(value = "/success")
+	public void orderSuccessGET(HttpSession session,
+					@RequestParam("orderCode") int orderCode,
+					Model model) throws Exception {
+		
+		// 주문 한 상품 보여주기
+		// 세션에서 선택한 상품 정보 가져오기
+		List<CartVO> cartList = (List<CartVO>) session.getAttribute("selected_cartList");
+		int productNum = (int) session.getAttribute("selected_productNum");
+		
+				
+		session.setAttribute("selected_cartList", cartList);
+		session.setAttribute("selected_productNum", productNum);
+		
+		model.addAttribute("cartList", cartList);
+		model.addAttribute("productNum", productNum);
+		model.addAttribute("orderCode",orderCode);
+		
+		// 주문 완료 문구 보여주기
+		
 	}
 
 }

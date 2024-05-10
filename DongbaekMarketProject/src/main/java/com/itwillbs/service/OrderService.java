@@ -24,4 +24,7 @@ public interface OrderService {
 
 	// 주문 정보 입력
 	public void insertOrderInfo(OrderInfoVO vo) throws Exception;
+	
+	// cart 주문현황 변경 
+	public void updateStates(String bundle_code) throws Exception;
 }

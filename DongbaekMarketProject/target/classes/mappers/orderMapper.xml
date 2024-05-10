@@ -69,9 +69,9 @@
 		INSERT INTO order_info
 		            (order_code,
 		             user_id,
-		             bundel_code,
+		             bundle_code,
 		             store_code,
-		             order_date,
+		             ordr_date,
 		             rcv_zip,
 		             rcv_name,
 		             rcv_phone,
@@ -87,7 +87,7 @@
 		             add_point)
 		VALUES     ( #{order_code},
 		             #{user_id},
-		             #{bundel_code},
+		             #{bundle_code},
 		             #{store_code},
 		             Now(),
 		             #{rcv_zip},
@@ -102,8 +102,18 @@
 		             'N',
 		             #{reservation},
 		             #{reduce_point},
-		             #{add_point}, ) 
+		             #{add_point}) 
 	</insert>
+	
+	<!-- cart 주문 상태 변경  -->
+	<update id="updateStates">
+		UPDATE cart
+		SET    states='결제완료'
+		WHERE  bundle_code=#{bundle_code}
+	</update>
+	
+	<!-- 주문성공 -->
+
 	
 
 </mapper>

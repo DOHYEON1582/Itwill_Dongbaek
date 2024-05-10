@@ -64,6 +64,14 @@ public class OrderDAOImpl implements OrderDAO{
 		sqlSession.insert(NAMESPACE+".insertOrderInfo",vo);
 	}
 
+	// cart 주문현황 변경
+	@Override
+	public void updateStates(String bundle_code) throws Exception {
+		logger.debug(" === D : updateStates(String bundle_code) 실행 === ");
+		sqlSession.update(NAMESPACE+".updateStates",bundle_code);
+		
+	}
+
 	
 
 	

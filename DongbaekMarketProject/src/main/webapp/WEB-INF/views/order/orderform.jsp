@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<%-- <%@ include file="../include/header.jsp"%> --%>
+<%@ include file="../include/header.jsp"%>
 
 <style>
 	.productList th{
@@ -36,6 +36,11 @@
 	input[type='number'] {
 	  -moz-appearance: textfield;
 	}
+	
+	.img{
+		width: 100%; /* 이미지를 부모 요소(.image-container)의 너비에 맞추어 줄입니다. */
+        height: auto; /* 이미지의 높이를 비율에 맞게 자동으로 조절합니다. */
+	}
 </style>
 
 <div class="container">
@@ -51,20 +56,21 @@
 		<tbody>
 			<c:forEach var="list" items="${cartList }">
 			<tr>
-				<td><img alt="" src="">경로확인 후 값 넣기</td>
+				<td><img src="${pageContext.request.contextPath}/resources/images/product/${list.img1}" alt="Product Thumbnail" class="tab-image" style="width : 180px"></td>
 				<td>${list.store_name}<br>${list.product_name}</td><!-- 가게명, 상품명 -->
-				<td>${list.price }</td>
+				<td><%-- <fmt:formatNumber value="${list.price }" pattern="#,###"/> --%>${list.price }</td>
 				<td>
-					<input type="number" id="count" name="count" value="${list.count }">
+					${list.count }<!-- <input type="number" id="count" name="count" value=""> -->
 				</td>
 				<c:set var="total" value="${list.price * list.count }"/>
-				<td>${total}</td>
+				<td><%-- <fmt:formatNumber value="${total}" pattern="#,###"/> --%>${total}</td>
 			</tr>
 			</c:forEach>
 		</tbody>
 	</table>
 	
-	<form id="orderFrm" name="orderFrm">
+	<!-- <form  id="orderFrm" name="orderFrm" action="/order/payTest" method="POST"> -->
+	<form name="OrderInfoVO" action="/order/payTest" method="POST">
 	<table class="orderFormTbl">
 		<tr>
 			<th>받으시는분</th>
@@ -89,7 +95,7 @@
 		<tr>
 			<th>주소</th><!-- 제출 안되게 제이쿼리 수정 -->
 			<td>
-				<input type="text" id="rcv_zip" name="rcv_zip" placeholder="우편번호"><br>
+				<input type="text" id="rcv_zip" name="rcv_zip" placeholder="우편번호">
 				<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
 				<input type="text" id="rcv_addr1" name="rcv_addr1" placeholder="주소"><br>
 				<input type="text" id="addr2" name="addr2" placeholder="상세주소"><br>
@@ -116,23 +122,23 @@
 		</tr>
 	</table>
 	<!-- 아이디, 묶음번호, 가게코드, 배달비, 총 결제금액, 적립 포인트, 예약여부..?  -->
-	<input type="text" id="user_id" name="user_id" value="${sessionScope.userVO.user_id }"> 
-	<input type="text" id="name" name="name" value="${sessionScope.userVO.user_name }">
-	<input type="text" id="bundle_code" name="bundle_code" value="${sessionScope.cart }">
+	<input type="hidden" id="user_id" name="user_id" value="${sessionScope.userVO.user_id }"> 
+	<input type="hidden" id="name" name="name" value="${sessionScope.userVO.user_name }">
+	<input type="hidden" id="bundle_code" name="bundle_code" value="${sessionScope.cart }">
 	<%-- <input type="text" id="store_code" name="store_code" value="${cartList.store_code }"> --%>
-	<input type="text" id="delivery" name="deleivery_fee">
-	<input type="text" id="amount" name="total_price">
-	<input type="text" id="add_point" name="add_point" value="">
+	<input type="hidden" id="delivery" name="deleivery_fee">
+	<input type="hidden" id="amount" name="total_price">
+	<input type="hidden" id="add_point" name="add_point" value="">
 	
 	<!-- 합치기 -->
-	<input type="text" id="rcv_phone" name="rcv_phone">
-	<input type="text" id="rcv_addr2" name="rcv_addr2"><!-- 상세주소, 참고항목 합치기 -->
+	<input type="hidden" id="rcv_phone" name="rcv_phone">
+	<input type="hidden" id="rcv_addr2" name="rcv_addr2"><!-- 상세주소, 참고항목 합치기 -->
 	
 	<!-- 주문 상품 수량 -->
-	<input type="text" id="productNum" name="productNum" value="${productNum }">	
-	</form>
-
+	<input type="hidden" id="productNum" name="productNum" value="${productNum }">	
 	
+
+<!-- 0510 금액 수정 해야함 -->	
 <!-- 금액 보여주기 시작 -->
 <table border=1>
 	<tr>
@@ -150,12 +156,18 @@
 </table>
 <!-- 금액 보여주기 끝 -->
 
-<button id="cancelBtn">취소하기</button>
-<input type="button" id="payBtn" value="결제하기">
+<button type="button" onclick="cartBack();">취소하기</button>
+<!-- <button id="cancelBtn">취소하기</button> -->
+<button>결제</button>
+<input type="submit" id="payButton" value="결제하기">
+
+</form>
+
+<!-- <input type="button" id="payBtn" value="결제하기"> -->
 
 </div>
 
-<%-- <%@ include file="../include/footer.jsp"%> --%>
+<%@ include file="../include/footer.jsp"%>
 
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
@@ -217,6 +229,14 @@
 					}
 				}).open();
 	}
+	
+	// 주문취소
+	function cartBack(){
+		
+		location.href="/mypage/cart";
+		
+	}
+	
 	
 	// 시작
 	$(document).ready(function(){
