@@ -457,7 +457,7 @@ body {
             formData.append("product_explain", $("#product_explain").val());
             formData.append("max_account", $("#max_account").val());
             formData.append("country", $("#country").val());
-            formData.append("store_code", $("#store_code").val());
+//             formData.append("store_code", $("#store_code").val());
             formData.append("product_code", $("#product_code").val()); // 상품 코드 추가
     
             // Ajax 통신

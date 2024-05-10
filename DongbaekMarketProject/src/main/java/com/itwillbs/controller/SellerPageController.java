@@ -194,7 +194,7 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 				fileList.add(oFileName); // 파일의 이름을 저장
 				
 				// 파일 업로드 처리
-				File file = new File("C:\\images\\"+oFileName);
+				File file = new File("/resources/upload1/"+oFileName);
 				
 				if(mFile.getSize() != 0) { //첨부파일이 있는지 없는지 체크
 					if( !file.exists() ) { // exists()- 해당파일이 있을때 t,없을때 f
@@ -222,7 +222,7 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	                             HttpServletResponse resp) throws Exception {
 	     logger.debug("fileDownloadGET() 호출");
 
-	     String downLoadPath = "C:\\images\\";
+	     String downLoadPath = "C:/resources/upload1/";
 	     logger.debug("다운로드 할 fileName: " + fileName);
 
 	     // 다운로드할 파일
