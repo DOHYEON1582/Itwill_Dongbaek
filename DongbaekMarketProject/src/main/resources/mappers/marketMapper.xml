@@ -5,6 +5,11 @@
 
 <mapper namespace="com.itwillbs.mapper.MarketMapper">
 
+	<!-- 시장 전체 조회 -->
+	<select id="selectMarketAll" resultType="MarketVO">
+		select * from market
+	</select>
+
 	<!-- 시장 조회 -->
 	<select id="marketList" resultType="MarketVO">
 		select * from market

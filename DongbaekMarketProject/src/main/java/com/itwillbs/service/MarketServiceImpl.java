@@ -31,6 +31,13 @@ public class MarketServiceImpl implements MarketService{
 	@Inject
 	private MarketDAO mdao;
 
+	
+	@Override
+	public List<MarketVO> getMarketAll(MarketVO mvo) throws Exception {
+		logger.debug(" getMarketAll(MarketVO mvo) 실행 ");
+		return mdao.getMarketAll(mvo);
+	}
+
 	@Override
 	public MarketVO getMarketList() throws Exception {
 		return mdao.getMarketList();
