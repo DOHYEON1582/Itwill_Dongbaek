@@ -304,8 +304,8 @@
 	                        <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
 	                            <li class="nav-item active"><a href="/market/marketIntroduce" class="nav-link">시장소개</a></li>
 	                            <li class="nav-item dropdown"><a href="#men" class="nav-link">제철음식</a></li>
-	                            <li class="nav-item"><a href="/member/product?orderBy=popularity" class="nav-link">인기음식</a></li>
-	                            <li class="nav-item"><a href="#brand" class="nav-link">구독상품</a></li>
+	                            <li class="nav-item"><a href="/market/product?orderBy=popularity" class="nav-link">인기음식</a></li>
+	                            <li class="nav-item"><a href="/market/sub" class="nav-link">구독상품</a></li>
 	                        </ul>
 	                    </div>
 	                </div>

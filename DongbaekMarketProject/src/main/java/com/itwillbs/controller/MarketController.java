@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -41,6 +42,7 @@ import com.itwillbs.domain.StoreVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.domain.WishVO;
 import com.itwillbs.service.MarketService;
+import com.itwillbs.service.UserService;
 
 @Controller
 @RequestMapping(value = "/market/*")
@@ -48,7 +50,9 @@ public class MarketController {
 
 	@Inject
 	private MarketService mService;
-
+	@Inject
+	private UserService uService;
+	
 	private static final Logger logger = LoggerFactory.getLogger(MarketController.class);
 
 	
@@ -173,9 +177,6 @@ public class MarketController {
 	    }
 	}
 	
-
- 	
-	
 	@RequestMapping(value = "/questionMain", method = RequestMethod.GET)
 	public void questionMain(@RequestParam("product_code") int product_code, Criteria cri, Model model) throws Exception {
 		PageVO pageVO = new PageVO();
@@ -228,34 +229,47 @@ public class MarketController {
 		logger.debug("mvo " + mvo);
 	}
 	
+	@RequestMapping(value = "/product", method = RequestMethod.GET)
+	public String productLsit(@RequestParam(name = "orderBy", required = false, defaultValue = "popularity") String orderBy,
+			HttpSession session, Model model, HttpServletResponse response, ProductVO pvo) throws Exception {
+		logger.debug("productLsit() 호출 ");
+		List<ProductVO> productList = uService.getProductOrderBy(orderBy);
+		model.addAttribute("productList", productList);
+		return "market/product";
+	}
 
 	@ResponseBody
 	@RequestMapping(value = "/addWish", method = RequestMethod.POST, consumes = "application/json")
-	public void addWish(HttpSession session, @RequestBody WishVO wish) throws Exception{
+	public ResponseEntity<String> addWish(HttpSession session, @RequestBody WishVO wish) throws Exception{
 		logger.debug(" addWish 호출 ");
 		UserVO userVO = (UserVO) session.getAttribute("userVO");
 		String user_id = userVO.getUser_id();
 		wish.setUser_id(user_id);
-		mService.wishProduct(wish);
-		
-		logger.debug("wish >>>>>>>>>>>>>" + wish);
+		try {
+			mService.wishProduct(wish);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest()
+					.contentType(MediaType.valueOf("text/plain; charset=UTF-8"))
+					.body("실패");
+		}
+		return ResponseEntity.ok()
+				.contentType(MediaType.valueOf("text/plain; charset=UTF-8"))
+				.body("성공");
 	}
 	
 	@PostMapping("/checkDuplicateWish")
 	public ResponseEntity<String> checkDuplicateWish(@RequestParam("product_code") int product_code, HttpSession session) throws Exception{
-		logger.debug(" checkDuplicateWish 실행 ");
-		UserVO userVO = (UserVO) session.getAttribute("userVO");
-		String user_id = userVO.getUser_id();
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("product_code", product_code);
-		paramMap.put("user_id", user_id);
-		boolean isDulicate = mService.isDuplicateWish(paramMap);
-		if (isDulicate) {
-			return ResponseEntity.ok("true");
-		} else {
-			return ResponseEntity.ok("false");
-		}
+	    logger.debug(" checkDuplicateWish 실행 ");
+	    UserVO userVO = (UserVO) session.getAttribute("userVO");
+	    String user_id = userVO.getUser_id();
+	    boolean isDuplicate = mService.isDuplicateWish(product_code, user_id);
+	    if (isDuplicate) {
+	        return ResponseEntity.ok("true");
+	    } else {
+	        return ResponseEntity.ok("false");
+	    }
 	}
+
 	
 	
 	@ResponseBody
@@ -274,7 +288,6 @@ public class MarketController {
 	public void marketSub(Model model,HttpSession session)throws Exception{
 		logger.debug(" marketSub() 호출 ");
 		UserVO vo = (UserVO) session.getAttribute("userVO");
-		
 		model.addAttribute("productList", mService.getSubProductList());
 		model.addAttribute("wishList", mService.getUserWish(vo.getUser_id()));
 		

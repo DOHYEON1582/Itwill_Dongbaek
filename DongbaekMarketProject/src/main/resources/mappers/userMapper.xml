@@ -74,7 +74,7 @@
 		<collection property="storeVO" resultMap="storeMap"/>
 	</resultMap>
 	
-	<resultMap type="com.itwillbs.domain.Subscrbe_productVO" id="subMap">
+	<resultMap type="com.itwillbs.domain.SubscribeProductVO" id="subMap">
 		<result property="product_code" column="product_code"/>
 		<result property="user_id" column="user_id"/>
 		<result property="count" column="count"/>
@@ -94,7 +94,6 @@
 			</choose>
 		</trim>
 	</sql>
-	
 	
 	<!-- 회원가입 -->
 	<insert id="insertUser">
@@ -197,7 +196,6 @@
 			</when>
 		</choose>
 	</select>
-	
 	<!-- 찜 목록 삭제 - 개별 -->
 	<delete id="deleteWish">
 		delete from wish 
@@ -233,10 +231,6 @@
 		select * from store
 	</select>
 	
-	
-	
-	
-	
 	<!-- 리뷰 -->
 	<select id="getReview" resultType="com.itwillbs.domain.ReviewVO">
 		select * from review 
@@ -248,7 +242,6 @@
 		from product 
 		where product_code = #{product_code} 
 	</select>
-	
 	
 	<!-- 정렬 -->
 	<select id="selectProduct" parameterType="map" resultType="com.itwillbs.domain.ProductVO">
@@ -269,11 +262,40 @@
 	
 	<!-- 구독내역 보여주기 -->
 	<select id="showsub" resultMap="subMap">
-		select * from product p 
-		join subscrbe_product s
-		on p.product_code = s.product_code
+		select * 
+		from subscribe_product s
+		join product p 
+		on s.product_code = p.product_code
 		where user_id = #{user_id}
 	</select>
+	<!-- 구독내역 정렬 -->
+	<select id="sortSub" parameterType="map" resultMap="subMap">
+	    select * 
+		from subscribe_product s
+		join product p 
+		on s.product_code = p.product_code
+		where user_id = #{user_id} 
+        <choose>
+            <when test="orderBy == 'popularity'">
+                ORDER BY viewcnt DESC
+            </when>
+            <when test="orderBy == 'lowPrice'">
+                ORDER BY price ASC
+            </when>
+            <when test="orderBy == 'highPrice'">
+                ORDER BY price DESC
+            </when>
+        </choose>
+	</select>
+	<!-- 구독 상품 삭제 - 개별 -->
+	<delete id="deleteSub">
+		delete from subscribe_product
+		where user_id = #{user_id} and product_code = #{product_code}
+	</delete>
+	<!-- 구독 상품 삭제 - 전체 -->
+	<delete id="deleteSubAll">
+		delete from subscribe_product where user_id = #{user_id}
+	</delete>
 	
 	
 	
@@ -281,5 +303,4 @@
 	
 	
 	
-	
-</mapper>
+</mapper> 

@@ -23,6 +23,6 @@ public class ProductVO {
 	private String unit;
 	
 	private List<StoreVO> storeVO;
-	private List<Subscrbe_productVO> subscrbe_productVO;
+	private List<SubscribeProductVO> subscrbe_productVO;
 
 }

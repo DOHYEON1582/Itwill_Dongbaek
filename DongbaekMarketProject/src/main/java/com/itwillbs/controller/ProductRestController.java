@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.itwillbs.domain.ProductVO;
-import com.itwillbs.domain.SubscrbeProductVO;
+import com.itwillbs.domain.SubscribeProductVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.MarketService;
 import com.itwillbs.service.ProductService;
@@ -40,7 +40,7 @@ public class ProductRestController {
 	public int addSubProduct(@PathVariable("product_code")int product_code,@PathVariable("count")int count , HttpSession session)throws Exception{
 		logger.debug(" addSubProduct(@PathVariable(\"product_code\")int product_code) 호출 ");
 		UserVO vo = (UserVO) session.getAttribute("userVO");
-		SubscrbeProductVO svo = new SubscrbeProductVO();
+		SubscribeProductVO svo = new SubscribeProductVO();
 		svo.setUser_id(vo.getUser_id());
 		svo.setProduct_code(product_code);
 		svo.setCount(count);

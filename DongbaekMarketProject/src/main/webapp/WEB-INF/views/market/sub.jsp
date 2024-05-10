@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@include file="../include/header.jsp" %>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
 
 <title>구독 제품 목록</title>
 <style>
@@ -38,34 +38,6 @@
         margin-bottom: 10px; /* 이미지 아래 간격 조정 */
     }
     
-    	.bxslider{
- 		display: inline-block;
-        margin-right: 20px; /* 이미지 슬라이더 오른쪽에 공간 추가 */
-	}
-    #sijang_text {
-        display: inline-block;
-        vertical-align: top;
-        margin-left: 50px; /* 시장 정보 왼쪽에 공간 추가 */
-        font-family: 'Gowun Dodum', sans-serif;
-        font-size: 25px;
-    }
-    #sijamg_top {
-        display: flex;
-        justify-content: center; /* 페이지 가운데 정렬 */
-        align-items: flex-start; /* 시장 정보 컨테이너를 상단에 정렬 */
-    }
-    table {
-        border-collapse: separate;
-        border-spacing: 0 20px; /* 상하로 30px 간격 지정 */
-        margin-top: 10px; /* 테이블 위쪽에 20px 간격 추가 */
-    }
-    th, td {
-        padding-left: 8px; /* 셀 내부 왼쪽 간격 지정 */
-    }
-	.slider-container {
-	    display: flex;
-	    justify-content: center;
-	}
 	.product-item {
 	  position: relative;
 	  padding: 16px;

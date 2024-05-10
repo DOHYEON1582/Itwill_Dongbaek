@@ -7,7 +7,7 @@ import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
-import com.itwillbs.domain.Subscrbe_productVO;
+import com.itwillbs.domain.SubscribeProductVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.domain.WishVO;
 
@@ -55,11 +55,8 @@ public interface UserDAO {
 	// 즐겨찾기 삭제 (전체)
 	public int deleteMarkAll(String user_id) throws Exception;
 	
-	
-	
 	// 제품 정렬
 	public List<ProductVO> selectProductOrderBy(Map<String, Object> map) throws Exception;
-	
 	
 	// 가게 목록 전체 조회
 	public List<StoreVO> getStore(StoreVO svo) throws Exception;
@@ -70,6 +67,12 @@ public interface UserDAO {
 	public List<ProductVO> productList(int product_code, String orderBy) throws Exception;
 
 	// 구독상품 보여주기
-	public List<Subscrbe_productVO> showsub(String user_id) throws Exception;
+	public List<SubscribeProductVO> showsub(String user_id) throws Exception;
+	// 구독상품 정렬
+	public List<SubscribeProductVO> sortSubOrderBy(Map<String, Object> map) throws Exception;
+	// 구독상품 삭제 - 개별
+	public int deleteSub(Map<String, Object> map) throws Exception;
+	// 구독상품 삭제 - 전체
+	public int deleteSubAll(String user_id) throws Exception;
 	
 }

@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="../include/header.jsp"%>
-    <script src="./resources/js/jquery-2.1.1.js"></script>
+<!--     <script src="./resources/js/jquery-2.1.1.js"></script> -->
 	<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <style>
@@ -312,7 +312,7 @@ h3 {
         
         // 찜 상품 
         $(".btn-wishlist").click(function(){
-
+			
         	alert("찜에 등록됩니다 !" + $("#product_code").val() + $("#user_id").val());
             var btn = $(this); // 클릭된 버튼을 저장
             var productCode = btn.siblings("#product_code").val();
@@ -322,46 +322,27 @@ h3 {
                 "product_code": productCode,
                 "user_id": userId
             };
-            
             $.ajax({
-            	url : "/market/checkDuplicateWish",
+            	url : "/market/addWish",
             	type : "POST",
             	data : JSON.stringify(wish),
+            	contentType: "application/json; charset=UTF-8",
             	success : function(data){
-            		if (data === "true"){
-            			alert("이미 등록된 상품입니다.");
-            		} else {
-            			// 중복 아닐 때
-            			submitAnswer(answer);
-            		}
-            	}
+            		var isWished = data.isWished; // 서버에서 반환한 찜 상태 정보
+    	            if (isWished) {
+    	                // 찜 상태인 경우
+    	                btn.addClass("wished"); // 찜 상태를 나타내는 클래스 추가
+    	                console.log(isWished);
+    	            } else {
+    	                // 찜 상태가 아닌 경우
+    	                btn.removeClass("wished"); // 찜 상태를 나타내는 클래스 제거
+    	            }
+    	        },
+    	        error: function(xhr, status, error) {
+    	            var errorMessage = xhr.status + ': ' + xhr.statusText;
+    	            console.log(" error "+ error);
+    	        }
             });
-            
-            
-            function submitAnswer(answer){
-        	$.ajax({
-        		type: "POST",
-        		url: "/market/addWish",
-        		data: JSON.stringify(answer),
-        		contentType: "application/json; charset=UTF-8",
-        	     success: function(data){
-        	            // 찜 상태 업데이트 후 UI 업데이트
-        	            var isWished = data.isWished; // 서버에서 반환한 찜 상태 정보
-        	            if (isWished) {
-        	                // 찜 상태인 경우
-        	                btn.addClass("wished"); // 찜 상태를 나타내는 클래스 추가
-        	                console.log(isWished);
-        	            } else {
-        	                // 찜 상태가 아닌 경우
-        	                btn.removeClass("wished"); // 찜 상태를 나타내는 클래스 제거
-        	            }
-        	        },
-        	        error: function(xhr, status, error) {
-        	            var errorMessage = xhr.status + ': ' + xhr.statusText;
-        	            console.log(" error "+ error);
-        	        }        		
-        		});
-      		} 
         });
    });
     
@@ -496,7 +477,7 @@ h3 {
                 <div class="col" style="width: 19%;">
                     <div class="product-item">
                         <button id="wishProduct" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></button>
-                         <input type="hidden" id="product_code" value="${product.product_code }">
+                        <input type="hidden" id="product_code" value="${product.product_code }">
                         <figure>
                             <a href="productMain?product_code=${product.product_code }" title="Product Title">
                                 <img src="${pageContext.request.contextPath}/resources/images/product/${product.img1}" alt="Product Thumbnail" class="tab-image" style="width : 180px">
