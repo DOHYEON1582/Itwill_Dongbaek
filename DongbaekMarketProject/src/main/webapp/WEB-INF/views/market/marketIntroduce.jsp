@@ -38,7 +38,6 @@ function topFunction() {
     document.body.scrollTop = 0; // Safari 지원
     document.documentElement.scrollTop = 0; // Chrome, Firefox, IE 및 Opera 지원
 }
-
     $(document).ready(function(){
         $('.bxslider').bxSlider({
             infiniteLoop: false,
@@ -53,7 +52,6 @@ function topFunction() {
             document.getElementById("scrollToTopBtn").style.display = "none";
         }
     };
-        
 });
 </script>
 
