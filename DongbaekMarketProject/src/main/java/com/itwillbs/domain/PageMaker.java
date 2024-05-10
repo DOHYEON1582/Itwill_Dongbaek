@@ -18,7 +18,7 @@ public class PageMaker {
 	private boolean next; // 다음 링크
 	private int displayPageNum = 10; //블럭 갯수
 	
-	private Criteria cri; // limit 메소드 이용
+	private MyPageCriteria cri; // limit 메소드 이용
 	
 	private void calcData() {
 

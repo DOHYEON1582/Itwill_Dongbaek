@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.itwillbs.domain.CartVO;
-import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.MyPageCriteria;
 import com.itwillbs.domain.OrderInfoVO;
 import com.itwillbs.domain.PageMaker;
 import com.itwillbs.domain.SearchCriteria;
@@ -37,7 +37,7 @@ public class MyPageController {
 	// 장바구니 상품 목록
 	@GetMapping(value = "/cart")
 	public String cartListGET(HttpSession session, HttpServletRequest request, HttpServletResponse response,
-			@ModelAttribute("cri") Criteria cri, Model model) throws Exception {
+			@ModelAttribute("cri") MyPageCriteria cri, Model model) throws Exception {
 		logger.debug(" === cartListGET() 실행 ===");
 
 		CartVO cvo = new CartVO();
@@ -129,7 +129,7 @@ public class MyPageController {
 	// 주문내역
 	@GetMapping(value = "orderlist")
 	public void orderListGET(HttpSession session, 
-							@ModelAttribute("cri") Criteria cri, 
+							@ModelAttribute("cri") MyPageCriteria cri, 
 							@RequestParam(required = false) String startDate,
 							@RequestParam(required = false) String endDate, 
 							@RequestParam(required = false) String states, 
@@ -159,7 +159,7 @@ public class MyPageController {
 
 	// 주문 상세내역
 	@GetMapping(value = "orderdetail")
-	public void orderDetailGET(@ModelAttribute("cri") Criteria cri,
+	public void orderDetailGET(@ModelAttribute("cri") MyPageCriteria cri,
 							   @RequestParam String order_code,
 							   Model model
 								) throws Exception {
