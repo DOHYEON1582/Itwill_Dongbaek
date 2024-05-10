@@ -25,7 +25,7 @@ import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.MarketVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.ReviewVO;
-import com.itwillbs.domain.Subscrbe_productVO;
+import com.itwillbs.domain.SubscribeProductVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.domain.WishVO;
 import com.itwillbs.service.MainService;
@@ -221,7 +221,6 @@ public class UserController {
 	@RequestMapping(value = "member/wish", method = RequestMethod.GET)
 	public void wishGET(@RequestParam(name = "orderBy", required = false, defaultValue = "popularity") String orderBy,
 			HttpSession session, Model model) throws Exception {
-		
 		logger.debug(" wishGET() 호출 ");
 		UserVO userVO = (UserVO) session.getAttribute("userVO");
 		String user_id = userVO.getUser_id();
@@ -261,7 +260,6 @@ public class UserController {
 	@RequestMapping(value = "member/deleteMark", method = RequestMethod.POST)
 	public void deleteMark(int store_code) throws Exception {
 		logger.debug(" deleteMark(int store_code) 호출 ");
-		
 		uService.deleteMark(store_code);
 	}
 	// 즐겨찾기 삭제 (전체)
@@ -284,25 +282,38 @@ public class UserController {
 	    List<ReviewVO> review = uService.getReview(product_code);
 	    model.addAttribute("review", review);
 	}
-
-	@RequestMapping(value = "member/product", method = RequestMethod.GET)
-	public String productLsit(@RequestParam(name = "orderBy", required = false, defaultValue = "popularity") String orderBy,
-			HttpSession session, Model model, HttpServletResponse response, ProductVO pvo) throws Exception {
-		logger.debug("productLsit() 호출 ");
-		List<ProductVO> productList = uService.getProductOrderBy(orderBy);
-		model.addAttribute("productList", productList);
-		return "member/product";
-	}
 	
+	// 구독상품 조회
 	@RequestMapping(value = "/member/subscribe", method = RequestMethod.GET)
-	public void subscribe(HttpSession session, Model model) throws Exception{
+	public void subscribe(@RequestParam(name = "orderBy", required = false, defaultValue = "popularity") String orderBy,
+			HttpSession session, Model model) throws Exception{
 		logger.debug(" subscribe 구독상품페이지 호출 ");
 		UserVO userVO = (UserVO) session.getAttribute("userVO");
 		String user_id = userVO.getUser_id();
-		logger.debug(" id : " + user_id);
-		List<Subscrbe_productVO> sub = uService.showsub(user_id);
+		List<SubscribeProductVO> sub = uService.showsub(user_id);
+		List<SubscribeProductVO> subSort = uService.sortSub(orderBy, user_id);
+		logger.debug("subSort " + subSort);
 		model.addAttribute("sub", sub);
+		model.addAttribute("subSort", subSort);
 	}
+	
+	// 구독상품 삭제 (개별)
+	@RequestMapping(value = "member/deleteSub", method = RequestMethod.POST)
+	public void deleteSub(int product_code, HttpSession session) throws Exception{
+		logger.debug(" deleteSub() 실행 ");
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+		String user_id = userVO.getUser_id();
+		uService.deleteSub(product_code, user_id);
+	}
+	// 구독상품 삭제 (전체)
+	@RequestMapping(value = "member/deleteSubAll", method = RequestMethod.POST)
+	public void deleteSubAll(HttpSession session) throws Exception {
+		logger.debug(" deleteSubAll() 실행 ");
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+		String user_id = userVO.getUser_id();
+		uService.deleteSubAll(user_id);
+	}
+	
 	
 	
 	

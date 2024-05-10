@@ -5,7 +5,7 @@
 <head>
 <link href="/resources/css/projectCSS.css" rel="stylesheet" type="text/css" />
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
 <meta charset="UTF-8">
 
 <title> 회원가입 </title>

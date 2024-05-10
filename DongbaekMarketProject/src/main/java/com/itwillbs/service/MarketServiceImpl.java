@@ -22,7 +22,7 @@ import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
 
 
-import com.itwillbs.domain.SubscrbeProductVO;
+import com.itwillbs.domain.SubscribeProductVO;
 import com.itwillbs.domain.WishVO;
 import com.itwillbs.persistence.MarketDAO;
 
@@ -159,12 +159,15 @@ public class MarketServiceImpl implements MarketService{
   }
 
 	@Override
-	public boolean isDuplicateWish(Map<String, Object> paramMap) throws Exception {
-		logger.debug(" isDuplicateWish 실행 ");
-		int count = mdao.checkDuplicateWish(paramMap);
-		logger.debug("count >>>>>>>>> " + count);
-		return count > 0;
+	public boolean isDuplicateWish(int product_code, String user_id) throws Exception {
+	    logger.debug("isDuplicateWish() 실행");
+	    Map<String, Object> map = new HashMap<>();
+	    map.put("product_code", product_code);
+	    map.put("user_id", user_id);
+	    int count = mdao.checkDuplicateWish(map);
+	    return count > 0;
 	}
+
 
 	public List<ProductVO> getSubProductList() throws Exception {
 		logger.debug(" getSubProductList() 호출 ");
@@ -195,7 +198,7 @@ public class MarketServiceImpl implements MarketService{
 	}
 
 	@Override
-	public int insertSubProduct(SubscrbeProductVO vo) throws Exception {
+	public int insertSubProduct(SubscribeProductVO vo) throws Exception {
 		logger.debug(" insertSubProduct(SubscrbeProductVO vo) 호출 ");
 		
 		return mdao.insertSubProduct(vo);
