@@ -1,95 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="../include/header.jsp"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
     <script src="./resources/js/jquery-2.1.1.js"></script>
 	<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
-
-<script>
-    $(document).ready(function(){
-        $('.bxslider').bxSlider({
-            infiniteLoop: false,
-            hideControlOnEnd: true,
-            slideWidth: 500
-        });
-
-        $('.slider5').bxSlider({
-            slideWidth: 200,
-            minSlides: 6,
-            maxSlides: 6,
-            moveSlides: 6,
-            slideMargin: 10,
-            adaptiveHeight: true, // 높이를 자동 조정하여 일관된 높이 유지
-            pager: false,
-            touchEnabled: false
-        });
-        
-        $(".quantity-right-plus").click(function(e){
-        	var quantity = parseInt($(this).parent().prev().val());
-        	$(this).parent().prev().val(quantity + 1);
-        });
-        $(".quantity-left-minus").click(function(e){
-        	var quantity = parseInt($(this).parent().next().val());
-            if(quantity > 1){
-                $(this).parent().next().val(quantity - 1);
-            }
-        });
-    });
-    
-    document.addEventListener("DOMContentLoaded", function(){
-    	const btnLatest = document.querySelector(".shop__basicBtn");
-        const btnMostSell = document.querySelector(".shop__mostsell");
-        const btnLowPrice = document.querySelector(".shop__lowPriceBtn");
-        const btnHighPrice = document.querySelector(".shop__highPriceBtn");
-    	
-        btnLatest.addEventListener("click", function() {
-            getProductList("latest");
-        });
-
-        btnMostSell.addEventListener("click", function() {
-            getProductList("mostsell");
-        });
-
-        btnLowPrice.addEventListener("click", function() {
-            getProductList("lowprice");
-        });
-
-        btnHighPrice.addEventListener("click", function() {
-            getProductList("highprice");
-        });
-    
-        function getProductList(sortType){
-        	var xhr = new XMLHttpRequest();
-//         	var url = "http://localhost:8088/product/sortProduct";
-        	xhr.open("POST", "/product/sortProduct", true);
-        	xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        	
-        	xhr.onload = function(){
-        		if(xhr.status === 200){
-        			var productList = JSON.parse(xhr.responseText);
-        			updateProductList(productList);
-        		} else {
-        			console.error("실패 @@");
-        		}
-        	};
-			xhr.onerror = function(){
-				console.error("네트워크 오류")
-			};
-			var data = {
-				sortType : sortType	
-			};
-			xhr.send(JSON.stringify(data));
-        }
-        
-        function updateProductList(productList) {
-            // 받아온 productList를 이용하여 화면 업데이트
-            // 예시: productList를 이용해 상품 목록을 동적으로 생성하여 페이지에 출력
-        }
-       
-    });
-    
-</script>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <style>
 .bxslider {
 	display: inline-block;
@@ -110,13 +24,13 @@
 	align-items: flex-start; /* 시장 정보 컨테이너를 상단에 정렬 */
 }
 
-table {
+.storeTable {
 	border-collapse: separate;
 	border-spacing: 0 20px; /* 상하로 30px 간격 지정 */
 	margin-top: 10px; /* 테이블 위쪽에 20px 간격 추가 */
 }
 
-th, td {
+.storeTable th, td {
 	padding-left: 8px; /* 셀 내부 왼쪽 간격 지정 */
 }
 
@@ -213,10 +127,6 @@ th, td {
 	color: #222222;
 }
 
-.product-item .product-qty {
-	width: 85px;
-}
-
 .product-item .btn-link {
 	text-decoration: none;
 }
@@ -276,7 +186,7 @@ h3 {
 	display: block;
 	width: 100%;
 }
- button {
+ .cart {
     width: 120px;
     padding: 5px;
     margin: 5px;
@@ -294,6 +204,222 @@ h3 {
                                                                                                                                                                                          
 }
 </style>
+
+<script>
+    $(document).ready(function(){
+        $('.bxslider').bxSlider({
+            infiniteLoop: false,
+            hideControlOnEnd: true,
+            slideWidth: 500
+        });
+
+        $('.slider5').bxSlider({
+            slideWidth: 200,
+            minSlides: 6,
+            maxSlides: 6,
+            moveSlides: 6,
+            slideMargin: 10,
+            adaptiveHeight: true, // 높이를 자동 조정하여 일관된 높이 유지
+            pager: false,
+            touchEnabled: false
+        });
+        
+     // 수량을 변경할 때마다 총 가격을 계산하여 보여주는 함수
+        function updateTotalPrice(element) {
+            var quantity = parseInt(element.val()); // 수량을 가져옴
+            var price = parseInt(element.closest('.product-item').find(".price").text().replace(/[^\d]/g, '')); // 상품의 가격을 가져와서 숫자로 변환
+            var totalPrice = quantity * price; // 총 가격 계산
+            element.closest('.product-item').find(".total-price").text(totalPrice.toLocaleString() + "원"); // 총 가격을 화면에 표시
+        }
+
+        // 수량을 감소하는 버튼에 대한 이벤트 처리
+        $(".quantity-left-minus").click(function() {
+            var input = $(this).closest('.product-item').find(".quantity");
+            var currentValue = parseInt(input.val());
+            if (currentValue > 1) {
+                input.val(currentValue - 1);
+                updateTotalPrice(input);
+            }
+        });
+
+        // 수량을 증가하는 버튼에 대한 이벤트 처리
+        $(".quantity-right-plus").click(function() {
+            var input = $(this).closest('.product-item').find(".quantity");
+            var currentValue = parseInt(input.val());
+            input.val(currentValue + 1);
+            updateTotalPrice(input);
+        });
+        
+        $(".cart").click(function(){
+        	alert("장바구니에 담으시겠습니까 ?");
+            var productCode = $(this).closest('.product-item').find("#product_code").val();
+            var userId = $(this).closest('.product-item').find("#user_id").val();
+            var quantity = $(this).closest('.product-item').find(".quantity").val();
+            var price = parseInt($(this).closest('.product-item').find(".price").text().replace(/[^\d]/g, ''));
+
+            var totalPrice = quantity * price; // 총 가격 계산
+
+            var cart = {
+                "user_id": userId,
+                "product_code": productCode,
+                "count": quantity,
+                "price": totalPrice
+            };        	
+            
+            $.ajax({
+            	type: "POST",
+            	url: "/market/addCart",
+            	data: JSON.stringify(cart),
+            	contentType: "application/json; charset=UTF-8",
+            	success: function(data){
+            		alert("제품이 장바구니에 추가되었습니다");
+            		location.reload();
+            	},
+                error: function(xhr, status, error) {
+                    var errorMessage = xhr.status + ': ' + xhr.statusText;
+                    alert('에러가 발생했습니다.\n' + errorMessage);
+                    console.log(" error "+ error);
+                }            	
+            });
+            
+        });
+        
+        
+        $("#markStore").click(function(){
+        	alert("즐겨찾기 하시겠습니까 ?");
+        	var mvo = {
+        			/* "mark_code":$("#mark_code").val(), */
+        			"store_code":$("#store_code").val(),
+        			"user_id":$("#user_id").val()
+        	};
+        	$.ajax({
+        		type: "POST",
+        		url: "/market/storeMain",
+                data: JSON.stringify(mvo),
+                contentType: "application/json; charset=UTF-8",  
+                success: function(data){
+                	alert("즐겨찾기 성공");
+                	location.reload();
+                },
+                error: function(xhr, status, error) {
+                    var errorMessage = xhr.status + ': ' + xhr.statusText;
+                    alert('에러가 발생했습니다.\n' + errorMessage);
+                    console.log(" error "+ error);
+                }
+        	});
+        });
+        
+        
+        // 찜 상품 
+        $(".btn-wishlist").click(function(){
+
+        	alert("찜에 등록됩니다 !" + $("#product_code").val() + $("#user_id").val());
+            var btn = $(this); // 클릭된 버튼을 저장
+            var productCode = btn.siblings("#product_code").val();
+            var userId = btn.siblings("#user_id").val();
+            
+            var wish = {
+                "product_code": productCode,
+                "user_id": userId
+            };
+            
+            $.ajax({
+            	url : "/market/checkDuplicateWish",
+            	type : "POST",
+            	data : JSON.stringify(wish),
+            	success : function(data){
+            		if (data === "true"){
+            			alert("이미 등록된 상품입니다.");
+            		} else {
+            			// 중복 아닐 때
+            			submitAnswer(answer);
+            		}
+            	}
+            });
+            
+            
+            function submitAnswer(answer){
+        	$.ajax({
+        		type: "POST",
+        		url: "/market/addWish",
+        		data: JSON.stringify(answer),
+        		contentType: "application/json; charset=UTF-8",
+        	     success: function(data){
+        	            // 찜 상태 업데이트 후 UI 업데이트
+        	            var isWished = data.isWished; // 서버에서 반환한 찜 상태 정보
+        	            if (isWished) {
+        	                // 찜 상태인 경우
+        	                btn.addClass("wished"); // 찜 상태를 나타내는 클래스 추가
+        	                console.log(isWished);
+        	            } else {
+        	                // 찜 상태가 아닌 경우
+        	                btn.removeClass("wished"); // 찜 상태를 나타내는 클래스 제거
+        	            }
+        	        },
+        	        error: function(xhr, status, error) {
+        	            var errorMessage = xhr.status + ': ' + xhr.statusText;
+        	            console.log(" error "+ error);
+        	        }        		
+        		});
+      		} 
+        });
+   });
+    
+    document.addEventListener("DOMContentLoaded", function(){
+    	const btnLatest = document.querySelector(".shop__basicBtn");
+        const btnMostSell = document.querySelector(".shop__mostsell");
+        const btnLowPrice = document.querySelector(".shop__lowPriceBtn");
+        const btnHighPrice = document.querySelector(".shop__highPriceBtn");
+    	
+        btnLatest.addEventListener("click", function() {
+            getProductList("latest");
+        });
+
+        btnMostSell.addEventListener("click", function() {
+            getProductList("mostsell");
+        });
+
+        btnLowPrice.addEventListener("click", function() {
+            getProductList("lowprice");
+        });
+
+        btnHighPrice.addEventListener("click", function() {
+            getProductList("highprice");
+        });
+    
+        function getProductList(sortType){
+        	var xhr = new XMLHttpRequest();
+//         	var url = "http://localhost:8088/product/sortProduct";
+        	xhr.open("POST", "/product/sortProduct", true);
+        	xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        	
+        	xhr.onload = function(){
+        		if(xhr.status === 200){
+        			var productList = JSON.parse(xhr.responseText);
+        			updateProductList(productList);
+        		} else {
+        			console.error("실패 @@");
+        		}
+        	};
+			xhr.onerror = function(){
+				console.error("네트워크 오류")
+			};
+			var data = {
+				sortType : sortType	
+			};
+			xhr.send(JSON.stringify(data));
+        }
+        
+        function updateProductList(productList) {
+            // 받아온 productList를 이용하여 화면 업데이트
+            // 예시: productList를 이용해 상품 목록을 동적으로 생성하여 페이지에 출력
+        }
+       
+    });
+    
+</script>
+
+
 <!-- 시장정보 -->
 <section class="py-2 mb-1" style="background: url(${pageContext.request.contextPath}/resources/images/background-pattern.jpg);">
 
@@ -312,7 +438,7 @@ h3 {
 	<div id="sijang_text" style="display: inline-block; vertical-align: top;">
 		<div class="tit">
 			<div class="sij_name" style="font-size: 30px; font-weight: bold;">▶ ${store.store_name }
-		        <button class="clear-button button button-follow" style="margin-left: 10px;">
+		        <button id="markStore" class="clear-button button button-follow" style="margin-left: 10px;">
 		            <span class="content">
 		                <div class="inner-container">
 		                    <img src="https://front.coupangcdn.com/coupang-store-display/20240415182517/img/ic_heart_dark_outline.ebe809a.svg" width="12" alt="">
@@ -320,10 +446,12 @@ h3 {
 		                </div>
 		            </span>
 		        </button>
+		        <input type="hidden" id="store_code" value="${store.store_code }">
+				<input type="hidden" id="user_id" value="${user_id }">
 		    </div>
 		</div>
 			<div class="sij_sub_name" style="font-size: 25px;">${store.store_explain }</div>
-		<table>
+		<table class="storeTable">
 			<tbody>
 				<tr>
 					<th>주소</th>
@@ -353,6 +481,7 @@ h3 {
 
 <div class="bootstrap-tabs product-tabs">
     <h3>가게 상품</h3>
+	<div class="container">
 	<form action="" method="get">
         <select name="orderBy">
             <option value="popularity" ${param.orderBy == 'popularity' ? 'selected' : ''}>인기순</option>
@@ -360,23 +489,23 @@ h3 {
             <option value="highPrice" ${param.orderBy == 'highPrice' ? 'selected' : ''}>높은 가격순</option>
         </select>
         <input type="hidden" name="store_code" value="${store.store_code }">
-        <input type="submit" value="정렬">
+        <input type="s\\[]ubmit" value="정렬">
     </form>
-	<div class="container">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-6 justify-content-center gap-3">
             <c:forEach items="${product}" var="product">
                 <div class="col" style="width: 19%;">
                     <div class="product-item">
-                        <a href="#" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></a>
+                        <button id="wishProduct" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></button>
+                         <input type="hidden" id="product_code" value="${product.product_code }">
                         <figure>
                             <a href="productMain?product_code=${product.product_code }" title="Product Title">
                                 <img src="${pageContext.request.contextPath}/resources/images/product/${product.img1}" alt="Product Thumbnail" class="tab-image" style="width : 180px">
                             </a>
                         </figure>
                         <h4>${product.product_name}</h4>
-                        <span class="qty">${product.unit}</span><span class="rating"><svg width="24" height="24" class="text-primary"><use xlink:href="#star-solid"></use></svg> 4.5</span>
                         <span class="price"><fmt:formatNumber value="${product.price}" pattern="#,##0" />원</span>
-                        <div class="d-flex align-items-center justify-content-between">
+                        <span class="total-price">총 가격</span>
+                        <div class="input-group product-qty d-flex align-items-center justify-content-between">
                             <div class="input-group product-qty">
                                 <span class="input-group-btn">
                                     <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
@@ -390,7 +519,7 @@ h3 {
                                     </button>
                                 </span>
                             </div>
-                            <a href="#" class="nav-link">장바구니<svg width="18" height="18"><use xlink:href="#cart"></use></svg></a>
+                            <button class="cart">장바구니<svg width="18" height="18"><use xlink:href="#cart"></use></svg></button>
                         </div>
                     </div>
                 </div>

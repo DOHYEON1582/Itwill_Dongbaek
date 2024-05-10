@@ -8,7 +8,6 @@
 	<resultMap type="com.itwillbs.domain.UserVO" id="userMap">
 		<result property="user_id" column="user_id"/>
 		<result property="user_pw" column="user_pw"/>
-		<result property="salt" column="salt"/>
 		<result property="phone" column="phone"/>
 		<result property="user_name" column="user_name"/>
 		<result property="addr1" column="addr1"/>
@@ -75,6 +74,13 @@
 		<collection property="storeVO" resultMap="storeMap"/>
 	</resultMap>
 	
+	<resultMap type="com.itwillbs.domain.Subscrbe_productVO" id="subMap">
+		<result property="product_code" column="product_code"/>
+		<result property="user_id" column="user_id"/>
+		<result property="count" column="count"/>
+		<collection property="productVO" resultMap="productMap"></collection>
+	</resultMap>
+	
 	<!-- 검색 -->
 	<sql id="criteria">
 		<trim prefix="where (" suffix=")" prefixOverrides="OR">
@@ -95,11 +101,33 @@
 		insert into user(user_id, user_pw, phone, user_name, addr1, addr2, regdate) 
 		values (#{user_id}, #{user_pw}, #{phone}, #{user_name}, #{addr1}, #{addr2}, now())
 	</insert>
+	<!-- 아이디 중복체크 -->
+	<select id="checkId" resultType="int">
+		select count(*) from user 
+		where user_id = #{user_id}
+	</select>
 	<!-- 회원가입 하면서 권한주기 -->
 	<insert id="authUser">
 		insert into user_auth (user_id, auth) 
 		value (#{user_id}, 'ROLE_USER')
 	</insert>
+	<!-- 회원가입 관리자 권한주기 -->
+	<insert id="adminAuth">
+		insert into user_auth (user_id, auth) 
+		value (#{user_id}, 'ROLE_ADMIN')
+	</insert>
+	<!-- 카카오 로그인 -->
+	<insert id="insertKakao">
+		insert into user (user_id, user_pw,sns_email, regdate) 
+		values (#{user_id}, #{user_pw}, #{sns_email}, now())
+	</insert>
+	<select id="getUser" resultMap="userMap">
+		select * 
+		from user u
+		left join user_auth a
+		on u.user_id = a.user_id
+		where u.user_id = #{user_id}
+	</select>
 	
 	<select id="loginUser" resultType="com.itwillbs.domain.UserVO">
 		select * 
@@ -239,8 +267,13 @@
         </choose>
 	</select>
 	
-	
-	
+	<!-- 구독내역 보여주기 -->
+	<select id="showsub" resultMap="subMap">
+		select * from product p 
+		join subscrbe_product s
+		on p.product_code = s.product_code
+		where user_id = #{user_id}
+	</select>
 	
 	
 	

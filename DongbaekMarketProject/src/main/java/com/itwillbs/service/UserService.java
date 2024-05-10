@@ -6,13 +6,21 @@ import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
+import com.itwillbs.domain.Subscrbe_productVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.domain.WishVO;
 
 public interface UserService {
 	// 회원가입
 	public void userInsert(UserVO uvo) throws Exception;
+	// 카카오 로그인
+	public void userKakaoInsert(UserVO uvo) throws Exception;
+	public UserVO kakaoInfo(String code) throws Exception;
+	public UserVO getUser(UserVO uvo) throws Exception;
+	public UserVO kakaoUserGet(UserVO uvo) throws Exception;
 	
+	// 아이디 중복체크
+	public int checkId(String user_id) throws Exception;
 	// 로그인
 	public UserVO loginUser(UserVO uvo) throws Exception;
 	
@@ -57,7 +65,8 @@ public interface UserService {
 	//public List<ProductVO> getProduct(int product_code) throws Exception;
 	public List<ProductVO> getProduct(int product_code, String orderBy) throws Exception;
 
-	
+	// 구독상품 보여주기
+	public List<Subscrbe_productVO> showsub(String user_id) throws Exception;
 	
 	
 	

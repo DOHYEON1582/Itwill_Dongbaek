@@ -123,7 +123,7 @@
                 </div>
                 
                 <c:forEach var="store" items="${markList.storeVO}">
-               		<a href="#" data-store-code="${store.store_code }">
+               		<a href="http://localhost:8088/market/storeMain?store_code=${store.store_code }" data-store-code="${store.store_code }">
                			<img alt="mark Image" src="../resources/images/product/${store.img1}">
            			</a>
 					가게명 : ${store.store_name}<c:if test="${not loop.last}"></c:if>

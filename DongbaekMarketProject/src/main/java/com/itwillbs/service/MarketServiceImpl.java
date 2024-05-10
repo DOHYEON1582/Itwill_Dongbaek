@@ -10,12 +10,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+
+import com.itwillbs.domain.CartVO;
+import com.itwillbs.domain.AnswerVO;
 import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.MarketVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.QuestionVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
+
+
 import com.itwillbs.domain.SubscrbeProductVO;
 import com.itwillbs.domain.WishVO;
 import com.itwillbs.persistence.MarketDAO;
@@ -84,11 +90,6 @@ public class MarketServiceImpl implements MarketService{
 		mdao.writeQuestion(qvo);
 	}
 
-//	@Override
-//	public List<QuestionVO> selectQuestion(Criteria cri) throws Exception {
-//		return mdao.getQuestion(cri);
-//	}
-	
 	@Override
 	public int questionCount() throws Exception {
 		return mdao.questionCount();
@@ -105,11 +106,59 @@ public class MarketServiceImpl implements MarketService{
 	}
 
 	@Override
-	public QuestionVO questionDetail(int q_code) throws Exception {
+	public List<QuestionVO> questionDetail(int q_code) throws Exception {
 		return mdao.questionDetail(q_code);
 	}
 
 	@Override
+	public void markStore(MarkVO mvo) throws Exception {
+		mdao.markStore(mvo);
+	}
+
+	@Override
+	public void wishProduct(WishVO wish) throws Exception {
+		mdao.wishProduct(wish);
+	}
+
+	@Override
+	public List<WishVO> selectWish(String user_id) throws Exception {
+		return mdao.selectWish(user_id);
+	}
+
+	@Override
+	public void insertCart(CartVO cart) throws Exception {
+		mdao.insertCart(cart);
+	}
+
+
+	public void qAnswer(AnswerVO avo) throws Exception {
+		logger.debug(" qAnswer(AnswerVO avo) 실행 ");
+		mdao.qAnswer(avo);
+	}
+
+	@Override
+	public List<AnswerVO> selectAnswer(int q_code) throws Exception {
+		logger.debug(" selectAnswer(int q_code) 실행 ");
+		return mdao.selectAnswer(q_code);
+	}
+
+	@Override
+	public boolean isDuplicateAnswer(int q_code) throws Exception {
+		logger.debug(" isDuplicateAnswer(int q_code) 실행 ");
+		int count = mdao.checkDuplicateAnswer(q_code);
+		logger.debug(" q_code : " + q_code);
+		logger.debug(" count : " + count);
+		return count > 0;
+  }
+
+	@Override
+	public boolean isDuplicateWish(Map<String, Object> paramMap) throws Exception {
+		logger.debug(" isDuplicateWish 실행 ");
+		int count = mdao.checkDuplicateWish(paramMap);
+		logger.debug("count >>>>>>>>> " + count);
+		return count > 0;
+	}
+
 	public List<ProductVO> getSubProductList() throws Exception {
 		logger.debug(" getSubProductList() 호출 ");
 		
@@ -148,4 +197,5 @@ public class MarketServiceImpl implements MarketService{
 	
 	
 	
+
 }

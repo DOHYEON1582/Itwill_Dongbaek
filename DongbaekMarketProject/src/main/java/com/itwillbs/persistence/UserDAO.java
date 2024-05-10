@@ -7,13 +7,25 @@ import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
+import com.itwillbs.domain.Subscrbe_productVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.domain.WishVO;
 
 public interface UserDAO {
 	// 회원가입
 	public void insertUser(UserVO uvo) throws Exception;
+	// 카카오 로그인
+	public void insertKakao(UserVO uvo) throws Exception;
+	public String getToken(String code) throws Exception;
+	public UserVO getUserInfo(String token) throws Exception;
+	public UserVO getUser(UserVO uvo) throws Exception;
+	
+	// 아이디 중복체크
+	public int checkId(String user_id) throws Exception;
+	// 권한주기
 	public void authUser(UserVO uvo) throws Exception;
+	// 관리자권한
+	public void adminAuth(UserVO uvo) throws Exception;
 	
 	public UserVO loginUser(UserVO uvo) throws Exception;
 	
@@ -57,4 +69,7 @@ public interface UserDAO {
 	// 상품
 	public List<ProductVO> productList(int product_code, String orderBy) throws Exception;
 
+	// 구독상품 보여주기
+	public List<Subscrbe_productVO> showsub(String user_id) throws Exception;
+	
 }

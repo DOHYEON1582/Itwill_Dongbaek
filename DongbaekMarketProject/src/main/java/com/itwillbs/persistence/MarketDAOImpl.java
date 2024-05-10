@@ -11,12 +11,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+
+import com.itwillbs.domain.CartVO;
+import com.itwillbs.domain.AnswerVO;
 import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.MarketVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.QuestionVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
+
+
 import com.itwillbs.domain.SubscrbeProductVO;
 import com.itwillbs.domain.WishVO;
 
@@ -109,11 +115,55 @@ public class MarketDAOImpl implements MarketDAO{
 	}
 
 	@Override
-	public QuestionVO questionDetail(int q_code) throws Exception {
-		return sqlSession.selectOne(NAMESPACE + ".questionDetail", q_code);
+	public List<QuestionVO> questionDetail(int q_code) throws Exception {
+		return sqlSession.selectList(NAMESPACE + ".questionDetail", q_code);
 	}
 
 	@Override
+
+	public void markStore(MarkVO mvo) throws Exception {
+		sqlSession.insert(NAMESPACE + ".markStore", mvo);
+	}
+
+	@Override
+	public void wishProduct(WishVO wish) throws Exception {
+		sqlSession.insert(NAMESPACE + ".wishProduct", wish);
+	}
+
+	@Override
+	public List<WishVO> selectWish(String user_id) throws Exception {
+		return sqlSession.selectList(NAMESPACE + ".selectWish", user_id);
+	}
+
+	@Override
+	public void insertCart(CartVO cart) throws Exception {
+		sqlSession.insert(NAMESPACE + ".insertCart", cart);
+	}
+
+	public void qAnswer(AnswerVO avo) throws Exception {
+		logger.debug(" qAnswer(AnswerVO avo) 호출 ");
+		sqlSession.insert(NAMESPACE + ".qAnswer", avo);
+	}
+
+	@Override
+	public List<AnswerVO> selectAnswer(int q_code) throws Exception {
+		logger.debug(" selectAnswer(int q_code) 호출 ");
+		return sqlSession.selectList(NAMESPACE + ".selectAnswer", q_code);
+	}
+
+	@Override
+	public int checkDuplicateAnswer(int q_code) throws Exception {
+		logger.debug(" checkDuplicateAnswer(int q_code) 호출");
+		logger.debug(" q_code : " + q_code);
+		return sqlSession.selectOne(NAMESPACE + ".checkDuplicateAnswer", q_code);
+	}
+
+	@Override
+	public int checkDuplicateWish(Map<String, Object> paramMap) throws Exception {
+		logger.debug(" checkDuplicateWish 호출 ");
+		return sqlSession.selectOne(NAMESPACE + ".checkDuplicateWish", paramMap);
+	}
+
 	public List<ProductVO> getSubProductList() throws Exception {
 		logger.debug(" getSubProductList() 호출 ");
 		

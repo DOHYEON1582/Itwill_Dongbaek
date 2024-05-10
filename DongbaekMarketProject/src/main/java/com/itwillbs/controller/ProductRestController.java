@@ -1,5 +1,8 @@
 package com.itwillbs.controller;
 
+public class ProductRestController {
+
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -74,4 +77,5 @@ public class ProductRestController {
 		return mService.insertSubProduct(svo);
 	}
 	
+
 }

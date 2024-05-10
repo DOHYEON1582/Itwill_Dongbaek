@@ -17,6 +17,7 @@ import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
+import com.itwillbs.domain.Subscrbe_productVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.domain.WishVO;
 import com.itwillbs.persistence.UserDAO;
@@ -40,9 +41,52 @@ public class UserServiceImpl implements UserService {
 	    uvo.setUser_pw(encodedPassword);
 	    
 	    udao.insertUser(uvo);
-	    udao.authUser(uvo);
+	    logger.debug(" uvo.getid : " + uvo.getUser_id());
+	    if(uvo.getUser_id().equals("admin")) {
+	    	udao.adminAuth(uvo);
+	    } else {
+	    	udao.authUser(uvo);
+	    }
 	    logger.debug(" 회원가입 완료! ");
 	}
+	
+	@Override
+	public void userKakaoInsert(UserVO uvo) throws Exception {
+		logger.debug(" userKakaoInsert(UserVO uvo) 실행");
+		
+		uvo.setUser_pw("1234");
+		String encodedPassword = pwEncoder.encode(uvo.getUser_pw());
+		uvo.setUser_pw(encodedPassword);
+		udao.insertKakao(uvo);
+		udao.authUser(uvo);
+	}
+
+	@Override
+	public UserVO kakaoInfo(String code) throws Exception {
+		logger.debug(" kakaoInfo(String code) 실행 ");
+		String token = udao.getToken(code);
+		logger.debug(" token : " + token);
+		return udao.getUserInfo(token);
+	}
+
+	@Override
+	public UserVO getUser(UserVO uvo) throws Exception {
+		logger.debug(" getUser(UserVO uvo) 실행 ");
+		return udao.getUser(uvo);
+	}
+
+	@Override
+	public UserVO kakaoUserGet(UserVO uvo) throws Exception {
+		logger.debug(" kakaoUserGet(UserVO uvo) 실행 ");
+		return udao.getUser(uvo);
+	}
+
+	@Override
+	public int checkId(String user_id) throws Exception {
+		logger.debug(" checkId(String user_id) 실행 ");
+		return udao.checkId(user_id);
+	}
+
 
 	@Override
     public UserVO loginUser(UserVO uvo) throws Exception {
@@ -146,6 +190,11 @@ public class UserServiceImpl implements UserService {
 		Map<String, Object> map = new HashMap<>();
 		map.put("orderBy", orderBy);
 		return udao.selectProductOrderBy(map);
+	}
+
+	@Override
+	public List<Subscrbe_productVO> showsub(String user_id) throws Exception {
+		return udao.showsub(user_id);
 	}
 	
 	
