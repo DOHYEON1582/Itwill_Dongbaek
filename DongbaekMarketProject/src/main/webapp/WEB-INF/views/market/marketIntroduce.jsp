@@ -45,7 +45,6 @@ function topFunction() {
             hideControlOnEnd: true,
             slideWidth: 500
         });
-        
     // 스크롤 위치가 일정 위치 이상인 경우 버튼을 표시
     window.onscroll = function() {
         if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
