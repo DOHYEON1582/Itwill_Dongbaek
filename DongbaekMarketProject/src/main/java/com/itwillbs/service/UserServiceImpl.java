@@ -44,8 +44,10 @@ public class UserServiceImpl implements UserService {
 	    logger.debug(" uvo.getid : " + uvo.getUser_id());
 	    if(uvo.getUser_id().equals("admin")) {
 	    	udao.adminAuth(uvo);
-	    } else {
+	    } else if(uvo.getUser_id().equals("user")){
 	    	udao.authUser(uvo);
+	    }else if(uvo.getUser_id().equals("seller")){
+	    	udao.sellerAuth(uvo);
 	    }
 	    logger.debug(" 회원가입 완료! ");
 	}
@@ -91,7 +93,15 @@ public class UserServiceImpl implements UserService {
 	@Override
     public UserVO loginUser(UserVO uvo) throws Exception {
         logger.debug(" loginUser(UserVO uvo) 실행 ");
-        return udao.loginUser(uvo); 
+     // 로그인한 사용자 정보 가져오기
+        UserVO userVO = udao.loginUser(uvo);
+     // 사용자가 null이 아니고, 판매자 권한을 가지고 있는 경우에만 처리
+        if (userVO != null && userVO.getUser_id().equals("seller")) {
+            
+        	return userVO;
+
+        }
+        return userVO; 
     }
 
 	@Override

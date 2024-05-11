@@ -116,6 +116,11 @@
 		insert into user_auth (user_id, auth) 
 		value (#{user_id}, 'ROLE_ADMIN')
 	</insert>
+	<!-- 회원가입 관리자 권한주기 -->
+	<insert id="sellerAuth">
+		insert into user_auth (user_id, auth) 
+		value (#{user_id}, 'ROLE_SELLER')
+	</insert>
 	<!-- 카카오 로그인 -->
 	<insert id="insertKakao">
 		insert into user (user_id, user_pw,sns_email, regdate) 

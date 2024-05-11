@@ -19,24 +19,68 @@
 		<result property="category" column="category" />
 		<result property="sub_product" column="sub_product" />
 		<result property="unit" column="unit" />
-	</resultMap>
+</resultMap>
+<resultMap type="com.itwillbs.domain.MarketVO" id="market">
+		<result property="market_code" column="market_code" />
+		<result property="name" column="name" />
+		<result property="phone" column="phone" />
+		<result property="img1" column="img1" />
+		<result property="img2" column="img2" />
+		<result property="img3" column="img3" />
+		<result property="explain" column="explain" />
+		<result property="build" column="build" />
+		<result property="traffic" column="traffic" />
+		<result property="market_addr1" column="market_addr1" />
+		<result property="market_addr2" column="market_addr2" />
+</resultMap>
+<resultMap type="com.itwillbs.domain.UserVO" id="UserVO">
+	<result property="user_id" column="user_id"/>
+	<result property="phone" column="phone"/>
+	<result property="user_name" column="user_name"/>
+	<result property="sns_email" column="sns_email"/>
+	<result property="point" column="point"/>
+	<result property="addr1" column="addr1"/>
+	<result property="addr2" column="addr2"/>
+	<result property="identity" column="identity"/>
+	<result property="regdate" column="regdate"/>
+	<result property="update_date" column="update_date"/>
+	<result property="auth" column="auth"/>
+	<result property="order_code" column="order_code"/>
+	<result property="startDate" column="startDate"/>
+	<result property="endDate" column="endDate"/>
 
+</resultMap>
+<resultMap type="com.itwillbs.domain.SellerVO" id="SellerVO">
+	<result property="seller_id" column="seller_id"/>
+	<result property="store_code" column="store_code"/>
+	<result property="seller_pw" column="seller_pw"/>
+	<result property="salt" column="salt"/>
+	<result property="seller_phone" column="seller_phone"/>
+	<result property="seller_name" column="seller_name"/>
+	<result property="store_addr1" column="store_addr1"/>
+	<result property="store_addr2" column="store_addr2"/>
+	<result property="bank" column="bank"/>
+	<result property="account" column="account"/>
+	<result property="store_number" column="store_number"/>
+	<result property="mos_number" column="mos_number"/>
+	<result property="regdate" column="regdate"/>
+</resultMap>
     <!-- 상품 ID를 기준으로 상품 정보를 조회하는 쿼리 -->
     <select id="getProductById" parameterType="int" resultType="com.itwillbs.domain.ProductVO">
         SELECT * FROM product WHERE product_code = #{product_code}
     </select>
 
 	<!-- 판매자가 등록한 상품의 총 수 조회 -->
-	<select id="getTotalCount" parameterType="int" resultType="int">
+	<select id="getTotalCount" parameterType="String" resultType="int">
 	    SELECT COUNT(*) FROM product
-	    WHERE store_code = #{store_code}
+	    WHERE user_id = #{user_id}
 	</select>
 
 	<!-- 판매자가 등록한 상품 목록 조회 -->
 	<select id="getProductPage" parameterType="map" resultMap="product">
 	    <![CDATA[
 	    SELECT * FROM product
-	    WHERE store_code = #{store_code}
+	    WHERE user_id = #{user_id}
 	    ORDER BY product_code DESC
 	    LIMIT #{startPage}, #{pageSize}
 	    ]]>
@@ -45,8 +89,8 @@
     
 	<!-- 상품 등록 -->
 	<insert id="productRegist" parameterType="com.itwillbs.domain.ProductVO">
-	    INSERT INTO product (category, product_name, unit, price, img1, img2, img3, product_explain, max_account, country, store_code)
-	    VALUES (#{category}, #{product_name}, #{unit}, #{price}, #{img1}, #{img2}, #{img3}, #{product_explain}, #{max_account}, #{country}, #{store_code})
+	    INSERT INTO product (market_code, category, product_name, unit, price, img1, img2, img3, product_explain, max_account, country, store_code)
+	    VALUES (#{market_code}, #{category}, #{product_name}, #{unit}, #{price}, #{img1}, #{img2}, #{img3}, #{product_explain}, #{max_account}, #{country}, #{store_code})
 	</insert>
 
 

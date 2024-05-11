@@ -387,6 +387,15 @@ body {
     <div style="background-color: white; padding: 20px; max-width: 400px; margin: 0 auto; border: 1px solid #ccc;">
     <form id="productregistSubmit" action="/seller/productregistSubmit" method="post" enctype="multipart/form-data" style="max-width: 400px; margin: 0 auto;">
         <div style="margin-bottom: 10px;">
+            <label for="category" style="display: block; margin-bottom: 5px;">시장코드:</label>
+            <select id="market_code" name="market_code" style="width: 100%; padding: 8px;">
+                <option value="" selected disabled>카테고리를 선택하세요</option>
+                <option value="1">재래</option>
+                <option value="2">수산물</option>
+                <!-- 필요한 만큼 옵션을 추가할 수 있습니다 -->
+            </select>
+        </div>
+        <div style="margin-bottom: 10px;">
             <label for="category" style="display: block; margin-bottom: 5px;">카테고리:</label>
             <select id="category" name="category" style="width: 100%; padding: 8px;">
                 <option value="" selected disabled>카테고리를 선택하세요</option>
@@ -453,6 +462,7 @@ $(document).ready(function(){
         formData.append("img3", $("#img3")[0].files[0]);
 
         // 나머지 폼 데이터 추가
+        formData.append("market_code", $("#market_code").val());
         formData.append("category", $("#category").val());
         formData.append("product_name", $("#product_name").val());
         formData.append("unit", $("#unit").val());

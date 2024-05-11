@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
@@ -187,7 +188,14 @@ public class UserDAOImple implements UserDAO {
 	}
 
 	@Override
-	public UserVO loginUser(UserVO uvo) throws Exception {
+	public void sellerAuth(UserVO uvo) throws Exception {
+		logger.debug(" sellerAuth(UserVO uvo) 호출 ");
+		sql.insert(NAMESPACE + ".sellerAuth", uvo);
+	}
+	
+	
+	@Override
+	public UserVO loginUser(UserVO uvo,HttpSession session) throws Exception {
 		logger.debug(" loginUser(UserVO uvo) 호출 ");
 		UserVO user = sql.selectOne(NAMESPACE + ".userInfo", uvo);
 		if(user != null) {
@@ -196,6 +204,8 @@ public class UserDAOImple implements UserDAO {
                 // 비밀번호가 일치하는 경우
             	logger.debug(" 일치 ");
             	uvo.setUser_pw(encodedPassword);
+            	// 로그인 성공 시 세션에 사용자 아이디 저장
+                session.setAttribute("user_id", user.getUser_id());
                 return sql.selectOne(NAMESPACE + ".loginUser", uvo);
             }
 		}

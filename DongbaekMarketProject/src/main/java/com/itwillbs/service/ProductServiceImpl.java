@@ -34,9 +34,9 @@ public class ProductServiceImpl implements ProductService {
 
 
 	@Override
-	public int getTotalCount(int store_code) throws Exception {
+	public int getTotalCount(String user_id) throws Exception {
 		logger.debug(" getTotalCount() 호출 ");
-		return pdao.getTotalCount(store_code);
+		return pdao.getTotalCount(user_id);
 	}
 
 
@@ -44,7 +44,7 @@ public class ProductServiceImpl implements ProductService {
 	public List<ProductVO> getProductPage(ProductCri cri) throws Exception {
 		logger.debug(" getProductPage(ProductCri cri) 호출 ");
 		Map<String, Object> map = new HashMap<>();
-        map.put("store_code", cri.getStore_code());
+        map.put("user_id", cri.getUser_id());
         map.put("startPage", cri.getStartPage());
         map.put("pageSize", cri.getPageSize());
 		return pdao.getProductPage(map);

@@ -3,6 +3,8 @@ package com.itwillbs.persistence;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.ReviewVO;
@@ -26,8 +28,10 @@ public interface UserDAO {
 	public void authUser(UserVO uvo) throws Exception;
 	// 관리자권한
 	public void adminAuth(UserVO uvo) throws Exception;
+	// 판매자권한
+	public void sellerAuth(UserVO uvo) throws Exception;
 	
-	public UserVO loginUser(UserVO uvo) throws Exception;
+	public UserVO loginUser(UserVO uvo,HttpSession session) throws Exception;
 	
 	// 회원정보 조회
 	public UserVO userInfo(String user_id) throws Exception;

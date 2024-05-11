@@ -4,7 +4,7 @@ public class ProductCri {
 	
 	private int page;
 	private int pageSize;
-	private int store_code;
+	private String user_id;
 	
 	// 페이지정보를 인덱스로 변경하는 메서드
 	public int getStartPage() {
@@ -40,17 +40,17 @@ public class ProductCri {
 		this.pageSize=6;
 	}
 
-	public int getStore_code() {
-		return store_code;
+	public String getUser_id() {
+		return user_id;
 	}
 
-	public void setStore_code(int store_code) {
-		this.store_code = store_code;
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
 	}
 
 	@Override
 	public String toString() {
-		return "ProductCri [page=" + page + ", pageSize=" + pageSize + ", store_code=" + store_code + "]";
+		return "ProductCri [page=" + page + ", pageSize=" + pageSize + ", user_id=" + user_id + "]";
 	}
 
 	

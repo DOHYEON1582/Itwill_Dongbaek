@@ -110,13 +110,17 @@ public class UserController {
 		
 		UserVO userVO = uService.loginUser(uvo);
 		logger.debug(" 로그인 정보 : " + userVO);
-		
 		if (userVO != null) {
-            session.setAttribute("userVO", userVO);
-            return "redirect:/";
-        } else {
-            return "/member/login";
-        }
+			session.setAttribute("user_id", userVO.getUser_id());
+
+			if (userVO.getUser_id().equals("seller")) {
+				return "redirect:/seller/sellermain";
+			} else {
+				return "redirect:/";
+			}
+		} else {
+			return "/member/login";
+		}
 	}
 	
 	@RequestMapping(value="/member/callBack", method=RequestMethod.GET)

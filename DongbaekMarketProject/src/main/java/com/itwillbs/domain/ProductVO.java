@@ -15,12 +15,12 @@ public class ProductVO {
 	private String img2;
 	private String img3;
 	private String product_explain;
-	private String seller_id;
 	private String country;
 	private int max_account;
 	private String category;
 	private String sub_product;
 	private String unit;
+	private int market_code;
 	
 	private List<StoreVO> storeVO;
 	private List<Subscrbe_productVO> subscrbe_productVO;

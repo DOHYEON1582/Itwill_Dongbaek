@@ -46,8 +46,10 @@ import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.ReviewCri;
 import com.itwillbs.domain.ReviewPagingVO;
 import com.itwillbs.domain.ReviewVO;
+import com.itwillbs.domain.UserVO;
 import com.itwillbs.service.ProductService;
 import com.itwillbs.service.ReviewReplyService;
+import com.itwillbs.service.UserService;
 
 import net.coobird.thumbnailator.Thumbnails;
 
@@ -59,11 +61,15 @@ public class SellerPageController {//판매자 페이지 컨트롤러
     private ProductService pService; // 상품 관련 서비스 가져오기
     
     @Inject
-    private ReviewReplyService rService;
+    private ReviewReplyService rService; // 리뷰 관련 서비스 가져오기
+    
+    @Inject
+    private UserService uService; // 유저 관련 서비스 가져오기
+    
     
     // 파일 업로드 디렉토리
-//    @Value("${file.upload.directory}")
-//    private String FILE_DIRECTORY = "C:\\images";
+    @Value("${file.upload.directory}")
+    private String FILE_DIRECTORY = "/resources/upload1";
     
     private static final Logger logger = LoggerFactory.getLogger(SellerPageController.class);
     
@@ -76,35 +82,44 @@ public class SellerPageController {//판매자 페이지 컨트롤러
     
     // 판매자 상품페이지(상품목록)
     //  http://localhost:8088/seller/product
-    @RequestMapping(value = "/product",method = RequestMethod.GET)
+    @RequestMapping(value = "/product", method = RequestMethod.GET)
     public String productList(Model model, ProductCri cri, HttpSession session) throws Exception {
-        // 세션에서 가게 코드를 가져옴
-        // Integer store_code = (Integer) session.getAttribute("store_code");
-        // if (store_code == null) {
-        //     // 가게 코드가 없으면 로그인 페이지로 리다이렉트 또는 다른 처리를 수행할 수 있음
-        //     return "redirect:/login";
-        // }
+        // 세션에서 유저 아이디를 가져옴
+        String user_id = (String) session.getAttribute("user_id");
+        if (user_id == null) {
+            // 유저 아이디가 없으면 로그인 페이지로 리다이렉트 또는 다른 처리를 수행할 수 있음
+            return "redirect:/member/login";
+        }
 
-        // 가게 코드를 설정
-        cri.setStore_code(2024042501);
-
+        // 사용자 권한 체크
+        UserVO user = uService.getUser(new UserVO());
+        user.setUser_id(user_id);
+        user = uService.getUser(user);
+        if (user == null || !"seller".equals(user.getUser_id())) {
+            // 판매자가 아니면 권한이 없는 페이지로 리다이렉트 또는 다른 처리를 수행할 수 있음
+            return "redirect:/"; // 예시: 권한이 없는 페이지로 이동
+        }
         
+        // 유저 아이디 받아오기
+        cri.setUser_id(user_id);
+
         ProductPagingVO pagingVO = new ProductPagingVO();
         pagingVO.setCri(cri);
-        pagingVO.setTotalCount(pService.getTotalCount(2024042501)); // 총 상품 수를 ProductService를 통해 가져옴
+        pagingVO.setTotalCount(pService.getTotalCount((String) user_id)); // 총 상품 수를 ProductService를 통해 가져옴
 
-        logger.debug(""+pagingVO);
-        
+        logger.debug("" + pagingVO);
+
         List<ProductVO> product = pService.getProductPage(cri);
-        
+
         model.addAttribute("product", product);
-        
+
         model.addAttribute("cri", cri);
-        
+
         model.addAttribute("pagingVO", pagingVO);
 
         return "/seller/product";
     }
+
         
     // 상품 상세 페이지를 보여주는 메서드
     @RequestMapping(value = "/productDetail", method = RequestMethod.GET)
@@ -131,6 +146,7 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	 // http://localhost:8088/seller/productregistSubmit
 	 @RequestMapping(value = "/productregistSubmit", method = RequestMethod.POST)
 	 public String productregistSubmit(MultipartHttpServletRequest multiRequest,
+			 						   @RequestParam(value = "market_code", defaultValue = "1") int market_code,
 	                                   @RequestParam(value = "category", defaultValue = "기본 카테고리") String category,
 	                                   @RequestParam(value = "product_name", defaultValue = "상품명 없음") String product_name,
 	                                   @RequestParam(value = "unit", defaultValue = "개") String unit,

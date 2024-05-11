@@ -32,8 +32,8 @@ public class ProductDAOImpl implements ProductDAO {
 	}
 
 	@Override
-    public int getTotalCount(int store_code) {
-        return sqlSession.selectOne(NAMESPACE + ".getTotalCount", store_code);
+    public int getTotalCount(String user_id) {
+        return sqlSession.selectOne(NAMESPACE + ".getTotalCount", user_id);
     }
 	
 	@Override
