@@ -206,7 +206,6 @@ public class OrderController {
 		// 세션에서 선택한 상품 정보 가져오기
 		List<CartVO> cartList = (List<CartVO>) session.getAttribute("selected_cartList");
 		int productNum = (int) session.getAttribute("selected_productNum");
-		
 				
 		session.setAttribute("selected_cartList", cartList);
 		session.setAttribute("selected_productNum", productNum);

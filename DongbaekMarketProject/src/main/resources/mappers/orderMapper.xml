@@ -113,7 +113,9 @@
 	</update>
 	
 	<!-- 주문성공 -->
-
+	<select id="selectOrderInfo" resultType="OrderInfoVO">
+		select * from order_info where order_code=#{order_code}
+	</select>
 	
 
 </mapper>
