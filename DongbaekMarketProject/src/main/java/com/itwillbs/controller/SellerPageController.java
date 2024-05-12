@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +32,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,14 +45,25 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.itwillbs.domain.Criteria;
+import com.itwillbs.domain.Order_infoVO;
+import com.itwillbs.domain.PageVO;
 import com.itwillbs.domain.ProductCri;
 import com.itwillbs.domain.ProductPagingVO;
 import com.itwillbs.domain.ProductVO;
+import com.itwillbs.domain.QuestionVO;
 import com.itwillbs.domain.ReviewCri;
 import com.itwillbs.domain.ReviewPagingVO;
 import com.itwillbs.domain.ReviewVO;
+import com.itwillbs.domain.SellerVO;
+import com.itwillbs.domain.UserVO;
+import com.itwillbs.service.DeliveryService;
+import com.itwillbs.service.OrderService;
 import com.itwillbs.service.ProductService;
+import com.itwillbs.service.QuestionService;
 import com.itwillbs.service.ReviewReplyService;
+import com.itwillbs.service.SaleService;
+import com.itwillbs.service.UserService;
 
 import net.coobird.thumbnailator.Thumbnails;
 
@@ -63,23 +77,141 @@ public class SellerPageController {//판매자 페이지 컨트롤러
     @Inject
     private ReviewReplyService rService;
     
+    @Inject
+    private UserService uService;
+   
+    @Inject
+    private OrderService oService;
+    
+    @Inject
+    private DeliveryService dService;
+    
+    @Inject
+    private SaleService sService;
+    
+    @Inject
+    private QuestionService qService;
     // 파일 업로드 디렉토리
 //    @Value("${file.upload.directory}")
 //    private String FILE_DIRECTORY = "C:\\images";
     
     private static final Logger logger = LoggerFactory.getLogger(SellerPageController.class);
     
+    
+    @RequestMapping(value = "seller/register", method = RequestMethod.GET)
+	public void registerGET() throws Exception{
+		logger.debug(" registerGET() 호출 ");
+		
+	}
+    @RequestMapping(value = "seller/register", method = RequestMethod.POST)
+	public String registerPOST(SellerVO svo) throws Exception{
+		logger.debug(" registerPOST(UserVO uvo) 호출 ");
+		logger.debug(" 회원가입 정보 : " + svo);
+		
+		pService.SellerInsert(svo);
+		
+		return "redirect:/seller/login";
+	}
+    
     @RequestMapping(value = "/seller/login", method = RequestMethod.GET)
     public void sellerLogin()throws Exception {
     	logger.debug(" sellerLogin() 호출 "); 
     	
     }
-    
-    @RequestMapping(value = "/seller/join", method = RequestMethod.GET)
-	public void sellerJoin()throws Exception {
-		logger.debug(" sellerJoin() 호출 "); 
-
+    @RequestMapping(value = "/seller/login", method = RequestMethod.POST)
+	public String loginPOST(SellerVO svo, HttpSession session) throws Exception{
+		logger.debug(" loginPOST() 호출 ");
+		
+		SellerVO sellerVO = pService.loginSeller(svo);
+		logger.debug(" 로그인 정보 : " + sellerVO);
+		
+		if (sellerVO != null) {
+            session.setAttribute("seller_id", sellerVO);
+            return "redirect:/seller/sellermain";
+        } else {
+            return "/seller/login";
+        }
 	}
+    @RequestMapping(value="/seller/callBack", method=RequestMethod.GET)
+	public String callBack(){
+		logger.debug(" callBack() 호출 ");
+		return "/seller/callBack";
+	}
+    
+    @ResponseBody
+	@RequestMapping(value = "/seller/confirm", method = RequestMethod.POST)
+	public ResponseEntity<Integer> idCheckPOST(String seller_id) throws Exception {
+	    logger.debug("idCheckPOST(String seller_id) 호출");
+	    int result = 0;
+	    if(seller_id != null && !seller_id.isEmpty()) {
+	        logger.debug("조회된 아이디2 : " + pService.checkSellerId(seller_id));
+	        result = pService.checkSellerId(seller_id);
+	    }
+	    return new ResponseEntity<Integer>(result, HttpStatus.OK);
+	}
+    
+    // 판매자 정보
+    @RequestMapping(value = "seller/info", method = RequestMethod.GET)
+	public void infoGET(Model model, HttpSession session) throws Exception {
+		logger.debug(" infoGET() 실행 ");
+		SellerVO sellerVO = (SellerVO) session.getAttribute("seller_id");
+		String seller_id = sellerVO.getSeller_id();
+		logger.debug(" id : " + seller_id);
+		model.addAttribute("Sellerinfo", pService.sellerInfo(seller_id));
+	}
+   
+    // 정보 수정
+    @RequestMapping(value = "seller/update", method = RequestMethod.GET)
+	public void sellerUpdateGET(Model model, HttpSession session) throws Exception {
+		logger.debug(" userUpdateGET() 실행 ");
+		SellerVO sellerVO = (SellerVO) session.getAttribute("seller_id");
+		String seller_id = sellerVO.getSeller_id();
+		logger.debug(" id : " + seller_id);
+		model.addAttribute("SellerInfo", pService.sellerInfo(seller_id));
+	}
+    @RequestMapping(value = "seller/update", method = RequestMethod.POST)
+	public String sellerUpdatePOST(SellerVO svo) throws Exception {
+		logger.debug(" sellerUpdatePOST(SellerVO svo) 호출 ");
+		logger.debug("svo : " + svo);
+		int result = pService.sellerUpdate(svo);
+		if(result == 1) {
+			logger.debug(" 수정완료! ");
+			return "redirect:/";
+		}
+		logger.debug(" 수정실패! ");
+		return "redirect:/seller/update";
+	}
+    
+    // 로그아웃
+    @GetMapping(value = "seller/logout")
+	public String logoutGET(HttpSession session) throws Exception{
+		logger.debug(" logoutGET(HttpSession session) 실행 ");
+		session.invalidate();
+		return "redirect:/seller/login";
+	}
+    
+  //회원정보 삭제
+  	@RequestMapping(value = "seller/delete", method = RequestMethod.GET)
+  	public String deleteSellerGET() throws Exception {
+  		logger.debug(" deleteSellerGET() 호출 ");
+  		
+  		return "/seller/delete";
+  	}
+  	@RequestMapping(value = "seller/delete", method = RequestMethod.POST)
+  	public String deleteSellerPOST(SellerVO svo, HttpSession session) throws Exception {
+  		logger.debug(" deleteSellerPOST() 호출 ");
+  		logger.debug(" 삭제할 정보 : " + svo);
+  		int result = pService.deleteSeller(svo);
+  		logger.debug("result : " + result);
+  		if(result == 1) {
+  			session.invalidate();
+  			return "redirect:/";
+  		}
+  		logger.debug(" 비밀번호 오류 ");
+  		return "redirect:/seller/delete";
+  	}
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     // 판매자 메인페이지
     //  http://localhost:8088/seller/sellermain
@@ -89,35 +221,45 @@ public class SellerPageController {//판매자 페이지 컨트롤러
     }
     // 판매자 상품페이지(상품목록)
     //  http://localhost:8088/seller/product
-    @RequestMapping(value = "/product",method = RequestMethod.GET)
+    @RequestMapping(value = "/product", method = RequestMethod.GET)
     public String productList(Model model, ProductCri cri, HttpSession session) throws Exception {
-        // 세션에서 가게 코드를 가져옴
-        // Integer store_code = (Integer) session.getAttribute("store_code");
-        // if (store_code == null) {
-        //     // 가게 코드가 없으면 로그인 페이지로 리다이렉트 또는 다른 처리를 수행할 수 있음
-        //     return "redirect:/login";
-        // }
+        // 세션에서 판매자 정보 가져오기
+        SellerVO sellerVO = (SellerVO) session.getAttribute("seller_id");
+        if (sellerVO == null) {
+            // 판매자 정보가 세션에 없으면 로그인 페이지로 리다이렉트 또는 다른 처리를 수행할 수 있음
+            return "redirect:/seller/login";
+        }
+        
+        // 판매자 정보로부터 가게 코드 가져오기
+        Integer store_code = sellerVO.getStore_code();
+        if (store_code == null) {
+            // 가게 코드가 없으면 다른 처리를 수행할 수 있음
+            return "redirect:/error";
+        }
 
         // 가게 코드를 설정
-        cri.setStore_code(2024042501);
+        cri.setStore_code(Integer.valueOf(store_code));
 
-        
+
+        // 총 상품 수 가져오기
+        int totalCount = pService.getTotalCount(sellerVO.getSeller_id());
+
         ProductPagingVO pagingVO = new ProductPagingVO();
         pagingVO.setCri(cri);
-        pagingVO.setTotalCount(pService.getTotalCount(2024042501)); // 총 상품 수를 ProductService를 통해 가져옴
+        pagingVO.setTotalCount(totalCount);
 
-        logger.debug(""+pagingVO);
-        
+        logger.debug("" + pagingVO);
+
         List<ProductVO> product = pService.getProductPage(cri);
-        
+
         model.addAttribute("product", product);
-        
         model.addAttribute("cri", cri);
-        
         model.addAttribute("pagingVO", pagingVO);
 
-        return "/seller/product";
+        return "seller/product"; // 뷰의 경로 수정
     }
+
+
         
     // 상품 상세 페이지를 보여주는 메서드
     @RequestMapping(value = "/productDetail", method = RequestMethod.GET)
@@ -129,7 +271,7 @@ public class SellerPageController {//판매자 페이지 컨트롤러
         model.addAttribute("product", product);
         
         // 상품 상세 페이지로 이동
-        return "/seller/productDetail";
+        return "seller/productDetail"; // 뷰의 경로 수정
     }
     
     // 판매자 상품페이지(상품등록)
@@ -153,7 +295,8 @@ public class SellerPageController {//판매자 페이지 컨트롤러
                                                @RequestParam(value = "store_code", defaultValue = "0") int store_code,
                                                @RequestParam("img1") MultipartFile img1,
                                                @RequestParam("img2") MultipartFile img2,
-                                               @RequestParam("img3") MultipartFile img3,
+                                               @RequestParam("img3") MultipartFile img3,                                            
+                                               @RequestParam("market_code") int market_code,
                                                HttpServletRequest request) throws Exception{
         logger.debug("productregistSubmit 호출");
 
@@ -172,6 +315,7 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 
 
             ProductVO product = new ProductVO();
+            product.getProduct_code();
             product.setProduct_name(product_name);
             product.setPrice(price);
             product.setCountry(country);
@@ -180,6 +324,7 @@ public class SellerPageController {//판매자 페이지 컨트롤러
             product.setCategory(category);
             product.setProduct_explain(product_explain);
             product.setSeller_id("seller");
+            product.setStore_code(store_code);
             product.setImg1(uniqueFileName1);
             product.setImg2(uniqueFileName2);
             product.setImg3(uniqueFileName3);
@@ -328,80 +473,137 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 
 
 
-	// 판매자 상품 수정 페이지
-	 @RequestMapping(value = "/productmodify", method = RequestMethod.GET)
-	 public String showProductModifyForm(@RequestParam("product_code") int product_code, Model model) throws Exception {
-	     
-	    	// 상품 정보 조회
-	    	    ProductVO product = pService.getProductById(product_code);
-	    	    
-	    	    // 이미지 경로 가져오기
-	    	    String imagePath1 = product.getImg1();
-	    	    String imagePath2 = product.getImg2();
-	    	    String imagePath3 = product.getImg3();
-	    	    
-	    	    // 모델에 상품 정보 및 이미지 경로 추가
-	    	    model.addAttribute("product", product);
-	    	    model.addAttribute("imagePath1", imagePath1);
-	    	    model.addAttribute("imagePath2", imagePath2);
-	    	    model.addAttribute("imagePath3", imagePath3);
-	    	    // 상품 수정 페이지로 이동
-	    	    return "/seller/productmodify";
-	     
-	 }
+ // 판매자 상품 수정 페이지
+    @GetMapping("/productmodify")
+    public String showProductModifyForm(@RequestParam("product_code") int product_code, Model model) throws Exception {
+        try {
+            // 상품 정보 조회
+            ProductVO product = pService.getProductById(product_code);
 
-	 // 판매자 상품 수정 처리
-	 @RequestMapping(value = "/productmodifySubmit", method = RequestMethod.POST)
-	 public String handleProductModifySubmit(MultipartHttpServletRequest multiRequest,
-	                                         @RequestParam("product_code") int product_code,
-	                                         @RequestParam(value = "category", defaultValue = "기본 카테고리") String category,
-	                                         @RequestParam(value = "product_name", defaultValue = "상품명 없음") String product_name,
-	                                         @RequestParam(value = "unit", defaultValue = "개") String unit,
-	                                         @RequestParam(value = "price", defaultValue = "0") int price,
-	                                         @RequestParam(value = "product_explain", defaultValue = "설명 없음") String product_explain,
-	                                         @RequestParam(value = "max_account", defaultValue = "0") int max_account,
-	                                         @RequestParam(value = "country", defaultValue = "원산지 없음") String country,
-	                                         @RequestParam(value = "store_code", defaultValue = "0") int store_code,
-	                                         RedirectAttributes rttr) {
-	     try {
-	         // 파일 업로드 처리
-	         List<String> fileNames = saveImage(multiRequest);
+            // 이미지 경로 가져오기
+            String imagePath1 = product.getImg1();
+            String imagePath2 = product.getImg2();
+            String imagePath3 = product.getImg3();
 
-	         // 상품 정보 설정
-	         ProductVO product = new ProductVO();
-	         product.setProduct_code(product_code); // 상품 코드 설정
-	         product.setCategory(category);
-	         product.setProduct_name(product_name);
-	         product.setUnit(unit);
-	         product.setPrice(price);
-	         product.setProduct_explain(product_explain);
-	         product.setMax_account(max_account);
-	         product.setCountry(country);
-	         product.setStore_code(store_code);
+            // 모델에 상품 정보 및 이미지 경로 추가
+            model.addAttribute("product", product);
+            model.addAttribute("imagePath1", imagePath1);
+            model.addAttribute("imagePath2", imagePath2);
+            model.addAttribute("imagePath3", imagePath3);
 
-	         // 이미지 파일 이름 설정
-	         if (fileNames.size() >= 3) {
-	             product.setImg1(fileNames.get(0));
-	             product.setImg2(fileNames.get(1));
-	             product.setImg3(fileNames.get(2));
-	         }
+            // 상품 수정 페이지로 이동
+            return "/seller/productmodify";
+        } catch (Exception e) {
+            // 상품을 찾을 수 없는 경우 오류 처리
+            model.addAttribute("error", "상품을 찾을 수 없습니다.");
+            return "/error";
+        }
+    }
 
-	         // 상품 수정
-	         pService.updateProduct(product);
+    // 판매자 상품 수정 처리
+    @PostMapping("/productmodifySubmit")
+    public ResponseEntity productModifySubmit(@RequestParam("product_name") String product_name,
+                                               @RequestParam("price") int price,
+                                               @RequestParam("country") String country,
+                                               @RequestParam("max_account") String max_account,
+                                               @RequestParam("unit") String unit,
+                                               @RequestParam("category") String category,
+                                               @RequestParam("product_explain") String product_explain,
+                                               @RequestParam("img1") MultipartFile img1,
+                                               @RequestParam("img2") MultipartFile img2,
+                                               @RequestParam("img3") MultipartFile img3,
+                                               HttpServletRequest request) throws Exception{
+    	logger.debug("productmodify 호출");
 
-	         // 상품 상세 페이지로 이동
-	         return "redirect:/seller/productDetail?product_code=" + product_code;
-	     } catch (IOException e) {
-	         e.printStackTrace();
-	         rttr.addFlashAttribute("f", "이미지 파일 업로드에 실패했습니다.");
-	         // 상품 수정 페이지로 다시 이동하거나 적절한 처리를 수행합니다.
-	         return "redirect:/seller/productmodify?product_code=" + product_code;
-	     } catch (Exception e) {
-	         e.printStackTrace();
-	         // 오류 발생시 오류 페이지로 이동하거나 적절한 처리를 수행합니다.
-	         return "/error";
-	     }
-	 }
+        String uniqueFileName1 = "";
+        String uniqueFileName2 = "";
+        String uniqueFileName3 = "";
+
+        try {
+          
+            String realPath = request.getSession().getServletContext().getRealPath("/resources/upload1");
+            logger.debug("실제 경로 : " + realPath);
+
+            uniqueFileName1 = saveFile(img1, realPath);
+            uniqueFileName2 = saveFile(img2, realPath);
+            uniqueFileName3 = saveFile(img3, realPath);
+
+
+            ProductVO product = new ProductVO();
+            product.getProduct_code();
+            product.setProduct_name(product_name);
+            product.setPrice(price);
+            product.setCountry(country);
+            product.setMax_account(Integer.parseInt(max_account));
+            product.setUnit(unit);
+            product.setCategory(category);
+            product.setProduct_explain(product_explain);
+            product.setSeller_id("seller");
+            product.setImg1(uniqueFileName1);
+            product.setImg2(uniqueFileName2);
+            product.setImg3(uniqueFileName3);
+
+            logger.debug("작성한 상품: " + product.toString());
+
+            int success = 0;
+    		success = pService.updateProduct(product);
+
+            HttpHeaders respHeaders = new HttpHeaders();
+            respHeaders.add("Content-Type", "text/html; charset=utf-8");
+
+            if (success == 1) {
+                String result = "<script>";
+                result += " alert('상품 수정 완료!'); ";
+                result += " location.href='http://localhost:8088/seller/product';";
+                result += "</script>";
+                return new ResponseEntity(result, respHeaders, HttpStatus.OK);
+            } else {
+                String result = "<script>";
+                result += " alert('상품 수정 실패!'); ";
+                result += " location.href='http://localhost:8088/seller/productmodify';";
+                result += "</script>";
+                return new ResponseEntity(result, respHeaders, HttpStatus.OK);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            String result = "<script>";
+            result += " alert('이미지 파일 업로드에 실패했습니다.'); ";
+            result += " location.href='http://localhost:8088/seller/productmodify';";
+            result += "</script>";
+            HttpHeaders respHeaders = new HttpHeaders();
+            respHeaders.add("Content-Type", "text/html; charset=utf-8");
+            return new ResponseEntity(result, respHeaders, HttpStatus.OK);
+        }
+    }
+
+    private String saveFile(MultipartFile file, HttpServletRequest request) throws IOException {
+        String uniqueFileName = "";
+
+        if (!file.isEmpty()) {
+            String originalFileName = file.getOriginalFilename();
+            String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+            uniqueFileName = UUID.randomUUID().toString() + fileExtension; // 중복방지를 위해 파일이름 랜덤값 변경
+            String realPath = request.getSession().getServletContext().getRealPath("/resources/upload1");
+            String filePath = realPath + File.separator + uniqueFileName;
+            File dest = new File(filePath);
+
+            // 업로드 디렉토리가 존재하지 않으면 생성
+            if (!dest.getParentFile().exists()) {
+                dest.getParentFile().mkdirs();
+            }
+
+            file.transferTo(dest);
+        }
+
+        return uniqueFileName;
+    }
+
+
+
+
+
+
+
 
 	 @RequestMapping(value = "/deleteProduct", method = RequestMethod.GET)
 	 public String deleteProductConfirm(@RequestParam("product_code") int productCode, Model model) throws Exception {
@@ -425,7 +627,7 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 
 
 
-	
+	////////////////////////////////////////////////////
 	
 	
 	
@@ -437,27 +639,31 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	@RequestMapping(value = "/orderlist",method = RequestMethod.GET)
 	public void orderlist() throws Exception{
 		logger.debug(" orderlist() 실행 ");
+		
 	}
 	
-	// 판매자 주문페이지(신규주문)
-	//	http://localhost:8088/seller/neworder
-	@RequestMapping(value = "/neworder",method = RequestMethod.GET)
-	public void neworder() throws Exception{
-		logger.debug(" neworder() 실행 ");
+	// 주문 확정 컨트롤러
+	@RequestMapping(value = "/confirmOrder", method = RequestMethod.POST)
+	public String confirmOrder(@RequestParam("order_code") String order_code) {
+	    // 주문을 확정하는 로직을 구현합니다.
+	    // orderId를 사용하여 해당 주문을 확정합니다.
+	    return "redirect:/seller/orderlist"; // 주문 목록 페이지로 리다이렉트합니다.
 	}
-	
-	// 판매자 주문페이지(주문 확정)
-	//	http://localhost:8088/seller/orderconfirm
-	@RequestMapping(value = "/orderconfirm",method = RequestMethod.GET)
-	public void orderconfirm() throws Exception{
-		logger.debug(" orderconfirm() 실행 ");
+
+	// 주문 취소 컨트롤러
+	@RequestMapping(value = "/cancelOrder", method = RequestMethod.POST)
+	public String cancelOrder(@RequestParam("order_code") String order_code) {
+	    // 주문을 취소하는 로직을 구현합니다.
+	    // orderId를 사용하여 해당 주문을 취소합니다.
+	    return "redirect:/seller/orderlist"; // 주문 목록 페이지로 리다이렉트합니다.
 	}
-	
-	// 판매자 주문페이지(주문취소/환불)
-	//	http://localhost:8088/seller/ordercancel
-	@RequestMapping(value = "/ordercancel",method = RequestMethod.GET)
-	public void ordercancel() throws Exception{
-		logger.debug(" ordercancel() 실행 ");
+
+	// 주문 환불 컨트롤러
+	@RequestMapping(value = "/refundOrder", method = RequestMethod.POST)
+	public String refundOrder(@RequestParam("order_code") String order_code) {
+	    // 주문을 환불하는 로직을 구현합니다.
+	    // orderId를 사용하여 해당 주문을 환불합니다.
+	    return "redirect:/seller/orderlist"; // 주문 목록 페이지로 리다이렉트합니다.
 	}
 
 	
@@ -466,18 +672,42 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	
 	
 	
+	
+	
+	
+	////////////////////////////////////////////////
 	
 	
 	
 	
 	
 	// 판매자 배송페이지
-	//	http://localhost:8088/seller/dilivery
-	@RequestMapping(value = "/dilivery",method = RequestMethod.GET)
-	public void dilivery() throws Exception{
-		logger.debug(" dilivery() 실행 ");
-	}
+	//	http://localhost:8088/seller/delivery
+	@RequestMapping(value = "/delivery", method = RequestMethod.GET)
+	public String delivery(@RequestParam("order_code") int order_code,Model model) throws Exception{
+        logger.debug("delivery() 실행");
+        try {
+            // 배송 정보 조회
+            Order_infoVO deliveryInfo = dService.getDeliveryInfo(order_code); // order_code는 실제로 사용하는 값으로 수정해야 합니다.
+            model.addAttribute("deliveryInfo", deliveryInfo);
+        } catch (Exception e) {
+            logger.error("배송 정보 조회 중 오류 발생: {}", e.getMessage());
+            // 오류 페이지로 이동하거나 예외 처리를 위한 코드 추가
+        }
+        return "seller/delivery";
+    }
 
+	// 배송 정보 업데이트
+    @PostMapping("/updateDeliveryInfo")
+    public String updateDeliveryInfo(Order_infoVO deliveryInfo) {
+        try {
+            dService.updateDeliveryInfo(deliveryInfo);
+        } catch (Exception e) {
+            logger.error("배송 정보 업데이트 중 오류 발생: {}", e.getMessage());
+            // 오류 페이지로 이동하거나 예외 처리를 위한 코드 추가
+        }
+        return "redirect:/seller/delivery?order_code=" + deliveryInfo.getOrder_code();
+    }
 	
 	
 	
@@ -485,7 +715,7 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	
 	
 	
-	
+	////////////////////////////////////////////////////////
 	
 	
 	
@@ -493,23 +723,37 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	
 	
 	// 판매자 리뷰페이지
-	// http://localhost:8088/seller/review
-	@RequestMapping(value = "/review", method = RequestMethod.GET)
-	public String getAllReviews(@ModelAttribute("cri") ReviewCri cri, Model model) throws Exception {
-	    // 페이지 번호와 페이지당 표시할 리뷰 수를 설정한 ReviewCri 객체를 이용하여 페이징된 리뷰 목록을 가져옴
-	    List<ReviewVO> reviewList = rService.getAllReviews(cri);
+		// http://localhost:8088/seller/review
+		// 리뷰 목록을 보여주는 페이지
+		@GetMapping("/review")
+		public String reviewList(Model model, @RequestParam(name = "review_code", required = false) Integer review_code, HttpSession session) throws Exception {
+		    if (review_code != null) {
+		        model.addAttribute("review", rService.getReview(review_code));
+		        return "seller/review_detail"; // 리뷰 상세 페이지로 이동
+		    } else {
+		        model.addAttribute("reviews", rService.getReviewList(null));
+		        return "seller/review"; // 리뷰 목록 페이지로 이동
+		    }
+		}
 
-	    // 페이징 처리된 리뷰 목록을 모델에 추가
-	    model.addAttribute("reviews", reviewList);
 
-	    // 페이징 정보도 함께 모델에 추가하여 화면에 전달
-	    ReviewPagingVO pagingVO = new ReviewPagingVO();
-	    pagingVO.setCri(cri);
-	    pagingVO.setTotalCount(rService.countReviews()); // 리뷰 총 개수를 가져와 설정
-	    model.addAttribute("pagingVO", pagingVO);
+		// 리뷰 답글을 작성하는 페이지로 이동
+	    @GetMapping("/reviewReply")
+	    public String reviewReply(@RequestParam("review_code") int review_code, Model model) throws Exception{
+	        // review_code를 이용하여 해당 리뷰 정보를 가져옴
+	        ReviewVO review = rService.getReview(review_code);
+	        model.addAttribute("review", review);
+	        return "seller/reviewReply"; // 리뷰 답글을 작성하는 폼이 있는 JSP 페이지
+	    }
 
-	    return "/seller/review"; // 리뷰 목록 페이지로 이동
-	}
+	    // 리뷰 답글을 작성하는 기능
+	    @PostMapping("/reply")
+	    public String reply(ReviewVO reply) throws Exception {
+	        // 작성된 리뷰 답글을 저장
+	        rService.addReply(reply);
+	        // 작성한 리뷰 답글이 포함된 리뷰 목록 페이지로 이동
+	        return "redirect:/seller/review";
+	    }
 
 
 	// 판매자 리뷰페이지 상세페이지
@@ -521,7 +765,7 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 		// 전달 정보 저장
 		logger.debug(" id : "+review_code);
 	    // 특정 리뷰의 상세 정보를 가져옴
-	    ReviewVO review = rService.getReviewByCode(review_code);
+	    ReviewVO review = rService.getReview(review_code);
 	    model.addAttribute("review", review);
 	    
 	    model.addAttribute("cri", cri);
@@ -529,73 +773,10 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	    return "seller/reviewDetail"; // 리뷰 상세 페이지로 이동
 	}
 	
-	// 리뷰에 대한 답글 작성 페이지로 이동
-	// http://localhost:8088/seller/reviewReply
-    @RequestMapping(value = "/reviewReply", method = RequestMethod.GET)
-    public String reviewReplyPage(@RequestParam("user_id") String user_id,
-            @RequestParam("product_code") int product_code,
-            @RequestParam("order_code") int order_code,
-            Model model) throws Exception{
-	ReviewVO parentReview = rService.getReviewByParams(user_id, product_code, order_code);
-	model.addAttribute("parentReview", parentReview);
-	return "seller/reviewReply"; // 답글 작성 페이지로 이동
-	}
+	
+/////////////////////////////////////////////////////////////////////
 
-
-    // 리뷰에 대한 답글 작성 처리
-    @ResponseBody
-    @RequestMapping(value = "/reviewReplySubmit", method = RequestMethod.POST)
-    public String replySubmit(ReviewVO rvo) throws Exception{
-        rService.addReply(rvo);
-        return "redirect:/seller/reviewDetail?review_code=" + rvo.getReview_code(); // 답글이 추가된 리뷰 상세 페이지로 이동
-    }
-//    @ResponseBody
-//    @RequestMapping(value = "/reviewReplySubmit", method = RequestMethod.POST)
-//    public String reviewReplySubmit(ReviewVO rvo, HttpSession session) throws Exception {
-//    	logger.debug("asdass13213213213231");
-//        try {
-//            // 부모 리뷰의 코드를 세션에서 가져와서 설정
-            //Integer parentReviewCode = (Integer) session.getAttribute("parentReviewCode");
-//            Integer parentReviewCode = rvo.getReview_code();
-            
-            // 부모 리뷰의 코드가 유효한지 확인
-//            if (parentReviewCode != null && parentReviewCode > 0) {
-                // 부모 리뷰의 코드를 설정
-//                rvo.setReview_code(parentReviewCode);
-
-                // 답글 작성 서비스 호출
-//                rService.addReply(rvo);
-//                logger.debug("답글 작성 성공");
-
-                // 리뷰 상세 페이지로 리다이렉트
-//                return "redirect:/seller/reviewDetail?review_code=" + parentReviewCode;
-//                return "/seller/reviewDetail?review_code=" + parentReviewCode;
-//            } else { 
-//                logger.debug("답글 작성 실패: 부모 리뷰 코드가 유효하지 않음");
-//              
-//               return "/seller/review";
-//               return "redirect:/seller/review";
-//            }
-//        } catch (Exception e) {
-//            logger.error("답글 작성 실패: " + e.getMessage());
-//            return "/seller/review";
-//            return "redirect:/seller/review";
-//        }
-//    }
-
-
-    // 리뷰 답글 수정 처리
-    @ResponseBody
-    @RequestMapping(value = "/replymodify", method = RequestMethod.POST)
-    public String ReplyModify(@RequestBody ReviewVO rvo) {
-        try {
-            rService.replyModify(rvo);
-            return "success"; // 수정 성공
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "error"; // 수정 실패
-        }
-    }
+    
 		
 		
     
@@ -610,15 +791,50 @@ public class SellerPageController {//판매자 페이지 컨트롤러
     
 	// 판매자 매출페이지
 	//	http://localhost:8088/seller/sales
-	@RequestMapping(value = "/sales",method = RequestMethod.GET)
-	public void sales() throws Exception{
-		logger.debug(" sales() 실행 ");
-	}
+    @RequestMapping(value = "/sales", method = RequestMethod.GET)
+    public String getAllSales(Model model) throws Exception {
+        // 시작일과 종료일을 담은 Map 생성
+        Map<String, Object> dateRange = new HashMap<>();
+        // 여기서 시작일과 종료일을 설정하십시오
+        // 예를 들어, dateRange.put("startDate", "2024-01-01");
+        // dateRange.put("endDate", "2024-12-31");
+        
+        // 일별 매출 조회
+        List<Map<String, Object>> dailySales = sService.getDailySales(dateRange);
+        // 월별 매출 조회
+        List<Map<String, Object>> monthlySales = sService.getMonthlySales(dateRange);
+        // 연도별 매출 조회
+        List<Map<String, Object>> yearlySales = sService.getYearlySales(dateRange);
+
+        // 조회 결과를 모델에 추가하여 JSP로 전달
+        model.addAttribute("dailySales", dailySales);
+        model.addAttribute("monthlySales", monthlySales);
+        model.addAttribute("yearlySales", yearlySales);
+
+        // sales.jsp 페이지로 이동
+        return "seller/sales";
+    }
 	
 	// 판매자 문의페이지
 	//	http://localhost:8088/seller/question
-	@RequestMapping(value = "/question",method = RequestMethod.GET)
-	public void question() throws Exception{
-		logger.debug(" question() 실행 ");
+    @RequestMapping(value = "/question", method = RequestMethod.GET)
+	public void questionMain(@RequestParam("product_code") int product_code, Criteria cri, Model model) throws Exception {
+		PageVO pageVO = new PageVO();
+		pageVO.setCri(cri);
+		pageVO.setTotalCount(qService.questionCount());
+		logger.debug("pagevo" + pageVO);
+		
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("product_code", product_code);
+		ProductVO product = qService.eachProduct(product_code);
+		paramMap.put("cri", cri);
+		
+		logger.debug("paramMap" + paramMap);
+	
+		List<QuestionVO> question = qService.getQuestion(paramMap);
+		model.addAttribute("question", question);
+		model.addAttribute("product", product);
+		model.addAttribute("cri", cri);
+		model.addAttribute("pageVO", pageVO);
 	}
 }

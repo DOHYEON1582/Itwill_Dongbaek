@@ -267,7 +267,7 @@ body {
 			<div class="row py-3 border-bottom">
 				<div class="col-sm-4 col-lg-3 text-center text-sm-start">
 					<div class="main-logo">
-						<a href="/seller/sellermain"> <img src="/resources/images/logo2.png" alt="logo" class="mylogo2">
+						<a href="/seller/sellermain"> <img src="${pageContext.request.contextPath }/resources/images/logo2.png" alt="logo" class="mylogo2">
 						</a>
 					</div>
 				</div>
@@ -289,21 +289,26 @@ body {
 				</div>
 				<div class="col-sm-8 col-lg-3 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
 				    <div>
-				        <div class="align-items-center">			           
-				            <a href="#" class="join">로그아웃</a>
-				            <a href="#" class="service">고객센터</a>
-				        </div>
+				    	<c:if test="${sessionScope.sellerVO.seller_id == null }">
+					        <div class="align-items-center">
+					            <a href="/seller/login" class="login">로그인</a>
+					            <a href="/seller/register" class="join">회원가입</a>
+					            <a href="#" class="service">고객센터</a>
+					        </div>
+				    	</c:if>
+				    	<c:if test="${sessionScope.sellerVO.seller_id != null }">
+					        <div class="align-items-center">
+					            로그인 id : ${sessionScope.sellerVO.seller_id }
+					            <a href="#" class="service">고객센터</a>
+					            <input type="button" value="로그아웃" onclick="location.href='/seller/logout';">
+					        </div>
 				        <ul class="d-flex justify-content-end list-unstyled m-3">
-				            <li><a href="#" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
+				            <li><a href="/seller/info" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
 				                        <use xlink:href="#user"></use></svg>
 				                </a></li>
-				        <!--    <li><a href="#" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
-				                        <use xlink:href="#heart"></use></svg>
-				                </a></li>-->
 				        </ul>
+				    	</c:if>
 				    </div>
-				
-				   
 				</div>
 			</div>
 		</div>
@@ -322,7 +327,6 @@ body {
 	                        <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
 	                            <li class="nav-item active"><a href="/seller/product" class="nav-link">상품관리</a></li>
 	                            <li class="nav-item dropdown"><a href="/seller/orderlist" class="nav-link">주문관리</a></li>
-	                            <li class="nav-item"><a href="/seller/dilivery" class="nav-link">배송관리</a></li>
 	                            <li class="nav-item"><a href="/seller/review" class="nav-link">리뷰관리</a></li>
 	                            <li class="nav-item"><a href="/seller/sales" class="nav-link">매출정산</a></li>
 	                            <li class="nav-item"><a href="/seller/question" class="nav-link">문의</a></li>
@@ -358,13 +362,8 @@ body {
       <a href="/seller/orderlist">주문 관리</a>
       <ul>
         <li><a href="/seller/orderlist">주문 목록</a></li>
-        <li><a href="/seller/neworder">신규 주문</a></li>
-        <li><a href="/seller/orderconfirm">구매 확정</a></li>
-        <li><a href="/seller/ordercancel">취소/환불 요청</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="/seller/dilivery">배송 관리</a>
+		<li><a href="/seller/delivery">배송 관리</a></li>
+	  </ul>
     </li>
     <li>
       <a href="/seller/review">리뷰 관리</a>
@@ -373,7 +372,6 @@ body {
       <a href="/seller/sales">매출 정산</a>
       <ul>
         <li><a href="/seller/sales">매출 현황</a></li>
-        <li><a href="/seller/salesgraph">매출 그래프</a></li>
       </ul>
     </li>
     <li>
@@ -392,10 +390,7 @@ body {
 <div style="margin: 20px; text-align: center;">
     <h2>리뷰 상세 정보</h2>
     <table style="width: 50%; margin: 0 auto;">
-        <tr>
-            <th style="padding: 10px; border: 1px solid #000;">리뷰 코드</th>
-            <td style="padding: 10px; border: 1px solid #000;">${review.review_code}</td>
-        </tr>
+      
         <tr>
             <th style="padding: 10px; border: 1px solid #000;">상품 코드</th>
             <td style="padding: 10px; border: 1px solid #000;">${review.product_code}</td>
@@ -422,18 +417,9 @@ body {
         </tr>
         <tr>
             <th style="padding: 10px; border: 1px solid #000;">사용자 아이디</th>
-            <td style="padding: 10px; border: 1px solid #000;">${review.user_id}</td>
+            <td style="padding: 10px; border: 1px solid #000;">${review.seller_id }</td>
         </tr>
-        <tr>
-            <td colspan="2" style="padding: 10px;">
-                <button onclick="location.href='/seller/reviewReply?review_code=${review.review_code}'">답글 달기</button>
-                <!-- 수정 삭제 버튼 -->
-	        <c:if test="${review.user_id eq loggedInUserId}">
-	            <button onclick="location.href='/seller/replymodify?review_code=${review.review_code}'">수정</button>
-	            <button onclick="deleteReview('${review.review_code}')">삭제</button>
-	        </c:if>
-            </td>
-        </tr>
+        
     </table>
 </div>
 

@@ -9,12 +9,17 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.itwillbs.domain.ProductCri;
 import com.itwillbs.domain.ProductVO;
+import com.itwillbs.domain.SellerVO;
+import com.itwillbs.domain.UserVO;
 import com.itwillbs.persistence.ProductDAO;
 
-@Repository
+@Service
 public class ProductServiceImpl implements ProductService {
 	
 	@Inject
@@ -23,9 +28,16 @@ public class ProductServiceImpl implements ProductService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 
-	
+	@Inject
+	private PasswordEncoder pwEncoder;
 	
 
+	
+	
+	
+	
+	
+	
 	@Override
 	public ProductVO getProductById(int product_code) {
 		logger.debug(" getProductById(int product_code) ");
@@ -33,11 +45,26 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 
+	
+	
 	@Override
-	public int getTotalCount(int store_code) throws Exception {
-		logger.debug(" getTotalCount() 호출 ");
-		return pdao.getTotalCount(store_code);
+	public int sellerUpdate(SellerVO svo) throws Exception {
+		logger.debug(" sellerUpdate(SellerVO svo) 실행 ");
+		return pdao.updateSeller(svo);
 	}
+
+	@Override
+	public int deleteSeller(SellerVO svo) throws Exception {
+		logger.debug(" deleteSeller(SellerVO svo) 실행 ");
+		return pdao.deleteSeller(svo);
+	}
+
+
+	@Override
+    public int getTotalCount(String seller_id) throws Exception {
+        logger.debug(" getTotalCount() 호출 ");
+        return pdao.getTotalCount(seller_id);
+    }
 
 
 	@Override
@@ -64,8 +91,46 @@ public class ProductServiceImpl implements ProductService {
 //		logger.debug(" setFile(String originalFilename, String savedFilename, int product_code, String filePath) 호출 ");
 //		pdao.setFile(originalFilename, savedFilename, product_code, filePath);
 //	}
+	
+	
+		// 회원가입
+		public void SellerInsert(SellerVO svo) throws Exception {
+		    logger.debug(" sellerInsert(SellerVO svo) 호출 ");
+		    
+		    // 비밀번호 암호화
+		    String encodedPassword = pwEncoder.encode(svo.getSeller_pw());
+		    svo.setSeller_pw(encodedPassword);
+		    
+		    pdao.SellerInsert(svo);
+		    logger.debug(" svo.getid : " + svo.getSeller_id());
+		    if(svo.getSeller_id().equals("seller")) {
+		    	String salt = svo.getSalt();
+		    	pdao.sellerAuth(salt);
+		    } else {
+		    	
+		    }
+		    logger.debug(" 회원가입 완료! ");
+		}
+	
+	@Override
+	public int checkSellerId(String seller_id) throws Exception {
+		logger.debug(" checkId(String user_id) 실행 ");
+		return pdao.checkSellerId(seller_id);
+	}
 
 
+	@Override
+    public SellerVO loginSeller(SellerVO svo) throws Exception {
+        logger.debug(" loginUser(sellerVO svo) 실행 ");
+        return pdao.loginSeller(svo); 
+    }
+
+	@Override
+	public SellerVO sellerInfo(String seller_id) throws Exception {
+		logger.debug(" sellerInfo(String seller_id) 실행 ");
+		return pdao.sellerInfo(seller_id);
+	}
+	
 	@Override
 	public int getProductCode() throws Exception {
 		logger.debug(" getProductCode() 호출 " );
@@ -79,9 +144,9 @@ public class ProductServiceImpl implements ProductService {
     }
 	
 	@Override
-    public void updateProduct(ProductVO product) throws Exception {
+    public int updateProduct(ProductVO product) throws Exception {
 		logger.debug(" updateProduct(ProductVO product) 호출");
-        pdao.updateProduct(product);
+        return pdao.updateProduct(product);
     }
 
 

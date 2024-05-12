@@ -9,10 +9,15 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.itwillbs.domain.ProductCri;
 import com.itwillbs.domain.ProductVO;
+import com.itwillbs.domain.SellerVO;
+import com.itwillbs.domain.UserVO;
 
 @Repository
 public class ProductDAOImpl implements ProductDAO {
@@ -24,16 +29,60 @@ public class ProductDAOImpl implements ProductDAO {
 	private static final String NAMESPACE = "com.itwillbs.mapper.ProductMapper";
 	
 	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
 	
 	
+	
+	
+	
+
+	@Override
+	public void SellerInsert(SellerVO svo) throws Exception {
+		logger.debug(" SellerInsert(SellerVO svo) 호출 ");
+		sqlSession.insert(NAMESPACE + ".insertSeller", svo);
+	}
+
+	@Override
+	public int updateSeller(SellerVO svo) throws Exception {
+		logger.debug(" updateSeller(SellerVO svo) 호출 ");
+		logger.debug(" dao svo " + svo);
+		return sqlSession.update(NAMESPACE + ".updateSeller", svo);
+	}
+
+	
+	
+	@Override
+	public int deleteSeller(SellerVO svo) throws Exception {
+		logger.debug(" deleteSeller(SellerVO svo) 호출 ");
+		logger.debug(" svo " + svo);
+		UserVO user = sqlSession.selectOne(NAMESPACE + ".SellerInfo", svo);
+		if(user != null) {
+			String encodedPassword = user.getUser_pw();
+            if (passwordEncoder.matches(svo.getSeller_pw(), encodedPassword)) {
+                // 비밀번호가 일치하는 경우
+            	logger.debug(" 일치 ");
+            	svo.setSeller_pw(encodedPassword);
+            	return sqlSession.delete(NAMESPACE+ ".deleteSeller", svo);
+            }
+		}
+		return 0; // 인증 실패
+	}
+
+	@Override
+	public void sellerAuth(String salt) throws Exception {
+		logger.debug(" sellerAuth(String salt) 호출 ");
+		sqlSession.insert(NAMESPACE + ".SellerAuth", salt);
+	}
+
 	@Override
 	public ProductVO getProductById(int product_code) {
 		return sqlSession.selectOne(NAMESPACE+".getProductById",product_code);
 	}
 
 	@Override
-    public int getTotalCount(int store_code) {
-        return sqlSession.selectOne(NAMESPACE + ".getTotalCount", store_code);
+    public int getTotalCount(String seller_id) {
+        return sqlSession.selectOne(NAMESPACE + ".getTotalCount", seller_id);
     }
 	
 	@Override
@@ -48,7 +97,34 @@ public class ProductDAOImpl implements ProductDAO {
 		return sqlSession.insert(NAMESPACE+".productRegist",pvo);
 		
 	}
+	@Override
+	public int checkSellerId(String seller_id) throws Exception {
+		logger.debug(" checkSellerId(String user_id) 호출 ");
+		return sqlSession.selectOne(NAMESPACE + ".checkSellerId", seller_id);
+	}
 	
+	@Override
+	public SellerVO loginSeller(SellerVO svo) throws Exception {
+		logger.debug(" loginSeller(SellerVO svo) 호출 ");
+		SellerVO seller = sqlSession.selectOne(NAMESPACE + ".SellerInfo", svo);
+		if(seller != null) {
+			String encodedPassword = seller.getSeller_pw();
+            if (passwordEncoder.matches(svo.getSeller_pw(), encodedPassword)) {
+                // 비밀번호가 일치하는 경우
+            	logger.debug(" 일치 ");
+            	svo.setSeller_pw(encodedPassword);
+                return sqlSession.selectOne(NAMESPACE + ".loginSeller", svo);
+            }
+		}
+		return null; // 인증 실패
+	}
+	
+	@Override
+	public SellerVO sellerInfo(String seller_id) throws Exception {
+		logger.debug(" sellerInfo(String seller_id) 호출 ");
+		
+		return sqlSession.selectOne(NAMESPACE + ".SellerInfo", seller_id);
+	}
 //	@Override
 //    public void setFile(String originalFilename, String savedFilename, int product_code, String filePath) throws Exception {
 //        logger.debug(" setFile() 실행 ");
@@ -73,9 +149,9 @@ public class ProductDAOImpl implements ProductDAO {
     }
 	
 	@Override
-    public void updateProduct(ProductVO product) throws Exception {
+    public int updateProduct(ProductVO product) throws Exception {
 		logger.debug(" updateProduct(ProductVO product) 실행 ");
-        sqlSession.update(NAMESPACE + ".updateProduct", product);
+        return sqlSession.update(NAMESPACE + ".updateProduct", product);
     }
 
 	@Override

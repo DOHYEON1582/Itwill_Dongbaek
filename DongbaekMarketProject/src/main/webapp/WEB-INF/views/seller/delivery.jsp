@@ -380,84 +380,54 @@ body {
 	
 	
 	
-
-
-
-<div class="container" style="background-color: white;
-                                  padding: 20px;
-                                  border-radius: 10px;
-                                  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                                  margin: 50px auto; /* 페이지 상단과의 간격 조절 및 페이지 가운데 정렬 */
-                                  max-width: 800px;"> <!-- 페이지 너비 제한 -->
-        <h2 style="text-align: center;">판매자 주문 목록</h2>
-        <table style="width: 100%;
-                      border-collapse: collapse;">
-            <thead>
-                <tr>
-                    <th style="padding: 10px;
-                               text-align: left;
-                               border-bottom: 1px solid #ddd;
-                               background-color: #f2f2f2;">주문코드</th>
-                    <th style="padding: 10px;
-                               text-align: left;
-                               border-bottom: 1px solid #ddd;
-                               background-color: #f2f2f2;">주문자ID</th>
-                    <th style="padding: 10px;
-                               text-align: left;
-                               border-bottom: 1px solid #ddd;
-                               background-color: #f2f2f2;">주문날짜</th>
-                    <th style="padding: 10px;
-                               text-align: left;
-                               border-bottom: 1px solid #ddd;
-                               background-color: #f2f2f2;">배송상태</th>
-                    <th style="padding: 10px;
-                               text-align: left;
-                               border-bottom: 1px solid #ddd;
-                               background-color: #f2f2f2;">주문 확정/취소/환불</th>
-                    <!-- 필요한 다른 컬럼 스타일 추가 -->
-                </tr>
-            </thead>
-            <tbody>
-                <!-- 주문 목록 데이터를 반복해서 표시하는 부분 -->
-                <c:forEach items="${orderList}" var="order">
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+        <div style="width: 80%; text-align: center;">
+            <h1 style="color: #333;">판매자 배송 페이지</h1>
+            
+            <!-- 배송 정보 조회 -->
+            <h2 style="color: #333;">배송 정보 조회</h2>
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                <thead>
                     <tr>
-                        <td style="padding: 10px;
-                                   text-align: left;
-                                   border-bottom: 1px solid #ddd;">${order.order_code}</td>
-                        <td style="padding: 10px;
-                                   text-align: left;
-                                   border-bottom: 1px solid #ddd;">${order.user_id}</td>
-                        <td style="padding: 10px;
-                                   text-align: left;
-                                   border-bottom: 1px solid #ddd;">${order.order_date}</td>
-                        <td style="padding: 10px;
-                                   text-align: left;
-                                   border-bottom: 1px solid #ddd;">${order.delivery_status}</td>
-						<td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">
-							<form action="/seller/confirmOrder" method="post">
-								<input type="hidden" name="order_code" value="${order.order_code}">
-								<button type="submit">확정</button>
-							</form>
-						</td>
-						<td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">
-							<form action="/seller/cancelOrder" method="post">
-								<input type="hidden" name="order_code" value="${order.order_code}">
-								<button type="submit">취소</button>
-							</form>
-						</td>
-						<td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">
-							<form action="/seller/refundOrder" method="post">
-								<input type="hidden" name="order_code" value="${order.order_code}">
-								<button type="submit">환불</button>
-							</form>
-						</td>
-
-						<!-- 필요한 다른 컬럼 데이터 및 스타일 추가 -->
+                        <th style="padding: 10px; border: 1px solid #ddd;">주문 코드</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">수취인 이름</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">수취인 전화번호</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">주문 날짜</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">배송 상태</th>
+                        <!-- 필요한 다른 컬럼들 -->
                     </tr>
-                </c:forEach>
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    <!-- 배송 정보를 반복해서 표시하는 부분 -->
+                    <c:forEach items="${deliveryList}" var="delivery">
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;">${delivery.order_code}</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">${delivery.rcv_name}</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">${delivery.rcv_phone}</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">${delivery.order_date}</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">${delivery.delivery_status}</td>
+                            <!-- 필요한 다른 컬럼 데이터 -->
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+
+            <!-- 배송 진행도에 따른 배송 정보 업데이트 -->
+            <h2 style="color: #333;">배송 진행도 업데이트</h2>
+            <form action="/seller/updateDelivery" method="post" style="margin-top: 20px;">
+                <label for="order_code" style="display: block; margin-bottom: 5px;">주문 코드:</label>
+                <input type="text" id="orderCode" name="orderCode" required style="width: 100%; padding: 8px; margin-top: 5px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                <br>
+                <label for="deliveryStatus" style="display: block; margin-bottom: 5px;">배송 상태:</label>
+                <select id="deliveryStatus" name="deliveryStatus" required style="width: 100%; padding: 8px; margin-top: 5px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                    <option value="배송준비">배송준비</option>
+                    <option value="배송중">배송중</option>
+                    <option value="배송완료">배송완료</option>
+                    <!-- 필요한 다른 배송 상태 옵션들 -->
+                </select>
+                <br>
+                <input type="submit" value="업데이트" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
+            </form>
 	
 	
 	

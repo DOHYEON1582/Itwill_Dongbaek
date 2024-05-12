@@ -264,7 +264,7 @@ body {
 			<div class="row py-3 border-bottom">
 				<div class="col-sm-4 col-lg-3 text-center text-sm-start">
 					<div class="main-logo">
-						<a href="/seller/sellermain"> <img src="/resources/images/logo2.png" alt="logo" class="mylogo2">
+						<a href="/seller/sellermain"> <img src="${pageContext.request.contextPath }/resources/images/logo2.png" alt="logo" class="mylogo2">
 						</a>
 					</div>
 				</div>
@@ -286,21 +286,26 @@ body {
 				</div>
 				<div class="col-sm-8 col-lg-3 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
 				    <div>
-				        <div class="align-items-center">			           
-				            <a href="#" class="join">로그아웃</a>
-				            <a href="#" class="service">고객센터</a>
-				        </div>
+				    	<c:if test="${sessionScope.sellerVO.seller_id == null }">
+					        <div class="align-items-center">
+					            <a href="/seller/login" class="login">로그인</a>
+					            <a href="/seller/register" class="join">회원가입</a>
+					            <a href="#" class="service">고객센터</a>
+					        </div>
+				    	</c:if>
+				    	<c:if test="${sessionScope.sellerVO.seller_id != null }">
+					        <div class="align-items-center">
+					            로그인 id : ${sessionScope.sellerVO.seller_id }
+					            <a href="#" class="service">고객센터</a>
+					            <input type="button" value="로그아웃" onclick="location.href='/seller/logout';">
+					        </div>
 				        <ul class="d-flex justify-content-end list-unstyled m-3">
-				            <li><a href="#" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
+				            <li><a href="/seller/info" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
 				                        <use xlink:href="#user"></use></svg>
 				                </a></li>
-				        <!--    <li><a href="#" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
-				                        <use xlink:href="#heart"></use></svg>
-				                </a></li>-->
 				        </ul>
+				    	</c:if>
 				    </div>
-				
-				   
 				</div>
 			</div>
 		</div>
@@ -319,7 +324,6 @@ body {
 	                        <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
 	                            <li class="nav-item active"><a href="/seller/product" class="nav-link">상품관리</a></li>
 	                            <li class="nav-item dropdown"><a href="/seller/orderlist" class="nav-link">주문관리</a></li>
-	                            <li class="nav-item"><a href="/seller/dilivery" class="nav-link">배송관리</a></li>
 	                            <li class="nav-item"><a href="/seller/review" class="nav-link">리뷰관리</a></li>
 	                            <li class="nav-item"><a href="/seller/sales" class="nav-link">매출정산</a></li>
 	                            <li class="nav-item"><a href="/seller/question" class="nav-link">문의</a></li>
@@ -355,13 +359,8 @@ body {
       <a href="/seller/orderlist">주문 관리</a>
       <ul>
         <li><a href="/seller/orderlist">주문 목록</a></li>
-        <li><a href="/seller/neworder">신규 주문</a></li>
-        <li><a href="/seller/orderconfirm">구매 확정</a></li>
-        <li><a href="/seller/ordercancel">취소/환불 요청</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="/seller/dilivery">배송 관리</a>
+		<li><a href="/seller/delivery">배송 관리</a></li>
+	  </ul>
     </li>
     <li>
       <a href="/seller/review">리뷰 관리</a>
@@ -370,7 +369,6 @@ body {
       <a href="/seller/sales">매출 정산</a>
       <ul>
         <li><a href="/seller/sales">매출 현황</a></li>
-        <li><a href="/seller/salesgraph">매출 그래프</a></li>
       </ul>
     </li>
     <li>
@@ -379,9 +377,224 @@ body {
   </ul>
 </aside>
 
-	
-	
-	
+
+
+<script type="text/javascript">
+// 맨 위로 스크롤되도록 설정
+function topFunction() {
+  document.body.scrollTop = 0; // For Safari
+  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+}
+
+function showStarRating() {
+    var starElements = document.getElementsByClassName('star-rating');
+    Array.prototype.forEach.call(starElements, function(starElement) {
+        var rating = parseInt(starElement.getAttribute('data-rating'), 10);
+        var stars = '';
+        for (var i = 0; i < 5; i++) {
+            if (i < rating) {
+                stars += '<span>&#x2605;</span>';
+            } else {
+                stars += '<span>&#x2606;</span>';
+            }
+        }
+        starElement.innerHTML = stars;
+    });
+}
+    showStarRating(); // 페이지가 로드될 때 별점 표시
+
+
+$(document).on("click", ".quantity-right-plus", function(e){
+    // + 버튼을 클릭하면 수량 증가
+    var $quantityInput = $(this).parent().find(".input-number");
+    var quantity = parseInt($quantityInput.val());
+    if (quantity < 20) { // 최대 수량은 20
+        $quantityInput.val(quantity + 1);
+    }
+});
+
+$(document).on("click", ".quantity-left-minus", function(e){
+    // - 버튼을 클릭하면 수량 감소
+    var $quantityInput = $(this).parent().find(".input-number");
+    var quantity = parseInt($quantityInput.val());
+    if(quantity > 1){
+        $quantityInput.val(quantity - 1);
+    }
+});
+// 스크롤 위치를 감지하여 버튼을 표시하거나 숨김
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    document.getElementById("scrollToTopBtn").style.display = "block";
+  } else {
+    document.getElementById("scrollToTopBtn").style.display = "none";
+  }
+}
+
+
+//문의하기 버튼 클릭 시 폼 제출 및 모달 닫기 함수
+function submitFormAndCloseModal() {
+    var form = document.getElementById('questionForm');
+    $.ajax({
+        type: "POST",
+        url: "/seller/question",
+        data: $(form).serialize(),
+        success: function(data) {
+            closeModal(); // 모달 닫기
+            location.reload(); // 페이지 리로드
+        },
+        error: function(xhr, status, error) {
+            var errorMessage = xhr.status + ': ' + xhr.statusText;
+            alert('에러가 발생했습니다.\n' + errorMessage);
+        }
+    });
+}
+
+// 모달 열기 함수
+function openModal() {
+    document.getElementById('myModal').style.display = 'block';
+}
+
+// 모달 닫기 함수
+function closeModal() {
+    document.getElementById('myModal').style.display = 'none';
+    clearForm(); // 폼 요소 초기화 함수 호출
+}
+
+function clearForm() {
+    document.getElementById('q_type').value = ''; // 문의 유형 선택
+    document.getElementById('title').value = ''; // 문의 제목 초기화
+    document.getElementById('content').value = ''; // 문의 내용 초기화
+}
+
+// 모달 창 외부를 클릭하여 모달 닫기
+window.onclick = function(event) {
+    var modal = document.getElementById('myModal');
+    if (event.target == modal) {
+        closeModal(); // 모달 닫기 함수 호출
+    }
+}
+//문의하기 버튼 클릭 이벤트 핸들러
+$(document).ready(function() {
+    $("#writeQuestion").click(function() {
+        alert("문의를 작성합니다.");
+        var currentDate = new Date();
+        var formattedDate = currentDate.toISOString();
+        var question = {
+            "title": $("#title").val(),
+            "q_type": $("#q_type").val(),
+            "user_id": $("#user_id").val(),
+            "user_name": $("#user_name").val(),
+            "content": $("#content").val(),
+            "product_code": $("#product_code").val(),
+            "regdate": formattedDate
+        };
+        $.ajax({
+            type: "POST",
+            url: "/seller/question",
+            data: JSON.stringify(question),
+            contentType: "application/json; charset=UTF-8",
+            success: function(data) {
+                closeModal(); // 모달 닫기
+                location.reload(); // 페이지 리로드
+            },
+            error: function(xhr, status, error) {
+                var errorMessage = xhr.status + ': ' + xhr.statusText;
+                alert('에러가 발생했습니다.\n' + errorMessage);
+            }
+        });
+      
+    });
+    
+});
+</script>
+<div class="container" style="text-align: center; height: 700px;">
+    <h1 class="page-header" id="qna1">상품 Q&A(최신 문의10개 출력) </h1>
+    ${answer }
+	 <table class="table table-bordered">
+    	<tbody>
+    		<tr>
+				<th>문의유형</th>
+				<th>작성자</th>
+				<th>문의제목(클릭 시 상세보기)</th>
+				<th>작성일</th>
+    		</tr>
+		<c:forEach var="question" items="${question }">
+			<tr>
+				<td>${question.q_type }</td>
+				<td>${question.user_id }</td>
+				<td data-q-code = "${question.q_code}">${question.title}</td>
+				<td><fmt:formatDate value="${question.regdate }"/></td>
+			</tr>
+		</c:forEach>    		
+    	</tbody>
+    </table>
+<%--     /market/questionDetail?q_code=${question.q_code } --%>
+	<a href="/market/questionMain?product_code=${product.product_code }"> 전체 문의 보러가기</a>
+ 		
+    <button type="button" class="ask-button" onclick="openModal()">문의하기</button>	
+ <!-- 모달 -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <!-- 문의할 수 있는 양식 등을 추가합니다. -->
+            <h2>문의하기</h2>
+            <div method="post" id="questionForm">
+            <input type="hidden" id="product_code" name="product_code" value="${product.product_code }">
+            <input type="hidden" id="user_id" name="user_id" value="${sessionScope.userVO.user_id }">
+            <input type="hidden" id="user_name" name="user_name" value="${sessionScope.userVO.user_name }">
+				<div class="box-body">
+					<div class="form-group" style="margin-bottom: 20px;">
+						<label for="exampleInputPassword1">문의 유형</label> 
+							<select class="form-control" id="q_type" name="q_type">
+								<option value="">문의 유형을 선택하세요</option>
+								<option value="1">배송 문의</option>
+								<option value="2">상품 문의</option>
+							</select>
+						</div>
+					<div class="form-group" style="margin-bottom: 20px;">
+						<label for="exampleInputEmail1">문의 제목</label> <input type="text" class="form-control" id="title" placeholder="문의 유형" name="title">
+					</div>
+					<div class="form-group" style="margin-bottom: 20px;">
+						<label>내 용</label>
+						<textarea class="form-control" rows="3" id="content" placeholder="문의 내용을 입력하세요" name="content"></textarea>
+					</div>
+				</div>
+				<br>
+				<div class="box-footer">
+					<button type="submit" class="btn btn-primary" id="writeQuestion">글 쓰기</button>
+				</div>
+			</div>
+        </div>
+    </div>	
+<!-- 문의 상세 정보를 표시하는 모달 -->
+<div id="questionDetailModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">문의 상세 정보</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+					<h2>${detail.title}</h2>
+					<p>작성자: ${detail.user_id}</p>
+					<p>문의 유형: ${detail.q_type}</p>
+					<p>
+						작성일:
+						<fmt:formatDate value="${detail.regdate}" />
+					</p>
+					<p>내용: ${detail.content}</p>
+				</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>	
 	
 	
 	

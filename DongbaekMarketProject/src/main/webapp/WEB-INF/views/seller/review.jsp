@@ -265,7 +265,7 @@ body {
 			<div class="row py-3 border-bottom">
 				<div class="col-sm-4 col-lg-3 text-center text-sm-start">
 					<div class="main-logo">
-						<a href="/seller/sellermain"> <img src="/resources/images/logo2.png" alt="logo" class="mylogo2">
+						<a href="/seller/sellermain"> <img src="${pageContext.request.contextPath }/resources/images/logo2.png" alt="logo" class="mylogo2">
 						</a>
 					</div>
 				</div>
@@ -287,21 +287,26 @@ body {
 				</div>
 				<div class="col-sm-8 col-lg-3 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
 				    <div>
-				        <div class="align-items-center">			           
-				            <a href="#" class="join">로그아웃</a>
-				            <a href="#" class="service">고객센터</a>
-				        </div>
+				    	<c:if test="${sessionScope.sellerVO.seller_id == null }">
+					        <div class="align-items-center">
+					            <a href="/seller/login" class="login">로그인</a>
+					            <a href="/seller/register" class="join">회원가입</a>
+					            <a href="#" class="service">고객센터</a>
+					        </div>
+				    	</c:if>
+				    	<c:if test="${sessionScope.sellerVO.seller_id != null }">
+					        <div class="align-items-center">
+					            로그인 id : ${sessionScope.sellerVO.seller_id }
+					            <a href="#" class="service">고객센터</a>
+					            <input type="button" value="로그아웃" onclick="location.href='/seller/logout';">
+					        </div>
 				        <ul class="d-flex justify-content-end list-unstyled m-3">
-				            <li><a href="#" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
+				            <li><a href="/seller/info" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
 				                        <use xlink:href="#user"></use></svg>
 				                </a></li>
-				        <!--    <li><a href="#" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
-				                        <use xlink:href="#heart"></use></svg>
-				                </a></li>-->
 				        </ul>
+				    	</c:if>
 				    </div>
-				
-				   
 				</div>
 			</div>
 		</div>
@@ -320,7 +325,6 @@ body {
 	                        <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
 	                            <li class="nav-item active"><a href="/seller/product" class="nav-link">상품관리</a></li>
 	                            <li class="nav-item dropdown"><a href="/seller/orderlist" class="nav-link">주문관리</a></li>
-	                            <li class="nav-item"><a href="/seller/dilivery" class="nav-link">배송관리</a></li>
 	                            <li class="nav-item"><a href="/seller/review" class="nav-link">리뷰관리</a></li>
 	                            <li class="nav-item"><a href="/seller/sales" class="nav-link">매출정산</a></li>
 	                            <li class="nav-item"><a href="/seller/question" class="nav-link">문의</a></li>
@@ -356,13 +360,8 @@ body {
       <a href="/seller/orderlist">주문 관리</a>
       <ul>
         <li><a href="/seller/orderlist">주문 목록</a></li>
-        <li><a href="/seller/neworder">신규 주문</a></li>
-        <li><a href="/seller/orderconfirm">구매 확정</a></li>
-        <li><a href="/seller/ordercancel">취소/환불 요청</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="/seller/dilivery">배송 관리</a>
+		<li><a href="/seller/delivery">배송 관리</a></li>
+	  </ul>
     </li>
     <li>
       <a href="/seller/review">리뷰 관리</a>
@@ -371,7 +370,6 @@ body {
       <a href="/seller/sales">매출 정산</a>
       <ul>
         <li><a href="/seller/sales">매출 현황</a></li>
-        <li><a href="/seller/salesgraph">매출 그래프</a></li>
       </ul>
     </li>
     <li>
@@ -387,49 +385,94 @@ body {
 	
 	
 	<%-- 리뷰 목록을 표시하는 부분 --%>
-<div style="text-align: center; margin: 0 auto; width: 80%;">
-    <div style="overflow-x: auto;">
-        <table style="width: 100%; border-collapse: collapse; border: 1px solid #ccc;">
+<!-- <div style="text-align: center; margin: 0 auto; width: 80%;"> -->
+<!--     <div style="overflow-x: auto;"> -->
+<!--         <table style="width: 100%; border-collapse: collapse; border: 1px solid #ccc;"> -->
 
-            <thead>
-                <tr style="background-color: #f2f2f2;">
-                    <th style="padding: 10px; border: 1px solid #000;">리뷰 코드</th>
-                    <th style="padding: 10px; border: 1px solid #000;">상품 코드</th>
-                    <th style="padding: 10px; border: 1px solid #000;">작성일</th>
-                    <th style="padding: 10px; border: 1px solid #000;">제목</th>                
-                    <th style="padding: 10px; border: 1px solid #000;">별점</th>
-                    <th style="padding: 10px; border: 1px solid #000;">사용자 아이디</th>
-                    <!-- 다른 열 제목들 -->
-                </tr>
-            </thead>
-            <tbody>
-                <!-- 리뷰 목록 데이터가 담긴 reviews를 반복하여 테이블에 출력합니다 -->
-                <c:forEach var="review" items="${reviews}">
-                    <tr>
-                        <td style="padding: 10px; border: 1px solid #000;">${review.review_code}</td>
-                        <td style="padding: 10px; border: 1px solid #000;">${review.product_code}</td>
-                        <td style="padding: 10px; border: 1px solid #000;">
-                            <script>
-                                var regDate = new Date("${review.regdate}");
-                                document.write(regDate.toLocaleDateString());
-                            </script>
-                        </td>
-                        <td style="padding: 10px; border: 1px solid #000;">
-                            <a href="/seller/reviewDetail?review_code=${review.review_code}&page=${pagingVO.cri.page}&pageSize=${pagingVO.cri.pageSize}" style=" color: #2591fc;">${review.title}</a>
-                        </td>
-                        <td style="padding: 10px; border: 1px solid #000;">
+<!--             <thead> -->
+<!--                 <tr style="background-color: #f2f2f2;"> -->
+<!--                     <th style="padding: 10px; border: 1px solid #000;">리뷰 코드</th> -->
+<!--                     <th style="padding: 10px; border: 1px solid #000;">상품 코드</th> -->
+<!--                     <th style="padding: 10px; border: 1px solid #000;">작성일</th> -->
+<!--                     <th style="padding: 10px; border: 1px solid #000;">제목</th>                 -->
+<!--                     <th style="padding: 10px; border: 1px solid #000;">별점</th> -->
+<!--                     <th style="padding: 10px; border: 1px solid #000;">사용자 아이디</th> -->
+<!--                     다른 열 제목들 -->
+<!--                 </tr> -->
+<!--             </thead> -->
+<!--             <tbody> -->
+<!--                 리뷰 목록 데이터가 담긴 reviews를 반복하여 테이블에 출력합니다 -->
+<%--                 <c:forEach var="review" items="${reviews}"> --%>
+<!--                     <tr> -->
+<%--                         <td style="padding: 10px; border: 1px solid #000;">${review.review_code}</td> --%>
+<%--                         <td style="padding: 10px; border: 1px solid #000;">${review.product_code}</td> --%>
+<!--                         <td style="padding: 10px; border: 1px solid #000;"> -->
+<!--                             <script> -->
+                              		<!-- var regDate = new Date("${review.regdate}");-->
+                             		 <!-- document.write(regDate.toLocaleDateString());-->
+<!--                             </script> -->
+<!--                         </td> -->
+<!--                         <td style="padding: 10px; border: 1px solid #000;"> -->
+<%--                             <a href="/seller/reviewDetail?product_code=${review.product_code}&page=${pagingVO.cri.page}&pageSize=${pagingVO.cri.pageSize}" style=" color: #2591fc;">${review.title}</a> --%>
+<!--                         </td> -->
+<!--                         <td style="padding: 10px; border: 1px solid #000;"> -->
                             <%-- 별점을 별 개수로 표시하는 부분 --%>
-                            <c:forEach begin="1" end="${review.star}">
-                                <span style="display: inline-block; margin-right: 5px; color: gold;">&#9733;</span> <%-- 별 모양을 표시하는 유니코드 --%>
-                            </c:forEach>
-                        </td>
-                        <td style="padding: 10px; border: 1px solid #000;">${review.user_id}</td>
-                        <!-- 다른 열 데이터들 -->
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
-    </div>
+<%--                             <c:forEach begin="1" end="${review.star}"> --%>
+<%--                                 <span style="display: inline-block; margin-right: 5px; color: gold;">&#9733;</span> 별 모양을 표시하는 유니코드 --%>
+<%--                             </c:forEach> --%>
+<!--                         </td> -->
+<%--                         <td style="padding: 10px; border: 1px solid #000;">${review.user_id}</td> --%>
+<!--                         다른 열 데이터들 -->
+<!--                     </tr> -->
+<%--                 </c:forEach> --%>
+<!--             </tbody> -->
+<!--         </table> -->
+<!--     </div> -->
+<h2 style="text-align: center;">리뷰 목록</h2>
+<table style="width: 80%; border-collapse: collapse; margin: 20px auto;">
+    <thead>
+        <tr style="background-color: #f2f2f2;">
+            
+            <th style="padding: 10px; border: 1px solid #000;">상품 코드</th>
+            <th style="padding: 10px; border: 1px solid #000;">작성일</th>
+            <th style="padding: 10px; border: 1px solid #000;">제목</th>
+            <th style="padding: 10px; border: 1px solid #000;">별점</th>
+            <th style="padding: 10px; border: 1px solid #000;">사용자 아이디</th>
+            <th style="padding: 10px; border: 1px solid #000;">답글</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- 리뷰와 해당 리뷰에 대한 답글을 반복해서 표시 -->
+        <c:forEach var="review" items="${reviews}">
+            <tr>
+                
+                <td style="padding: 10px; border: 1px solid #000;">${review.product_code}</td>
+                <td style="padding: 10px; border: 1px solid #000;">${review.regdate}</td>
+                <td style="padding: 10px; border: 1px solid #000;">
+                <!-- 제목에 링크 추가하여 상세 페이지로 이동 -->
+				    <a href="/seller/reviewDetail?review_code=${review.review_code}" style="text-decoration: none; color: inherit;">
+				        ${review.title}
+				    </a></td>
+                <td style="padding: 10px; border: 1px solid #000;">${review.star}</td>
+                <td style="padding: 10px; border: 1px solid #000;">${review.user_id}</td>
+                <td style="padding: 10px; border: 1px solid #000;">
+                    <!-- 답글 페이지로의 링크 추가 -->
+                    <a href="/seller/reviewReply?review_code=${review.review_code}">답글 쓰기</a>
+                </td>
+            </tr>
+            <!-- 해당 리뷰에 대한 답글을 반복해서 표시 -->
+            <c:forEach var="reply" items="${replies}">
+                <tr>
+                    <!-- 답글은 테이블의 각 셀에 하나씩 표시 -->
+                    <td colspan="6" style="padding: 10px; border: 1px solid #000;">
+                        <p><strong>답글:</strong> ${reply.content}</p>
+                    </td>
+                </tr>
+            </c:forEach>
+        </c:forEach>
+    </tbody>
+</table>
+
 
 <!-- 페이지 링크 추가 -->
 <div class="pageCri">
@@ -458,7 +501,7 @@ body {
 
 
 
-	
+
 	
 	
 	
