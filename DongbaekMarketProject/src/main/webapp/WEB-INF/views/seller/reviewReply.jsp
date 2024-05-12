@@ -372,9 +372,6 @@ body {
         <li><a href="/seller/sales">매출 현황</a></li>
       </ul>
     </li>
-    <li>
-      <a href="/seller/question">문의</a>
-    </li>
   </ul>
 </aside>
 

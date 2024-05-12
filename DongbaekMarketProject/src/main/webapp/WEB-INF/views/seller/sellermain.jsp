@@ -400,9 +400,6 @@ body {
         <li><a href="/seller/sales">매출 현황</a></li>
       </ul>
     </li>
-    <li>
-      <a href="/seller/question">문의</a>
-    </li>
   </ul>
 </aside>
 
@@ -419,7 +416,7 @@ body {
 						<legend style="color: #000; text-decoration: none; text-align: center; border: thin;"><a href="/seller/orderlist">주문 현황</a></legend>
 						<ul style="list-style: none; margin: 0; padding: 0;">
 							<li style="padding: 15px; background-color: #fff; margin-bottom: 10px;"><label><a style="margin-right: 160px; text-decoration: none; color: #000; font-size: 18px;" href="/seller/orderlist">주문 목록</a>0건</label></li>
-							<li style="padding: 15px; background-color: #fff; margin-bottom: 10px;"><label><a style="margin-right: 160px; text-decoration: none; color: #000; font-size: 18px;" href="/seller/dilivery">구매 확정</a>0건</label></li>
+							<li style="padding: 15px; background-color: #fff; margin-bottom: 10px;"><label><a style="margin-right: 160px; text-decoration: none; color: #000; font-size: 18px;" href="/seller/delivery">구매 결정</a>0건</label></li>
 						</ul>
 					</fieldset>
 				</form>
@@ -431,11 +428,9 @@ body {
 			<div style="text-align: left; background-color: #EAE9E8; margin-bottom: 20px;" id="dilivery">
 				<form>
 					<fieldset style="border: none;">
-						<legend style="text-align: center; border: thin;">배송 현황</legend>
+						<legend style="text-align: center; border: thin;"><a href="/seller/review">리뷰 현황</a></legend>
 						<ul style="list-style: none; margin: 0; padding: 0;">
-							<li style="padding: 15px; background-color: #fff; margin-bottom: 29px;"><label><a style="margin-right: 178px; text-decoration: none; color: #000; font-size: 18px;" href="#">배송 전</a>0건</label></li>
-							<li style="padding: 15px; background-color: #fff; margin-bottom: 29px;"><label><a style="margin-right: 178px; text-decoration: none; color: #000; font-size: 18px;" href="#">배송 중</a>0건</label></li>
-							<li style="padding: 15px; background-color: #fff; margin-bottom: 29px;"><label><a style="margin-right: 160px; text-decoration: none; color: #000; font-size: 18px;" href="#">배송 완료</a>0건</label></li>
+							<li style="padding: 15px; background-color: #fff; margin-bottom: 29px;"><label><a style="margin-right: 178px; text-decoration: none; color: #000; font-size: 18px;" href="/seller/review">리뷰 목록</a>0건</label></li>				
 						</ul>
 					</fieldset>
 				</form>
@@ -443,37 +438,7 @@ body {
 		</div>
 	</div>
 
-	<div style="overflow: auto; max-width: 1200px; margin-left: auto; margin-right: auto;">
-		<div style="float: left; width: 38%; margin-right: 2%;">
-			<!-- 세 번째 섹션 -->
-			<div style="text-align: left; background-color: #EAE9E8; margin-bottom: 20px;" id="review">
-				<form>
-					<fieldset style="border: none;">
-						<legend style="text-align: center; border: thin;">리뷰 현황</legend>
-						<ul style="list-style: none; margin: 0; padding: 0;">
-							<li style="padding: 15px; background-color: #fff; margin-bottom: 40px;"><label><a style="margin-right: 160px; text-decoration: none; color: #000; font-size: 18px;" href="/seller/review">리뷰 목록</a>0건</label></li>
-							
-						</ul>
-					</fieldset>
-				</form>
-			</div>
-		</div>
-
-		<div style="float: right; width: 60%;">
-			<!-- 네 번째 섹션 -->
-			<div style="text-align: left; background-color: #EAE9E8; margin-bottom: 20px;" id="question">
-				<form>
-					<fieldset style="border: none;">
-						<legend style="text-align: center; border: thin;">문의 현황</legend>
-						<ul style="list-style: none; margin: 0; padding: 0;">
-							<li style="padding: 15px; background-color: #fff; margin-bottom: 40px;"><label><a style="margin-right: 160px; text-decoration: none; color: #000; font-size: 18px;" href="#">신규 문의</a>0건</label></li>
-							<li style="padding: 15px; background-color: #fff; margin-bottom: 40px;"><label><a style="margin-right: 142px; text-decoration: none; color: #000; font-size: 18px;" href="#">답글한 문의</a>0건</label></li>
-						</ul>
-					</fieldset>
-				</form>
-			</div>
-		</div>
-	</div>
+	
 
 
 
