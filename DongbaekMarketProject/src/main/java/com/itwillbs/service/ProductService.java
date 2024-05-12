@@ -13,9 +13,9 @@ public interface ProductService {
 
     public List<ProductVO> getProductPage(ProductCri cri) throws Exception; // 페이징된 상품 목록 조회
 
-    public void productRegist(ProductVO product) throws Exception; // 상품 등록
+    public int productRegist(ProductVO pvo) throws Exception; // 상품 등록
 
-    public void setFile(String originalFilename, String savedFilename, int product_code, String filePath) throws Exception; // 이미지 파일 저장
+//    public void setFile(String originalFilename, String savedFilename, int product_code, String filePath) throws Exception; // 이미지 파일 저장
 
     public int getProductCode() throws Exception; // 이미지와 같이 들어온 상품 코드
 

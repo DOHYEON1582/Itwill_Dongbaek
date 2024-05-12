@@ -52,18 +52,18 @@ public class ProductServiceImpl implements ProductService {
 
 
 	@Override
-	public void productRegist(ProductVO product) throws Exception {
+	public int productRegist(ProductVO pvo) throws Exception {
 		logger.debug(" productRegist(ProductVO product) 호출 ");
-		pdao.productRegist(product);
+		return pdao.productRegist(pvo);
 		
 	}
 
 
-	@Override
-	public void setFile(String originalFilename, String savedFilename, int product_code, String filePath) throws Exception {
-		logger.debug(" setFile(String originalFilename, String savedFilename, int product_code, String filePath) 호출 ");
-		pdao.setFile(originalFilename, savedFilename, product_code, filePath);
-	}
+//	@Override
+//	public void setFile(String originalFilename, String savedFilename, int product_code, String filePath) throws Exception {
+//		logger.debug(" setFile(String originalFilename, String savedFilename, int product_code, String filePath) 호출 ");
+//		pdao.setFile(originalFilename, savedFilename, product_code, filePath);
+//	}
 
 
 	@Override

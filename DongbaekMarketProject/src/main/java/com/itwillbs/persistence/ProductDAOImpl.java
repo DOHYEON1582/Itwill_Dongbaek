@@ -42,22 +42,23 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
 	@Override
-	public void productRegist(ProductVO product) throws Exception {
+	public int productRegist(ProductVO pvo) throws Exception {
 		logger.debug(" productregist(ProductVO product) 실행 ");
-		sqlSession.insert(NAMESPACE+".productRegist",product);
+		
+		return sqlSession.insert(NAMESPACE+".productRegist",pvo);
 		
 	}
 	
-	@Override
-    public void setFile(String originalFilename, String savedFilename, int product_code, String filePath) throws Exception {
-        logger.debug(" setFile() 실행 ");
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("originalFilename", originalFilename);
-        paramMap.put("savedFilename", savedFilename);
-        paramMap.put("product_code", product_code);
-        paramMap.put("filePath", filePath);
-        sqlSession.insert(NAMESPACE + ".setFile", paramMap);
-    }
+//	@Override
+//    public void setFile(String originalFilename, String savedFilename, int product_code, String filePath) throws Exception {
+//        logger.debug(" setFile() 실행 ");
+//        Map<String, Object> paramMap = new HashMap<>();
+//        paramMap.put("originalFilename", originalFilename);
+//        paramMap.put("savedFilename", savedFilename);
+//        paramMap.put("product_code", product_code);
+//        paramMap.put("filePath", filePath);
+//        sqlSession.insert(NAMESPACE + ".setFile", paramMap);
+//    }
 	
 	@Override
     public int getProductCode() throws Exception {

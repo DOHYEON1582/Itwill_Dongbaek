@@ -25,6 +25,8 @@ import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -67,13 +69,24 @@ public class SellerPageController {//판매자 페이지 컨트롤러
     
     private static final Logger logger = LoggerFactory.getLogger(SellerPageController.class);
     
+    @RequestMapping(value = "/seller/login", method = RequestMethod.GET)
+    public void sellerLogin()throws Exception {
+    	logger.debug(" sellerLogin() 호출 "); 
+    	
+    }
+    
+    @RequestMapping(value = "/seller/join", method = RequestMethod.GET)
+	public void sellerJoin()throws Exception {
+		logger.debug(" sellerJoin() 호출 "); 
+
+	}
+    
     // 판매자 메인페이지
     //  http://localhost:8088/seller/sellermain
     @RequestMapping(value = "/sellermain",method = RequestMethod.GET)
     public void main() throws Exception{
         logger.debug(" main() 실행 ");
     }
-    
     // 판매자 상품페이지(상품목록)
     //  http://localhost:8088/seller/product
     @RequestMapping(value = "/product",method = RequestMethod.GET)
@@ -129,129 +142,179 @@ public class SellerPageController {//판매자 페이지 컨트롤러
     
 	 // 판매자 상품페이지(상품등록)
 	 // http://localhost:8088/seller/productregistSubmit
-	 @RequestMapping(value = "/productregistSubmit", method = RequestMethod.POST)
-	 public String productregistSubmit(MultipartHttpServletRequest multiRequest,
-	                                   @RequestParam(value = "category", defaultValue = "기본 카테고리") String category,
-	                                   @RequestParam(value = "product_name", defaultValue = "상품명 없음") String product_name,
-	                                   @RequestParam(value = "unit", defaultValue = "개") String unit,
-	                                   @RequestParam(value = "price", defaultValue = "0") int price,
-	                                   @RequestParam(value = "product_explain", defaultValue = "설명 없음") String product_explain,
-	                                   @RequestParam(value = "max_account", defaultValue = "0") int max_account,
-	                                   @RequestParam(value = "country", defaultValue = "원산지 없음") String country,
-	                                   @RequestParam(value = "store_code", defaultValue = "0") int store_code,
-	                                   RedirectAttributes rttr) throws Exception {
-	     try {
-	         // 파일 업로드 처리
-	         List<String> fileNames = saveImage(multiRequest);
-	
-	         // 상품 정보 설정
-	         ProductVO product = new ProductVO();
-	         product.setCategory(category);
-	         product.setProduct_name(product_name);
-	         product.setUnit(unit);
-	         product.setPrice(price);
-	         product.setProduct_explain(product_explain);
-	         product.setMax_account(max_account);
-	         product.setCountry(country);
-	         product.setStore_code(store_code);
-	
-	         // 이미지 파일 이름 설정
-	         if (fileNames.size() >= 3) {
-	             product.setImg1(fileNames.get(0));
-	             product.setImg2(fileNames.get(1));
-	             product.setImg3(fileNames.get(2));
-	         }
-	
-	         // 상품 등록
-	         pService.productRegist(product);
-	
-	         logger.debug("등록 성공");
-	
-	         return "redirect:/seller/productregist";
-	     } catch (IOException e) {
-	         e.printStackTrace();
-	         rttr.addFlashAttribute("f", "이미지 파일 업로드에 실패했습니다.");
-	         return "redirect:/seller/productregist";
-	     }
-	 }
+    @RequestMapping(value = "/productregistSubmit", method = RequestMethod.POST)
+    public ResponseEntity productregistSubmit(@RequestParam("product_name") String product_name,
+                                               @RequestParam("price") int price,
+                                               @RequestParam("country") String country,
+                                               @RequestParam("max_account") String max_account,
+                                               @RequestParam("unit") String unit,
+                                               @RequestParam("category") String category,
+                                               @RequestParam("product_explain") String product_explain,
+                                               @RequestParam(value = "store_code", defaultValue = "0") int store_code,
+                                               @RequestParam("img1") MultipartFile img1,
+                                               @RequestParam("img2") MultipartFile img2,
+                                               @RequestParam("img3") MultipartFile img3,
+                                               HttpServletRequest request) throws Exception{
+        logger.debug("productregistSubmit 호출");
 
+        String uniqueFileName1 = "";
+        String uniqueFileName2 = "";
+        String uniqueFileName3 = "";
+
+        try {
+          
+            String realPath = request.getSession().getServletContext().getRealPath("/resources/upload1");
+            logger.debug("실제 경로 : " + realPath);
+
+            uniqueFileName1 = saveFile(img1, realPath);
+            uniqueFileName2 = saveFile(img2, realPath);
+            uniqueFileName3 = saveFile(img3, realPath);
+
+
+            ProductVO product = new ProductVO();
+            product.setProduct_name(product_name);
+            product.setPrice(price);
+            product.setCountry(country);
+            product.setMax_account(Integer.parseInt(max_account));
+            product.setUnit(unit);
+            product.setCategory(category);
+            product.setProduct_explain(product_explain);
+            product.setSeller_id("seller");
+            product.setImg1(uniqueFileName1);
+            product.setImg2(uniqueFileName2);
+            product.setImg3(uniqueFileName3);
+
+            logger.debug("작성한 상품: " + product.toString());
+
+            int success = 0;
+    		success = pService.productRegist(product);
+
+            HttpHeaders respHeaders = new HttpHeaders();
+            respHeaders.add("Content-Type", "text/html; charset=utf-8");
+
+            if (success == 1) {
+                String result = "<script>";
+                result += " alert('상품 등록 완료!'); ";
+                result += " location.href='http://localhost:8088/seller/product';";
+                result += "</script>";
+                return new ResponseEntity(result, respHeaders, HttpStatus.OK);
+            } else {
+                String result = "<script>";
+                result += " alert('상품 등록 실패!'); ";
+                result += " location.href='http://localhost:8088/seller/productregist';";
+                result += "</script>";
+                return new ResponseEntity(result, respHeaders, HttpStatus.OK);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            String result = "<script>";
+            result += " alert('이미지 파일 업로드에 실패했습니다.'); ";
+            result += " location.href='http://localhost:8088/seller/productregist';";
+            result += "</script>";
+            HttpHeaders respHeaders = new HttpHeaders();
+            respHeaders.add("Content-Type", "text/html; charset=utf-8");
+            return new ResponseEntity(result, respHeaders, HttpStatus.OK);
+        }
+    }
+
+
+    private String saveFile(MultipartFile file, String realPath) throws IOException {
+        String uniqueFileName = "";
+
+        if (!file.isEmpty()) {
+            String originalFileName = file.getOriginalFilename();
+            String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+            uniqueFileName = UUID.randomUUID().toString() + fileExtension; // 중복방지를 위해 파일이름 랜덤값 변경
+            String filePath = realPath + File.separator + uniqueFileName;
+            File dest = new File(filePath);
+
+            // 업로드 디렉토리가 존재하지 않으면 생성
+            if (!dest.getParentFile().exists()) {
+                dest.getParentFile().mkdirs();
+            }
+
+            file.transferTo(dest);
+        }
+
+        return uniqueFileName;
+    }
      
      
 
-	 private List<String> saveImage(MultipartHttpServletRequest multiRequest) throws Exception{
-			logger.debug(" fileProcess() - 파일 업로드 처리 시작 ");
-			
-			// 업로드 파일의 정보를 저장
-			List<String> fileList = new ArrayList<String>();
-			
-			Iterator<String> fileNames = multiRequest.getFileNames(); //파일의 파라메터명을 가져온다
-			while(fileNames.hasNext()) {
-				String fileName = fileNames.next(); 
-				MultipartFile mFile = multiRequest.getFile(fileName);
-				String oFileName = mFile.getOriginalFilename();
-				logger.debug(" fileName: "+fileName+", oFileName : "+oFileName);
-				
-				fileList.add(oFileName); // 파일의 이름을 저장
-				
-				// 파일 업로드 처리
-				File file = new File("C:\\images\\"+oFileName);
-				
-				if(mFile.getSize() != 0) { //첨부파일이 있는지 없는지 체크
-					if( !file.exists() ) { // exists()- 해당파일이 있을때 t,없을때 f
-						// => 해당파일이 없을때
-						if(file.getParentFile().mkdirs()) { //해당 파일의 폴더를 생성
-							file.createNewFile();						
-						}
-					}//exists()
-					
-					//mFile.transferTo(file);
-					mFile.transferTo(file);
-				}//getSize()
-				
-			}//while
-			
-			logger.debug(" fileProcess() - 파일 업로드 처리 끝 ");
-			
-			return fileList;
-		}
-	 
-	 
-	 // 파일 다운로드 :  업로드 해놓은 파일의 위치, 다운로드할 파일 이름
-	 @RequestMapping(value = "/download", method = RequestMethod.GET)
-	 public void fileDownloadGET(@RequestParam("fileName") String fileName,
-	                             HttpServletResponse resp) throws Exception {
-	     logger.debug("fileDownloadGET() 호출");
-
-	     String downLoadPath = "C:\\images\\";
-	     logger.debug("다운로드 할 fileName: " + fileName);
-
-	     // 다운로드할 파일
-	     File file = new File(downLoadPath + fileName);
-
-	     // 데이터(첨부파일)를 전송하는 통로
-	     OutputStream out = resp.getOutputStream();
-
-	     // 모든 파일의 다운로드 형태를 통일
-	     resp.setHeader("Cache-Control", "no-cache");
-	     resp.addHeader("Content-disposition", "attachment; fileName=" + (URLEncoder.encode(fileName, "UTF-8")));
-
-	     // 파일 데이터를 읽기
-	     FileInputStream fis = new FileInputStream(file);
-
-	     byte[] buffer = new byte[1024 * 8]; // 8KB
-
-	     int data = 0;
-	     while ((data = fis.read(buffer)) != -1) { // -1 파일의 끝(EOF)
-	         // 다운로드 출력
-	         out.write(buffer, 0, data);
-	     }
-
-	     out.flush(); // 버퍼의 여백을 공백을 채움
-	     out.close();
-	     fis.close();
-
-	     logger.debug("파일 다운로드 완료!");
-	 }
+//	 private List<String> saveImage(MultipartHttpServletRequest multiRequest) throws Exception{
+//			logger.debug(" fileProcess() - 파일 업로드 처리 시작 ");
+//			
+//			// 업로드 파일의 정보를 저장
+//			List<String> fileList = new ArrayList<String>();
+//			
+//			Iterator<String> fileNames = multiRequest.getFileNames(); //파일의 파라메터명을 가져온다
+//			while(fileNames.hasNext()) {
+//				String fileName = fileNames.next(); 
+//				MultipartFile mFile = multiRequest.getFile(fileName);
+//				String oFileName = mFile.getOriginalFilename();
+//				logger.debug(" fileName: "+fileName+", oFileName : "+oFileName);
+//				
+//				fileList.add(oFileName); // 파일의 이름을 저장
+//				
+//				// 파일 업로드 처리
+//				File file = new File("C:\\images\\"+oFileName);
+//				
+//				if(mFile.getSize() != 0) { //첨부파일이 있는지 없는지 체크
+//					if( !file.exists() ) { // exists()- 해당파일이 있을때 t,없을때 f
+//						// => 해당파일이 없을때
+//						if(file.getParentFile().mkdirs()) { //해당 파일의 폴더를 생성
+//							file.createNewFile();						
+//						}
+//					}//exists()
+//					
+//					//mFile.transferTo(file);
+//					mFile.transferTo(file);
+//				}//getSize()
+//				
+//			}//while
+//			
+//			logger.debug(" fileProcess() - 파일 업로드 처리 끝 ");
+//			
+//			return fileList;
+//		}
+//	 
+//	 
+//	 // 파일 다운로드 :  업로드 해놓은 파일의 위치, 다운로드할 파일 이름
+//	 @RequestMapping(value = "/download", method = RequestMethod.GET)
+//	 public void fileDownloadGET(@RequestParam("fileName") String fileName,
+//	                             HttpServletResponse resp) throws Exception {
+//	     logger.debug("fileDownloadGET() 호출");
+//
+//	     String downLoadPath = "C:\\images\\";
+//	     logger.debug("다운로드 할 fileName: " + fileName);
+//
+//	     // 다운로드할 파일
+//	     File file = new File(downLoadPath + fileName);
+//
+//	     // 데이터(첨부파일)를 전송하는 통로
+//	     OutputStream out = resp.getOutputStream();
+//
+//	     // 모든 파일의 다운로드 형태를 통일
+//	     resp.setHeader("Cache-Control", "no-cache");
+//	     resp.addHeader("Content-disposition", "attachment; fileName=" + (URLEncoder.encode(fileName, "UTF-8")));
+//
+//	     // 파일 데이터를 읽기
+//	     FileInputStream fis = new FileInputStream(file);
+//
+//	     byte[] buffer = new byte[1024 * 8]; // 8KB
+//
+//	     int data = 0;
+//	     while ((data = fis.read(buffer)) != -1) { // -1 파일의 끝(EOF)
+//	         // 다운로드 출력
+//	         out.write(buffer, 0, data);
+//	     }
+//
+//	     out.flush(); // 버퍼의 여백을 공백을 채움
+//	     out.close();
+//	     fis.close();
+//
+//	     logger.debug("파일 다운로드 완료!");
+//	 }
 
 
 

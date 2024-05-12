@@ -45,8 +45,8 @@
     
 	<!-- 상품 등록 -->
 	<insert id="productRegist" parameterType="com.itwillbs.domain.ProductVO">
-	    INSERT INTO product (category, product_name, unit, price, img1, img2, img3, product_explain, max_account, country, store_code)
-	    VALUES (#{category}, #{product_name}, #{unit}, #{price}, #{img1}, #{img2}, #{img3}, #{product_explain}, #{max_account}, #{country}, #{store_code})
+	    INSERT INTO product (category, product_name, unit, price, img1, img2, img3, product_explain, max_account, country, store_code, market_code)
+	    VALUES (#{category}, #{product_name}, #{unit}, #{price}, #{img1}, #{img2}, #{img3}, #{product_explain}, #{max_account}, #{country}, #{store_code}, 1)
 	</insert>
 
 
