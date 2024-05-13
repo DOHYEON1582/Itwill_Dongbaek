@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.itwillbs.mapper.SaleMapper">
+  
+  	<!-- 일자별 매출액 조회 -->
+    <select id="getDailySales" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT DATE_FORMAT(order_date, '%Y-%m-%d') AS date, SUM(total_price) AS totalSales
+        FROM order_info
+        WHERE order_date BETWEEN #{startDate} AND #{endDate}
+        GROUP BY DATE_FORMAT(order_date, '%Y-%m-%d')
+    </select>
+    
+    <!-- 월별 매출액 조회 -->
+    <select id="getMonthlySales" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT DATE_FORMAT(order_date, '%Y-%m') AS date, SUM(total_price) AS totalSales
+        FROM order_info
+        WHERE order_date BETWEEN #{startDate} AND #{endDate}
+        GROUP BY DATE_FORMAT(order_date, '%Y-%m')
+    </select>
+
+    <!-- 연도별 매출액 조회 -->
+    <select id="getYearlySales" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT YEAR(order_date) AS date, SUM(total_price) AS totalSales
+        FROM order_info
+        WHERE order_date BETWEEN #{startDate} AND #{endDate}
+        GROUP BY YEAR(order_date)
+    </select>
+  
+  </mapper>
