@@ -317,9 +317,13 @@ public class MarketController {
 		UserVO vo = (UserVO) session.getAttribute("userVO");
 		model.addAttribute("productList", mService.getSubProductList());
 		model.addAttribute("wishList", mService.getUserWish(vo.getUser_id()));
-		
 	}
 	
+	// 제철음식 페이지
+	@RequestMapping(value = "/market/seasonFood", method = RequestMethod.GET)
+	public void seasonFood() throws Exception {
+		logger.debug(" seasonFood() 호출 ");
+	}
 	
 
 	
