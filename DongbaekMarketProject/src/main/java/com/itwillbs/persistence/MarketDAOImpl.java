@@ -23,7 +23,7 @@ import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
 
 
-import com.itwillbs.domain.SubscrbeProductVO;
+import com.itwillbs.domain.SubscribeProductVO;
 import com.itwillbs.domain.WishVO;
 
 
@@ -165,9 +165,11 @@ public class MarketDAOImpl implements MarketDAO{
 	}
 
 	@Override
-	public int checkDuplicateWish(Map<String, Object> paramMap) throws Exception {
+	public int checkDuplicateWish(Map<String, Object> map) throws Exception {
 		logger.debug(" checkDuplicateWish 호출 ");
-		return sqlSession.selectOne(NAMESPACE + ".checkDuplicateWish", paramMap);
+		Integer produce_code = (Integer) map.get("product_code");
+		map.put("produce_code", produce_code);
+		return sqlSession.selectOne(NAMESPACE + ".checkDuplicateWish", map);
 	}
 
 	public List<ProductVO> getSubProductList() throws Exception {
@@ -214,7 +216,7 @@ public class MarketDAOImpl implements MarketDAO{
 	}
 
 	@Override
-	public int insertSubProduct(SubscrbeProductVO vo) throws Exception {
+	public int insertSubProduct(SubscribeProductVO vo) throws Exception {
 		logger.debug(" insertSubProduct(int product_code, int count, String user_id) 호출 ");
 		
 		return sqlSession.insert(NAMESPACE+".insertSubPro", vo);
@@ -222,4 +224,12 @@ public class MarketDAOImpl implements MarketDAO{
 
 	
 	
+	// 0509 카트 번호 생성
+	// maxCartCode 가져오기
+	@Override
+	public int selectMaxCartCode() throws Exception {
+		logger.debug(" selectMaxCartCode() 호출");
+		return sqlSession.selectOne(NAMESPACE+".selectMaxCartCode");
+	}
+		
 }

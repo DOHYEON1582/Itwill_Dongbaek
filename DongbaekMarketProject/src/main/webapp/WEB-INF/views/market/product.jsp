@@ -3,8 +3,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@include file="../include/header.jsp" %>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
 <title>전체 제품 목록</title>
 <style>
     .container {
@@ -14,22 +12,18 @@
         background-color: #fff;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
-
     h1 {
         text-align: center;
         margin-bottom: 30px;
     }
-
     .product-items {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         grid-gap: 20px; /* 이미지 간격 조정 */
     }
-
     .product-item {
         text-align: center;
     }
-
     .product-item img {
         width: 250px;
         height: 250px;
@@ -37,7 +31,68 @@
         margin: 0 auto;
         margin-bottom: 10px; /* 이미지 아래 간격 조정 */
     }
+    .heart-icon {
+        position: absolute;
+        bottom: 100px;
+        right: 30px;
+        color: pink;
+        font-size: 60px;
+    }
+    .btn-prowish {
+     position: absolute;
+     top: 0;
+     right: 20px;
+     width: 40px;
+     height: 40px;
+     border-radius: 50px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     background: #fff;
+     border: 1px solid #d8d8d8;
+     transition: all 0.3s ease-out;
+   }
+   .btn-prowish:hover {
+     background: rgb(240, 56, 56);
+     color: #fff;
+   }
 </style>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".btn-prowish").click(function(){
+		alert("찜!");
+		var btn = $(this);
+		var product_code = btn.siblings("#product_code").val();
+		var userId = btn.siblings("#user_id").val();
+		
+		var wish = {
+				"product_code" : product_code,
+				"user_id" : userId
+		};
+		$.ajax({
+			url : "/market/addWish",
+			type : "POST",
+			data : JSON.stringify(wish),
+			contentType : "application/json; charset=UTF-8",
+			success : function(data){
+				var isWished = data.isWished;
+				if (isWished) {
+					btn.addClass("wished");
+					console.log(isWished);
+				} else {
+					btn.removeClass("wished");
+				}
+			},
+			error: function(xhr, status, error) {
+				var errorMessage = xhr.status + ': ' + xhr.statusText;
+				console.log(" error "+ error);
+			}
+		});
+	});
+});
+</script>
+
 <body>
     <div class="container">
         <h1>전체 제품 목록</h1>
@@ -54,6 +109,10 @@
         <div class="product-items">
             <c:forEach var="product" items="${productList}">
                 <div class="product-item">
+	                <div class="btn-prowish">
+	                    <svg width="24" height="24"><use xlink:href="#heart"></use></svg>
+	                </div>
+	                <input type="hidden" id="product_code" value="${product.product_code }">
                     <img alt="Product Image" src="../resources/images/product/${product.img1}">
                     <p> 상품명 : ${product.product_name}</p>
                     <p> 가격 : <fmt:formatNumber value="${product.price}" pattern="#,##0"/>원</p>

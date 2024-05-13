@@ -13,7 +13,7 @@
     <!-- Bootstrap icons-->
     <link href="https://fastly.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="css/styles.css" rel="stylesheet" />
+    <link href="/resources/css/styles.css" rel="stylesheet" />
 <style>
     .nav-tabs {
         border-bottom: 1px solid #dee2e6;

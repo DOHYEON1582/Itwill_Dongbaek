@@ -1,15 +1,16 @@
 package com.itwillbs.controller;
-import java.util.Collections;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,11 +26,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
-
-import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.AnswerVO;
+import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.MarketVO;
@@ -41,6 +40,7 @@ import com.itwillbs.domain.StoreVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.domain.WishVO;
 import com.itwillbs.service.MarketService;
+import com.itwillbs.service.UserService;
 
 @Controller
 @RequestMapping(value = "/market/*")
@@ -48,7 +48,9 @@ public class MarketController {
 
 	@Inject
 	private MarketService mService;
-
+	@Inject
+	private UserService uService;
+	
 	private static final Logger logger = LoggerFactory.getLogger(MarketController.class);
 
 	
@@ -173,9 +175,6 @@ public class MarketController {
 	    }
 	}
 	
-
- 	
-	
 	@RequestMapping(value = "/questionMain", method = RequestMethod.GET)
 	public void questionMain(@RequestParam("product_code") int product_code, Criteria cri, Model model) throws Exception {
 		PageVO pageVO = new PageVO();
@@ -218,6 +217,8 @@ public class MarketController {
 	    return "redirect:/"; // 기본 페이지로 리다이렉트
 	}
 
+	
+
 	@ResponseBody
 	@RequestMapping(value = "/storeMain", method = RequestMethod.POST, consumes = "application/json")
 	public void storeMainPOST(HttpSession session, @RequestBody MarkVO mvo) throws Exception{
@@ -228,45 +229,85 @@ public class MarketController {
 		logger.debug("mvo " + mvo);
 	}
 	
+	@RequestMapping(value = "/product", method = RequestMethod.GET)
+	public String productLsit(@RequestParam(name = "orderBy", required = false, defaultValue = "popularity") String orderBy,
+			HttpSession session, Model model, HttpServletResponse response, ProductVO pvo) throws Exception {
+		logger.debug("productLsit() 호출 ");
+		List<ProductVO> productList = uService.getProductOrderBy(orderBy);
+		model.addAttribute("productList", productList);
+		return "market/product";
+	}
 
 	@ResponseBody
 	@RequestMapping(value = "/addWish", method = RequestMethod.POST, consumes = "application/json")
-	public void addWish(HttpSession session, @RequestBody WishVO wish) throws Exception{
+	public ResponseEntity<String> addWish(HttpSession session, @RequestBody WishVO wish) throws Exception{
 		logger.debug(" addWish 호출 ");
 		UserVO userVO = (UserVO) session.getAttribute("userVO");
 		String user_id = userVO.getUser_id();
 		wish.setUser_id(user_id);
-		mService.wishProduct(wish);
-		
-		logger.debug("wish >>>>>>>>>>>>>" + wish);
+		try {
+			mService.wishProduct(wish);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest()
+					.contentType(MediaType.valueOf("text/plain; charset=UTF-8"))
+					.body("실패");
+		}
+		return ResponseEntity.ok()
+				.contentType(MediaType.valueOf("text/plain; charset=UTF-8"))
+				.body("성공");
 	}
 	
 	@PostMapping("/checkDuplicateWish")
 	public ResponseEntity<String> checkDuplicateWish(@RequestParam("product_code") int product_code, HttpSession session) throws Exception{
-		logger.debug(" checkDuplicateWish 실행 ");
-		UserVO userVO = (UserVO) session.getAttribute("userVO");
-		String user_id = userVO.getUser_id();
-		Map<String, Object> paramMap = new HashMap<>();
-		paramMap.put("product_code", product_code);
-		paramMap.put("user_id", user_id);
-		boolean isDulicate = mService.isDuplicateWish(paramMap);
-		if (isDulicate) {
-			return ResponseEntity.ok("true");
-		} else {
-			return ResponseEntity.ok("false");
-		}
+	    logger.debug(" checkDuplicateWish 실행 ");
+	    UserVO userVO = (UserVO) session.getAttribute("userVO");
+	    String user_id = userVO.getUser_id();
+	    boolean isDuplicate = mService.isDuplicateWish(product_code, user_id);
+	    if (isDuplicate) {
+	        return ResponseEntity.ok("true");
+	    } else {
+	        return ResponseEntity.ok("false");
+	    }
 	}
+
 	
 	
 	@ResponseBody
 	@RequestMapping(value = "/addCart", method = RequestMethod.POST, consumes = "application/json")
 	public void addCart(@RequestBody CartVO cart, HttpSession session) throws Exception{
 		logger.debug(" addCart 호출 ");
+		
 		UserVO userVO = (UserVO) session.getAttribute("userVO");
 		String user_id = userVO.getUser_id();
+		
+		/* 0509 추가 시작 */
+		String bundleCode = (String)session.getAttribute("cart");
+		// cartCode 추가 
+		// 오늘 날짜 불러오기
+		LocalDate today = LocalDate.now();
+		// 날짜 형식 변환
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyMMdd");
+		String formatDate = today.format(dateFormatter);
+		int result = mService.selectMaxCartCode();
+		int cartCode = 0;
+		String date = "";
+		if(result == 0) {
+			date = formatDate + "001";
+			cartCode = Integer.parseInt(date);
+		}else if(result != 0) {
+			cartCode = result + 1;
+		}
+		logger.debug("cartCode : " + cartCode);
+		cart.setCart_code(cartCode);
+		cart.setBundle_code(bundleCode);
+		cart.setDelivery_fee("2500");
+		cart.setStates("장바구니");
+		/* 0509 추가 끝 */
+		
 		cart.setUser_id(user_id);
 		mService.insertCart(cart);
 		logger.debug(" cart >>>>>>>>>>>>> " + cart);
+
 	}
 	
 
@@ -274,7 +315,6 @@ public class MarketController {
 	public void marketSub(Model model,HttpSession session)throws Exception{
 		logger.debug(" marketSub() 호출 ");
 		UserVO vo = (UserVO) session.getAttribute("userVO");
-		
 		model.addAttribute("productList", mService.getSubProductList());
 		model.addAttribute("wishList", mService.getUserWish(vo.getUser_id()));
 		

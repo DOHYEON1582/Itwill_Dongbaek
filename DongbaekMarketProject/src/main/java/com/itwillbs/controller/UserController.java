@@ -1,6 +1,9 @@
 package com.itwillbs.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Random;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
@@ -20,12 +23,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.MarketVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.ReviewVO;
-import com.itwillbs.domain.Subscrbe_productVO;
+import com.itwillbs.domain.SubscribeProductVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.domain.WishVO;
 import com.itwillbs.service.MainService;
@@ -104,6 +108,7 @@ public class UserController {
 		logger.debug(" loginGET() 호출");
 	}
 	
+	// 0509 로그인 cart session 추가
 	@RequestMapping(value = "/member/login", method = RequestMethod.POST)
 	public String loginPOST(UserVO uvo, HttpSession session) throws Exception{
 		logger.debug(" loginPOST() 호출 ");
@@ -111,12 +116,52 @@ public class UserController {
 		UserVO userVO = uService.loginUser(uvo);
 		logger.debug(" 로그인 정보 : " + userVO);
 		
-		if (userVO != null) {
+		// 장바구니한 상품이 있는지 없는지 조회
+		String userid = uvo.getUser_id();
+		int cartNum = uService.selectCountCart(userid);
+		logger.debug("userid : " + userid);
+		logger.debug("cartNum : " + cartNum);
+		
+		CartVO cvo = null;
+		String bundleCode = "";
+
+		if (cartNum != 0) { // 장바구니에 상품이 있는 경우
+			cvo = uService.selectBundleCode(userid);
+			// bundleCode 생성
+			bundleCode = cvo.getBundle_code();
+		} else if (cartNum == 0) { // 장바구니에 상품이 없는 경우
+			// 오늘 날짜 불러오기
+			LocalDate today = LocalDate.now();
+			// 날짜 형식 변환
+			DateTimeFormatter dateFomatter = DateTimeFormatter.ofPattern("yyMMdd");
+			String formatDate = today.format(dateFomatter);
+
+			// 난수
+			Random random = new Random();
+			// 자릿수
+			int letter = 6;
+			// 형변환 후 담을 변수
+			String resultNum = "";
+			// 난수 생성 반복문
+			for (int i = 0; i < letter; i++) {
+				int createNum = random.nextInt(6);
+				Integer.toString(createNum);
+				resultNum += createNum;
+			}
+			// bundleCode 생성
+			bundleCode = formatDate + resultNum;
+		}
+		// bundleCode 확인
+		logger.debug("bundleCode : " + bundleCode);
+
+		if (userVO != null) { // 로그인 성공시 session 생성
             session.setAttribute("userVO", userVO);
+            session.setAttribute("cart", bundleCode);
             return "redirect:/";
         } else {
             return "/member/login";
         }
+
 	}
 	
 	@RequestMapping(value="/member/callBack", method=RequestMethod.GET)
@@ -221,7 +266,6 @@ public class UserController {
 	@RequestMapping(value = "member/wish", method = RequestMethod.GET)
 	public void wishGET(@RequestParam(name = "orderBy", required = false, defaultValue = "popularity") String orderBy,
 			HttpSession session, Model model) throws Exception {
-		
 		logger.debug(" wishGET() 호출 ");
 		UserVO userVO = (UserVO) session.getAttribute("userVO");
 		String user_id = userVO.getUser_id();
@@ -261,7 +305,6 @@ public class UserController {
 	@RequestMapping(value = "member/deleteMark", method = RequestMethod.POST)
 	public void deleteMark(int store_code) throws Exception {
 		logger.debug(" deleteMark(int store_code) 호출 ");
-		
 		uService.deleteMark(store_code);
 	}
 	// 즐겨찾기 삭제 (전체)
@@ -284,25 +327,40 @@ public class UserController {
 	    List<ReviewVO> review = uService.getReview(product_code);
 	    model.addAttribute("review", review);
 	}
-
-	@RequestMapping(value = "member/product", method = RequestMethod.GET)
-	public String productLsit(@RequestParam(name = "orderBy", required = false, defaultValue = "popularity") String orderBy,
-			HttpSession session, Model model, HttpServletResponse response, ProductVO pvo) throws Exception {
-		logger.debug("productLsit() 호출 ");
-		List<ProductVO> productList = uService.getProductOrderBy(orderBy);
-		model.addAttribute("productList", productList);
-		return "member/product";
-	}
 	
+	// 구독상품 조회
 	@RequestMapping(value = "/member/subscribe", method = RequestMethod.GET)
-	public void subscribe(HttpSession session, Model model) throws Exception{
+	public void subscribe(@RequestParam(name = "orderBy", required = false, defaultValue = "popularity") String orderBy,
+			HttpSession session, Model model) throws Exception{
 		logger.debug(" subscribe 구독상품페이지 호출 ");
 		UserVO userVO = (UserVO) session.getAttribute("userVO");
 		String user_id = userVO.getUser_id();
-		logger.debug(" id : " + user_id);
-		List<Subscrbe_productVO> sub = uService.showsub(user_id);
+		List<SubscribeProductVO> sub = uService.showsub(user_id);
+		List<SubscribeProductVO> subSort = uService.sortSub(orderBy, user_id);
+		logger.debug("subSort " + subSort);
 		model.addAttribute("sub", sub);
+		model.addAttribute("subSort", subSort);
 	}
+	
+	// 구독상품 삭제 (개별)
+	@ResponseBody
+	@RequestMapping(value = "member/deleteSub", method = RequestMethod.POST)
+	public void deleteSub(int product_code, HttpSession session) throws Exception{
+		logger.debug(" deleteSub() 실행 ");
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+		String user_id = userVO.getUser_id();
+		uService.deleteSub(product_code, user_id);
+	}
+	// 구독상품 삭제 (전체)
+	@ResponseBody
+	@RequestMapping(value = "member/deleteSubAll", method = RequestMethod.POST)
+	public void deleteSubAll(HttpSession session) throws Exception {
+		logger.debug(" deleteSubAll() 실행 ");
+		UserVO userVO = (UserVO) session.getAttribute("userVO");
+		String user_id = userVO.getUser_id();
+		uService.deleteSubAll(user_id);
+	}
+	
 	
 	
 	

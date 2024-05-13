@@ -177,14 +177,14 @@ function topFunction() {
             slideWidth: 500
         });
         
-    // 스크롤 위치가 일정 위치 이상인 경우 버튼을 표시
-    window.onscroll = function() {
-        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-            document.getElementById("scrollToTopBtn").style.display = "block";
-        } else {
-            document.getElementById("scrollToTopBtn").style.display = "none";
-        }
-    };
+	    // 스크롤 위치가 일정 위치 이상인 경우 버튼을 표시
+	    window.onscroll = function() {
+	        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+	            document.getElementById("scrollToTopBtn").style.display = "block";
+	        } else {
+	            document.getElementById("scrollToTopBtn").style.display = "none";
+	        }
+	    };
         
         $('.slider5').bxSlider({
             slideWidth: 200,
@@ -256,58 +256,87 @@ function topFunction() {
             
         });
         
-        // 찜 상품 
+//         // 찜 상품 
+//         $(".btn-wishlist").click(function(){
+//         	alert("찜에 등록됩니다 !" + $("#product_code").val() + $("#user_id").val());
+//             var btn = $(this); // 클릭된 버튼을 저장
+//             var productCode = btn.siblings("#product_code").val();
+//             var userId = btn.siblings("#user_id").val();
+            
+//             var wish = {
+//                 "product_code": productCode,
+//                 "user_id": userId
+//             };
+//         	$.ajax({
+//         		type: "POST",
+//         		url: "/market/addWish",
+//         		data: JSON.stringify(wish),
+//         		contentType: "application/json; charset=UTF-8",
+//         	    success: function(data){
+//         	            // 찜 상태 업데이트 후 UI 업데이트
+//         	            var isWished = data.isWished; // 서버에서 반환한 찜 상태 정보
+//         	            if (isWished) {
+//         	                // 찜 상태인 경우
+//         	                btn.addClass("wished"); // 찜 상태를 나타내는 클래스 추가
+//         	                console.log(isWished);
+//         	            } else {
+//         	                // 찜 상태가 아닌 경우
+//         	                btn.removeClass("wished"); // 찜 상태를 나타내는 클래스 제거
+//         	            }
+//         	        },
+//         	        error: function(xhr, status, error) {
+//         	            var errorMessage = xhr.status + ': ' + xhr.statusText;
+//         	            console.log(" error "+ error);
+//         	        }
+//         	});
+//         });
+     // JavaScript
+
         $(".btn-wishlist").click(function(){
-        	
-/*             if(isAlreadyWished()) {
-                alert("이미 찜한 상품입니다.");
-                return; // 중복인 경우 아무 작업도 하지 않음
-            } */
-        	alert("찜에 등록됩니다 !" + $("#product_code").val() + $("#user_id").val());
-            var btn = $(this); // 클릭된 버튼을 저장
+            var btn = $(this);
             var productCode = btn.siblings("#product_code").val();
             var userId = btn.siblings("#user_id").val();
             
-            var wish = {
-                "product_code": productCode,
-                "user_id": userId
-            };
-        	$.ajax({
-        		type: "POST",
-        		url: "/market/addWish",
-        		data: JSON.stringify(wish),
-        		contentType: "application/json; charset=UTF-8",
-        	     success: function(data){
-        	            // 찜 상태 업데이트 후 UI 업데이트
-        	            var isWished = data.isWished; // 서버에서 반환한 찜 상태 정보
-        	            if (isWished) {
-        	                // 찜 상태인 경우
-        	                btn.addClass("wished"); // 찜 상태를 나타내는 클래스 추가
-        	                console.log(isWished);
-        	            } else {
-        	                // 찜 상태가 아닌 경우
-        	                btn.removeClass("wished"); // 찜 상태를 나타내는 클래스 제거
-        	            }
-        	        },
-        	        error: function(xhr, status, error) {
-        	            var errorMessage = xhr.status + ': ' + xhr.statusText;
-        	            console.log(" error "+ error);
-        	        }        		
-        	});
+            // 중복 체크를 위한 AJAX 요청
+            $.ajax({
+                type: "POST",
+                url: "/checkDuplicateWish",
+                data: { product_code: productCode },
+                success: function(data) {
+                    if (data === "true") {
+                        alert("이미 찜한 상품입니다.");
+                    } else {
+                        // 중복이 아닌 경우에만 찜 상품 추가 요청
+                        var wish = {
+                            "product_code": productCode,
+                            "user_id": userId
+                        };
+                        $.ajax({
+                            type: "POST",
+                            url: "/market/addWish",
+                            data: JSON.stringify(wish),
+                            contentType: "application/json; charset=UTF-8",
+                            success: function(data) {
+                                // 성공적으로 추가되었을 때의 처리
+                                alert("찜에 추가되었습니다.");
+                            },
+                            error: function(xhr, status, error) {
+                                // 오류 발생시의 처리
+                                console.error(error);
+                                alert("찜 추가에 실패했습니다.");
+                            }
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    // 오류 발생시의 처리
+                    console.error(error);
+                    alert("중복 체크에 실패했습니다.");
+                }
+            });
         });
 
-/*         function isAlreadyWished() {
-            var productCode = $("#product_code").val(); // 상품 코드 가져오기
-            var userId = $("#user_id").val(); // 사용자 ID 가져오기
-            
-            // 이미 찜한 상품들을 모두 가져와서 현재 상품과 사용자 ID와 비교
-            var wishedProducts = $(".product-item").filter(function() {
-                return $(this).find("#product_code").val() == productCode && $(this).find("#user_id").val() == userId;
-            });
-            
-            // 이미 찜한 상품이 있는지 여부를 반환
-            return wishedProducts.length > 0;
-        } */
+
     });
 </script>
 
@@ -319,13 +348,13 @@ function topFunction() {
 <div id="sijamg_top">
 	<div class="bxslider" style="display: inline-block;">
 		<div>
-			<img src="${pageContext.request.contextPath }/resources/images/gupo.png" />
+			<img src="${pageContext.request.contextPath }/resources/images/market/${marketList.img1}" />
 		</div>
 		<div>
-			<img src="${pageContext.request.contextPath }/resources/images/gupo2.png" />
+			<img src="${pageContext.request.contextPath }/resources/images/market/${marketList.img2}" />
 		</div>
 		<div>
-			<img src="${pageContext.request.contextPath }/resources/images/gupo3.png" />
+			<img src="${pageContext.request.contextPath }/resources/images/market/${marketList.img3}" />
 		</div>
 	</div>
 	<div id="sijang_text" style="display: inline-block; vertical-align: top;">

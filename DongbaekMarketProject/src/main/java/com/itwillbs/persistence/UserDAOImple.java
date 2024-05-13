@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,13 +21,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+
+import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
-import com.itwillbs.domain.Subscrbe_productVO;
+import com.itwillbs.domain.SubscribeProductVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.domain.WishVO;
 
@@ -320,21 +324,51 @@ public class UserDAOImple implements UserDAO {
 	    return sql.selectList(NAMESPACE + ".selectProduct", map);
 	}
 
+	// 구독 제품 조회
 	@Override
-	public List<Subscrbe_productVO> showsub(String user_id) throws Exception {
+	public List<SubscribeProductVO> showsub(String user_id) throws Exception {
+		logger.debug(" showsub(String user_id) 호출 ");
 		return sql.selectList(NAMESPACE + ".showsub", user_id);
+	}
+
+	// 구독 제품 정렬
+	@Override
+	public List<SubscribeProductVO> sortSubOrderBy(Map<String, Object> map) throws Exception {
+		logger.debug(" sortSubOrderBy(Map<String, Object> map) 호출 ");
+		String orderBy = (String) map.get("orderBy");
+		map.put("orderBy", orderBy);
+		return sql.selectList(NAMESPACE + ".sortSub", map);
+	}
+	// 구독 제품 삭제 - 개별
+	@Override
+	public int deleteSub(Map<String, Object> map) throws Exception {
+		logger.debug(" deleteSub() 호출 ");
+		int product_code = (Integer) map.get("product_code");
+		map.put("product_code", product_code);
+		return sql.delete(NAMESPACE + ".deleteSub", map);
+	}
+
+	// 구독 제품 삭제 - 전체
+	@Override
+	public int deleteSubAll(String user_id) throws Exception {
+		logger.debug(" deleteSubAll(String user_id) 호출 ");
+		return sql.delete(NAMESPACE + ".deleteSubAll", user_id);
 	}
 	
 	
 
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	// cart session 생성을 위한 코드
+	// 장바구니 상품 갯수 조회
+	@Override
+	public int selectCountCart(String user_id) throws Exception {
+		return sql.selectOne(NAMESPACE+".selectCountCart",user_id);
+	}
+
+	// bundle_code 가져오기
+	@Override
+	public CartVO selectBundleCode(String user_id) throws Exception {
+		return sql.selectOne(NAMESPACE+".selectBundleCode",user_id);
+	}
+
 }

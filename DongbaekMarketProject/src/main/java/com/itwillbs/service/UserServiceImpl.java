@@ -8,16 +8,15 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.itwillbs.domain.AuthVO;
+import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
-import com.itwillbs.domain.Subscrbe_productVO;
+import com.itwillbs.domain.SubscribeProductVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.domain.WishVO;
 import com.itwillbs.persistence.UserDAO;
@@ -192,16 +191,52 @@ public class UserServiceImpl implements UserService {
 		return udao.selectProductOrderBy(map);
 	}
 
+	// 구독상품 조회
 	@Override
-	public List<Subscrbe_productVO> showsub(String user_id) throws Exception {
+	public List<SubscribeProductVO> showsub(String user_id) throws Exception {
+		logger.debug(" showsub(String user_id) 실행 ");
 		return udao.showsub(user_id);
+	}
+	// 구독상품 정렬
+	@Override
+	public List<SubscribeProductVO> sortSub(String orderBy, String user_id) throws Exception {
+		logger.debug(" sortSub(String orderBy, String user_id) 실행 ");
+		Map<String, Object> map = new HashMap<>();
+		map.put("orderBy", orderBy);
+		map.put("user_id", user_id);
+		return udao.sortSubOrderBy(map);
+	}
+	// 구독상품 삭제 - 개별
+	@Override
+	public int deleteSub(int product_code, String user_id) throws Exception {
+		logger.debug(" deleteSub() 실행 ");
+		Map<String, Object> map = new HashMap<>();
+		map.put("product_code", product_code);
+		map.put("user_id", user_id);
+		return udao.deleteSub(map);
+	}
+	// 구동상품 삭제 - 전체
+	@Override
+	public int deleteSubAll(String user_id) throws Exception {
+		logger.debug(" deleteSubAll(String user_id) 실행 ");
+		return udao.deleteSubAll(user_id);
 	}
 	
 	
 
 	
-
 	
+	// 0509 cart session 생성을 위한 코드
+	// 장바구니 상품 갯수 조회
+	@Override
+	public int selectCountCart(String user_id) throws Exception {
+		return udao.selectCountCart(user_id);
+	}
 
-	
+	// bundle_code 가져오기
+	@Override
+	public CartVO selectBundleCode(String user_id) throws Exception {
+		return udao.selectBundleCode(user_id);
+	}
+
 }

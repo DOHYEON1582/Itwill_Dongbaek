@@ -139,8 +139,7 @@
 	</select>
 
 	<!-- 구독 상품 리스트 가져오기 -->
-	<select id="getSubList"
-		resultType="com.itwillbs.domain.ProductVO">
+	<select id="getSubList" resultType="com.itwillbs.domain.ProductVO">
 		SELECT * FROM product
 		WHERE sub_product = '구독'
 
@@ -173,7 +172,7 @@
 
 	<!-- 회원 구독 물품 추가 -->
 	<insert id="insertSubPro">
-		INSERT INTO subscrbe_product (product_code, user_id, count)
+		INSERT INTO subscribe_product (product_code, user_id, count)
 		VALUES (#{product_code},#{user_id},#{count})
 	</insert>
 
@@ -182,18 +181,19 @@
 		insert into wish(product_code, user_id)
 		values (#{product_code}, #{user_id})
 	</insert>
-
+	
 	<!-- 찜 상품 다르게 표시하기 -->
 	<select id="selectWish" resultType="com.itwillbs.domain.WishVO">
 		select * from wish
 		where user_id = #{user_id}
 	</select>
 
-	<!-- 카트에 넣기 -->
-	<insert id="insertCart">
-		insert into cart(user_id,product_code,count,price)
-		values (#{user_id},#{product_code},#{count},#{price})
-	</insert>
+  <!-- 카트에 넣기 -->
+  <insert id="insertCart">
+  	insert into cart(cart_code,user_id,product_code,bundle_code,count,price,delivery_fee,states)
+  	values (#{cart_code},#{user_id},#{product_code},#{bundle_code},#{count},#{price},#{delivery_fee},#{states})
+  </insert>
+
 
 	<!-- 최근 문의글 10개 불러오기 -->
 	<select id="newQuestion"
@@ -210,11 +210,13 @@
 		values(#{answer_code}, #{q_code},
 		#{answer_content}, #{writer}, now())
 	</insert>
+	
 	<!-- 문의 답글 조회 -->
 	<select id="selectAnswer"
 		resultType="com.itwillbs.domain.AnswerVO">
 		select * from answer where q_code = #{q_code}
 	</select>
+	
 	<!-- 문의 답글 중복체크 -->
 	<select id="checkDuplicateAnswer" parameterType="int"
 		resultType="int">
@@ -222,17 +224,27 @@
 	</select>
 
 	<!-- 찜 중복체크 -->
-	<select id="checkDuplicateWish" parameterType="map"
-		resultType="int">
-		select count(*) from wish
-		where product_code = #{product_code, jdbcType=INTEGER} and user_id =
-		#{user_id, jdbcType=VARCHAR}
+<!-- 	<select id="checkDuplicateWish" parameterType="map" -->
+<!-- 		resultType="int"> -->
+<!-- 		select count(*) from wish -->
+<!-- 		where product_code = #{product_code, jdbcType=INTEGER} and user_id = -->
+<!-- 		#{user_id, jdbcType=VARCHAR} -->
+<!-- 	</select> -->
+	<!-- 찜 중복체크 -->
+	<select id="checkDuplicateWish" parameterType="map" resultType="int">
+		SELECT COUNT(*) FROM wish WHERE user_id = #{user_id} and product_code = #{product_code}
 	</select>
-
 	<!-- 즐겨찾기 중복체크 -->
 	<select id="checkDuplicateMark" parameterType="int"
 		resultType="int">
 		select count(*) from mark where store_code
+	</select>
+
+	<!-- 0509 카트 번호 생성 -->
+	<!-- maxCartCode 가져오기 -->
+	<select id="selectMaxCartCode" resultType="int">
+		SELECT Ifnull(Max(cart_code), 0) AS cart_code
+		FROM   cart   
 	</select>
 
 

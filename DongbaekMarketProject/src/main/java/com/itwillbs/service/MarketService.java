@@ -14,7 +14,7 @@ import com.itwillbs.domain.QuestionVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
 
-import com.itwillbs.domain.SubscrbeProductVO;
+import com.itwillbs.domain.SubscribeProductVO;
 import com.itwillbs.domain.WishVO;
 
 public interface MarketService {
@@ -90,12 +90,18 @@ public interface MarketService {
 	public int userProductWish(int product_code, String user_id)throws Exception;
 	
 	// 회원 구독 상품 추가하기
-	public int insertSubProduct(SubscrbeProductVO vo)throws Exception;
+	public int insertSubProduct(SubscribeProductVO vo)throws Exception;
 	
 	
 	// 카트에 넣기
 	public void insertCart(CartVO cart) throws Exception;
 	
+
 	// 찜 중복체크
-	public boolean isDuplicateWish(Map<String, Object> paramMap) throws Exception;
+	public boolean isDuplicateWish(int product_code, String user_id) throws Exception;
+
+	// 0509 카트 번호 생성
+	// maxCartCode 가져오기
+	public int selectMaxCartCode() throws Exception;
+
 }
