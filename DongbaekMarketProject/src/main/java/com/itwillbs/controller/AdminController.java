@@ -293,6 +293,36 @@ public class AdminController {
 		return new ResponseEntity(result,respHeaders,HttpStatus.OK);
 	}
 	
+	@PostMapping(value = "/admin/updatestore")
+	public ResponseEntity updateStore(AdminSellerVO vo,AdminStoreVO svo)throws Exception{
+		logger.debug(" updateStore(AdminSellerVO vo,AdminStoreVO svo) 호출 ");
+		logger.debug(" seller값 : "+vo);
+		logger.debug("store값 : "+svo);
+		
+		int success = 0; 
+		String result = "";
+		HttpHeaders respHeaders = new HttpHeaders();
+		respHeaders.add("Content-Type", "text/html; charset=utf-8");
+		
+		success += aService.updateSeller(vo);
+		success += aService.updateStore(svo);
+		
+		if(success == 2) {
+			result = "<script>";
+			result += " alert('사업자회원 수정 완료!'); ";
+			result += " location.href='http://localhost:8088/admin/shop';";
+			result += "</script>";
+		}else {
+			result = "<script>";
+			result += " alert('사업자회원 수정 실패!'); ";
+			result += " location.href='http://localhost:8088/admin/shop';";
+			result += "</script>";
+		}
+		
+		return new ResponseEntity(result,respHeaders,HttpStatus.OK);
+	}
+	
+	
 	@GetMapping(value = "/admin/chatbot")
 	public void chatbot()throws Exception {
 		

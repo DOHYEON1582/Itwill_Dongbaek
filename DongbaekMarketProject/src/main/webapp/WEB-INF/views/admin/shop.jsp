@@ -65,6 +65,7 @@
 				$('#second').attr('class','chocolat-overlay chocolat-visible');
 					
 				var store_number = $(this).find('td:eq(0)').text();
+				console.log(store_number);
 				
 			$.ajax({
 				url : "/admin/shop/"+store_number,
@@ -77,7 +78,7 @@
 						console.log(seller);
 						$('#h1tag').append("업체 정보 조회");
 					
-						$('#modal-table1').append(`
+						$('#modal-table1 tbody').append(`
 						<tr>
 							<th colspan="6" style="text-align: center;"><h5>가게정보</h5></th>
 						</tr>
@@ -103,7 +104,7 @@
 						</tr>`);					
 						
 						
-						$('#modal-table2').append(`
+						$('#modal-table2 tbody').append(`
 						<tr>
 							<th colspan="6" style="text-align: center;"><h5>사장님정보</h5></th>
 						</tr>
@@ -126,7 +127,10 @@
 							<td>`+seller.account+`</td>
 							<td style="background-color: rgb(245,247,250);"><h6>사업자번호</h6></td>
 							<td>`+seller.store_number+`</td>
-						</tr>`);
+						</tr>
+						<tr>
+							<td colspan="6"><button style="margin-right:10px;" class="update">수정하기</button><button class="delete">삭제하기</button></td>
+						</td>`);
 						
 				}
 			});
@@ -189,8 +193,8 @@
 		
 		
 		$('.chocolat-close').click(function(){
-			$('#modal-table1').empty();
-			$('#modal-table2').empty();
+			$('#modal-table1 tbody').empty();
+			$('#modal-table2 tbody').empty();
 			$('#h1tag').empty();
 			
 			$('#chocolat-content-0').attr('class','chocolat-wrapper');
@@ -262,7 +266,115 @@
          		}
          	}); //End Ajax
      	});
-   
+   		
+		//수정하기
+      	$(document).on('click','.update',function(){
+			var store_number = $('#modal-table2 tbody').find('td:eq(13)').text();
+			console.log(store_number);
+			$('#modal-table1 tbody').empty();
+			$('#modal-table2 tbody').empty();
+			$('#h1tag').empty();
+			
+			$.ajax({
+				url : "/admin/shop/"+store_number,
+				type : "GET",
+				success : function(data){
+						
+						var store = data;
+						var seller = data.adminSellerVO;
+						console.log(store);
+						console.log(seller);
+						$('#h1tag').append("업체 정보 수정");
+					
+						$('#modal-table1 tbody').append(`
+						
+						<tr>
+							<th colspan="6" style="text-align: center;"><h5>가게정보</h5></th>
+						</tr>
+						<tr>
+							<td style="background-color: rgb(245,247,250);"><h6>가게코드</h6></td>
+							<td><input style="border: none" type="text" name="store_code" value="`+store.store_code+`" readonly="readonly"></td>
+							<td style="background-color: rgb(245,247,250);"><h6>가게명</h6></td>
+							<td><input style="border: none" type="text" name="store_name" value="`+store.store_name+`"></td>
+							<td style="background-color: rgb(245,247,250);"><h6>시장</h6></td>
+							<td><input style="border: none" type="text" name="market_code" value="`+store.market_code+`"></td>
+						</tr>
+						<tr>
+							<td style="background-color: rgb(245,247,250);"><h6>주소</h6></td>
+							<td colspan="3"><input style="border: none" type="text" name="store_addr1" value="`+store.store_addr1+`"></td>
+							<td colspan="2"><input style="border: none" type="text" name="store_addr2" value="`+store.store_addr2+`"></td>
+						</tr>
+						<tr>
+							<td style="background-color: rgb(245,247,250);"><h6>가게종류</h6></td>
+							<td><input style="border: none" type="text" name="store_value" value="`+store.store_value+`"></td>
+							<td style="background-color: rgb(245,247,250);"><h6>전화번호</h6></td>
+							<td><input style="border: none" type="text" name="phone" value="`+store.phone+`"></td>
+							<td style="background-color: rgb(245,247,250);"><h6>가게상태</h6></td>
+							<td><input style="border: none" type="text" name="status" value="`+store.status+`"></td>
+						</tr>
+						`);					
+						
+						
+						$('#modal-table1 tbody').append(`
+						<tr>
+							<th colspan="6" style="text-align: center;"><h5>사장님정보</h5></th>
+						</tr>
+						<tr>
+							<td style="background-color: rgb(245,247,250);"><h6>아이디</h6></td>
+							<td><input style="border: none" type="text" name="seller_id" value="`+seller.seller_id+`" readonly="readonly"></td>
+							<td style="background-color: rgb(245,247,250);"><h6>사장님</h6></td>
+							<td><input style="border: none" type="text" name="seller_name" value="`+seller.seller_name+`"></td>
+							<td style="background-color: rgb(245,247,250);"><h6>개인전화번호</h6></td>
+							<td><input style="border: none" type="text" name="seller_phone" value="`+seller.seller_phone+`"></td>
+						</tr>
+						<tr>
+							<td style="background-color: rgb(245,247,250);"><h6>주소</h6></td>
+							<td colspan="3"><input style="border: none" type="text" name="s" value="`+seller.store_addr1+`"></td>
+							<td colspan="2"><input style="border: none" type="text" name="v" value="`+seller.store_addr2+`"></td>
+						</tr>
+						<tr>
+							<td style="background-color: rgb(245,247,250);"><h6>은행</h6></td>
+							<td><input style="border: none" type="text" name="bank" value="`+seller.bank+`"></td>
+							<td style="background-color: rgb(245,247,250);"><h6>계좌번호</h6></td>
+							<td><input style="border: none" type="text" name="account" value="`+seller.account+`"></td>
+							<td style="background-color: rgb(245,247,250);"><h6>사업자번호</h6></td>
+							<td><input style="border: none" type="text" name="store_number" value="`+seller.store_number+`"></td>
+						</tr>
+						<tr>
+							<td colspan="6"><button class="update1">수정하기</button></td>
+						</td>`);
+						
+				}
+			});
+		});
+		
+      	$(document).on('click','.update1',function(){
+      		$("#uploadForm").attr("enctype","")
+      		$("#uploadForm").attr("action","/admin/updatestore").submit();
+      		
+      	});
+		
+      	$(document).on('click','.delete',function(){
+      		var result = confirm("정말 삭제 할까요?");
+      		
+      		if(result == true){
+      			var store_number = $('#modal-table1 tbody').find('td:eq(1)').text();
+    			$.ajax({
+    				url : "/admin/shopdelete/"+store_number,
+    				type : "GET",
+    				success : function(data){
+    					if(data ==1){
+    						alert("정상적으로 삭제 되었습니다!");
+    						location.reload(true);
+    					}else{
+    						alert("삭제에 실패하였습니다!");
+    						location.reload(true);
+    					}
+    				}
+    				
+    			});
+      		}
+      	});
 	
 	});//document
 </script>
@@ -370,8 +482,6 @@
 		</a>
 	</li>
 	<li class="page-item active" aria-current="page"><a class="page-link border-0" href="#">1</a></li>
-	<li class="page-item"><a class="page-link border-0" href="#">2</a></li>
-	<li class="page-item"><a class="page-link border-0" href="#">3</a></li>
 	<li class="page-item">
 		<a class="page-link border-0" href="#" aria-label="Next">
 		<span aria-hidden="true">»</span>

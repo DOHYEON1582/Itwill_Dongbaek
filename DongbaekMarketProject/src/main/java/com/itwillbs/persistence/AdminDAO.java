@@ -103,6 +103,15 @@ public interface AdminDAO {
 	
 	//챗봇 검색 상품 가져오기
 	public List<AdminProductVO> searchProduct(String product_name)throws Exception;
+	
+	// 사업자 업데이트
+	public int updateSeller(AdminSellerVO vo)throws Exception;
+	
+	// 스토어 업데이트
+	public int updateStore(AdminStoreVO svo)throws Exception;
+	
+	// 스토어 삭제
+	public int deleteStore(int store_number)throws Exception;
 
 
 }//endDAO

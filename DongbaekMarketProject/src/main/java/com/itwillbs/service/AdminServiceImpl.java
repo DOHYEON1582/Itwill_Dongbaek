@@ -85,7 +85,7 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public List<AdminStoreVO> getStoreList(AdminStoreVO vo) throws Exception {
 		logger.debug(" getStoreList(AdminStoreVO vo) 실행 ");
-		
+		logger.debug("!!!!!!!!!"+adao.getStoreList(vo).size());
 		return adao.getStoreList(vo);
 	}
 
@@ -286,6 +286,27 @@ public class AdminServiceImpl implements AdminService {
 		logger.debug(" searchProduct(String product_name) 호출 ");
 		
 		return adao.searchProduct(product_name);
+	}
+
+	@Override
+	public int updateSeller(AdminSellerVO vo) throws Exception {
+		logger.debug(" updateSeller(AdminSellerVO vo) 호출 ");
+		
+		return adao.updateSeller(vo);
+	}
+
+	@Override
+	public int updateStore(AdminStoreVO svo) throws Exception {
+		logger.debug(" updateStore(AdminStoreVO svo) 호출 ");
+		
+		return adao.updateStore(svo);
+	}
+
+	@Override
+	public int deleteStore(int store_number) throws Exception {
+		logger.debug(" deleteStore(int store_number) 호출 ");
+		
+		return adao.deleteStore(store_number);
 	}
 
 	
