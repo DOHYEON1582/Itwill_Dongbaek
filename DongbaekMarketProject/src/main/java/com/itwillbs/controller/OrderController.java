@@ -204,17 +204,16 @@ public class OrderController {
 		
 		// 주문 한 상품 보여주기
 		// 세션에서 선택한 상품 정보 가져오기
-		List<CartVO> cartList = (List<CartVO>) session.getAttribute("selected_cartList");
-		int productNum = (int) session.getAttribute("selected_productNum");
+//		List<CartVO> cartList = (List<CartVO>) session.getAttribute("selected_cartList");
+//		int productNum = (int) session.getAttribute("selected_productNum");
 				
-		session.setAttribute("selected_cartList", cartList);
-		session.setAttribute("selected_productNum", productNum);
+//		session.setAttribute("selected_cartList", cartList);
+//		session.setAttribute("selected_productNum", productNum);
 		
-		model.addAttribute("cartList", cartList);
-		model.addAttribute("productNum", productNum);
 		model.addAttribute("orderCode",orderCode);
+//		model.addAttribute("cartList", cartList);
+//		model.addAttribute("productNum", productNum);
 		
-		// 주문 완료 문구 보여주기
 		
 	}
 

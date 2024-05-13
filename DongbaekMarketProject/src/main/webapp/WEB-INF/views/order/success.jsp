@@ -94,7 +94,7 @@
 	<table class="bbbtn" align=center>
 	<tr>
 		<td>
-			<button onclick="location.href='/mypage/orderlist'">주문내역</button>
+			<!-- <button onclick="location.href='/mypage/orderlist'">주문내역</button> -->
 			<button onclick="location.href='/'">메인 </button>
 		</td>
 	</tr>

@@ -345,7 +345,6 @@
 
 	// 시작
 	$(document).ready(function(){
-		alert("ㅇㅅㅇ?");
 		
 		// 배송 주소 처리
 		$('#addr2, #addr3').on('input', function() {
@@ -461,7 +460,7 @@
 		IMP.init("imp68706306");
 		
 		var orderInfo = $('#orderFrm').serialize();
-		orderInfo.order_code = orderCode;
+		/* orderInfo.order_code = orderCode; */
 		
         function requestPay(response){
         	alert("requestPay1");
@@ -469,7 +468,7 @@
 		    IMP.request_pay({ // param
 		    	pg: "kakaopay.TC0ONETIME",
 		        pay_method: "card",
-		        merchant_uid: '5',
+		        merchant_uid: response, // 한번 결제 했을 때 썼던 번호는 사용 X 항상 다르게 
 		        name: '1111', // 대표 상품명 및 추가 상품 개수 표시
 		        amount: '1111',
 		        buyer_name : '11111',
@@ -489,21 +488,10 @@
 	            
 		    }, function (rsp) { // callback
 		        if (rsp.success) {
-		            // 결제 성공 시 로직
-	    			$.ajax({
-	    				url: '/order/pay',
-	    				type: 'POST',
-	    				data: JSON.stringify(orderInfo),
-	    				contentType: 'application/json',
-	    				 dataType: 'json',
-	    				success: function(response){
-	    					alert("결제가 완료되었습니다.");
-	    					location.href="/order/success?orderCode="+response.order_code;
-	    				},
-	    				error: function(){
-	    					alert("오류가 발생했습니다.");
-	    				}
-	    			});
+		        	
+		        	location.href="/order/success?orderCode="+orderCode;
+		           
+		        	
 		        } else {
 		        	alert("requestPay6");
 		            // 결제 실패 시 로직
