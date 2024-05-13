@@ -413,7 +413,7 @@ function topFunction() {
                         <input type="hidden" id="user_id" value="${user_id }">                        
                         <figure>
                             <a href="productMain?product_code=${product.product_code }" title="Product Title">
-                                <img src="${pageContext.request.contextPath}/resources/images/carrot.jpg" alt="Product Thumbnail" class="tab-image" style="width : 180px">
+                                <img src="${pageContext.request.contextPath}/resources/images/product/${product.img1}" alt="Product Thumbnail" class="tab-image" style="width : 180px">
                             </a>
                         </figure>
                         

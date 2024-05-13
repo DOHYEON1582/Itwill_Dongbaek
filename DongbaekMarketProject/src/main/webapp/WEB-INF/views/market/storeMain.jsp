@@ -427,13 +427,7 @@ h3 {
 	<div id="sijamg_top">
 		<div class="bxslider" style="display: inline-block;">
 			<div>
-				<img src="${pageContext.request.contextPath }/resources/images/도현상회.jpg" />
-			</div>
-			<div>
-				<img src="${pageContext.request.contextPath }/resources/images/현진상회.jpg" />
-			</div>
-			<div>
-				<img src="${pageContext.request.contextPath }/resources/images/gupo3.png" />
+				<img src="${pageContext.request.contextPath }/resources/images/product/${store.img1}" />
 			</div>
 		</div>
 		<div id="sijang_text" style="display: inline-block; vertical-align: top;">
