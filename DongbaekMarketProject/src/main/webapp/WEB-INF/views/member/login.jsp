@@ -7,8 +7,7 @@
 <html>
 <head>
 
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
-
+<link href="/resources/css/projectCSS.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.2.js" charset="utf-8"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 
@@ -31,7 +30,7 @@
 
 <div id="container">
 	<div id="loginBox" style="margin-top: 100px;">
-		<img id="mainImg" src="/resources/images/logo1.png">	
+		<a href="/"><img id="mainImg" src="/resources/images/logo1.png"></a>
 	<div>
 		<form action="/member/login" method="post">
 			<input class="loginInput" type="text"  name="user_id" placeholder="아이디">

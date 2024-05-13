@@ -1,6 +1,9 @@
 package com.itwillbs.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Random;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.Criteria;
 import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.MarketVO;
@@ -104,6 +108,7 @@ public class UserController {
 		logger.debug(" loginGET() 호출");
 	}
 	
+	// 0509 로그인 cart session 추가
 	@RequestMapping(value = "/member/login", method = RequestMethod.POST)
 	public String loginPOST(UserVO uvo, HttpSession session) throws Exception{
 		logger.debug(" loginPOST() 호출 ");
@@ -111,12 +116,52 @@ public class UserController {
 		UserVO userVO = uService.loginUser(uvo);
 		logger.debug(" 로그인 정보 : " + userVO);
 		
-		if (userVO != null) {
+		// 장바구니한 상품이 있는지 없는지 조회
+		String userid = uvo.getUser_id();
+		int cartNum = uService.selectCountCart(userid);
+		logger.debug("userid : " + userid);
+		logger.debug("cartNum : " + cartNum);
+		
+		CartVO cvo = null;
+		String bundleCode = "";
+
+		if (cartNum != 0) { // 장바구니에 상품이 있는 경우
+			cvo = uService.selectBundleCode(userid);
+			// bundleCode 생성
+			bundleCode = cvo.getBundle_code();
+		} else if (cartNum == 0) { // 장바구니에 상품이 없는 경우
+			// 오늘 날짜 불러오기
+			LocalDate today = LocalDate.now();
+			// 날짜 형식 변환
+			DateTimeFormatter dateFomatter = DateTimeFormatter.ofPattern("yyMMdd");
+			String formatDate = today.format(dateFomatter);
+
+			// 난수
+			Random random = new Random();
+			// 자릿수
+			int letter = 6;
+			// 형변환 후 담을 변수
+			String resultNum = "";
+			// 난수 생성 반복문
+			for (int i = 0; i < letter; i++) {
+				int createNum = random.nextInt(6);
+				Integer.toString(createNum);
+				resultNum += createNum;
+			}
+			// bundleCode 생성
+			bundleCode = formatDate + resultNum;
+		}
+		// bundleCode 확인
+		logger.debug("bundleCode : " + bundleCode);
+
+		if (userVO != null) { // 로그인 성공시 session 생성
             session.setAttribute("userVO", userVO);
+            session.setAttribute("cart", bundleCode);
             return "redirect:/";
         } else {
             return "/member/login";
         }
+
 	}
 	
 	@RequestMapping(value="/member/callBack", method=RequestMethod.GET)
@@ -298,6 +343,7 @@ public class UserController {
 	}
 	
 	// 구독상품 삭제 (개별)
+	@ResponseBody
 	@RequestMapping(value = "member/deleteSub", method = RequestMethod.POST)
 	public void deleteSub(int product_code, HttpSession session) throws Exception{
 		logger.debug(" deleteSub() 실행 ");
@@ -306,6 +352,7 @@ public class UserController {
 		uService.deleteSub(product_code, user_id);
 	}
 	// 구독상품 삭제 (전체)
+	@ResponseBody
 	@RequestMapping(value = "member/deleteSubAll", method = RequestMethod.POST)
 	public void deleteSubAll(HttpSession session) throws Exception {
 		logger.debug(" deleteSubAll() 실행 ");

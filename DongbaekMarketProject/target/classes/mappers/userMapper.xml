@@ -296,11 +296,19 @@
 	<delete id="deleteSubAll">
 		delete from subscribe_product where user_id = #{user_id}
 	</delete>
-	
-	
-	
-	
-	
-	
-	
-</mapper> 
+
+	<!-- 0509 cart 세션 생성을 위한 쿼리 -->
+	<!-- 장바구니 상품 갯수 조회 -->
+	<select id="selectCountCart" resultType="int">
+		select count(*) from cart where user_id=#{user_id} and states='장바구니';
+	</select>
+
+	<!-- bundle_code 가져오기 -->
+	<select id="selectBundleCode" resultType="CartVO">
+		select user_id,bundle_code from cart 
+		where user_id=#{user_id} and states='장바구니' 
+		group by bundle_code;
+	</select>
+
+</mapper>
+

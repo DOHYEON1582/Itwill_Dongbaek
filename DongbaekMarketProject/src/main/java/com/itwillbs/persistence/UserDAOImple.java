@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +21,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+
+import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.MarkVO;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.ReviewVO;
@@ -339,7 +343,7 @@ public class UserDAOImple implements UserDAO {
 	@Override
 	public int deleteSub(Map<String, Object> map) throws Exception {
 		logger.debug(" deleteSub() 호출 ");
-		String product_code = (String) map.get("product_code");
+		int product_code = (Integer) map.get("product_code");
 		map.put("product_code", product_code);
 		return sql.delete(NAMESPACE + ".deleteSub", map);
 	}
@@ -354,16 +358,17 @@ public class UserDAOImple implements UserDAO {
 	
 
 	
-	
+	// cart session 생성을 위한 코드
+	// 장바구니 상품 갯수 조회
+	@Override
+	public int selectCountCart(String user_id) throws Exception {
+		return sql.selectOne(NAMESPACE+".selectCountCart",user_id);
+	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	// bundle_code 가져오기
+	@Override
+	public CartVO selectBundleCode(String user_id) throws Exception {
+		return sql.selectOne(NAMESPACE+".selectBundleCode",user_id);
+	}
+
 }

@@ -364,7 +364,7 @@
 <!-- 공지사항 검색 -->
 <select id="searchNotice" resultType="com.itwillbs.domain.AdminNoticeVO">
 	SELECT * FROM question 
-	WHERE content LIKE CONCAT('%',#{content},'%')
+	WHERE content LIKE CONCAT('%',#{content},'%') AND q_type = 100 
 	ORDER BY q_code desc 
 </select>
 
@@ -454,6 +454,28 @@
 	WHERE product_name LIKE CONCAT('%',#{product_name},'%')
 	
 </select>
+
+<!-- 사업자 정보수정 -->
+<update id="updateSeller">
+	UPDATE seller SET store_code=#{store_code}, seller_phone=#{seller_phone}, seller_name=#{seller_name}, store_addr1=#{store_addr1}, store_addr2=#{store_addr2}, bank=#{bank}, account=#{account}, store_number=#{store_number}
+	WHERE seller_id = #{seller_id}
+</update>
+
+<!-- 가게 정보수정 -->
+<update id="updateStore">
+	UPDATE store SET market_code=#{market_code}, seller_id=#{seller_id}, store_name=#{store_name}, store_value=#{store_value}, store_explain=#{store_explain}, phone=#{phone}, store_addr1=#{store_addr1}, store_addr2=#{store_addr2}
+	WHERE store_code = #{store_code}
+
+</update>
+
+<!-- 가게 정보 삭제 -->
+<delete id="deleteStore">
+	DELETE FROM store 
+	WHERE store_code = #{store_number}
+
+</delete>
+
+
 
 
 </mapper>
