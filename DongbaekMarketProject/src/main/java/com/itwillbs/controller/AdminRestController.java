@@ -227,6 +227,15 @@ public class AdminRestController {
 		return new ResponseEntity<List<AdminProductVO>>(aService.searchProduct(product_name),HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/shopdelete/{store_number}")
+	public int deleteStore(@PathVariable("store_number")int store_number)throws Exception{
+		logger.debug(" deleteStore(@PathVariable(\"store_number\")int store_number) 호출 ");
+		logger.debug("!!!!"+ store_number);
+		
+		int result = aService.deleteStore(store_number);
+		
+		return result;
+	}
 	
 	
 	
