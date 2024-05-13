@@ -268,6 +268,7 @@
 					            <input type="button" value="로그아웃" onclick="location.href='/member/logout';">
 					        </div>
 				        <ul class="d-flex justify-content-end list-unstyled m-3">
+				        	<li><a href="/mypage/cart"><img style="margin-right:3px; margin-top:-3px;" width="40" height="40" src="${pageContext.request.contextPath }/resources/images/free-icon-cart-5542644.png""></a></li>
 				            <li><a href="/member/info" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
 				                        <use xlink:href="#user"></use></svg>
 				                </a></li>
