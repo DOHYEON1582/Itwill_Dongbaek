@@ -187,12 +187,13 @@ h3 {
 	width: 100%;
 }
  .cart {
-    width: 120px;
+    width: 140px;
     padding: 5px;
     margin: 5px;
     border: none;
     background-color: lightyellow;
     cursor: pointer;
+    font-size: 13px;
   }
 .shop {
   padding: 10px;
@@ -310,40 +311,29 @@ h3 {
         });
         
         
-        // 찜 상품 
-        $(".btn-wishlist").click(function(){
-			
-        	alert("찜에 등록됩니다 !" + $("#product_code").val() + $("#user_id").val());
-            var btn = $(this); // 클릭된 버튼을 저장
-            var productCode = btn.siblings("#product_code").val();
-            var userId = btn.siblings("#user_id").val();
-            
-            var wish = {
-                "product_code": productCode,
-                "user_id": userId
-            };
-            $.ajax({
-            	url : "/market/addWish",
-            	type : "POST",
-            	data : JSON.stringify(wish),
-            	contentType: "application/json; charset=UTF-8",
-            	success : function(data){
-            		var isWished = data.isWished; // 서버에서 반환한 찜 상태 정보
-    	            if (isWished) {
-    	                // 찜 상태인 경우
-    	                btn.addClass("wished"); // 찜 상태를 나타내는 클래스 추가
-    	                console.log(isWished);
-    	            } else {
-    	                // 찜 상태가 아닌 경우
-    	                btn.removeClass("wished"); // 찜 상태를 나타내는 클래스 제거
-    	            }
-    	        },
-    	        error: function(xhr, status, error) {
-    	            var errorMessage = xhr.status + ': ' + xhr.statusText;
-    	            console.log(" error "+ error);
-    	        }
-            });
-        });
+    	// 제품 찜 추가, 삭제 
+    	$('.btn-wishlist').on('click',function(){
+    		var product_code = $(this).val();
+    		var heartIcon = $(this).find('svg');
+    		console.log(heartIcon);
+    		 
+    		$.ajax({
+    			url : "/product/insertWish1/"+product_code,
+    			type : "GET",
+    			success : function(data){
+    				//console.log(data);
+    				if(data == 1){
+    					console.log('1!!!!!');
+    					 heartIcon.css("color", "red");
+    				}else{
+    					console.log('0!!!!!');
+    					 heartIcon.css("color", "");
+    				}
+    			}
+    		});
+    		
+    	});
+    	
    });
     
     document.addEventListener("DOMContentLoaded", function(){
@@ -407,13 +397,13 @@ h3 {
 <div id="sijamg_top">
 	<div class="bxslider" style="display: inline-block;">
 		<div>
-			<img src="${pageContext.request.contextPath }/resources/images/도현상회.jpg" />
+			<img src="${pageContext.request.contextPath }/resources/images/${store.img1}" />
 		</div>
 		<div>
-			<img src="${pageContext.request.contextPath }/resources/images/현진상회.jpg" />
+			<img src="${pageContext.request.contextPath }/resources/images/${store.img2}" />
 		</div>
 		<div>
-			<img src="${pageContext.request.contextPath }/resources/images/gupo3.png" />
+			<img src="${pageContext.request.contextPath }/resources/images/${store.img3}" />
 		</div>
 	</div>
 	<div id="sijang_text" style="display: inline-block; vertical-align: top;">
@@ -476,7 +466,20 @@ h3 {
             <c:forEach items="${product}" var="product">
                 <div class="col" style="width: 19%;">
                     <div class="product-item">
-                        <button id="wishProduct" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></button>
+                        <button id="wishProduct" class="btn-wishlist" value="${product.product_code }">
+                        <!-- 위시리스트 색변화 -->
+                        	<c:set var="found" value="false" />
+	                        	<c:forEach items="${wishList }" var="wishList">
+		                            	<c:if test="${wishList.product_code eq product.product_code }">
+	                        				<svg id="check" style="color: red;" width="24" height="24"><use xlink:href="#heart"></use></svg>
+	                        				<c:set var="found" value="true" />
+	                        			</c:if>
+		                        </c:forEach>
+			                    <c:if test="${not found}">
+			                        <svg id="check" width="24" height="24"><use xlink:href="#heart" ></use></svg>
+								</c:if>
+						<!-- 위시리스트 색변화 -->	
+                        </button>
                         <input type="hidden" id="product_code" value="${product.product_code }">
                         <figure>
                             <a href="productMain?product_code=${product.product_code }" title="Product Title">

@@ -48,5 +48,11 @@ public class ProductRestController {
 		return mService.insertSubProduct(svo);
 	}
 	
-
+	@GetMapping(value = "/product/insertWish1/{product_code}")
+	public int insertWish1(@PathVariable("product_code") int product_code, HttpSession session) throws Exception{
+		logger.debug(" insertWish1 중복체크 실행 ");
+		UserVO vo = (UserVO)session.getAttribute("userVO");
+		return mService.userProductWish(product_code, vo.getUser_id());
+	}
+	
 }

@@ -6,7 +6,6 @@
 <title>전체 제품 목록</title>
 <style>
     .container {
-        max-width: 1200px;
         margin: 20px auto;
         padding: 20px;
         background-color: #fff;
@@ -38,29 +37,29 @@
         color: pink;
         font-size: 60px;
     }
-    .btn-prowish {
-     position: absolute;
-     top: 0;
-     right: 20px;
-     width: 40px;
-     height: 40px;
-     border-radius: 50px;
-     display: flex;
-     align-items: center;
-     justify-content: center;
-     background: #fff;
-     border: 1px solid #d8d8d8;
-     transition: all 0.3s ease-out;
-   }
-   .btn-prowish:hover {
-     background: rgb(240, 56, 56);
-     color: #fff;
-   }
+	.product-item .btn-wishlist {
+	  position: absolute;
+	  top: 20px;
+	  right: 20px;
+	  width: 40px;
+	  height: 40px;
+	  border-radius: 50px;
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  background: #fff;
+	  border: 1px solid #d8d8d8;
+	  transition: all 0.3s ease-out;
+	}
+	.product-item .btn-wishlist:hover {
+	  background: rgb(240, 56, 56);
+	  color: #fff;
+	}
 </style>
 
 <script type="text/javascript">
 $(document).ready(function(){
-	$(".btn-prowish").click(function(){
+/* 	$(".btn-prowish").click(function(){
 		alert("찜!");
 		var btn = $(this);
 		var product_code = btn.siblings("#product_code").val();
@@ -89,6 +88,30 @@ $(document).ready(function(){
 				console.log(" error "+ error);
 			}
 		});
+	}); */
+	
+	
+	// 제품 찜 추가, 삭제 
+	$('.btn-wishlist').on('click',function(){
+		var product_code = $(this).val();
+		var heartIcon = $(this).find('svg');
+		console.log(heartIcon);
+		 
+		$.ajax({
+			url : "/product/insertWish1/"+product_code,
+			type : "GET",
+			success : function(data){
+				//console.log(data);
+				if(data == 1){
+					console.log('1!!!!!');
+					 heartIcon.css("color", "red");
+				}else{
+					console.log('0!!!!!');
+					 heartIcon.css("color", "");
+				}
+			}
+		});
+		
 	});
 });
 </script>
@@ -109,9 +132,20 @@ $(document).ready(function(){
         <div class="product-items">
             <c:forEach var="product" items="${productList}">
                 <div class="product-item">
-	                <div class="btn-prowish">
-	                    <svg width="24" height="24"><use xlink:href="#heart"></use></svg>
-	                </div>
+                        <button class="btn-wishlist" value="${product.product_code }">
+                        <!-- 위시리스트 색변화 -->
+                        	<c:set var="found" value="false" />
+	                        	<c:forEach items="${wishList }" var="wishList">
+		                            	<c:if test="${wishList.product_code eq product.product_code }">
+	                        				<svg id="check" style="color: red;" width="24" height="24"><use xlink:href="#heart"></use></svg>
+	                        				<c:set var="found" value="true" />
+	                        			</c:if>
+		                        </c:forEach>
+			                    <c:if test="${not found}">
+			                        <svg id="check" width="24" height="24"><use xlink:href="#heart" ></use></svg>
+								</c:if>
+						<!-- 위시리스트 색변화 -->	
+                        </button>
 	                <input type="hidden" id="product_code" value="${product.product_code }">
                     <img alt="Product Image" src="../resources/images/product/${product.img1}">
                     <p> 상품명 : ${product.product_name}</p>
