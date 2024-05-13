@@ -64,6 +64,8 @@ public interface MarketService {
 		
 	// 즐겨찾기에 넣기
 	public void markStore(MarkVO mvo) throws Exception;
+	// 즐겨찾기 중복 체크
+	public boolean checkDuplicateMark(int store_code, String user_id) throws Exception;
 	
 
 	// 찜에 넣기

@@ -156,8 +156,7 @@ public class MarketServiceImpl implements MarketService{
 		logger.debug(" q_code : " + q_code);
 		logger.debug(" count : " + count);
 		return count > 0;
-
-  }
+	}
 
 	@Override
 	public boolean isDuplicateWish(int product_code, String user_id) throws Exception {
@@ -194,7 +193,6 @@ public class MarketServiceImpl implements MarketService{
 			mdao.insertProductWish(product_code, user_id);
 			result = 1;
 		}
-		
 		return result;
 	}
 
@@ -213,5 +211,22 @@ public class MarketServiceImpl implements MarketService{
 		logger.debug(" selectMaxCartCode() 실행 ");
 		return mdao.selectMaxCartCode();
 	}
+
+	
+	
+	// 즐겨찾기 중복 체크
+	@Override
+	public boolean checkDuplicateMark(int store_code, String user_id) throws Exception {
+		logger.debug(" checkDuplicateMark() 실행 ");
+		Map<String, Object> map = new HashMap<>();
+	    map.put("store_code", store_code);
+	    map.put("user_id", user_id);
+	    int count = mdao.checkDuplicateMark(store_code, user_id);
+	    logger.debug("map : " + map);
+	    logger.debug("count : " + count);
+		return count == 0;
+	}
+	
+	
 
 }

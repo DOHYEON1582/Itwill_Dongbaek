@@ -126,7 +126,6 @@ public class MarketDAOImpl implements MarketDAO{
 	}
 
 	@Override
-
 	public void markStore(MarkVO mvo) throws Exception {
 		sqlSession.insert(NAMESPACE + ".markStore", mvo);
 	}
@@ -167,8 +166,8 @@ public class MarketDAOImpl implements MarketDAO{
 	@Override
 	public int checkDuplicateWish(Map<String, Object> map) throws Exception {
 		logger.debug(" checkDuplicateWish 호출 ");
-		Integer produce_code = (Integer) map.get("product_code");
-		map.put("produce_code", produce_code);
+		Integer product_code = (Integer) map.get("product_code");
+		map.put("product_code", product_code);
 		return sqlSession.selectOne(NAMESPACE + ".checkDuplicateWish", map);
 	}
 
@@ -231,5 +230,18 @@ public class MarketDAOImpl implements MarketDAO{
 		logger.debug(" selectMaxCartCode() 호출");
 		return sqlSession.selectOne(NAMESPACE+".selectMaxCartCode");
 	}
-		
+
+	
+	// 즐겨찾기 중복 체크
+	@Override
+	public int checkDuplicateMark(int store_code, String user_id) throws Exception {
+		logger.debug(" checkDuplicateMark() 호출 ");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("store_code", store_code);
+		map.put("user_id", user_id);
+		return sqlSession.selectOne(NAMESPACE + ".checkDuplicateMark", map);
+	}
+	
+	
+	
 }

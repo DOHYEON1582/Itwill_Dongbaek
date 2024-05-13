@@ -5,117 +5,83 @@
   
 <mapper namespace="com.itwillbs.mapper.OrderMapper">
 
-	<!-- 적립금 가져오기 -->
-	<select id="selectUserPoint" resultType="String">
-		select point from user where user_id =#{user_id}
-	</select>
+<resultMap type="com.itwillbs.domain.Order_infoVO" id="order_info">
+	<result property="order_code" column="order_code"/>
+	<result property="user_id" column="user_id"/>
+	<result property="bundle_code" column="bundle_code"/>
+	<result property="store_code" column="store_code"/>
+	<result property="order_date" column="order_date"/>
+	<result property="store_code" column="store_code"/>
+	<result property="order_date" column="order_date"/>
+	<result property="rcv_name" column="rcv_name"/>
+	<result property="rcv_phone" column="rcv_phone"/>
+	<result property="rcv_zip" column="rcv_zip"/>
+	<result property="rcv_addr1" column="rcv_addr1"/>
+	<result property="rcv_addr2" column="rcv_addr2"/>
+	<result property="rcv_msg" column="rcv_msg"/>
+	<result property="pay_method" column="pay_method"/>
+	<result property="delivery_fee" column="delivery_fee"/>
+	<result property="total_price" column="total_price"/>
+	<result property="cal_check" column="cal_check"/>
+	<result property="reservation" column="reservation"/>
+	<result property="reduce_point" column="reduce_point"/>
+	<result property="add_point" column="add_point"/>
 
-	<!-- 주문 할 상품 정보 가져오기 -->
-	<select id="selectProductInfo" resultType="CartVO">
-		SELECT c.*,
-		       prdc.*
-		FROM   cart c
-		       JOIN (SELECT s.store_code,
-		                    s.store_name,
-		                    p.product_code,
-		                    p.product_name,
-		                    p.img1,
-		                    p.max_account
-		             FROM   product p
-		                    JOIN store s
-		                      ON p.store_code = s.store_code) prdc
-		         ON c.product_code = prdc.product_code
-		WHERE  cart_code = #{cart_code}
-	</select>
-	
-	<!-- 장바구니에 담긴 상품 수 세어오기 -->
-	<select id="selectCountCart" resultType="int">
-		SELECT Count(*)
-		FROM   cart
-		WHERE  user_id = #{user_id}
-		       AND bundle_code = #{bundle_code}
-		       AND states = '장바구니' 
-	</select>
-	
-	<!-- 장바구니 목록 가져오기 -->
-	<select id="selectCartList" resultType="CartVO">
-		SELECT c.*,
-		       prdc.*
-		FROM   cart c
-		       JOIN (SELECT s.store_code,
-		                    s.store_name,
-		                    p.product_code,
-		                    p.product_name,
-		                    p.img1,
-		                    p.max_account
-		             FROM   product p
-		                    JOIN store s
-		                      ON p.store_code = s.store_code) prdc
-		         ON c.product_code = prdc.product_code
-		WHERE  user_id = #{user_id}
-		       AND bundle_code = #{bundle_code}
-		       AND states = '장바구니' 
-	</select>
-	
-	<!-- 주문 번호 최대값 가져오기 -->
-	<select id="selectMaxOrderCode" resultType="int">
-		SELECT Ifnull(Max(order_code), 0) AS order_code
-		FROM   order_info
-		WHERE  LEFT(order_code, 6) = Date_format(Curdate(), '%y%m%d') 
-	</select>
-	
-	<!-- 주문정보 입력 -->
-	<insert id="insertOrderInfo">
-		INSERT INTO order_info
-		            (order_code,
-		             user_id,
-		             bundle_code,
-		             store_code,
-		             ordr_date,
-		             rcv_zip,
-		             rcv_name,
-		             rcv_phone,
-		             rcv_addr1,
-		             rcv_addr2,
-		             rcv_msg,
-		             pay_method,
-		             delivery_fee,
-		             point,
-		             cal_check,
-		             reservation,
-		             reduce_point,
-		             add_point)
-		VALUES     ( #{order_code},
-		             #{user_id},
-		             #{bundle_code},
-		             #{store_code},
-		             Now(),
-		             #{rcv_zip},
-		             #{rcv_name},
-		             #{rcv_phone},
-		             #{rcv_addr1},
-		             #{rcv_addr2},
-		             #{rcv_msg},
-		             #{pay_method},
-		             #{delivery_fee},
-		             #{point},
-		             'N',
-		             #{reservation},
-		             #{reduce_point},
-		             #{add_point}) 
-	</insert>
-	
-	<!-- cart 주문 상태 변경  -->
-	<update id="updateStates">
-		UPDATE cart
-		SET    states='결제완료'
-		WHERE  bundle_code=#{bundle_code}
-	</update>
-	
-	<!-- 주문성공 -->
-	<select id="selectOrderInfo" resultType="OrderInfoVO">
-		select * from order_info where order_code=#{order_code}
-	</select>
-	
+</resultMap>
+<resultMap type="com.itwillbs.domain.StoreVO" id="store">
+	<result property="store_code" column="store_code"/>
+	<result property="market_code" column="market_code"/>
+	<result property="seller_id" column="seller_id"/>
+	<result property="store_name" column="store_name"/>
+	<result property="store_value" column="store_value"/>
+	<result property="store_explain" column="store_explain"/>
+	<result property="img1" column="img1"/>
+	<result property="img2" column="img2"/>
+	<result property="img3" column="img3"/>
+	<result property="phone" column="phone"/>
+	<result property="store_addr1" column="store_addr1"/>
+	<result property="store_addr2" column="store_addr2"/>
+	<result property="min_price" column="min_price"/>
+	<result property="time" column="time"/>
+	<result property="status" column="status"/>
+</resultMap>
 
+<!-- 업체 주문 정보(모음) 조회 -->
+<select id="getStoreOrderList" resultType="com.itwillbs.domain.Order_infoVO">
+	SELECT * FROM order_info
+		<choose>
+			<when test="con == 'store_code'">
+				WHERE store_code = #{search}
+			</when>
+			<when test="con == 'store_name'">
+				WHERE store_code = (SELECT store_code FROM store WHERE store_name = #{search})
+			</when>
+		</choose>
+		<choose>
+			<when test="startDate != null  and startDate != '' and endDate != null  and endDate != ''">
+				AND ordr_date between #{startDate} and #{endDate}
+			</when>
+			<when test="startDate != null  and startDate != '' and (endDate == null  or endDate == '')">
+				AND <![CDATA[#{startDate}  <= ordr_date ]]>
+			</when>
+			<when test="(startDate == null  or startDate == '') and endDate != null  and endDate != ''">
+				AND <![CDATA[ ordr_date <= #{endDate} ]]>
+			</when>
+		</choose>
+</select>
+
+	<!-- 주문 확정 -->
+    <update id="confirmOrder">
+        UPDATE order_info SET status = 'confirmed' WHERE order_code = #{order_code}
+    </update>
+    
+    <!-- 주문 취소 -->
+    <update id="cancelOrder">
+        UPDATE order_info SET status = 'cancelled' WHERE order_code = #{order_code}
+    </update>
+    
+    <!-- 주문 환불 -->
+    <update id="refundOrder">
+        UPDATE order_info SET status = 'refunded' WHERE order_code = #{order_code}
+    </update>
 </mapper>

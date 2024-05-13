@@ -2,8 +2,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="../include/header.jsp"%>
 <!--     <script src="./resources/js/jquery-2.1.1.js"></script> -->
-	<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <style>
 .bxslider {
 	display: inline-block;
@@ -185,7 +185,8 @@ h3 {
 .sort-filter[data-v-467c170f] {
 	display: block;
 	width: 100%;
-}
+ }
+  
  .cart {
     width: 140px;
     padding: 5px;
@@ -195,14 +196,14 @@ h3 {
     cursor: pointer;
     font-size: 13px;
   }
+
 .shop {
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-	}
-                                                                                                                                                                                         
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+}
 }
 </style>
 
@@ -225,7 +226,7 @@ h3 {
             touchEnabled: false
         });
         
-     // 수량을 변경할 때마다 총 가격을 계산하여 보여주는 함수
+     	// 수량을 변경할 때마다 총 가격을 계산하여 보여주는 함수
         function updateTotalPrice(element) {
             var quantity = parseInt(element.val()); // 수량을 가져옴
             var price = parseInt(element.closest('.product-item').find(".price").text().replace(/[^\d]/g, '')); // 상품의 가격을 가져와서 숫자로 변환
@@ -285,31 +286,50 @@ h3 {
             
         });
         
-        
         $("#markStore").click(function(){
-        	alert("즐겨찾기 하시겠습니까 ?");
-        	var mvo = {
-        			/* "mark_code":$("#mark_code").val(), */
-        			"store_code":$("#store_code").val(),
-        			"user_id":$("#user_id").val()
-        	};
-        	$.ajax({
-        		type: "POST",
-        		url: "/market/storeMain",
-                data: JSON.stringify(mvo),
-                contentType: "application/json; charset=UTF-8",  
-                success: function(data){
-                	alert("즐겨찾기 성공");
-                	location.reload();
-                },
-                error: function(xhr, status, error) {
-                    var errorMessage = xhr.status + ': ' + xhr.statusText;
-                    alert('에러가 발생했습니다.\n' + errorMessage);
-                    console.log(" error "+ error);
-                }
-        	});
-        });
-        
+		    alert("즐겨찾기 하시겠습니까 ?");
+		    var mvo = {
+		        "store_code":$("#store_code").val(),
+		        "user_id":$("#user_id").val()
+		    };
+		    $.ajax({
+		        type: "POST",
+		        url: "/market/checkMark", // 변경된 URL 주소
+		        data: JSON.stringify(mvo),
+		        contentType: "application/json; charset=UTF-8",  
+		        success: function(data){
+		        	console.log(typeof data);
+		            if (data === "true") {
+		            	alert("즐겨찾기 추가");
+		                addBookmark();
+		            } else {
+		                alert("이미 즐겨찾기에 추가된 상점입니다.");
+		            }
+		        },
+		        error: function(xhr, status, error) {
+		            var errorMessage = xhr.status + ': ' + xhr.statusText;
+		            alert('에러가 발생했습니다.\n' + errorMessage);
+		            console.log(" error "+ error);
+		        }
+		    });
+			function addBookmark() {
+			    $.ajax({
+			        type: "POST",
+			        url: "/market/storeMain",
+			        data: JSON.stringify(mvo),
+			        contentType: "application/json; charset=UTF-8",  
+			        success: function(data){
+			            alert("즐겨찾기 성공");
+			            location.reload();
+			        },
+			        error: function(xhr, status, error) {
+			            var errorMessage = xhr.status + ': ' + xhr.statusText;
+			            alert('에러가 발생했습니다.\n' + errorMessage);
+			            console.log(" error "+ error);
+			        }
+			    });
+			}
+		});
         
     	// 제품 찜 추가, 삭제 
     	$('.btn-wishlist').on('click',function(){
@@ -397,13 +417,7 @@ h3 {
 <div id="sijamg_top">
 	<div class="bxslider" style="display: inline-block;">
 		<div>
-			<img src="${pageContext.request.contextPath }/resources/images/${store.img1}" />
-		</div>
-		<div>
-			<img src="${pageContext.request.contextPath }/resources/images/${store.img2}" />
-		</div>
-		<div>
-			<img src="${pageContext.request.contextPath }/resources/images/${store.img3}" />
+			<img src="${pageContext.request.contextPath }/resources/images/product/${store.img1}" />
 		</div>
 	</div>
 	<div id="sijang_text" style="display: inline-block; vertical-align: top;">
@@ -421,37 +435,51 @@ h3 {
 				<input type="hidden" id="user_id" value="${user_id }">
 		    </div>
 		</div>
+		<div id="sijang_text" style="display: inline-block; vertical-align: top;">
+			<div class="tit">
+				<div class="sij_name" style="font-size: 30px; font-weight: bold;">
+					▶ ${store.store_name }
+					<button id="markStore" class="clear-button button button-follow" style="margin-left: 10px;">
+						<span class="content">
+							<div class="inner-container">
+								<img src="https://front.coupangcdn.com/coupang-store-display/20240415182517/img/ic_heart_dark_outline.ebe809a.svg" width="12" alt=""> <span class="text">즐겨찾기</span>
+							</div>
+						</span>
+					</button>
+					<input type="hidden" id="store_code" value="${store.store_code }"> <input type="hidden" id="user_id" value="${user_id }">
+				</div>
+			</div>
 			<div class="sij_sub_name" style="font-size: 25px;">${store.store_explain }</div>
-		<table class="storeTable">
-			<tbody>
-				<tr>
-					<th>주소</th>
-					<td style="padding-left: 10px;">${store.store_addr1 }</td>
-				</tr>
-				
-				<tr>
-					<th>전화</th>
-					<td style="padding-left: 10px;">${store.phone }</td>
-				</tr>
+			<table class="storeTable">
+				<tbody>
+					<tr>
+						<th>주소</th>
+						<td style="padding-left: 10px;">${store.store_addr1 }</td>
+					</tr>
 
-				<tr>
-					<th>판매자</th>
-					<td style="padding-left: 10px;">${store.seller_id }</td>
-				</tr>
+					<tr>
+						<th>전화</th>
+						<td style="padding-left: 10px;">${store.phone }</td>
+					</tr>
 
-				<tr>
-					<th>운영 상태</th>
-					<td style="padding-left: 10px;">${store.status }</td>
-				</tr>
-			</tbody>
-		</table>
+					<tr>
+						<th>판매자</th>
+						<td style="padding-left: 10px;">${store.seller_id }</td>
+					</tr>
+
+					<tr>
+						<th>운영 상태</th>
+						<td style="padding-left: 10px;">${store.status }</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
-</div>
 </section>
 
 
 <div class="bootstrap-tabs product-tabs">
-    <h3>가게 상품</h3>
+	<h3>가게 상품</h3>
 	<div class="container">
 	<form action="" method="get">
         <select name="orderBy">
@@ -511,6 +539,5 @@ h3 {
         </div>
     </div>
 </div>
-
 
 <%@ include file="../include/footer.jsp"%>
