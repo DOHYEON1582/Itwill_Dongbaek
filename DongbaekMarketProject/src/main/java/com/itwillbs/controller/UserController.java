@@ -298,6 +298,7 @@ public class UserController {
 	}
 	
 	// 구독상품 삭제 (개별)
+	@ResponseBody
 	@RequestMapping(value = "member/deleteSub", method = RequestMethod.POST)
 	public void deleteSub(int product_code, HttpSession session) throws Exception{
 		logger.debug(" deleteSub() 실행 ");
@@ -306,6 +307,7 @@ public class UserController {
 		uService.deleteSub(product_code, user_id);
 	}
 	// 구독상품 삭제 (전체)
+	@ResponseBody
 	@RequestMapping(value = "member/deleteSubAll", method = RequestMethod.POST)
 	public void deleteSubAll(HttpSession session) throws Exception {
 		logger.debug(" deleteSubAll() 실행 ");

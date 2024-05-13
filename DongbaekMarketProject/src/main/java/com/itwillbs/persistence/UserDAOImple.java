@@ -339,7 +339,7 @@ public class UserDAOImple implements UserDAO {
 	@Override
 	public int deleteSub(Map<String, Object> map) throws Exception {
 		logger.debug(" deleteSub() 호출 ");
-		String product_code = (String) map.get("product_code");
+		int product_code = (Integer) map.get("product_code");
 		map.put("product_code", product_code);
 		return sql.delete(NAMESPACE + ".deleteSub", map);
 	}
