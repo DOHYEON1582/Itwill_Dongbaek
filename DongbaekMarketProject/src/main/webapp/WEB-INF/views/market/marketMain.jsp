@@ -90,7 +90,7 @@
 	  line-height: 18px;
 	  letter-spacing: 0.02em;
 	  text-transform: uppercase;
-	  color: #9D9D9D;S
+	  color: #9D9D9D;
 	}
 	.product-item .rating {
 	  font-weight: 600;
@@ -156,12 +156,13 @@
 	    /* 또는 필요에 따라 다른 스타일을 적용할 수 있습니다. */
 	}
 	.cart {
-    width: 120px;
+    width: 140px;
     padding: 5px;
     margin: 5px;
     border: none;
     background-color: lightyellow;
     cursor: pointer;
+    font-size: 13px;
   	}
 </style>
 <script type="text/javascript">
@@ -255,88 +256,32 @@ function topFunction() {
             });
             
         });
-        
-//         // 찜 상품 
-//         $(".btn-wishlist").click(function(){
-//         	alert("찜에 등록됩니다 !" + $("#product_code").val() + $("#user_id").val());
-//             var btn = $(this); // 클릭된 버튼을 저장
-//             var productCode = btn.siblings("#product_code").val();
-//             var userId = btn.siblings("#user_id").val();
-            
-//             var wish = {
-//                 "product_code": productCode,
-//                 "user_id": userId
-//             };
-//         	$.ajax({
-//         		type: "POST",
-//         		url: "/market/addWish",
-//         		data: JSON.stringify(wish),
-//         		contentType: "application/json; charset=UTF-8",
-//         	    success: function(data){
-//         	            // 찜 상태 업데이트 후 UI 업데이트
-//         	            var isWished = data.isWished; // 서버에서 반환한 찜 상태 정보
-//         	            if (isWished) {
-//         	                // 찜 상태인 경우
-//         	                btn.addClass("wished"); // 찜 상태를 나타내는 클래스 추가
-//         	                console.log(isWished);
-//         	            } else {
-//         	                // 찜 상태가 아닌 경우
-//         	                btn.removeClass("wished"); // 찜 상태를 나타내는 클래스 제거
-//         	            }
-//         	        },
-//         	        error: function(xhr, status, error) {
-//         	            var errorMessage = xhr.status + ': ' + xhr.statusText;
-//         	            console.log(" error "+ error);
-//         	        }
-//         	});
-//         });
-     // JavaScript
-
-        $(".btn-wishlist").click(function(){
-            var btn = $(this);
-            var productCode = btn.siblings("#product_code").val();
-            var userId = btn.siblings("#user_id").val();
-            
-            // 중복 체크를 위한 AJAX 요청
-            $.ajax({
-                type: "POST",
-                url: "/checkDuplicateWish",
-                data: { product_code: productCode },
-                success: function(data) {
-                    if (data === "true") {
-                        alert("이미 찜한 상품입니다.");
-                    } else {
-                        // 중복이 아닌 경우에만 찜 상품 추가 요청
-                        var wish = {
-                            "product_code": productCode,
-                            "user_id": userId
-                        };
-                        $.ajax({
-                            type: "POST",
-                            url: "/market/addWish",
-                            data: JSON.stringify(wish),
-                            contentType: "application/json; charset=UTF-8",
-                            success: function(data) {
-                                // 성공적으로 추가되었을 때의 처리
-                                alert("찜에 추가되었습니다.");
-                            },
-                            error: function(xhr, status, error) {
-                                // 오류 발생시의 처리
-                                console.error(error);
-                                alert("찜 추가에 실패했습니다.");
-                            }
-                        });
-                    }
-                },
+       
+        $(".btn-wishlist").on("click", function(){
+        	var product_code = $(this).val();
+        	var heartIcon = $(this).find('svg');
+        	
+        	$.ajax({
+        		url : "/product/insertWish1/"+product_code,
+        		type : "GET",
+        		success : function(data){
+        			if(data == 1){
+        				console.log('1!!!!!');
+						heartIcon.css("color", "red");        				
+        			}else{
+        				console.log('0!!!!!');
+        				heartIcon.css("color","");
+        			}
+        		},
                 error: function(xhr, status, error) {
-                    // 오류 발생시의 처리
-                    console.error(error);
-                    alert("중복 체크에 실패했습니다.");
-                }
-            });
+                    var errorMessage = xhr.status + ': ' + xhr.statusText;
+                    alert('에러가 발생했습니다.\n' + errorMessage);
+                    console.log(" error "+ error);
+                }  
+        	});
         });
-
-
+        
+        
     });
 </script>
 
@@ -386,9 +331,10 @@ function topFunction() {
 			</tbody>
 		</table>
 	</div>
+	
 </div>
 </section>
-	<h3>인기 상점</h3>
+	<h3>인기 상점</h3> 
 	<div class="slider-container">
 		<div class="slider5">
 		<c:forEach var="store" items="${storeList }" >
@@ -408,7 +354,22 @@ function topFunction() {
             <c:forEach items="${productList}" var="product">
                 <div class="col" style="width: 19%;">
                     <div class="product-item">
-                        <button id="wishProduct" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></button>
+                        <button id="wishProduct" class="btn-wishlist" value="${product.product_code }">
+								<!-- 위시리스트 색변화 -->
+								<c:set var="found" value="false" />
+								<c:forEach items="${wishList }" var="wishList">
+									<c:if test="${wishList.product_code eq product.product_code }">
+										<svg id="check" style="color: red;" width="24" height="24">
+											<use xlink:href="#heart"></use></svg>
+										<c:set var="found" value="true" />
+									</c:if>
+								</c:forEach>
+								<c:if test="${not found}">
+									<svg id="check" width="24" height="24">
+										<use xlink:href="#heart"></use></svg>
+								</c:if>
+								<!-- 위시리스트 색변화 -->
+							</button>
                         <input type="hidden" id="product_code" value="${product.product_code }">
                         <input type="hidden" id="user_id" value="${user_id }">                        
                         <figure>
@@ -429,7 +390,7 @@ function topFunction() {
                                     </button>
                                 </span>
                                 <!-- 수량 입력 -->
-                                <input type="text" name="quantity" class="form-control input-number quantity" value="1" style="width: 60px;">
+                                <input type="text" name="quantity" class="form-control input-number quantity" value="1" >
                                 <!-- + 버튼 -->
                                 <span class="input-group-btn">
                                     <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">

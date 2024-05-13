@@ -185,16 +185,17 @@ h3 {
 .sort-filter[data-v-467c170f] {
 	display: block;
 	width: 100%;
-}
-
-.cart {
-	width: 120px;
-	padding: 5px;
-	margin: 5px;
-	border: none;
-	background-color: lightyellow;
-	cursor: pointer;
-}
+ }
+  
+ .cart {
+    width: 140px;
+    padding: 5px;
+    margin: 5px;
+    border: none;
+    background-color: lightyellow;
+    cursor: pointer;
+    font-size: 13px;
+  }
 
 .shop {
 	padding: 10px;
@@ -330,40 +331,29 @@ h3 {
 			}
 		});
         
-        // 찜 상품 
-        $(".btn-wishlist").click(function(){
-			
-        	alert("찜에 등록됩니다 !" + $("#product_code").val() + $("#user_id").val());
-            var btn = $(this); // 클릭된 버튼을 저장
-            var productCode = btn.siblings("#product_code").val();
-            var userId = btn.siblings("#user_id").val();
-            
-            var wish = {
-                "product_code": productCode,
-                "user_id": userId
-            };
-            $.ajax({
-            	url : "/market/addWish",
-            	type : "POST",
-            	data : JSON.stringify(wish),
-            	contentType: "application/json; charset=UTF-8",
-            	success : function(data){
-            		var isWished = data.isWished; // 서버에서 반환한 찜 상태 정보
-    	            if (isWished) {
-    	                // 찜 상태인 경우
-    	                btn.addClass("wished"); // 찜 상태를 나타내는 클래스 추가
-    	                console.log(isWished);
-    	            } else {
-    	                // 찜 상태가 아닌 경우
-    	                btn.removeClass("wished"); // 찜 상태를 나타내는 클래스 제거
-    	            }
-    	        },
-    	        error: function(xhr, status, error) {
-    	            var errorMessage = xhr.status + ': ' + xhr.statusText;
-    	            console.log(" error "+ error);
-    	        }
-            });
-        });
+    	// 제품 찜 추가, 삭제 
+    	$('.btn-wishlist').on('click',function(){
+    		var product_code = $(this).val();
+    		var heartIcon = $(this).find('svg');
+    		console.log(heartIcon);
+    		 
+    		$.ajax({
+    			url : "/product/insertWish1/"+product_code,
+    			type : "GET",
+    			success : function(data){
+    				//console.log(data);
+    				if(data == 1){
+    					console.log('1!!!!!');
+    					 heartIcon.css("color", "red");
+    				}else{
+    					console.log('0!!!!!');
+    					 heartIcon.css("color", "");
+    				}
+    			}
+    		});
+    		
+    	});
+    	
    });
     
     document.addEventListener("DOMContentLoaded", function(){
@@ -424,11 +414,26 @@ h3 {
 <!-- 시장정보 -->
 <section class="py-2 mb-1" style="background: url(${pageContext.request.contextPath}/resources/images/background-pattern.jpg);">
 
-	<div id="sijamg_top">
-		<div class="bxslider" style="display: inline-block;">
-			<div>
-				<img src="${pageContext.request.contextPath }/resources/images/product/${store.img1}" />
-			</div>
+<div id="sijamg_top">
+	<div class="bxslider" style="display: inline-block;">
+		<div>
+			<img src="${pageContext.request.contextPath }/resources/images/product/${store.img1}" />
+		</div>
+	</div>
+	<div id="sijang_text" style="display: inline-block; vertical-align: top;">
+		<div class="tit">
+			<div class="sij_name" style="font-size: 30px; font-weight: bold;">▶ ${store.store_name }
+		        <button id="markStore" class="clear-button button button-follow" style="margin-left: 10px;">
+		            <span class="content">
+		                <div class="inner-container">
+		                    <img src="https://front.coupangcdn.com/coupang-store-display/20240415182517/img/ic_heart_dark_outline.ebe809a.svg" width="12" alt="">
+		                    <span class="text">즐겨찾기</span>
+		                </div>
+		            </span>
+		        </button>
+		        <input type="hidden" id="store_code" value="${store.store_code }">
+				<input type="hidden" id="user_id" value="${user_id }">
+		    </div>
 		</div>
 		<div id="sijang_text" style="display: inline-block; vertical-align: top;">
 			<div class="tit">
@@ -476,54 +481,63 @@ h3 {
 <div class="bootstrap-tabs product-tabs">
 	<h3>가게 상품</h3>
 	<div class="container">
-		<form action="" method="get">
-			<select name="orderBy">
-				<option value="popularity" ${param.orderBy == 'popularity' ? 'selected' : ''}>인기순</option>
-				<option value="lowPrice" ${param.orderBy == 'lowPrice' ? 'selected' : ''}>낮은 가격순</option>
-				<option value="highPrice" ${param.orderBy == 'highPrice' ? 'selected' : ''}>높은 가격순</option>
-			</select> <input type="hidden" name="store_code" value="${store.store_code }"> <input type="submit" value="정렬">
-		</form>
-		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-6 justify-content-center gap-3">
-			<c:forEach items="${product}" var="product">
-				<div class="col" style="width: 19%;">
-					<div class="product-item">
-						<button id="wishProduct" class="btn-wishlist">
-							<svg width="24" height="24">
-								<use xlink:href="#heart"></use></svg>
-						</button>
-						<input type="hidden" id="product_code" value="${product.product_code }">
-						<figure>
-							<a href="productMain?product_code=${product.product_code }" title="Product Title"> <img src="${pageContext.request.contextPath}/resources/images/product/${product.img1}" alt="Product Thumbnail" class="tab-image" style="width: 180px">
-							</a>
-						</figure>
-						<h4>${product.product_name}</h4>
-						<span class="price"><fmt:formatNumber value="${product.price}" pattern="#,##0" />원</span> <span class="total-price">총 가격</span>
-						<div class="input-group product-qty d-flex align-items-center justify-content-between">
-							<div class="input-group product-qty">
-								<span class="input-group-btn">
-									<button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
-										<svg width="16" height="16">
-											<use xlink:href="#minus"></use></svg>
-									</button>
-								</span> <input type="text" name="quantity" class="form-control input-number quantity" value="1"> <span class="input-group-btn">
-									<button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
-										<svg width="16" height="16">
-											<use xlink:href="#plus"></use></svg>
-									</button>
-								</span>
-							</div>
-							<button class="cart">
-								장바구니
-								<svg width="18" height="18">
-									<use xlink:href="#cart"></use></svg>
-							</button>
-						</div>
-					</div>
-				</div>
-			</c:forEach>
-		</div>
-	</div>
+	<form action="" method="get">
+        <select name="orderBy">
+            <option value="popularity" ${param.orderBy == 'popularity' ? 'selected' : ''}>인기순</option>
+            <option value="lowPrice" ${param.orderBy == 'lowPrice' ? 'selected' : ''}>낮은 가격순</option>
+            <option value="highPrice" ${param.orderBy == 'highPrice' ? 'selected' : ''}>높은 가격순</option>
+        </select>
+        <input type="hidden" name="store_code" value="${store.store_code }">
+        <input type="submit" value="정렬">
+    </form>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-6 justify-content-center gap-3">
+            <c:forEach items="${product}" var="product">
+                <div class="col" style="width: 19%;">
+                    <div class="product-item">
+                        <button id="wishProduct" class="btn-wishlist" value="${product.product_code }">
+                        <!-- 위시리스트 색변화 -->
+                        	<c:set var="found" value="false" />
+	                        	<c:forEach items="${wishList }" var="wishList">
+		                            	<c:if test="${wishList.product_code eq product.product_code }">
+	                        				<svg id="check" style="color: red;" width="24" height="24"><use xlink:href="#heart"></use></svg>
+	                        				<c:set var="found" value="true" />
+	                        			</c:if>
+		                        </c:forEach>
+			                    <c:if test="${not found}">
+			                        <svg id="check" width="24" height="24"><use xlink:href="#heart" ></use></svg>
+								</c:if>
+						<!-- 위시리스트 색변화 -->	
+                        </button>
+                        <input type="hidden" id="product_code" value="${product.product_code }">
+                        <figure>
+                            <a href="productMain?product_code=${product.product_code }" title="Product Title">
+                                <img src="${pageContext.request.contextPath}/resources/images/product/${product.img1}" alt="Product Thumbnail" class="tab-image" style="width : 180px">
+                            </a>
+                        </figure>
+                        <h4>${product.product_name}</h4>
+                        <span class="price"><fmt:formatNumber value="${product.price}" pattern="#,##0" />원</span>
+                        <span class="total-price">총 가격</span>
+                        <div class="input-group product-qty d-flex align-items-center justify-content-between">
+                            <div class="input-group product-qty">
+                                <span class="input-group-btn">
+                                    <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+                                        <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
+                                    </button>
+                                </span>
+                                <input type="text" name="quantity" class="form-control input-number quantity" value="1">
+                                <span class="input-group-btn">
+                                    <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+                                        <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
+                                    </button>
+                                </span>
+                            </div>
+                            <button class="cart">장바구니<svg width="18" height="18"><use xlink:href="#cart"></use></svg></button>
+                        </div>
+                    </div>
+                </div>
+            </c:forEach>
+        </div>
+    </div>
 </div>
-
 
 <%@ include file="../include/footer.jsp"%>

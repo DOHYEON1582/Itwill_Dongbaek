@@ -205,17 +205,17 @@
 			<th>배송메세지</th>
 			<td height=90><textarea rows="2" cols="30" id="rcv_msg" name="rcv_msg"></textarea></td>
 		</tr>
-		<tr>
+		<%-- <tr>
 			<th height=50>적립금</th>
 			<td>
 				<input type="number" id="reduce_point" name="reduce_point" max="${point}">
 				&nbsp;&nbsp;&nbsp;사용가능 적립금:<span id="point"><fmt:formatNumber value="${point}" pattern="#,###"/></span>
 			</td>
-		</tr>
+		</tr> --%>
 		<tr>
 			<th>결제방법</th>
 			<td height=50>
-				<input type="radio" name="pay_method" value="card">카드결제
+				<input type="radio" name="pay_method" value="card">카카오페이
 				<!-- <input type="radio" name="pay_method" value="pay">ㅇㅅㅇ? -->
 			</td>
 		</tr>
@@ -462,15 +462,24 @@
 		var orderInfo = $('#orderFrm').serialize();
 		/* orderInfo.order_code = orderCode; */
 		
+		// 난수 생성 
+		function generateRandomInteger() {
+		    return Math.floor(Math.random() * 90000) + 10000;
+		}
+		// 5자리 난수
+		var randomNumber = generateRandomInteger();
+		console.log(randomNumber);
+
+		
         function requestPay(response){
-        	alert("requestPay1");
+        	/* alert("requestPay1"); */
         	// IMP.request_pay(param, callback) 결제창 호출
 		    IMP.request_pay({ // param
 		    	pg: "kakaopay.TC0ONETIME",
 		        pay_method: "card",
-		        merchant_uid: response, // 한번 결제 했을 때 썼던 번호는 사용 X 항상 다르게 
+		        merchant_uid: randomNumber, // 한번 결제 했을 때 썼던 번호는 사용 X 항상 다르게 
 		        name: '1111', // 대표 상품명 및 추가 상품 개수 표시
-		        amount: '1111',
+		        amount: payAmount,
 		        buyer_name : '11111',
 				buyer_tel : '01011111111', // 없으면 오류
 				buyer_addr : '1111', // 주소
@@ -493,7 +502,7 @@
 		           
 		        	
 		        } else {
-		        	alert("requestPay6");
+		        	/* alert("requestPay6"); */
 		            // 결제 실패 시 로직
 		        	alert("결제가 취소되었습니다.");
 		        }

@@ -36,7 +36,7 @@ public class MyPageController {
 	// 장바구니 상품 목록
 	@GetMapping(value = "/cart")
 	public String cartListGET(HttpSession session, HttpServletRequest request, HttpServletResponse response,
-			@ModelAttribute("cri") MyPageCriteria cri, Model model) throws Exception {
+		 Model model) throws Exception {
 		logger.debug(" === cartListGET() 실행 ===");
 
 		CartVO cvo = new CartVO();
@@ -44,7 +44,7 @@ public class MyPageController {
 		// 세션 가져오기
 		UserVO userVO = (UserVO) session.getAttribute("userVO");
 		String user_id = userVO.getUser_id();
-		String user_name = userVO.getUser_name();
+//		String user_name = userVO.getUser_name();
 		String bundleCode = (String) session.getAttribute("cart");
 
 		// cvo 담기...
@@ -56,15 +56,15 @@ public class MyPageController {
 		logger.debug("cartList : " + cartList);
 
 
-		PageMaker pageMaker = new PageMaker();
+//		PageMaker pageMaker = new PageMaker();
 
-		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(mService.selectCountCart(cvo));
+//		pageMaker.setCri(cri);
+//		pageMaker.setTotalCount(mService.selectCountCart(cvo));
 
-		logger.debug("pageMaker : " + pageMaker);
-		logger.debug("cri : " + cri);
+//		logger.debug("pageMaker : " + pageMaker);
+//		logger.debug("cri : " + cri);
 		model.addAttribute("cartList", cartList);
-		model.addAttribute("pageMaker", pageMaker);
+//		model.addAttribute("pageMaker", pageMaker);
 
 		return "/mypage/cart";
 	}
