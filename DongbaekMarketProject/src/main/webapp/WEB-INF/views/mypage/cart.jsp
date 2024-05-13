@@ -2,38 +2,119 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+<%@ include file="../include/header.jsp"%>
 
-<%-- <%@ include file="../include/header.jsp"%> --%>
 <style>
 	.productList {
-		width: 1300px;
+		width: 1000px;
+		border-collapse: collapse; 
+   	 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   	 	margin-bottom: 20px;
 	}
 	
 	.productList th {
-		border: 1px solid black;
+		/* border: 1px solid black; */
+		text-align: center;
 	}
 	
 	.productList td {
-		border: 1px solid black;
+		/* border: 1px solid black; */
 	}
+	
+	.productList button {
+		background: lightyellow;
+		border-style: none;
+		color: black;
+		border-radius: 5px;
+		font-style: bold;
+	}
+	
+	#orderProduct{
+		margin-bottom: 8px;
+	}
+	
+	.deleteBtn {
+		width: 1000px;
+		margin-bottom: 40px;
+	}
+	
+	.deleteBtn button {
+		background: lightyellow;
+		border-style: none;
+		color: black;
+		border-radius: 5px;
+		font-style: bold;
+	}
+	
+	.amountList {
+		width: 1000px;
+		/* border: 1px solid black; */
+	    border-collapse: collapse;
+	    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	    margin-bottom: 40px;
+	}
+	
+	.amountList td{
+		height: 70px;
+		/* border: 1px solid black; */
+		font-style: bold;
+		text-align: center;
+		border-right: 1px solid gray;
+		
+	}
+	
+	.amountTd1 {
+		color:black;
+		font-size:20px;
+		text-align: center;
+		border-bottom: 2px solid #BDBDBD;
+		
+	}
+	
+	.amountList td:nth-child(3) {
+	    border-right: none;
+	}
+	
+	.btnList{
+		width:1000px;
+		margin-bottom: 60px;
+	}
+	
+	
+	#orderChecked{
+		background: lightyellow;
+		border-style: none;
+		color: black;
+		border-radius: 5px;
+		width:180px;
+		height:50px;
+		font-style: bold;
+	}
+
 </style>
+
 <!-- 제이쿼리 -->
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script> -->
 
 <div class="container">
 
-	<h2>(o゜▽゜)o☆</h2>
-	<%-- page:${cri.page}
-	page:${pageMaker.cri.page } --%>
-
-	<table id="productList" class="productList" border=1>
+	<table id="productList" class="productList" align="center">
 		<thead>
 			<tr>
-				<th><input type="checkbox" id="allCheck" name="allCheck" class="allCheck"></td>
-				<th colspan="2">상품정보</th>
-				<th>판매가</th>
+				<td height=25px></td>
+			</tr>
+			<tr>
+				<td colspan=7 align=center><h4>장바구니</h4></td>
+			</tr>
+			<tr>
+				<td height=25px></td>
+			</tr>
+			<tr>
+				<th style="width:35px; text-align:center;" width="35px" ><input type="checkbox" id="allCheck" name="allCheck" class="allCheck"></th>
+				<th colspan="2" width=220px>상품정보</th>
+				<th width=135px>판매가</th>
 				<th>수량</th>
-				<th>합계</th>
+				<th width=135px>합계</th>
 				<th>선택</th>
 			</tr>
 		</thead>
@@ -43,50 +124,52 @@
 			<c:choose>
 				<c:when test="${empty cartList}">
 					<tr>
-						<td colspan="7"> 장바구니에 담김 상품이 없습니다.</td>
+						<td align="center" colspan="7" height=200px;> 장바구니에 담긴 상품이 없습니다.</td>
 					</tr>
 				</c:when>
 				<c:otherwise>
 					<c:forEach var="list" items="${cartList }">
 						<tr>
-							<td id="cart_code${list.cart_code }"><input type="checkbox" id="ap_check" name="ap_check" class="ap_check" value="${list.cart_code }"></td>
-							<td><img src="${pageContext.request.contextPath}/resources/images/product/${list.img1}" alt="Product Thumbnail" class="tab-image" style="width : 180px"></td>
+							<td align="center" width=35px id="cart_code${list.cart_code }"><input type="checkbox" id="ap_check" name="ap_check" class="ap_check" value="${list.cart_code }"></td>
+							<td align="center" width=130px><img src="${pageContext.request.contextPath}/resources/images/product/${list.img1}" alt="Product Thumbnail" class="tab-image" style="width:120px; height:120px;"></td>
 							<td>${list.store_name}<br>${list.product_name}</td><!-- 가게명, 상품명 -->
-							<td><fmt:formatNumber value="${list.price }" pattern="#,###"/></td>
-							<td>
-								<input type="number" id="count" name="count" value="${list.count }" max="${list.max_account}">
+							<td align="center"><fmt:formatNumber value="${list.price }" pattern="#,###"/>원</td>
+							<td align=center>
+								<input style="width:50px; height:25px;" type="number" id="count" name="count" value="${list.count }" max="${list.max_account}">
 								<button type="button" id="countUpdate">변경</button>
 							</td>
 							<c:set var="total" value="${list.price * list.count }"/>
-							<td><fmt:formatNumber value="${total}" pattern="#,###"/></td>
-							<td>
-								<button type="button" id="orderProduct">주문하기(주문하기 페이지로)</button><br> 
-								<button type="button" id="deleteProduct">삭제(삭제)</button><br> 
+							<td align="center"><fmt:formatNumber value="${total}" pattern="#,###"/>원</td>
+							<td align=center>
+								<button type="button" id="orderProduct" >주문하기</button><br> 
+								<button type="button" id="deleteProduct">삭제</button><br> 
 							</td>
 						</tr>
 						<c:set var="num" value="${number -1 }"/>
 					</c:forEach>
 				</c:otherwise>
 			</c:choose>
-			
-			
-			
+			<tr>
+				<td height="30px"></td>
+			</tr>
 		</tbody>
 	</table>
 	
-	<table>
+	<table class="deleteBtn" align="center">
 		<tr>
-			<td><button type="button" id="deleteAll">장바구니 비우기</button></td>
-			<td><button type="button" id="deleteChecked">선택삭제</button></td>
+			<td>
+				<button type="button" id="deleteAll">장바구니 비우기</button>
+				<button type="button" id="deleteChecked">선택삭제</button>
+			</td>
 		</tr>
 	</table>
 	
 	<!-- 금액 보여주기 시작 -->
-	<table border=1>
+	<table class="amountList" align="center">
 		<tr>
-			<td>총 상품금액</td>
-			<td>배송비</td>
-			<td>결제예정금액</td>
+			<td width="400" class="amountTd1">총 상품금액</td>
+			<td width="400" class="amountTd1">배송비</td>
+			<td width="400" class="amountTd1">결제예정금액</td>
 		</tr>
 		<tr>
 			<td id="totalPrice"></td>
@@ -94,12 +177,18 @@
 			<td id="payAmount"></td>
 		</tr>
 	</table>
-	<!-- 금액 보여주기 끝 -->
 	
-	<button type="button" id="orderAll">전체주문하기</button>
-	<button type="button" id="orderChecked">선택주문하기</button>
-
-	<!-- 페이징 시작 -->
+	<!-- 금액 보여주기 끝 -->
+	<table class="btnList" align="center" >
+		<tr>
+			<td align=center>
+				<!-- <button type="button" id="orderAll">전체주문하기</button> -->
+				<button type="button" id="orderChecked">주문하기</button>
+			</td>
+		</tr>
+	</table>
+	
+	<%-- <!-- 페이징 시작 -->
 	<table border=1>
 		<tr>
 			<c:if test="${pageMaker.prev }">
@@ -117,11 +206,11 @@
 			</c:if>	
 		</tr>
 	</table>
-	<!-- 페이징 끝 -->
+	<!-- 페이징 끝 --> --%>
 	
 </div>
 	
-<%--  <%@ include file="../include/footer.jsp"%> --%>
+ <%@ include file="../include/footer.jsp"%>
  
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -273,7 +362,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var deliveryFee = 0;
         if (totalPrice > 50000) {
             deliveryFee = 0;
-        } else {
+        } else if(totalPrice > 0 && totalPrice <= 50000){
             deliveryFee = 2500;
         }
         return deliveryFee;
