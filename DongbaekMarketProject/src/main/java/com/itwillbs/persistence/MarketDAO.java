@@ -13,6 +13,9 @@ import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.QuestionVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
+
+import com.itwillbs.domain.SubscrbeProductVO;
+
 import com.itwillbs.domain.WishVO;
 
 public interface MarketDAO {
@@ -75,6 +78,29 @@ public interface MarketDAO {
 	// 카트에 넣기
 	public void insertCart(CartVO cart) throws Exception;
 	
+
 	// 찜 중복 체크
 	public int checkDuplicateWish(Map<String, Object> paramMap) throws Exception;
+
+	// 구독 제품 리스트 가져오기
+	public List<ProductVO> getSubProductList()throws Exception;
+	
+	// 찜 리스트 가져오기
+	public List<WishVO> getUserWish(String user_id)throws Exception;
+	
+	// 찜 유무 확인
+	public int userProductWish(int product_code, String user_id)throws Exception;
+	
+	// 찜 등록하기
+	public int insertProductWish(int product_code, String user_id)throws Exception;
+	
+	// 찜 삭제하기
+	public int deleteProductWish(int product_code, String user_id)throws Exception;
+	
+	// 회원 구독 상품 추가하기
+	public int insertSubProduct(SubscrbeProductVO vo)throws Exception;
+	
+	
+	
+
 }

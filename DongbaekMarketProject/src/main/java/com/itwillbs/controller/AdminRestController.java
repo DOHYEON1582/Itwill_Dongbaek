@@ -210,6 +210,23 @@ public class AdminRestController {
 		return result;
 	}
 	
+	@GetMapping(value = "/deleteroom/{room_idx}")
+	public int deleteRoom(@PathVariable("room_idx") int room_idx)throws Exception{
+		logger.debug(" deleteRoom(@RequestBody int room_idx) 호출 ");
+		
+		int result = aService.deleteChatRoom(room_idx);
+		
+		return result;
+	}
+	
+	@GetMapping(value = "/prosearch/{product_name}")
+	public ResponseEntity<List<AdminProductVO>> productSearch(@PathVariable("product_name")String product_name)throws Exception{
+		logger.debug(" productSearch() 호출 ");
+		logger.debug(" 상품이름 : "+product_name);
+		
+		return new ResponseEntity<List<AdminProductVO>>(aService.searchProduct(product_name),HttpStatus.OK);
+	}
+	
 	
 	
 	

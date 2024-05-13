@@ -307,7 +307,7 @@
 	                            <li class="nav-item"><a href="/member/product?orderBy=popularity" class="nav-link">인기음식</a></li>
 	                            <li class="nav-item"><a href="#accessories" class="nav-link">알뜰쇼핑</a></li>
 	                            <li class="nav-item"><a href="#brand" class="nav-link">특가/혜택</a></li>
-	                            <li class="nav-item"><a href="#brand" class="nav-link">구독상품</a></li>
+	                            <li class="nav-item"><a href="/market/sub" class="nav-link">구독상품</a></li>
 	                        </ul>
 	                    </div>
 	                </div>

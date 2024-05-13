@@ -1,5 +1,6 @@
 package com.itwillbs.persistence;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,9 @@ import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.QuestionVO;
 import com.itwillbs.domain.ReviewVO;
 import com.itwillbs.domain.StoreVO;
+
+
+import com.itwillbs.domain.SubscrbeProductVO;
 import com.itwillbs.domain.WishVO;
 
 
@@ -116,6 +120,7 @@ public class MarketDAOImpl implements MarketDAO{
 	}
 
 	@Override
+
 	public void markStore(MarkVO mvo) throws Exception {
 		sqlSession.insert(NAMESPACE + ".markStore", mvo);
 	}
@@ -158,5 +163,57 @@ public class MarketDAOImpl implements MarketDAO{
 		logger.debug(" checkDuplicateWish 호출 ");
 		return sqlSession.selectOne(NAMESPACE + ".checkDuplicateWish", paramMap);
 	}
+
+	public List<ProductVO> getSubProductList() throws Exception {
+		logger.debug(" getSubProductList() 호출 ");
+		
+		return sqlSession.selectList(NAMESPACE+".getSubList");
+	}
+
+	@Override
+	public List<WishVO> getUserWish(String user_id) throws Exception {
+		logger.debug(" getUserWish(String user_id) 호출 ");
+		
+		return sqlSession.selectList(NAMESPACE+".getUserWish", user_id);
+	}
+
+	@Override
+	public int userProductWish(int product_code, String user_id) throws Exception {
+		logger.debug(" userProductWish(int product_code, String user_id) 호출 ");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("product_code", product_code);
+		map.put("user_id", user_id);
+		
+		return sqlSession.selectOne(NAMESPACE+".userProductWish", map);
+	}
+
+	@Override
+	public int insertProductWish(int product_code, String user_id) throws Exception {
+		logger.debug(" insertProductWish(int product_code, String user_id) 호출 ");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("product_code", product_code);
+		map.put("user_id", user_id);
+		
+		return sqlSession.insert(NAMESPACE+".insertWish", map);
+	}
+
+	@Override
+	public int deleteProductWish(int product_code, String user_id) throws Exception {
+		logger.debug(" deleteProductWish(int product_code, String user_id) 호출 ");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("product_code", product_code);
+		map.put("user_id", user_id);
+		
+		return sqlSession.delete(NAMESPACE+".deleteWish", map);
+	}
+
+	@Override
+	public int insertSubProduct(SubscrbeProductVO vo) throws Exception {
+		logger.debug(" insertSubProduct(int product_code, int count, String user_id) 호출 ");
+		
+		return sqlSession.insert(NAMESPACE+".insertSubPro", vo);
+	}
+
+	
 	
 }

@@ -31,17 +31,24 @@
 				contentType : "application/json; charset=UTF-8",
 				success : function(data){
 					if(data == ''){
-						alert("리뷰정보가 없습니다!");
+						alert("상담정보가 없습니다!");
 					}else{
 						console.log(data);
 						
 						$(data).each(function(idx,item){
+							
+							var currentDate = new Date(item.regdate);
+							var year = currentDate.getFullYear();
+							var month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
+							var day = ('0' + currentDate.getDate()).slice(-2);
+							var formatDate = year + '-' + month + '-' + day;
+							
 							var uservo = item.userVO
 							$('#list-tbody').append(
 											 `<tr><td>`+item.room_idx
 											 +`</td><td>`+uservo.user_id
 											 +`</td><td>`+uservo.user_name
-											 +`</td><td>`+item.regdate
+											 +`</td><td>`+formatDate
 											 +`</td></tr>`);
 							
 						});
@@ -97,11 +104,26 @@
 			
 		});// 채팅하기 모달 오픈
 		
+		$('#chatBot').click(function(){
+			
+			$('#modal-table1 thead').append(
+				   `<tr style="height: 10%;">
+						<td><h6 style="margin: 10px;">챗봇 물어보기</h6></td>
+					</tr>`
+			);
+	
+			$('#chocolat-content-1').attr('class','chocolat-wrapper chocolat-visible');
+			$('#first').attr('class','chocolat-overlay chocolat-visible');
+			
+		});// 챗봇 모달 오픈
+		
 		
 		$('.chocolat-close').click(function(){
 			$('.custom_closeModal').css('display','block');
 			$('#chocolat-content-0').attr('class','chocolat-wrapper');
+			$('#chocolat-content-1').attr('class','chocolat-wrapper');
 			$('#second').attr('class','chocolat-overlay');
+			$('#first').attr('class','chocolat-overlay');
 		});// 모달 클로즈
 		
 		$('#closeCheck_body2').click(function(){
@@ -111,6 +133,21 @@
 			$('#modal-table2 tbody').empty();
 			$('#modal-table2 tfoot').empty();
 			closeSocket();
+			
+			$.ajax({
+				url : "/admin/deleteroom/"+room_idx,
+				type : "GET",
+				success : function(data){
+					if(data == 1){
+						alert("상담 종료!");
+					}else{
+						alert("상담중");
+					}
+					$(location).prop("href", location.href);
+				}
+				
+			});
+			
 		});//클로즈 확인
 		
 		
@@ -172,6 +209,55 @@
 			<span class="chocolat-description">Calm Before The Storm (One Shoe Photography Ltd.)</span><span class="chocolat-pagination">1/1</span><span class="chocolat-set-title"></span><span class="chocolat-fullscreen"></span>
 		</div>
 	</div>
+</div> 
+
+<!-- 챗봇 모달 -->
+<div id="chocolat-content-1" class="chocolat-wrapper">
+	<div id="first" class="chocolat-overlay"></div>
+	<div class="chocolat-loader"></div>
+	<div class="chocolat-layout">
+		<div class="chocolat-top">
+			<span class="chocolat-close"></span>
+		</div>
+		<div class="chocolat-center">
+			<div class="chocolat-image-canvas chocolat-visible" >
+				<div class="chocolat-image-wrapper" style="width: 868px; height: 868px; background-image:url(/resources/images/modal_back.jpg); text-align: center; color: black; padding: 20px;">
+					<h1>챗봇 상품 문의</h1>
+					<div style="width: 100%; height: 100%; height: 750px; overflow: scroll; overflow-x:hidden; ">
+						<form id="uploadForm" action=""  method="post" enctype="multipart/form-data">
+							<table id="modal-table1" class="modal-table"  style="border:2px solid black; background-color: rgb(255, 220, 220); width: 400px; height:100%; margin: auto;">
+								<thead style="height: 50px; overflow: scroll; overflow-x:hidden;">
+								</thead>
+								
+								<tbody style="font-size:13px; display: block; height:540px; max-height: 540px; overflow-y: auto; flex-direction:column_reverse; background-color: white;">
+								</tbody>
+								
+								<tfoot>
+									<tr style="padding: 0px;">
+										<td><input id="chatBot-message" type="text"style="width: 300px; height: 100px; float: left; text-align: left; margin-right: 3px;">
+											<button type="button" id="chatBot-send" style="margin:5px 0px 10px 0px">물어보기</button><button type="button" id="product-search">상품조회</button></td>
+									</tr>
+								</tfoot>
+							</table>
+						</form>
+						<table id="modal-table2" class="modal-table" style="margin-top: 30px;">
+							<thead>
+							</thead>
+							
+							<tbody>
+							</tbody>
+							
+							<tfoot>
+							</tfoot>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="chocolat-bottom">
+			<span class="chocolat-description">Calm Before The Storm (One Shoe Photography Ltd.)</span><span class="chocolat-pagination">1/1</span><span class="chocolat-set-title"></span><span class="chocolat-fullscreen"></span>
+		</div>
+	</div>
 </div>
 
 <!-- 게시물 작성 취소 확인 모달 -->
@@ -191,7 +277,8 @@
 <!-- 내용 -->
 <div class="notice">
 	<div style="text-align: left; padding: 10px;">
-		<h2>고객상담<button id="addProduct" type="button" class="btn btn-dark rounded-pill" style="margin-left: 30px;">상담하기</button></h2>
+		<h2>고객상담<button id="addProduct" type="button" class="btn btn-dark rounded-pill" style="margin-left: 30px;">상담하기</button>
+					<button id="chatBot" type="button" class="btn btn-dark rounded-pill" style="margin-left: 30px;">챗봇열기</button></h2>
 			<div class="col-sm-6 offset-sm-2 offset-md-0 col-lg-5 d-none d-lg-block">
             <div class="search-bar row bg-light p-2 my-2 rounded-4">
               <div class="col-md-4 d-none d-md-block">
@@ -213,7 +300,6 @@
           </div>
       </div>
 </div>
-
 
 <table class="listTable" style="width: 99%; border-collapse: collapse; margin-left: 19px; background-color: white;">
     <thead>
@@ -240,9 +326,8 @@
 		<span aria-hidden="true">«</span>
 		</a>
 	</li>
+	
 	<li class="page-item active" aria-current="page"><a class="page-link border-0" href="#">1</a></li>
-	<li class="page-item"><a class="page-link border-0" href="#">2</a></li>
-	<li class="page-item"><a class="page-link border-0" href="#">3</a></li>
 	<li class="page-item">
 		<a class="page-link border-0" href="#" aria-label="Next">
 		<span aria-hidden="true">»</span>
@@ -251,11 +336,9 @@
 </ul>     
 </div>
 
-
 <script>
 //소켓 함수 모음
-
-	 $(document).ready(function() {
+$(document).ready(function() {
             //$("#joinBtn").click(openSocket);
             //$("#leaveBtn").click(closeSocket);
             $("#sendChat").click(send);
@@ -362,7 +445,101 @@
 		
 //소켓 함수 모음
 
+// 챗봇 함수 모음
+	    const userInput = $('#chatBot-message');
+	    
+	    const apiEndpoint = 'https://api.openai.com/v1/chat/completions'
+	    // ChatGPT API 요청
+	    async function fetchAIResponse(prompt) {
+	        
+	        const requestOptions = {
+	            method: 'POST',
+	            // API 요청의 헤더를 설정
+	            headers: {
+	            	'Content-Type': 'application/json',
+	                'Authorization': ``
+	            },
+	            body: JSON.stringify({
+	                model: "gpt-3.5-turbo", 
+	                messages: [{
+	                    role: "user",
+	                    content: prompt
+	                }, ],
+	                temperature: 0.8,
+	                max_tokens: 1024,
+	                top_p: 1, 
+	                frequency_penalty: 0.5, 
+	                presence_penalty: 0.5, 
+	                 
+	            }),
+	        };
+	        // API 요청후 응답 처리
+	        try {
+	            const response = await fetch(apiEndpoint, requestOptions);
+	            const data = await response.json();
+	            const aiResponse = data.choices[0].message.content;
+	            return aiResponse;
+	        } catch (error) {
+	    		console.error('OpenAI API 호출 중 오류 발생:', error);
+	            return 'OpenAI API 호출 중 오류 발생';
+	        }
+	    }
+	    	// 전송 버튼 클릭 이벤트
+	    $('#chatBot-send').on('click', async function(){
+	        
+	        const message = $('#chatBot-message').val();
+	        if (message.length === 0) return;
+	        console.log(message);
+	        $('#modal-table1 tbody').append(
+				"<tr style='border:none;'><td colspan='7' style='text-align: right; width: 501px; border:none;'>"+message+"</td></tr>"
+			);
+	        
+	        $('#chatBot-message').val("");
+	        const aiResponse = await fetchAIResponse(message);
+	        console.log(aiResponse);
+	        $('#modal-table1 tbody').append(
+					"<tr style='border:none;'><td colspan='7' style='text-align: left; width: 501px; border:none;'><label style='color:blue'>동백AI</label>:"
+					+aiResponse+"<br><label style='color: red;'>주문하시려면 상품조회 클릭!</label></td></tr>"
+				);
+	        $('#modal-table1 tbody').scrollTop($('#modal-table1 tbody')[0].scrollHeight);
+	        
+	        });
+	    
+	    $('#product-search').on('click',function(){
+	    	const product = $('#chatBot-message').val();
+	    	if (product.length === 0) return;
+	        console.log(product);
+	        
+	        $.ajax({
+	        	url : "/admin/prosearch/"+product,
+	        	type : "GET",
+	        	contentType : "charset=UTF-8",
+	        	success : function(data){
+	        		$('#chatBot-message').val("");
+	        		//alert(product);
+	        		console.log(data);
+	        		
+	        		$(data).each(function(idx,item){
+		        		$('#modal-table1 tbody').append(
+		        				"<tr style='border:none; width: 501px;'><td style= 'border:none;'>"+item.product_code
+								 +"</td><td style= 'border:none;'>"+item.product_name
+								 +"</td><td style= 'border:none;'><a href='http://localhost:8088/'><img style='width: 40px; height: 40px;' src='/resources/upload1/"+item.img1+"'></a>"
+								 +"</td><td style= 'border:none;'>"+item.price+"원"
+								 +"</td><td style= 'border:none;'>"+item.unit
+								 +"</td><td style= 'border:none;'>"+item.country
+								 +"</td><td style= 'border:none;'>"+item.category
+								 +"</td></tr>");
+	        		});
+	        		
+	        		$('#modal-table1 tbody').scrollTop($('#modal-table1 tbody')[0].scrollHeight);
+	        	}
+	        });
+	    });
 
+
+
+
+// 챗봇 함수 모음
 
 
 </script>

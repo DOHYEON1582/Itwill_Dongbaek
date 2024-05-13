@@ -91,6 +91,20 @@ public interface AdminDAO {
 	// 아이디 중복체크
 	public int idCheck(AdminSellerVO vo)throws Exception;
 	
+	//사업자 회원가입 
+	public int insertSeller(AdminSellerVO vo)throws Exception;
+	
+	// 가게 정보 입력하기
+	public int insertStore(AdminStoreVO vo)throws Exception;
+	
+	// 가게 코드 번호 가져오기
+	public int getStoreCode()throws Exception;
+	
+	// 채팅방 삭제하기
+	public int deleteChatRoom(int room_idx)throws Exception;
+	
+	//챗봇 검색 상품 가져오기
+	public List<AdminProductVO> searchProduct(String product_name)throws Exception;
 
 
 }//endDAO
