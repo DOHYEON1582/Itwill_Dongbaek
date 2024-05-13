@@ -8,7 +8,7 @@
         .infoBody {
         text-align: center;
         margin: 50px auto; /* Adjust as needed */
-        padding: 10px;
+        padding: 10px; 
         border-radius: 10px;
         width: 50%; /* Adjust width as needed */
         }
