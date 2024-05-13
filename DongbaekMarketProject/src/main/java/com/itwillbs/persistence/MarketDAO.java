@@ -82,10 +82,13 @@ public interface MarketDAO {
 	// 카트에 넣기
 	public void insertCart(CartVO cart) throws Exception;
 	
-
 	// 구독 제품 리스트 가져오기
 	public List<ProductVO> getSubProductList()throws Exception;
 	
+	// 0509 카트 번호 생성
+	// maxCartCode 가져오기
+	public int selectMaxCartCode() throws Exception;
+ 
 	// 찜 리스트 가져오기
 	public List<WishVO> getUserWish(String user_id)throws Exception;
 	

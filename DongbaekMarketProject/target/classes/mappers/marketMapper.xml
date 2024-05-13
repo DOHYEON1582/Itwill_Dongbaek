@@ -187,12 +187,13 @@
 		select * from wish
 		where user_id = #{user_id}
 	</select>
-	
-	<!-- 카트에 넣기 -->
-	<insert id="insertCart">
-		insert into cart(user_id,product_code,count,price)
-		values (#{user_id},#{product_code},#{count},#{price})
-	</insert>
+
+  <!-- 카트에 넣기 -->
+  <insert id="insertCart">
+  	insert into cart(cart_code,user_id,product_code,bundle_code,count,price,delivery_fee,states)
+  	values (#{cart_code},#{user_id},#{product_code},#{bundle_code},#{count},#{price},#{delivery_fee},#{states})
+  </insert>
+
 
 	<!-- 최근 문의글 10개 불러오기 -->
 	<select id="newQuestion"
@@ -209,11 +210,13 @@
 		values(#{answer_code}, #{q_code},
 		#{answer_content}, #{writer}, now())
 	</insert>
+	
 	<!-- 문의 답글 조회 -->
 	<select id="selectAnswer"
 		resultType="com.itwillbs.domain.AnswerVO">
 		select * from answer where q_code = #{q_code}
 	</select>
+	
 	<!-- 문의 답글 중복체크 -->
 	<select id="checkDuplicateAnswer" parameterType="int"
 		resultType="int">
@@ -235,6 +238,13 @@
 	<select id="checkDuplicateMark" parameterType="int"
 		resultType="int">
 		select count(*) from mark where store_code
+	</select>
+
+	<!-- 0509 카트 번호 생성 -->
+	<!-- maxCartCode 가져오기 -->
+	<select id="selectMaxCartCode" resultType="int">
+		SELECT Ifnull(Max(cart_code), 0) AS cart_code
+		FROM   cart   
 	</select>
 
 
