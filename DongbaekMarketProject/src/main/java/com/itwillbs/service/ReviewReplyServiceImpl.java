@@ -7,12 +7,16 @@ import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import com.itwillbs.domain.AdminReviewVO;
 import com.itwillbs.domain.ReviewCri;
 import com.itwillbs.domain.ReviewVO;
+import com.itwillbs.domain.UserVO;
 import com.itwillbs.persistence.ReviewReplyDAO;
 
-@Repository
+@Service
 public class ReviewReplyServiceImpl implements ReviewReplyService {
 
 	@Inject
@@ -21,9 +25,9 @@ public class ReviewReplyServiceImpl implements ReviewReplyService {
 	private static final Logger logger = LoggerFactory.getLogger(ReviewReplyServiceImpl.class);
 	
 	@Override
-	public List<ReviewVO> getAllReviews(ReviewCri cri) throws Exception {
+	public List<ReviewVO> getReviewList(UserVO uvo) throws Exception {
 		logger.debug(" getAllReviews() 호출 ");
-		return rdao.getAllReviews(cri);
+		return rdao.getReviewList(uvo);
 	}
 
 	@Override
@@ -32,22 +36,26 @@ public class ReviewReplyServiceImpl implements ReviewReplyService {
         return rdao.countReviews();
     }
 	
+	 public ReviewVO getReview(int review_code) throws Exception {
+	        logger.debug(" getReview(int review_code) 호출 ");
+	        return rdao.getReview(review_code);
+	   }
+
+	
+	
 	@Override
-	public ReviewVO getReviewByCode(int review_code) throws Exception {
-		logger.debug(" getReviewByCode(int review_code) 호출 ");
-		return rdao.getReviewByCode(review_code);
+	public int checkReplyExist(int review_code) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override
 	public void addReply(ReviewVO rvo) throws Exception {
-		logger.debug(" addReply(ReviewVO reply) 호출 ");
-		// 기존 리뷰의 re_ref 값을 사용하여 그룹 번호 설정
-        rvo.setRe_ref(rvo.getReview_code());
-        // 기존 리뷰의 re_lev 값에 1을 더하여 계층 설정
-        rvo.setRe_lev(rvo.getRe_lev() + 1);
-        // 기존 리뷰의 re_seq 값에 1을 더하여 순서 설정
-        rvo.setRe_seq(rvo.getRe_seq() + 1);
-		rdao.addReply(rvo);
+	    logger.debug("addReply(ReviewVO reply) 호출");
+	    rvo.setRe_ref(rvo.getReview_code());
+	    rvo.setRe_lev(rvo.getRe_lev() + 1);
+	    rvo.setRe_seq(rvo.getRe_seq() + 1);
+	    rdao.addReply(rvo);
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="../include/header.jsp" %>
-<link href="/resources/css/projectCSS2.css" rel="stylesheet" type="text/css" />
+
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
 
 <!-- <link href="/resources/css/projectCSS2.css" rel="stylesheet" type="text/css" /> -->
@@ -8,7 +8,7 @@
         .infoBody {
         text-align: center;
         margin: 50px auto; /* Adjust as needed */
-        padding: 10px;  
+        padding: 10px;
         border-radius: 10px;
         width: 50%; /* Adjust width as needed */
         }
@@ -54,100 +54,92 @@
     <table class="info-table">
         <tr class="info-row"> 
             <td>아이디</td>
-            <td>${userinfo.user_id}</td>
+            <td>${sellerinfo.seller_id}</td>
         </tr>
         <tr class="info-row">
             <td>이름</td>
-            <td>${userinfo.user_name}</td>
+            <td>${sellerinfo.seller_name}</td>
         </tr>
         <tr class="info-row"> 
             <td>전화번호</td>
-            <td>${userinfo.phone}</td>
+            <td>${sellerinfo.seller_phone}</td>
         </tr>
         <tr class="info-row"> 
             <td>주소</td>
-            <td>${userinfo.addr1}</td>
+            <td>${sellerinfo.store_addr1}</td>
         </tr>
         <tr class="info-row"> 
             <td>상세주소</td>
-            <td>${userinfo.addr2}</td>
+            <td>${sellerinfo.store_addr2}</td>
         </tr>
         <tr class="info-row"> 
             <td>회원가입일</td>
-            <td>${userinfo.regdate}</td>
-        </tr>
-        <tr class="info-row"> 
-            <td>회원 수정일</td>
-            <td>${userinfo.update_date}</td>
+            <td>${sellerinfo.regdate}</td>
         </tr>
     </table>
 	    <a href="/member/update" class="info-link">회원정보 수정</a>
 	    <a href="/member/delete" class="info-link">회원정보 삭제</a>
-	    <a href="/member/wish" class="info-link">찜 목록</a>
-	    <a href="/member/mark" class="info-link">즐겨찾기</a>
-	    <a href="/member/subscribe" class="info-link">구독 정보 조회</a>
-	    <button id="chat-modal-open" class="info-link" style="border: none">1:1문의하기</button>
 </div>
 
 <!-- 모달 -->
-<div id="chocolat-content-0" class="chocolat-wrapper">
-	<div id="second" class="chocolat-overlay"></div>
-	<div class="chocolat-loader"></div>
-	<div class="chocolat-layout">
-		<div class="chocolat-top">
-			<span class="chocolat-close"></span>
-		</div>
-		<div class="chocolat-center">
-			<div class="chocolat-image-canvas chocolat-visible" >
-				<div class="chocolat-image-wrapper" style="width: 868px; height: 868px; background-image:url(/resources/images/modal_back.jpg); text-align: center; color: black; padding: 20px;">
-					<h1>상담사문의</h1>
-					<div style="width: 100%; height: 100%; height: 750px; overflow: scroll; overflow-x:hidden; ">
-						<form id="uploadForm" action=""  method="post" enctype="multipart/form-data">
-							<table id="modal-table1" class="modal-table"  style="border:1px solid black; background-color: rgb(255, 220, 220); width: 400px; height:100%; margin: auto;">
-								<thead style="height: 50px;">
-								</thead>
+<!-- <div id="chocolat-content-0" class="chocolat-wrapper"> -->
+<!-- 	<div id="second" class="chocolat-overlay"></div> -->
+<!-- 	<div class="chocolat-loader"></div> -->
+<!-- 	<div class="chocolat-layout"> -->
+<!-- 		<div class="chocolat-top"> -->
+<!-- 			<span class="chocolat-close"></span> -->
+<!-- 		</div> -->
+<!-- 		<div class="chocolat-center"> -->
+<!-- 			<div class="chocolat-image-canvas chocolat-visible" > -->
+<!-- 				<div class="chocolat-image-wrapper" style="width: 868px; height: 868px; background-image:url(/resources/images/modal_back.jpg); text-align: center; color: black; padding: 20px;"> -->
+<!-- 					<h1>상담사문의</h1> -->
+<!-- 					<div style="width: 100%; height: 100%; height: 750px; overflow: scroll; overflow-x:hidden; "> -->
+<!-- 						<form id="uploadForm" action=""  method="post" enctype="multipart/form-data"> -->
+<!-- 							<table id="modal-table1" class="modal-table"  style="border:1px solid black; background-color: rgb(255, 220, 220); width: 400px; height:100%; margin: auto;"> -->
+<!-- 								<thead style="height: 50px;"> -->
+<!-- 								</thead> -->
 								
-								<tbody style="font-size:13px; display: block; height:540px; max-height: 540px; overflow-y: auto; flex-direction:column_reverse; background-color: white;">
-								</tbody>
+<!-- 								<tbody style="font-size:13px; display: block; height:540px; max-height: 540px; overflow-y: auto; flex-direction:column_reverse; background-color: white;"> -->
+<!-- 								</tbody> -->
 								
-								<tfoot>
-									<tr style="padding: 0px;">
-										<td><input id="key-chat" type="text"style="width: 300px; height: 100px; float: left; text-align: left;"><button type="button" id="sendChat">보내기</button></td>
-									</tr>
-								</tfoot>
-							</table>
-						</form>
-						<table id="modal-table2" class="modal-table" style="margin-top: 30px;">
-							<thead>
-							</thead>
+<!-- 								<tfoot> -->
+<!-- 									<tr style="padding: 0px;"> -->
+<!-- 										<td><input id="key-chat" type="text"style="width: 300px; height: 100px; float: left; text-align: left;"><button type="button" id="sendChat">보내기</button></td> -->
+<!-- 									</tr> -->
+<!-- 								</tfoot> -->
+<!-- 							</table> -->
+<!-- 						</form> -->
+<!-- 						<table id="modal-table2" class="modal-table" style="margin-top: 30px;"> -->
+<!-- 							<thead> -->
+<!-- 							</thead> -->
 							
-							<tbody>
-							</tbody>
+<!-- 							<tbody> -->
+<!-- 							</tbody> -->
 							
-							<tfoot>
-							</tfoot>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="chocolat-bottom">
-			<span class="chocolat-description">Calm Before The Storm (One Shoe Photography Ltd.)</span><span class="chocolat-pagination">1/1</span><span class="chocolat-set-title"></span><span class="chocolat-fullscreen"></span>
-		</div>
-	</div>
-</div> 
+<!-- 							<tfoot> -->
+<!-- 							</tfoot> -->
+<!-- 						</table> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 		<div class="chocolat-bottom"> -->
+<!-- 			<span class="chocolat-description">Calm Before The Storm (One Shoe Photography Ltd.)</span><span class="chocolat-pagination">1/1</span><span class="chocolat-set-title"></span><span class="chocolat-fullscreen"></span> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+<!-- </div>  -->
 
-<!-- 게시물 작성 취소 확인 모달 -->
-<div class="custom_closeModal">
-	<div class="closeCheck">
-		<div class="closeCheck_body">
-			<div id="closeCheck_body1">상담을 종료 하시겠어요?</div>
-			<div id="closeCheck_body2">종료</div>
-			<div id="closeCheck_body3">취소</div>
-		</div>
-	</div>
+<!-- 게시물 작성 취소 확인 모달 --> 
+<!-- <div class="custom_closeModal"> -->
+<!-- 	<div class="closeCheck"> -->
+<!-- 		<div class="closeCheck_body"> -->
+<!-- 			<div id="closeCheck_body1">상담을 종료 하시겠어요?</div> -->
+<!-- 			<div id="closeCheck_body2">종료</div> -->
+<!-- 			<div id="closeCheck_body3">취소</div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
 
-</div>
+<!-- </div> -->
 
 <script>
 $(document).ready(function(){
@@ -221,17 +213,17 @@ $(document).ready(function() {
             //$("#clearBtn").click(clearText);
         });
 		
-		console.log("!!!!!!!!!!${sessionScope.userVO.user_id}");
+		console.log("!!!!!!!!!!${sessionScope.sellerVO.seller_id}");
 	 var ws;
 	 var messages = $("#messages");
 	 var room_idx;
-	 var user_id = "${sessionScope.userVO.user_id}";
+	 var seller_id = "${sessionScope.sellerVO.seller_id}";
 
 		// 처음 방 생성
 		function firstOpenSocket(){
 			
 			$.ajax({
-				url : "/admin/createRoom/${sessionScope.userVO.user_id}",
+				url : "/admin/createRoom/${sessionScope.sellerVO.seller_id}",
 				type : "GET",
 				success : function(data){
 					
@@ -243,7 +235,7 @@ $(document).ready(function() {
 		             return;
 		         }
 		         //웹소켓 객체 만드는 코드
-		         ws = new WebSocket("ws://localhost:8088/chat/"+room_idx+"/${sessionScope.userVO.user_id}");
+		         ws = new WebSocket("ws://localhost:8088/chat/"+room_idx+"/${sessionScope.sellerVO.seller_id}");
 		         
 		         ws.onopen = function(event){
 		             if(event.data === undefined){
@@ -274,7 +266,7 @@ $(document).ready(function() {
 		     return;
 		 }
 		 //웹소켓 객체 만드는 코드
-		 ws = new WebSocket("ws://localhost:8088/chat/"+room_idx+"/${sessionScope.userVO.user_id}");
+		 ws = new WebSocket("ws://localhost:8088/chat/"+room_idx+"/${sessionScope.sellerVO.seller_id}");
 		 
 		 
 		 ws.onopen = function(event){
@@ -297,7 +289,7 @@ $(document).ready(function() {
 		}
 		
 		function send(){
-		 var text = $("#key-chat").val() + ",${sessionScope.userVO.user_id}";
+		 var text = $("#key-chat").val() + ",${sessionScope.sellerVO.seller_id}";
 		 ws.send(text);
 		 $("#key-chat").val("");
 		 $('#key-chat').focus();
@@ -339,7 +331,7 @@ $(document).ready(function() {
 	            body: JSON.stringify({
 	                model: "gpt-3.5-turbo", 
 	                messages: [{
-	                    role: "user",
+	                    role: "seller",
 	                    content: prompt
 	                }, ],
 	                temperature: 0.8,

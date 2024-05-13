@@ -321,7 +321,7 @@ body {
 	                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 	                    </div>
 	                    <div class="offcanvas-body">
-	                       <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
+	                        <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
 	                            <li class="nav-item active"><a href="/seller/product" class="nav-link">상품관리</a></li>
 	                            <li class="nav-item dropdown"><a href="/seller/orderlist" class="nav-link">주문관리</a></li>
 	                            <li class="nav-item"><a href="/seller/review" class="nav-link">리뷰관리</a></li>
@@ -375,107 +375,56 @@ body {
 </aside>
 
 	
-	<div id="productmodify" style="text-align: center; font-size: 24px; margin-bottom: 20px;">상품 수정</div>
-    <div style="background-color: white; padding: 20px; max-width: 400px; margin: 0 auto; border: 1px solid #ccc;">
-        <form id="productmodifySubmit" action="/seller/productmodifySubmit" method="post" enctype="multipart/form-data" style="max-width: 400px; margin: 0 auto;">
-            <input type="hidden" id="product_code" name="product_code" value="${product.product_code}"> <!-- 상품 코드 숨김 필드 추가 -->
-    
-            <div style="margin-bottom: 10px;">
-                <label for="category" style="display: block; margin-bottom: 5px;">카테고리:</label>
-                <select id="category" name="category" style="width: 100%; padding: 8px;">
-                    <option value="" selected disabled>카테고리를 선택하세요</option>
-                    <option value="채소">채소</option>
-                    <option value="고기">고기</option>
-                    <option value="생선">생선</option>
-                    <!-- 필요한 만큼 옵션을 추가할 수 있습니다 -->
-                </select>
-            </div>
-            <!-- 등록 페이지의 폼 요소를 여기에 추가하고, 기존 값으로 채워 넣을 수 있도록 수정하세요 -->
-            <div style="margin-bottom: 10px;">
-                <label for="product_name" style="display: block; margin-bottom: 5px;">상품명:</label>
-                <input type="text" id="product_name" name="product_name" value="${product.product_name }" style="width: 100%; padding: 8px;">
-            </div>
-            <div style="margin-bottom: 10px;">
-            <label for="unit" style="display: block; margin-bottom: 5px;">단위:</label>
-            <input type="text" id="unit" name="unit" value="${product.unit }" style="width: 100%; padding: 8px;">
-	        </div>
-	        <div style="margin-bottom: 10px;">
-	            <label for="price" style="display: block; margin-bottom: 5px;">판매가:</label>
-	            <input type="text" id="price" name="price" value="${product.price }" style="width: 100%; padding: 8px;">
-	        </div>
-	        <div style="margin-bottom: 10px;">
-			    <label for="img1" style="display: block; margin-bottom: 5px;">이미지1:</label>
-			    <input type="file" id="img1" name="img1" style="width: 100%; padding: 8px;">
-			</div>
-			<div style="margin-bottom: 10px;">
-			    <label for="img2" style="display: block; margin-bottom: 5px;">이미지2:</label>
-			    <input type="file" id="img2" name="img2" style="width: 100%; padding: 8px;">
-			</div>
-			<div style="margin-bottom: 10px;">
-			    <label for="img3" style="display: block; margin-bottom: 5px;">이미지3:</label>
-			    <input type="file" id="img3" name="img3" style="width: 100%; padding: 8px;">
-			</div>
-	        <div style="margin-bottom: 10px;">
-	            <label for="product_explain" style="display: block; margin-bottom: 5px;">상품 설명:</label>
-	            <textarea id="product_explain" name="product_explain" rows="4" value="${product.product_explain}" style="width: 100%; padding: 8px;"></textarea>
-	        </div>
-	        <div style="margin-bottom: 10px;">
-	            <label for="max_account" style="display: block; margin-bottom: 5px;">최대 구매 수량</label>
-	            <input type="number" id="max_account" name="max_account" value="${product.max_account}" style="width: 100%; padding: 8px;">
-	        </div>
-	        <div style="margin-bottom: 10px;">
-	            <label for="country" style="display: block; margin-bottom: 5px;">원산지</label>
-	            <input type="text" id="country" name="country" value="${product.country}" style="width: 100%; padding: 8px;">
-	        </div>
-            <!-- 필요한 폼 요소들을 추가하세요 -->
-            <input type="submit" value="수정" id="submitButn" style="width: 100%; padding: 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">
-        </form>
-    </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-    $(document).ready(function(){
-        $("#productmodifySubmit").on("submit", function(event){
-            event.preventDefault(); // 기본 이벤트 제거
+	
+	
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+        <div style="width: 80%; text-align: center;">
+            <h1 style="color: #333;">판매자 배송 페이지</h1>
             
-            var formData = new FormData(); // 폼 데이터 생성
-    
-            // 폼 데이터에 파일 추가
-            formData.append("img1", $("#img1")[0].files[0]);
-            formData.append("img2", $("#img2")[0].files[0]);
-            formData.append("img3", $("#img3")[0].files[0]);
-    
-            // 나머지 폼 데이터 추가
-            formData.append("product_code", $("#product_code").val());
-            formData.append("category", $("#category").val());
-            formData.append("product_name", $("#product_name").val());
-            formData.append("unit", $("#unit").val());
-            formData.append("price", $("#price").val());
-            formData.append("product_explain", $("#product_explain").val());
-            formData.append("max_account", $("#max_account").val());
-            formData.append("country", $("#country").val());
-            formData.append("store_code", $("#store_code").val());
-            formData.append("product_code", $("#product_code").val()); // 상품 코드 추가
-    
-            // Ajax 통신
-            $.ajax({
-                url: '/seller/productmodifySubmit',
-                processData: false,
-                contentType: false,
-                data: formData,
-                type: "POST",
-                success: function(data){
-                    if(data === "f"){
-                        alert("파일 업로드 실패");
-                    } else {
-                        window.location.href = "/seller/productDetail?product_code=" + $("#product_code").val(); // 파일 업로드 성공시 수정된 상품 상세 페이지로 이동
-                    }
-                }
-            });
-        });
-    });
-    </script>
-	
-	
+            <!-- 배송 정보 조회 -->
+            <h2 style="color: #333;">배송 정보 조회</h2>
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                <thead>
+                    <tr>
+                        <th style="padding: 10px; border: 1px solid #ddd;">주문 코드</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">수취인 이름</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">수취인 전화번호</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">주문 날짜</th>
+                        <th style="padding: 10px; border: 1px solid #ddd;">배송 상태</th>
+                        <!-- 필요한 다른 컬럼들 -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 배송 정보를 반복해서 표시하는 부분 -->
+                    <c:forEach items="${deliveryList}" var="delivery">
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #ddd;">${delivery.order_code}</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">${delivery.rcv_name}</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">${delivery.rcv_phone}</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">${delivery.order_date}</td>
+                            <td style="padding: 10px; border: 1px solid #ddd;">${delivery.delivery_status}</td>
+                            <!-- 필요한 다른 컬럼 데이터 -->
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+
+            <!-- 배송 진행도에 따른 배송 정보 업데이트 -->
+            <h2 style="color: #333;">배송 진행도 업데이트</h2>
+            <form action="/seller/updateDelivery" method="post" style="margin-top: 20px;">
+                <label for="order_code" style="display: block; margin-bottom: 5px;">주문 코드:</label>
+                <input type="text" id="orderCode" name="orderCode" required style="width: 100%; padding: 8px; margin-top: 5px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                <br>
+                <label for="deliveryStatus" style="display: block; margin-bottom: 5px;">배송 상태:</label>
+                <select id="deliveryStatus" name="deliveryStatus" required style="width: 100%; padding: 8px; margin-top: 5px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                    <option value="배송준비">배송준비</option>
+                    <option value="배송중">배송중</option>
+                    <option value="배송완료">배송완료</option>
+                    <!-- 필요한 다른 배송 상태 옵션들 -->
+                </select>
+                <br>
+                <input type="submit" value="업데이트" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
+            </form>
 	
 	
 	
