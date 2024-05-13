@@ -217,7 +217,7 @@ public class SellerPageController {//판매자 페이지 컨트롤러
     //  http://localhost:8088/seller/sellermain
     @RequestMapping(value = "/sellermain",method = RequestMethod.GET)
     public void main() throws Exception{
-        logger.debug(" main() 실행 ");
+        logger.debug(" sellermain() 실행 ");
     }
     // 판매자 상품페이지(상품목록)
     //  http://localhost:8088/seller/product

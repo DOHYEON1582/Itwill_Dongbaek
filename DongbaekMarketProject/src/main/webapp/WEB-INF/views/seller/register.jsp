@@ -13,10 +13,10 @@
 <script type="text/javascript">
     $(document).ready(function(){
         $("#seller_id").on("focusout", function(event){
-            var user_id = $("#seller_id").val();
+            var seller_id = $("#seller_id").val();
             
             $.ajax({
-                url : "./confirm",
+                url : "./seller/confirm",
                 data : {seller_id : seller_id},
                 type : "POST",
                 dataType : "json",
@@ -36,8 +36,8 @@
     
     $(document).ready(function(){
 	    $("#seller_pw2").on("focusout", function(event){
-	    	var user_pw = $("#seller_pw").val();
-	    	var user_pw2 = $("#seller_pw2").val();
+	    	var seller_pw = $("#seller_pw").val();
+	    	var seller_pw2 = $("#seller_pw2").val();
 	    	if(user_pw == user_pw2){
 	    		$("#label2").css("color", "black").text("비밀번호가 같습니다.");
 	    	} else {

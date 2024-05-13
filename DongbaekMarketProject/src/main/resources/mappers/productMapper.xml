@@ -40,7 +40,7 @@
 	<!-- 사업자 회원가입 -->
 	<insert id="insertSeller">
 		INSERT INTO seller (seller_id, store_code, seller_pw, salt, seller_phone, seller_name, store_addr1, store_addr2, bank, account, store_number, regdate )
-		VALUES (#{seller_id},#{store_code},#{seller_pw},'100',#{seller_phone},#{seller_name},#{store_addr1},#{store_addr2},#{bank},#{account},#{store_number},now())
+		VALUES (#{seller_id},#{store_code},#{seller_pw},'ROLE_SELLER',#{seller_phone},#{seller_name},#{store_addr1},#{store_addr2},#{bank},#{account},#{store_number},now())
 	</insert>
 	
 	<!-- 회원가입 관리자 권한주기 -->
