@@ -334,7 +334,7 @@ function topFunction() {
 	
 </div>
 </section>
-	<h3>인기 상점</h3>
+	<h3>인기 상점</h3> 
 	<div class="slider-container">
 		<div class="slider5">
 		<c:forEach var="store" items="${storeList }" >
