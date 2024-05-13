@@ -30,13 +30,13 @@
 
 </head>
 <style>
-#header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 999; /* 다른 요소 위에 보이도록 z-index 설정 */
-}
+	#header {
+	    position: fixed;
+	    top: 0;
+	    left: 0;
+	    width: 100%;
+	    z-index: 999; /* 다른 요소 위에 보이도록 z-index 설정 */
+	}
 	.c {
 		margin: 10px 100px  ;
 	}
@@ -109,17 +109,17 @@
 		height: 100px ;
 		margin: 0 auto ;
 	}
-/* 검색창 크기 고정 */
-.search-bar {
-    width: 656px;
-    height: 66px;
-}
-
-/* 로고 크기 고정 */
-.mylogo2 {
-    width: 300px;
-    height: 100px;
-}
+	/* 검색창 크기 고정 */
+	.search-bar {
+	    width: 656px;
+	    height: 66px;
+	}
+	
+	/* 로고 크기 고정 */
+	.mylogo2 {
+	    width: 300px;
+	    height: 100px;
+	}
     /* 검색창 스타일 */
     .search-bar {
         padding: 10px;
@@ -258,13 +258,12 @@
 					        <div class="align-items-center">
 					            <a href="/member/login" class="login">로그인</a>
 					            <a href="/member/register" class="join">회원가입</a>
-					            <a href="#" class="service">고객센터</a>
 					        </div>
 				    	</c:if>
 				    	<c:if test="${sessionScope.userVO.user_id != null }">
 					        <div class="align-items-center">
 					            로그인 id : ${sessionScope.userVO.user_id }
-					            <a href="#" class="service">고객센터</a>
+					            <a href="/member/info" class="service">고객센터</a>
 					            <input type="button" value="로그아웃" onclick="location.href='/member/logout';">
 					        </div>
 				        <ul class="d-flex justify-content-end list-unstyled m-3">
@@ -303,7 +302,7 @@
 
 	                        <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
 	                            <li class="nav-item active"><a href="/market/marketIntroduce" class="nav-link">시장소개</a></li>
-	                            <li class="nav-item dropdown"><a href="#men" class="nav-link">제철음식</a></li>
+	                            <li class="nav-item dropdown"><a href="/market/seasonFood" class="nav-link">제철음식</a></li>
 	                            <li class="nav-item"><a href="/market/product?orderBy=popularity" class="nav-link">인기음식</a></li>
 	                            <li class="nav-item"><a href="/market/sub" class="nav-link">구독상품</a></li>
 	                        </ul>

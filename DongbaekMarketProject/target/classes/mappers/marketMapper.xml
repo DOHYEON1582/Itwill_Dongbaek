@@ -235,9 +235,8 @@
 		SELECT COUNT(*) FROM wish WHERE user_id = #{user_id} and product_code = #{product_code}
 	</select>
 	<!-- 즐겨찾기 중복체크 -->
-	<select id="checkDuplicateMark" parameterType="int"
-		resultType="int">
-		select count(*) from mark where store_code
+	<select id="checkDuplicateMark" parameterType="map"	resultType="int">
+		SELECT COUNT(*) FROM mark WHERE store_code = #{store_code} and user_id = #{user_id}
 	</select>
 
 	<!-- 0509 카트 번호 생성 -->

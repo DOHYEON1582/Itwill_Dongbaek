@@ -71,6 +71,10 @@ public interface MarketDAO {
 	
 	// 즐겨찾기에 넣기
 	public void markStore(MarkVO mvo) throws Exception;
+	// 즐겨찾기 중복 체크
+	public int checkDuplicateMark(int store_code, String user_id) throws Exception;
+	
+	
 	
 	// 찜 넣기
 	public void wishProduct(WishVO wish) throws Exception;

@@ -10,24 +10,28 @@
 	<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
     
 	<style>
-		.bx-wrapper {
-			max-width: 1000px;
-			height: 350px;
-			margin: 0 auto;
-		}
-		#map-container{
-			display: flex;
-			align-items: flex-start; /* 지도와 정보를 위로 정렬 */
-			justify-content: center; /* 가로 중앙 정렬 */
-			margin: 100px auto;
-		}
-		#map {
-			width: 800px;
-			height: 500px;
-		}
-		#marketInfo {
-			margin-left: 20px; /* 지도와 정보 사이에 여백 추가 */
-		}
+	.bx-wrapper {
+		max-width: 1000px;
+		height: 360px;
+		margin: 0 auto;
+	}
+	.bxslider img {
+		max-width: 100%;
+		max-height: 100%;
+	}
+	#map-container{
+		display: flex;
+		align-items: flex-start; /* 지도와 정보를 위로 정렬 */
+		justify-content: center; /* 가로 중앙 정렬 */
+		margin: 100px auto;
+	}
+	#map {
+		width: 800px;
+		height: 500px;
+	}
+	#marketInfo {
+		margin-left: 20px; /* 지도와 정보 사이에 여백 추가 */
+	}
 	</style>
 	
     <script>
@@ -152,9 +156,9 @@
     </script>
     
    	<div class="bxslider">
-		<div><img src="resources/images/spring.png" /></div>
-		<div><img src="resources/images/mylogo2.png" /></div>
-		<div><img src="resources/images/mylogo2.png" /></div>
+		<div><img src="resources/images/product/seasonfood.png" /></div>
+		<div><img src="resources/images/product/dohyun2.png" /></div>
+		<div><img src="resources/images/product/hyunjin2.png" /></div>
 	</div>
 	
 	<div id="map-container">

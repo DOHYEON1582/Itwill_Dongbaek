@@ -2,8 +2,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="../include/header.jsp"%>
 <!--     <script src="./resources/js/jquery-2.1.1.js"></script> -->
-	<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <style>
 .bxslider {
 	display: inline-block;
@@ -186,22 +186,23 @@ h3 {
 	display: block;
 	width: 100%;
 }
- .cart {
-    width: 120px;
-    padding: 5px;
-    margin: 5px;
-    border: none;
-    background-color: lightyellow;
-    cursor: pointer;
-  }
+
+.cart {
+	width: 120px;
+	padding: 5px;
+	margin: 5px;
+	border: none;
+	background-color: lightyellow;
+	cursor: pointer;
+}
+
 .shop {
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-	}
-                                                                                                                                                                                         
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+}
 }
 </style>
 
@@ -224,7 +225,7 @@ h3 {
             touchEnabled: false
         });
         
-     // 수량을 변경할 때마다 총 가격을 계산하여 보여주는 함수
+     	// 수량을 변경할 때마다 총 가격을 계산하여 보여주는 함수
         function updateTotalPrice(element) {
             var quantity = parseInt(element.val()); // 수량을 가져옴
             var price = parseInt(element.closest('.product-item').find(".price").text().replace(/[^\d]/g, '')); // 상품의 가격을 가져와서 숫자로 변환
@@ -284,31 +285,50 @@ h3 {
             
         });
         
-        
         $("#markStore").click(function(){
-        	alert("즐겨찾기 하시겠습니까 ?");
-        	var mvo = {
-        			/* "mark_code":$("#mark_code").val(), */
-        			"store_code":$("#store_code").val(),
-        			"user_id":$("#user_id").val()
-        	};
-        	$.ajax({
-        		type: "POST",
-        		url: "/market/storeMain",
-                data: JSON.stringify(mvo),
-                contentType: "application/json; charset=UTF-8",  
-                success: function(data){
-                	alert("즐겨찾기 성공");
-                	location.reload();
-                },
-                error: function(xhr, status, error) {
-                    var errorMessage = xhr.status + ': ' + xhr.statusText;
-                    alert('에러가 발생했습니다.\n' + errorMessage);
-                    console.log(" error "+ error);
-                }
-        	});
-        });
-        
+		    alert("즐겨찾기 하시겠습니까 ?");
+		    var mvo = {
+		        "store_code":$("#store_code").val(),
+		        "user_id":$("#user_id").val()
+		    };
+		    $.ajax({
+		        type: "POST",
+		        url: "/market/checkMark", // 변경된 URL 주소
+		        data: JSON.stringify(mvo),
+		        contentType: "application/json; charset=UTF-8",  
+		        success: function(data){
+		        	console.log(typeof data);
+		            if (data === "true") {
+		            	alert("즐겨찾기 추가");
+		                addBookmark();
+		            } else {
+		                alert("이미 즐겨찾기에 추가된 상점입니다.");
+		            }
+		        },
+		        error: function(xhr, status, error) {
+		            var errorMessage = xhr.status + ': ' + xhr.statusText;
+		            alert('에러가 발생했습니다.\n' + errorMessage);
+		            console.log(" error "+ error);
+		        }
+		    });
+			function addBookmark() {
+			    $.ajax({
+			        type: "POST",
+			        url: "/market/storeMain",
+			        data: JSON.stringify(mvo),
+			        contentType: "application/json; charset=UTF-8",  
+			        success: function(data){
+			            alert("즐겨찾기 성공");
+			            location.reload();
+			        },
+			        error: function(xhr, status, error) {
+			            var errorMessage = xhr.status + ': ' + xhr.statusText;
+			            alert('에러가 발생했습니다.\n' + errorMessage);
+			            console.log(" error "+ error);
+			        }
+			    });
+			}
+		});
         
         // 찜 상품 
         $(".btn-wishlist").click(function(){
@@ -404,109 +424,111 @@ h3 {
 <!-- 시장정보 -->
 <section class="py-2 mb-1" style="background: url(${pageContext.request.contextPath}/resources/images/background-pattern.jpg);">
 
-<div id="sijamg_top">
-	<div class="bxslider" style="display: inline-block;">
-		<div>
-			<img src="${pageContext.request.contextPath }/resources/images/도현상회.jpg" />
+	<div id="sijamg_top">
+		<div class="bxslider" style="display: inline-block;">
+			<div>
+				<img src="${pageContext.request.contextPath }/resources/images/도현상회.jpg" />
+			</div>
+			<div>
+				<img src="${pageContext.request.contextPath }/resources/images/현진상회.jpg" />
+			</div>
+			<div>
+				<img src="${pageContext.request.contextPath }/resources/images/gupo3.png" />
+			</div>
 		</div>
-		<div>
-			<img src="${pageContext.request.contextPath }/resources/images/현진상회.jpg" />
-		</div>
-		<div>
-			<img src="${pageContext.request.contextPath }/resources/images/gupo3.png" />
-		</div>
-	</div>
-	<div id="sijang_text" style="display: inline-block; vertical-align: top;">
-		<div class="tit">
-			<div class="sij_name" style="font-size: 30px; font-weight: bold;">▶ ${store.store_name }
-		        <button id="markStore" class="clear-button button button-follow" style="margin-left: 10px;">
-		            <span class="content">
-		                <div class="inner-container">
-		                    <img src="https://front.coupangcdn.com/coupang-store-display/20240415182517/img/ic_heart_dark_outline.ebe809a.svg" width="12" alt="">
-		                    <span class="text">즐겨찾기</span>
-		                </div>
-		            </span>
-		        </button>
-		        <input type="hidden" id="store_code" value="${store.store_code }">
-				<input type="hidden" id="user_id" value="${user_id }">
-		    </div>
-		</div>
+		<div id="sijang_text" style="display: inline-block; vertical-align: top;">
+			<div class="tit">
+				<div class="sij_name" style="font-size: 30px; font-weight: bold;">
+					▶ ${store.store_name }
+					<button id="markStore" class="clear-button button button-follow" style="margin-left: 10px;">
+						<span class="content">
+							<div class="inner-container">
+								<img src="https://front.coupangcdn.com/coupang-store-display/20240415182517/img/ic_heart_dark_outline.ebe809a.svg" width="12" alt=""> <span class="text">즐겨찾기</span>
+							</div>
+						</span>
+					</button>
+					<input type="hidden" id="store_code" value="${store.store_code }"> <input type="hidden" id="user_id" value="${user_id }">
+				</div>
+			</div>
 			<div class="sij_sub_name" style="font-size: 25px;">${store.store_explain }</div>
-		<table class="storeTable">
-			<tbody>
-				<tr>
-					<th>주소</th>
-					<td style="padding-left: 10px;">${store.store_addr1 }</td>
-				</tr>
-				
-				<tr>
-					<th>전화</th>
-					<td style="padding-left: 10px;">${store.phone }</td>
-				</tr>
+			<table class="storeTable">
+				<tbody>
+					<tr>
+						<th>주소</th>
+						<td style="padding-left: 10px;">${store.store_addr1 }</td>
+					</tr>
 
-				<tr>
-					<th>판매자</th>
-					<td style="padding-left: 10px;">${store.seller_id }</td>
-				</tr>
+					<tr>
+						<th>전화</th>
+						<td style="padding-left: 10px;">${store.phone }</td>
+					</tr>
 
-				<tr>
-					<th>운영 상태</th>
-					<td style="padding-left: 10px;">${store.status }</td>
-				</tr>
-			</tbody>
-		</table>
+					<tr>
+						<th>판매자</th>
+						<td style="padding-left: 10px;">${store.seller_id }</td>
+					</tr>
+
+					<tr>
+						<th>운영 상태</th>
+						<td style="padding-left: 10px;">${store.status }</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
-</div>
 </section>
 
 
 <div class="bootstrap-tabs product-tabs">
-    <h3>가게 상품</h3>
+	<h3>가게 상품</h3>
 	<div class="container">
-	<form action="" method="get">
-        <select name="orderBy">
-            <option value="popularity" ${param.orderBy == 'popularity' ? 'selected' : ''}>인기순</option>
-            <option value="lowPrice" ${param.orderBy == 'lowPrice' ? 'selected' : ''}>낮은 가격순</option>
-            <option value="highPrice" ${param.orderBy == 'highPrice' ? 'selected' : ''}>높은 가격순</option>
-        </select>
-        <input type="hidden" name="store_code" value="${store.store_code }">
-        <input type="submit" value="정렬">
-    </form>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-6 justify-content-center gap-3">
-            <c:forEach items="${product}" var="product">
-                <div class="col" style="width: 19%;">
-                    <div class="product-item">
-                        <button id="wishProduct" class="btn-wishlist"><svg width="24" height="24"><use xlink:href="#heart"></use></svg></button>
-                        <input type="hidden" id="product_code" value="${product.product_code }">
-                        <figure>
-                            <a href="productMain?product_code=${product.product_code }" title="Product Title">
-                                <img src="${pageContext.request.contextPath}/resources/images/product/${product.img1}" alt="Product Thumbnail" class="tab-image" style="width : 180px">
-                            </a>
-                        </figure>
-                        <h4>${product.product_name}</h4>
-                        <span class="price"><fmt:formatNumber value="${product.price}" pattern="#,##0" />원</span>
-                        <span class="total-price">총 가격</span>
-                        <div class="input-group product-qty d-flex align-items-center justify-content-between">
-                            <div class="input-group product-qty">
-                                <span class="input-group-btn">
-                                    <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
-                                        <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
-                                    </button>
-                                </span>
-                                <input type="text" name="quantity" class="form-control input-number quantity" value="1">
-                                <span class="input-group-btn">
-                                    <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
-                                        <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
-                                    </button>
-                                </span>
-                            </div>
-                            <button class="cart">장바구니<svg width="18" height="18"><use xlink:href="#cart"></use></svg></button>
-                        </div>
-                    </div>
-                </div>
-            </c:forEach>
-        </div>
-    </div>
+		<form action="" method="get">
+			<select name="orderBy">
+				<option value="popularity" ${param.orderBy == 'popularity' ? 'selected' : ''}>인기순</option>
+				<option value="lowPrice" ${param.orderBy == 'lowPrice' ? 'selected' : ''}>낮은 가격순</option>
+				<option value="highPrice" ${param.orderBy == 'highPrice' ? 'selected' : ''}>높은 가격순</option>
+			</select> <input type="hidden" name="store_code" value="${store.store_code }"> <input type="submit" value="정렬">
+		</form>
+		<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-6 justify-content-center gap-3">
+			<c:forEach items="${product}" var="product">
+				<div class="col" style="width: 19%;">
+					<div class="product-item">
+						<button id="wishProduct" class="btn-wishlist">
+							<svg width="24" height="24">
+								<use xlink:href="#heart"></use></svg>
+						</button>
+						<input type="hidden" id="product_code" value="${product.product_code }">
+						<figure>
+							<a href="productMain?product_code=${product.product_code }" title="Product Title"> <img src="${pageContext.request.contextPath}/resources/images/product/${product.img1}" alt="Product Thumbnail" class="tab-image" style="width: 180px">
+							</a>
+						</figure>
+						<h4>${product.product_name}</h4>
+						<span class="price"><fmt:formatNumber value="${product.price}" pattern="#,##0" />원</span> <span class="total-price">총 가격</span>
+						<div class="input-group product-qty d-flex align-items-center justify-content-between">
+							<div class="input-group product-qty">
+								<span class="input-group-btn">
+									<button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus">
+										<svg width="16" height="16">
+											<use xlink:href="#minus"></use></svg>
+									</button>
+								</span> <input type="text" name="quantity" class="form-control input-number quantity" value="1"> <span class="input-group-btn">
+									<button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus">
+										<svg width="16" height="16">
+											<use xlink:href="#plus"></use></svg>
+									</button>
+								</span>
+							</div>
+							<button class="cart">
+								장바구니
+								<svg width="18" height="18">
+									<use xlink:href="#cart"></use></svg>
+							</button>
+						</div>
+					</div>
+				</div>
+			</c:forEach>
+		</div>
+	</div>
 </div>
 
 

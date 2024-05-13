@@ -227,22 +227,22 @@ h1 {
 		</table>
 	</div>
 	<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var months = document.querySelectorAll('.mtable th');
-        var dataCells = document.querySelectorAll('.mtable .data div');
-        dataCells[0].style.display = 'block';
-        months.forEach(function(month, index) {
-            month.addEventListener('click', function() {
-                // 모든 데이터를 숨김
-                dataCells.forEach(function(cell) {
-                    cell.style.display = 'none';
-                });
-                // 클릭한 월에 해당하는 데이터를 보여줌
-                dataCells[index].style.display = 'block';
-            });
-        });
-    });
-</script>
+	document.addEventListener('DOMContentLoaded', function() {
+		var months = document.querySelectorAll('.mtable th');
+		var dataCells = document.querySelectorAll('.mtable .data div');
+		dataCells[0].style.display = 'block';
+		months.forEach(function(month, index) {
+			month.addEventListener('click', function() {
+				// 모든 데이터를 숨김
+				dataCells.forEach(function(cell) {
+					cell.style.display = 'none';
+				});
+				// 클릭한 월에 해당하는 데이터를 보여줌
+				dataCells[index].style.display = 'block';
+			});
+		});
+	});
+	</script>
 
 </body>
 
