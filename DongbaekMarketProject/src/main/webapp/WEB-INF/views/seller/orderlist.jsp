@@ -264,7 +264,7 @@ body {
 			<div class="row py-3 border-bottom">
 				<div class="col-sm-4 col-lg-3 text-center text-sm-start">
 					<div class="main-logo">
-						<a href="/seller/sellermain"> <img src="/resources/images/logo2.png" alt="logo" class="mylogo2">
+						<a href="/seller/sellermain"> <img src="${pageContext.request.contextPath }/resources/images/logo2.png" alt="logo" class="mylogo2">
 						</a>
 					</div>
 				</div>
@@ -286,21 +286,26 @@ body {
 				</div>
 				<div class="col-sm-8 col-lg-3 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
 				    <div>
-				        <div class="align-items-center">			           
-				            <a href="#" class="join">로그아웃</a>
-				            <a href="#" class="service">고객센터</a>
-				        </div>
+				    	<c:if test="${sessionScope.sellerVO.seller_id == null }">
+					        <div class="align-items-center">
+					            <a href="/seller/login" class="login">로그인</a>
+					            <a href="/seller/register" class="join">회원가입</a>
+					            <a href="#" class="service">고객센터</a>
+					        </div>
+				    	</c:if>
+				    	<c:if test="${sessionScope.sellerVO.seller_id != null }">
+					        <div class="align-items-center">
+					            로그인 id : ${sessionScope.sellerVO.seller_id }
+					            <a href="#" class="service">고객센터</a>
+					            <input type="button" value="로그아웃" onclick="location.href='/seller/logout';">
+					        </div>
 				        <ul class="d-flex justify-content-end list-unstyled m-3">
-				            <li><a href="#" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
+				            <li><a href="/seller/info" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
 				                        <use xlink:href="#user"></use></svg>
 				                </a></li>
-				        <!--    <li><a href="#" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
-				                        <use xlink:href="#heart"></use></svg>
-				                </a></li>-->
 				        </ul>
+				    	</c:if>
 				    </div>
-				
-				   
 				</div>
 			</div>
 		</div>
@@ -319,7 +324,6 @@ body {
 	                        <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
 	                            <li class="nav-item active"><a href="/seller/product" class="nav-link">상품관리</a></li>
 	                            <li class="nav-item dropdown"><a href="/seller/orderlist" class="nav-link">주문관리</a></li>
-	                            <li class="nav-item"><a href="/seller/dilivery" class="nav-link">배송관리</a></li>
 	                            <li class="nav-item"><a href="/seller/review" class="nav-link">리뷰관리</a></li>
 	                            <li class="nav-item"><a href="/seller/sales" class="nav-link">매출정산</a></li>
 	                            <li class="nav-item"><a href="/seller/question" class="nav-link">문의</a></li>
@@ -355,13 +359,8 @@ body {
       <a href="/seller/orderlist">주문 관리</a>
       <ul>
         <li><a href="/seller/orderlist">주문 목록</a></li>
-        <li><a href="/seller/neworder">신규 주문</a></li>
-        <li><a href="/seller/orderconfirm">구매 확정</a></li>
-        <li><a href="/seller/ordercancel">취소/환불 요청</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="/seller/dilivery">배송 관리</a>
+		<li><a href="/seller/delivery">배송 관리</a></li>
+	  </ul>
     </li>
     <li>
       <a href="/seller/review">리뷰 관리</a>
@@ -370,11 +369,7 @@ body {
       <a href="/seller/sales">매출 정산</a>
       <ul>
         <li><a href="/seller/sales">매출 현황</a></li>
-        <li><a href="/seller/salesgraph">매출 그래프</a></li>
       </ul>
-    </li>
-    <li>
-      <a href="/seller/question">문의</a>
     </li>
   </ul>
 </aside>
@@ -382,7 +377,84 @@ body {
 	
 	
 	
-	
+
+
+
+<div class="container" style="background-color: white;
+                                  padding: 20px;
+                                  border-radius: 10px;
+                                  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                                  margin: 50px auto; /* 페이지 상단과의 간격 조절 및 페이지 가운데 정렬 */
+                                  max-width: 800px;"> <!-- 페이지 너비 제한 -->
+        <h2 style="text-align: center;">판매자 주문 목록</h2>
+        <table style="width: 100%;
+                      border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th style="padding: 10px;
+                               text-align: left;
+                               border-bottom: 1px solid #ddd;
+                               background-color: #f2f2f2;">주문코드</th>
+                    <th style="padding: 10px;
+                               text-align: left;
+                               border-bottom: 1px solid #ddd;
+                               background-color: #f2f2f2;">주문자ID</th>
+                    <th style="padding: 10px;
+                               text-align: left;
+                               border-bottom: 1px solid #ddd;
+                               background-color: #f2f2f2;">주문날짜</th>
+                    <th style="padding: 10px;
+                               text-align: left;
+                               border-bottom: 1px solid #ddd;
+                               background-color: #f2f2f2;">배송상태</th>
+                    <th style="padding: 10px;
+                               text-align: left;
+                               border-bottom: 1px solid #ddd;
+                               background-color: #f2f2f2;">주문 확정/취소/환불</th>
+                    <!-- 필요한 다른 컬럼 스타일 추가 -->
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 주문 목록 데이터를 반복해서 표시하는 부분 -->
+                <c:forEach items="${orderList}" var="order">
+                    <tr>
+                        <td style="padding: 10px;
+                                   text-align: left;
+                                   border-bottom: 1px solid #ddd;">${order.order_code}</td>
+                        <td style="padding: 10px;
+                                   text-align: left;
+                                   border-bottom: 1px solid #ddd;">${order.user_id}</td>
+                        <td style="padding: 10px;
+                                   text-align: left;
+                                   border-bottom: 1px solid #ddd;">${order.order_date}</td>
+                        <td style="padding: 10px;
+                                   text-align: left;
+                                   border-bottom: 1px solid #ddd;">${order.delivery_status}</td>
+						<td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">
+							<form action="/seller/confirmOrder" method="post">
+								<input type="hidden" name="order_code" value="${order.order_code}">
+								<button type="submit">확정</button>
+							</form>
+						</td>
+						<td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">
+							<form action="/seller/cancelOrder" method="post">
+								<input type="hidden" name="order_code" value="${order.order_code}">
+								<button type="submit">취소</button>
+							</form>
+						</td>
+						<td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">
+							<form action="/seller/refundOrder" method="post">
+								<input type="hidden" name="order_code" value="${order.order_code}">
+								<button type="submit">환불</button>
+							</form>
+						</td>
+
+						<!-- 필요한 다른 컬럼 데이터 및 스타일 추가 -->
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
+    </div>
 	
 	
 	

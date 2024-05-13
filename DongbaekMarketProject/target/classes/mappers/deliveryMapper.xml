@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+  
+<mapper namespace="com.itwillbs.mapper.DeliveryMapper">
+<!-- 배송 정보 조회 -->
+<select id="getDeliveryInfo" parameterType="int" resultType="com.itwillbs.domain.Order_infoVO">
+    SELECT * FROM order_info WHERE order_code = #{order_code}
+</select>
+
+<!-- 배송 정보 업데이트 -->
+<update id="updateDeliveryInfo" parameterType="com.itwillbs.domain.Order_infoVO">
+    UPDATE order_info
+    SET
+        rcv_name = #{rcv_name},
+        rcv_phone = #{rcv_phone},
+        rcv_zip = #{rcv_zip},
+        rcv_addr1 = #{rcv_addr1},
+        rcv_addr2 = #{rcv_addr2},
+        rcv_msg = #{rcv_msg}
+    WHERE
+        order_code = #{order_code}
+</update>
+
+</mapper>

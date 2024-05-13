@@ -1,3 +1,4 @@
+
 <%@page import="com.itwillbs.domain.ReviewVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -265,7 +266,7 @@ body {
 			<div class="row py-3 border-bottom">
 				<div class="col-sm-4 col-lg-3 text-center text-sm-start">
 					<div class="main-logo">
-						<a href="/seller/sellermain"> <img src="/resources/images/logo2.png" alt="logo" class="mylogo2">
+						<a href="/seller/sellermain"> <img src="${pageContext.request.contextPath }/resources/images/logo2.png" alt="logo" class="mylogo2">
 						</a>
 					</div>
 				</div>
@@ -287,21 +288,26 @@ body {
 				</div>
 				<div class="col-sm-8 col-lg-3 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
 				    <div>
-				        <div class="align-items-center">			           
-				            <a href="#" class="join">로그아웃</a>
-				            <a href="#" class="service">고객센터</a>
-				        </div>
+				    	<c:if test="${sessionScope.sellerVO.seller_id == null }">
+					        <div class="align-items-center">
+					            <a href="/seller/login" class="login">로그인</a>
+					            <a href="/seller/register" class="join">회원가입</a>
+					            <a href="#" class="service">고객센터</a>
+					        </div>
+				    	</c:if>
+				    	<c:if test="${sessionScope.sellerVO.seller_id != null }">
+					        <div class="align-items-center">
+					            로그인 id : ${sessionScope.sellerVO.seller_id }
+					            <a href="#" class="service">고객센터</a>
+					            <input type="button" value="로그아웃" onclick="location.href='/seller/logout';">
+					        </div>
 				        <ul class="d-flex justify-content-end list-unstyled m-3">
-				            <li><a href="#" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
+				            <li><a href="/seller/info" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
 				                        <use xlink:href="#user"></use></svg>
 				                </a></li>
-				        <!--    <li><a href="#" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
-				                        <use xlink:href="#heart"></use></svg>
-				                </a></li>-->
 				        </ul>
+				    	</c:if>
 				    </div>
-				
-				   
 				</div>
 			</div>
 		</div>
@@ -317,10 +323,9 @@ body {
 	                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 	                    </div>
 	                    <div class="offcanvas-body">
-	                        <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
+	                       <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
 	                            <li class="nav-item active"><a href="/seller/product" class="nav-link">상품관리</a></li>
 	                            <li class="nav-item dropdown"><a href="/seller/orderlist" class="nav-link">주문관리</a></li>
-	                            <li class="nav-item"><a href="/seller/dilivery" class="nav-link">배송관리</a></li>
 	                            <li class="nav-item"><a href="/seller/review" class="nav-link">리뷰관리</a></li>
 	                            <li class="nav-item"><a href="/seller/sales" class="nav-link">매출정산</a></li>
 	                            <li class="nav-item"><a href="/seller/question" class="nav-link">문의</a></li>
@@ -350,20 +355,14 @@ body {
       <ul>
         <li><a href="/seller/product">상품 목록</a></li>
         <li><a href="/seller/productregist">상품 등록</a></li>
-        <li><a href="/seller/productmodify">상품 수정</a></li>
       </ul>
     </li>
     <li>
       <a href="/seller/orderlist">주문 관리</a>
       <ul>
         <li><a href="/seller/orderlist">주문 목록</a></li>
-        <li><a href="/seller/neworder">신규 주문</a></li>
-        <li><a href="/seller/orderconfirm">구매 확정</a></li>
-        <li><a href="/seller/ordercancel">취소/환불 요청</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="/seller/dilivery">배송 관리</a>
+		<li><a href="/seller/delivery">배송 관리</a></li>
+	  </ul>
     </li>
     <li>
       <a href="/seller/review">리뷰 관리</a>
@@ -372,11 +371,7 @@ body {
       <a href="/seller/sales">매출 정산</a>
       <ul>
         <li><a href="/seller/sales">매출 현황</a></li>
-        <li><a href="/seller/salesgraph">매출 그래프</a></li>
       </ul>
-    </li>
-    <li>
-      <a href="/seller/question">문의</a>
     </li>
   </ul>
 </aside>
@@ -387,69 +382,84 @@ body {
 	
 	
 
-<div style="display: flex; justify-content: center; align-items: center; margin: 0;">
-    <div class="container" style="text-align: center;">
-        <h2 style="font-family: Arial, sans-serif; color: #333333;">리뷰 답글 작성</h2>
-        <form id="replyForm" action="/seller/reviewReplySubmit" method="post" style="margin-top: 20px;">
-<!--             <input type="hidden" name="review_code" value="100"> -->
-            <input type="hidden" name="review_code" value="${param.review_code}">
-            <input type="hidden" name="user_id" value="itwill">
-            <input type="hidden" name="regdate" value="">
-<%--             <input type="hidden" name="user_id" value="${user_id}"> --%>
-            <input type="text" id="title" name="title" placeholder="리뷰 제목" style="font-family: Arial, sans-serif; padding: 5px; border: 1px solid #CCCCCC; margin-bottom: 10px;">
-            <br>
-            <textarea id="replyContent" name="content" rows="5" cols="50" placeholder="리뷰 답글을 입력하세요" style="font-family: Arial, sans-serif; padding: 5px; border: 1px solid #CCCCCC; margin-bottom: 10px;"></textarea>
-            <br>
-            <input type="button" id="submitBtn" value="답글 작성" style="font-family: Arial, sans-serif; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 3px; cursor: pointer;">
-        </form>
-    </div>
-</div>
+<!-- <div style="display: flex; justify-content: center; align-items: center; margin: 0;"> -->
+<!--     <div class="container" style="text-align: center;"> -->
+<!--         <h2 style="font-family: Arial, sans-serif; color: #333333;">리뷰 답글 작성</h2> -->
+<!--         <form id="replyForm" action="/seller/reviewReplySubmit" method="post" style="margin-top: 20px;"> -->
+ <!--             <input type="hidden" name="review_code" value="100"> --> 
+<%--             <input type="hidden" name="review_code" value="${param.review_code}"> --%>
+<%--             <input type="hidden" name="seller_id" value=""${seller_id }> --%>
+<!--             <input type="hidden" name="regdate" value=""> -->
+ <%--             <input type="hidden" name="user_id" value="${user_id}"> --%>
+<!--             <input type="text" id="title" name="title" placeholder="리뷰 제목" style="font-family: Arial, sans-serif; padding: 5px; border: 1px solid #CCCCCC; margin-bottom: 10px;"> -->
+<!--             <br> -->
+<!--             <textarea id="replyContent" name="content" rows="5" cols="50" placeholder="리뷰 답글을 입력하세요" style="font-family: Arial, sans-serif; padding: 5px; border: 1px solid #CCCCCC; margin-bottom: 10px;"></textarea> -->
+<!--             <br> -->
+<!--             <input type="button" id="submitBtn" value="답글 작성" style="font-family: Arial, sans-serif; padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 3px; cursor: pointer;"> -->
+<!--         </form> -->
+<!--     </div> -->
+<!-- </div> -->
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script>
-    $(document).ready(function() {
-    	// 페이지가 로드될 때 실행되는 함수
-        var currentDate = new Date();
-        // 날짜를 YYYY-MM-DD 형식으로 변환
-        var formattedDate = currentDate.toISOString().split('T')[0];
-        // regdate 필드에 날짜 채우기
-        $('#regdate').val(formattedDate);
+<!-- <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> -->
+<!-- <script> -->
+<!--     $(document).ready(function() { -->
+<!--    	// 페이지가 로드될 때 실행되는 함수 -->
+<!--         var currentDate = new Date(); -->
+<!--         // 날짜를 YYYY-MM-DD 형식으로 변환 -->
+<!--       var formattedDate = currentDate.toISOString().split('T')[0]; -->
+<!--         // regdate 필드에 날짜 채우기 -->
+<!--        $('#regdate').val(formattedDate); -->
         
-        $('#submitBtn').click(function() {
-            var title = $('#title').val();
-            var replyContent = $('#replyContent').val();
+<!--        $('#submitBtn').click(function() { -->
+<!--            var title = $('#title').val(); -->
+<!--             var replyContent = $('#replyContent').val(); -->
             
-            // 필수 입력 필드 확인
-            if (!title || !replyContent) {
-                alert('제목과 내용을 입력하세요.');
-                return;
-            }
+<!--         // 필수 입력 필드 확인 -->
+<!--           if (!title || !replyContent) { -->
+<!--                 alert('제목과 내용을 입력하세요.'); -->
+<!--                  return; -->
+<!--             } -->
 
-            // AJAX를 이용하여 서버로 폼 데이터 전송
-            $.ajax({
-                url: "/seller/reviewReplySubmit",
-                type: "POST",
-                data: $('#replyForm').serialize(), // 폼 데이터 직렬화하여 전송
-                success: function(data) {
-                    // 서버에서의 응답 처리 (예: 리다이렉트 등)
-                    console.log(data);
-                    alert('답글 작성이 완료되었습니다.');
-                    window.location.href = data; // 리다이렉트 URL 사용 예시
+<!--              // AJAX를 이용하여 서버로 폼 데이터 전송 -->
+<!--              $.ajax({ -->
+<!--                  url: "/seller/reviewReplySubmit", -->
+<!--                  type: "POST", -->
+<!--                 data: $('#replyForm').serialize(), // 폼 데이터 직렬화하여 전송 -->
+<!--                 success: function(data) { -->
+<!--                      // 서버에서의 응답 처리 (예: 리다이렉트 등) -->
+<!-- =                     console.log(data); -->
+<!-- =                     alert('답글 작성이 완료되었습니다.'); -->
+<!--                      window.location.href = data; // 리다이렉트 URL 사용 예시 -->
                     
-                },
-                error: function(xhr, status, error) {
-                    // 오류 처리
-                    console.error(error);
-                    alert('답글 작성 중 오류가 발생했습니다.');
-                }
-            });
-        });
-    });
-</script>
+<!--                 }, -->
+<!--                 error: function(xhr, status, error) { -->
+<!--                     // 오류 처리 -->
+<!--                    console.error(error); -->
+<!--                   alert('답글 작성 중 오류가 발생했습니다.'); -->
+<!--                  } -->
+<!--              }); -->
+<!--          }); -->
+<!--     }); -->
+<!-- </script> -->
 
 
 
-
+<h2 style="text-align: center;">리뷰 답글 작성 폼</h2>
+    <!-- 리뷰 정보 출력 -->
+    <div style="width: 80%; margin: 20px auto; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); background-color: #f9f9f9;"> <!-- 내용을 감싸는 컨테이너 스타일 -->
+        <p><strong>상품 코드:</strong> ${review.product_code}</p>
+        <p><strong>작성일:</strong> ${review.regdate}</p>
+        <p><strong>제목:</strong> ${review.title}</p>
+        <p><strong>별점:</strong> ${review.star}</p>
+        <p><strong>사용자 아이디:</strong> ${review.user_id}</p>
+    </div>
+    <!-- 리뷰 답글 작성 폼 -->
+    <form action="/seller/reply" method="post" style="width: 80%; margin: 20px auto; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); background-color: #f9f9f9;"> <!-- 폼 스타일 -->
+        <input type="hidden" name="review_code" value="${review.review_code}">
+        <textarea name="content" rows="5" cols="50" placeholder="리뷰에 대한 답글을 작성해주세요." style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc; resize: vertical;" required></textarea> <!-- 텍스트 영역 스타일 -->
+        <br>
+        <input type="submit" value="답글 작성" style="padding: 10px 20px; border: none; border-radius: 5px; background-color: #4CAF50; color: white;"> <!-- 제출 버튼 스타일 -->
+    </form>
 
 
 	

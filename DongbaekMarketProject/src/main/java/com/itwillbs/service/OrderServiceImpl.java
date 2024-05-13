@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.itwillbs.domain.CartVO;
 import com.itwillbs.domain.OrderInfoVO;
+import com.itwillbs.domain.Order_infoVO;
 import com.itwillbs.persistence.OrderDAO;
 
 @Service
@@ -69,4 +70,25 @@ public class OrderServiceImpl implements OrderService {
 		odao.updateStates(bundle_code);
 	}
 	
+	@Override
+	public List<Order_infoVO> getOrderList(String con, String search,String startDate,String endDate) throws Exception {
+		logger.debug(" getOrderList(String con, String search)  호출 ");
+	
+		return odao.getOrderList(con, search,startDate,endDate);
+	}
+	
+	@Override
+    public void confirmOrder(String order_code) throws Exception {
+        odao.confirmOrder(order_code);
+    }
+
+    @Override
+    public void cancelOrder(String order_code) throws Exception {
+    	odao.cancelOrder(order_code);
+    }
+
+    @Override
+    public void refundOrder(String order_code) throws Exception {
+    	odao.refundOrder(order_code);
+    }
 }
