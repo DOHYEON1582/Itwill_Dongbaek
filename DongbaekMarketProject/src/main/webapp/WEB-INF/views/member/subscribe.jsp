@@ -68,15 +68,17 @@ h1 {
 <script type="text/javascript">
 	$(document).ready(function(){
 		$("#deleteAllButton").click(function(){
-			var confirmation = confirm("전체 찜 목록을 삭제하시겠습니까?");
+			var confirmation = confirm("전체 목록을 삭제하시겠습니까?");
 			if (confirmation) {
 				$.ajax({
 					url : "deleteSubAll",
 					type : "POST",
 					success : function(data){
+						alert(" 삭제 완료 ");
 						console.log(" 삭제 완료 ");
 					},
 					error : function(xhr, status, error){
+						alert(" 삭제 실패 ", error);
 						console.error("삭제 실패:", error);
 					},
 					complete: function() {
@@ -87,16 +89,18 @@ h1 {
 		});
 		$(".btn-sub").click(function(){
 			var product_code = $(this).closest('.sub-item').find('input').data('productCode');
-			var confirmation = confirm("해당 상품을 찜 목록에서 삭제하시겠습니까?");
+			var confirmation = confirm("해당 상품을 목록에서 삭제하시겠습니까?");
 			if(confirmation){
 				$.ajax({
 					url : "deleteSub",
 					type : "POST",
 					data : {product_code : product_code},
 					success : function(data){
+						alert(" 삭제 완료 ");
 						console.log(" 삭제 완료 ");
 					},
 					error: function(xhr, status, error) {
+						alert(" 삭제 실패 ", error);
 						console.error("삭제 실패:", error);
 					},
 					complete: function() {
