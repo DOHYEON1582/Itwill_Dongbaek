@@ -174,18 +174,53 @@
         text-align: left;
         padding: 8px;
     }
+.table-bordered {
+    width: 100%;
+    border-collapse: collapse;
+}
 
-    th {
-        background-color: #f2f2f2;
-    }
+.table-bordered th, .table-bordered td {
+    border: 1px solid #dddddd;
+    padding: 12px; /* 여백을 더 늘렸습니다 */
+}
 
-    tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
+.table-bordered th {
+    background-color: #f2f2f2;
+}
 
-    tr:hover {
-        background-color: #dddddd;
-    }
+.table-bordered tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table-bordered tr:hover {
+    background-color: #dddddd;
+}
+
+/* 특정 열의 너비를 조절합니다 */
+.table-bordered th:nth-child(1), .table-bordered td:nth-child(1) {
+    width: 20%; /* 필요에 따라 조절하세요 */
+}
+
+.table-bordered th:nth-child(2), .table-bordered td:nth-child(2) {
+    width: 10%; /* 필요에 따라 조절하세요 */
+}
+
+.table-bordered th:nth-child(3), .table-bordered td:nth-child(3) {
+    width: 30%; /* 필요에 따라 조절하세요 */
+}
+
+.table-bordered th:nth-child(4), .table-bordered td:nth-child(4) {
+    width: 15%; /* 필요에 따라 조절하세요 */
+}
+
+.table-bordered th:nth-child(5), .table-bordered td:nth-child(5) {
+    width: 15%; /* 필요에 따라 조절하세요 */
+}
+
+.table-bordered th:nth-child(6), .table-bordered td:nth-child(6) {
+    width: 15%; /* 필요에 따라 조절하세요 */
+}
+
 </style>
 <script type="text/javascript">
 // 맨 위로 스크롤되도록 설정
@@ -348,14 +383,14 @@ document.addEventListener("DOMContentLoaded", function() {
 <section class="py-0">
     <div class="container px-4 px-lg-5 my-5">
         <div class="row gx-4 gx-lg-5 align-items-center">
-            <div class="col-md-6"><img class="product-image" src="${pageContext.request.contextPath}/resources/images/${product.img1}" alt="..." /></div>
+            <div class="col-md-6"><img class="product-image" src="${pageContext.request.contextPath}/resources/images/product/${product.img1}" alt="..." /></div>
             <div class="col-md-6">
                 <div class="small mb-1">카테고리 : ${product.category }</div>
                 <h1 class="display-5 fw-bolder">${product.product_name }</h1>
                 <div class="fs-5 mb-5">
                     <span>${product.price }원</span>
                 </div>
-                <p class="lead">${product.product_explain } 대충 상품 설명</p>
+                <p class="lead">${product.product_explain }</p>
 					<div class="d-flex align-items-center ">
 						<div class="input-group product-qty" style="width: 200px">
 							<span class="input-group-btn">
@@ -401,8 +436,8 @@ document.addEventListener("DOMContentLoaded", function() {
 <div class="row about_product" style="text-align: center;">
     <h1 class="page-header" id="about1">상품 상세</h1>
     <div style="text-align: center; margin: 0 auto;">
-    <img class="product-img2" src="${pageContext.request.contextPath}/resources/images/${product.img2}" style="width: 400px; height: 400px; margin: 10px; display: inline-block;"/>
-    <img class="product-img3" src="${pageContext.request.contextPath}/resources/images/${product.img3}" style="width: 400px; height: 400px; margin: 10px; display: inline-block;"/>
+    <img class="product-img2" src="${pageContext.request.contextPath}/resources/images/product/${product.img2}" style="width: 400px; height: 400px; margin: 10px; display: inline-block;"/>
+    <img class="product-img3" src="${pageContext.request.contextPath}/resources/images/product/${product.img3}" style="width: 400px; height: 400px; margin: 10px; display: inline-block;"/>
 	</div>
 </div>
 <div class="row reviews" style="text-align: center;"></div>
@@ -412,7 +447,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 <div class="container">
     <h1 class="page-header" style="margin-bottom: 50px;" id="review1">Review</h1>
-    <table class="table table-bordered">
+    <table class="table table-bordered" id="reviewtable">
     	<tbody>
     		<tr>
 				<th>Title</th>
@@ -434,7 +469,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		                </c:forEach>
 		            </span>
 		        </td>
-				<td><img src="${pageContext.request.contextPath}/resources/images/${review.img1}" style="width: 100px; height: 100px;"></td>
+				<td><img src="${pageContext.request.contextPath}/resources/images/product/${review.img1}" style="width: 100px; height: 100px;"></td>
 				<td><fmt:formatDate value="${review.regdate }"/></td>
 			</tr>
 		</c:forEach>    		

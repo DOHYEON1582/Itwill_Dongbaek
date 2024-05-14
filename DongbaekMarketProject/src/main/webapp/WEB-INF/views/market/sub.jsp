@@ -194,7 +194,7 @@ ${productList } --%>
                         </button>
                         <figure>
                             <a href="productMain?product_code=${product.product_code }" title="Product Title">
-                                <img src="${pageContext.request.contextPath}/resources/images/product/${product.img1}" alt="Product Thumbnail" class="tab-image" style="width : 130px">
+                                <img src="/resources/upload1/${product.img1}" alt="Product Thumbnail" class="tab-image" style="width : 130px">
                             </a>
                         </figure>
                         <h4>${product.product_name}</h4>
