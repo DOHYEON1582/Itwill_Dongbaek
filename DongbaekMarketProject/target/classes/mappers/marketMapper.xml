@@ -188,10 +188,10 @@
 	</select>
 	
 	<!-- 카트에 넣기 -->
-	<insert id="insertCart">
+	<!-- <insert id="insertCart">
 		insert into cart(user_id,product_code,count,price)
 		values (#{user_id},#{product_code},#{count},#{price})
-	</insert>
+	</insert> -->
 
 	<!-- 최근 문의글 10개 불러오기 -->
 	<select id="newQuestion"
@@ -228,6 +228,19 @@
 	<select id="checkDuplicateMark" parameterType="map"	resultType="int">
 		SELECT COUNT(*) FROM mark WHERE store_code = #{store_code} and user_id = #{user_id}
 	</select>
+	
+	<!-- 0514 카트 번호 생성 -->
+	<!-- maxCartCode 가져오기 -->
+	<select id="selectMaxCartCode" resultType="int">
+		SELECT Ifnull(Max(cart_code), 0) AS cart_code
+		FROM   cart   
+	</select>
+	
+	<!-- 카트에 넣기 -->
+	<insert id="insertCart">
+		insert into cart(cart_code,user_id,product_code,bundle_code,count,price,delivery_fee,states)
+		values (#{cart_code},#{user_id},#{product_code},#{bundle_code},#{count},#{price},#{delivery_fee},#{states})
+	</insert>
 
 
 </mapper>
