@@ -179,7 +179,10 @@
 				</when>
 			</choose>
 	</select>
-
+	<!-- 주문 총 건수 -->
+	<select id="getOrderCount" resultType="int">
+		SELECT COUNT(*) FROM order_info
+	</select>
 	<!-- 주문 확정 -->
     <update id="confirmOrder">
         UPDATE order_info SET status = 'confirmed' WHERE order_code = #{order_code}

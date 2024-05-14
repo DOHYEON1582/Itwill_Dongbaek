@@ -315,22 +315,22 @@ body {
 				</div>
 				<div class="col-sm-8 col-lg-3 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
 				    <div>
-				    	<c:if test="${sessionScope.sellerVO.seller_id == null }">
+				    	<c:if test="${sessionScope.seller_id == null }">
 					        <div class="align-items-center">
 					            <a href="/seller/login" class="login">로그인</a>
 					            <a href="/seller/register" class="join">회원가입</a>
-					            <a href="#" class="service">고객센터</a>
+					   
 					        </div>
 				    	</c:if>
-				    	<c:if test="${sessionScope.sellerVO.seller_id != null }">
+				    	<c:if test="${sessionScope.seller_id != null }">
 					        <div class="align-items-center">
-					            로그인 id : ${sessionScope.sellerVO.seller_id }
-					            <a href="#" class="service">고객센터</a>
+					            로그인 id : ${sessionScope.seller_id }
+
 					            <input type="button" value="로그아웃" onclick="location.href='/seller/logout';">
 					        </div>
 				        <ul class="d-flex justify-content-end list-unstyled m-3">
 				            <li><a href="/seller/info" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
-				                        <use xlink:href="#seller"></use></svg>
+				                        <use xlink:href="#user"></use></svg>
 				                </a></li>
 				        </ul>
 				    	</c:if>
@@ -354,8 +354,8 @@ body {
 	                            <li class="nav-item active"><a href="/seller/product" class="nav-link">상품관리</a></li>
 	                            <li class="nav-item dropdown"><a href="/seller/orderlist" class="nav-link">주문관리</a></li>
 	                            <li class="nav-item"><a href="/seller/review" class="nav-link">리뷰관리</a></li>
-	                            <li class="nav-item"><a href="/seller/sales" class="nav-link">매출정산</a></li>
-	                            <li class="nav-item"><a href="/seller/question" class="nav-link">문의</a></li>
+
+	                            <li class="nav-item"><a href="/seller/productregist" class="nav-link">상품 등록</a></li>
 	                        </ul>
 	                    </div>
 	                </div>
@@ -388,17 +388,10 @@ body {
       <a href="/seller/orderlist">주문 관리</a>
       <ul>
         <li><a href="/seller/orderlist">주문 목록</a></li>
-		<li><a href="/seller/delivery">배송 관리</a></li>
 	  </ul>
     </li>
     <li>
       <a href="/seller/review">리뷰 관리</a>
-    </li>
-    <li>
-      <a href="/seller/sales">매출 정산</a>
-      <ul>
-        <li><a href="/seller/sales">매출 현황</a></li>
-      </ul>
     </li>
   </ul>
 </aside>
@@ -415,8 +408,8 @@ body {
 					<fieldset style="border: none;">
 						<legend style="color: #000; text-decoration: none; text-align: center; border: thin;"><a href="/seller/orderlist">주문 현황</a></legend>
 						<ul style="list-style: none; margin: 0; padding: 0;">
-							<li style="padding: 15px; background-color: #fff; margin-bottom: 10px;"><label><a style="margin-right: 160px; text-decoration: none; color: #000; font-size: 18px;" href="/seller/orderlist">주문 목록</a>0건</label></li>
-							<li style="padding: 15px; background-color: #fff; margin-bottom: 10px;"><label><a style="margin-right: 160px; text-decoration: none; color: #000; font-size: 18px;" href="/seller/delivery">구매 결정</a>0건</label></li>
+							<li style="padding: 15px; background-color: #fff; margin-bottom: 10px;"><label><a style="margin-right: 160px; text-decoration: none; color: #000; font-size: 18px;" href="/seller/orderlist">주문 목록</a>${orderCount}건</label></li>
+						
 						</ul>
 					</fieldset>
 				</form>
@@ -430,7 +423,7 @@ body {
 					<fieldset style="border: none;">
 						<legend style="text-align: center; border: thin;"><a href="/seller/review">리뷰 현황</a></legend>
 						<ul style="list-style: none; margin: 0; padding: 0;">
-							<li style="padding: 15px; background-color: #fff; margin-bottom: 29px;"><label><a style="margin-right: 178px; text-decoration: none; color: #000; font-size: 18px;" href="/seller/review">리뷰 목록</a>0건</label></li>				
+							<li style="padding: 15px; background-color: #fff; margin-bottom: 29px;"><label><a style="margin-right: 178px; text-decoration: none; color: #000; font-size: 18px;" href="/seller/review">리뷰 목록</a>${reviewCount}건</label></li>			
 						</ul>
 					</fieldset>
 				</form>

@@ -290,13 +290,13 @@ body {
 					        <div class="align-items-center">
 					            <a href="/seller/login" class="login">로그인</a>
 					            <a href="/seller/register" class="join">회원가입</a>
-					            <a href="#" class="service">고객센터</a>
+					     
 					        </div>
 				    	</c:if>
 				    	<c:if test="${sessionScope.sellerVO.seller_id != null }">
 					        <div class="align-items-center">
 					            로그인 id : ${sessionScope.sellerVO.seller_id }
-					            <a href="#" class="service">고객센터</a>
+			
 					            <input type="button" value="로그아웃" onclick="location.href='/seller/logout';">
 					        </div>
 				        <ul class="d-flex justify-content-end list-unstyled m-3">
@@ -325,8 +325,8 @@ body {
 	                            <li class="nav-item active"><a href="/seller/product" class="nav-link">상품관리</a></li>
 	                            <li class="nav-item dropdown"><a href="/seller/orderlist" class="nav-link">주문관리</a></li>
 	                            <li class="nav-item"><a href="/seller/review" class="nav-link">리뷰관리</a></li>
-	                            <li class="nav-item"><a href="/seller/sales" class="nav-link">매출정산</a></li>
-	                            <li class="nav-item"><a href="/seller/question" class="nav-link">문의</a></li>
+
+	                            <li class="nav-item"><a href="/seller/productregist" class="nav-link">상품 등록</a></li>
 	                        </ul>
 	                    </div>
 	                </div>
@@ -359,17 +359,10 @@ body {
       <a href="/seller/orderlist">주문 관리</a>
       <ul>
         <li><a href="/seller/orderlist">주문 목록</a></li>
-		<li><a href="/seller/delivery">배송 관리</a></li>
 	  </ul>
     </li>
     <li>
       <a href="/seller/review">리뷰 관리</a>
-    </li>
-    <li>
-      <a href="/seller/sales">매출 정산</a>
-      <ul>
-        <li><a href="/seller/sales">매출 현황</a></li>
-      </ul>
     </li>
   </ul>
 </aside>
@@ -413,7 +406,7 @@ body {
             <h2 style="color: #333;">배송 진행도 업데이트</h2>
             <form action="/seller/updateDelivery" method="post" style="margin-top: 20px;">
                 <label for="order_code" style="display: block; margin-bottom: 5px;">주문 코드:</label>
-                <input type="text" id="orderCode" name="orderCode" required style="width: 100%; padding: 8px; margin-top: 5px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                <input type="text" id="order_code" name="order_code" required style="width: 100%; padding: 8px; margin-top: 5px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
                 <br>
                 <label for="deliveryStatus" style="display: block; margin-bottom: 5px;">배송 상태:</label>
                 <select id="deliveryStatus" name="deliveryStatus" required style="width: 100%; padding: 8px; margin-top: 5px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">

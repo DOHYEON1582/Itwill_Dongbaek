@@ -87,6 +87,13 @@ public class OrderDAOImpl implements OrderDAO{
 		return sqlSession.selectList(NAMESPACE+".getStoreOrderList", map);
 	}
 	
+	
+	@Override
+	public int getOrderCount() throws Exception {
+		logger.debug(" getOrderCount() 실행 ");
+		return sqlSession.selectOne(NAMESPACE+".getOrderCount");
+	}
+
 	@Override
     public int confirmOrder(String order_code) throws Exception {
         return sqlSession.update(NAMESPACE + ".confirmOrder", order_code);

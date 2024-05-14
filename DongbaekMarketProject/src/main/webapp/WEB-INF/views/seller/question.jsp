@@ -327,6 +327,7 @@ body {
 	                            <li class="nav-item"><a href="/seller/review" class="nav-link">리뷰관리</a></li>
 	                            <li class="nav-item"><a href="/seller/sales" class="nav-link">매출정산</a></li>
 	                            <li class="nav-item"><a href="/seller/question" class="nav-link">문의</a></li>
+	                            <li class="nav-item"><a href="/seller/productregist" class="nav-link">상품 등록</a></li>
 	                        </ul>
 	                    </div>
 	                </div>
@@ -359,7 +360,6 @@ body {
       <a href="/seller/orderlist">주문 관리</a>
       <ul>
         <li><a href="/seller/orderlist">주문 목록</a></li>
-		<li><a href="/seller/delivery">배송 관리</a></li>
 	  </ul>
     </li>
     <li>
