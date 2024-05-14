@@ -175,21 +175,44 @@ public class AdminController {
 							  @RequestParam("max_account") String max_account,
 							  @RequestParam("unit") String unit,
 							  @RequestParam("category") String category,
-							  @RequestParam("product_explain") String product_explain,
-							  @RequestParam("img1") MultipartFile file, HttpServletRequest request)throws Exception{
+							  @RequestParam("product_explain") String product_explain, 
+							  @RequestParam("img1") MultipartFile file, @RequestParam("img2") MultipartFile file1, @RequestParam("img3") MultipartFile file2, HttpServletRequest request)throws Exception{
 		logger.debug(" uploadProduct(AdminProductVO vo) 호출 ");
 		
 		String uniqueFileName = "";
+		String uniqueFileName1 = "";
+		String uniqueFileName2 = "";
 		String realPath = request.getSession().getServletContext().getRealPath("/resources/upload1");
 		logger.debug("realPath : "+realPath);
 		
 		if(!file.isEmpty()) {
-	        String originalFileName = file.getOriginalFilename();
+				String originalFileName = file.getOriginalFilename();
+		        String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+		        uniqueFileName = UUID.randomUUID().toString() + fileExtension; // 중복방지를 위해 파일이름 랜덤값 변경
+		        String filePath = realPath + File.separator + uniqueFileName;
+		        File dest = new File(filePath);
+		        file.transferTo(dest);
+			
+		}
+		
+		if(!file1.isEmpty()) {
+			String originalFileName = file1.getOriginalFilename();
 	        String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
-	        uniqueFileName = UUID.randomUUID().toString() + fileExtension; // 중복방지를 위해 파일이름 랜덤값 변경
+	        uniqueFileName1 = UUID.randomUUID().toString() + fileExtension; // 중복방지를 위해 파일이름 랜덤값 변경
 	        String filePath = realPath + File.separator + uniqueFileName;
 	        File dest = new File(filePath);
-	        file.transferTo(dest);
+	        file1.transferTo(dest);
+		
+		}
+		
+		if(!file2.isEmpty()) {
+			String originalFileName = file2.getOriginalFilename();
+	        String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+	        uniqueFileName2 = UUID.randomUUID().toString() + fileExtension; // 중복방지를 위해 파일이름 랜덤값 변경
+	        String filePath = realPath + File.separator + uniqueFileName;
+	        File dest = new File(filePath);
+	        file2.transferTo(dest);
+		
 		}
 		
 		AdminProductVO pvo = new AdminProductVO();
@@ -204,6 +227,8 @@ public class AdminController {
 		pvo.setProduct_explain(product_explain);
 		pvo.setSeller_id("admin");
 		pvo.setImg1(uniqueFileName);
+		pvo.setImg2(uniqueFileName1);
+		pvo.setImg3(uniqueFileName2);
 		pvo.setSub_product("구독");
 		
 		logger.debug(" 작성글 : "+pvo.toString());

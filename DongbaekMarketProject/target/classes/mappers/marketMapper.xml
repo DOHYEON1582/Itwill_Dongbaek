@@ -30,6 +30,8 @@
 	<select id="getProductAll"
 		resultType="com.itwillbs.domain.ProductVO">
 		select * from product
+		order by viewcnt desc
+		limit 0,15
 	</select>
 
 	<!-- 전체 가게 조회 -->
@@ -142,7 +144,7 @@
 	<select id="getSubList" resultType="com.itwillbs.domain.ProductVO">
 		SELECT * FROM product
 		WHERE sub_product = '구독'
-
+		order by viewcnt desc
 	</select>
 
 	<!-- 위시리스트 가져오기 -->

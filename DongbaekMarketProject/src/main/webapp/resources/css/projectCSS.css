@@ -218,6 +218,12 @@
 #imgFileInput{
 	display: none;
 }
+#imgFileInput1{
+	display: none;
+}
+#imgFileInput2{
+	display: none;
+}
 
 .btnFile{
 	background-color: rgb(255,220,220);
