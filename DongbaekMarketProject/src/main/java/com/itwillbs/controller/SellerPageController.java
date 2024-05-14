@@ -637,32 +637,66 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	// 판매자 주문페이지(주문목록)
 	//	http://localhost:8088/seller/orderlist
 	@RequestMapping(value = "/orderlist",method = RequestMethod.GET)
-	public void orderlist() throws Exception{
+	public void orderlist(HttpSession session, HttpServletResponse response, Model model) throws Exception{
 		logger.debug(" orderlist() 실행 ");
-		
+		// 세션에서 판매자 정보 가져오기
+	    SellerVO sellerVO = (SellerVO) session.getAttribute("seller_id");
+	    if (sellerVO == null) {
+	        // 판매자 정보가 세션에 없으면 로그인 페이지로 리다이렉트 또는 다른 처리를 수행할 수 있음
+	    	response.sendRedirect("/seller/login");
+	    	return ;
+	    }
+	    
+	    // 판매자 정보로부터 가게 코드 가져오기
+	    Integer store_code = sellerVO.getStore_code();
+	    if (store_code == null) {
+	        // 가게 코드가 없으면 다른 처리를 수행할 수 있음
+	        return ;
+	    }
 	}
 	
 	// 주문 확정 컨트롤러
 	@RequestMapping(value = "/confirmOrder", method = RequestMethod.POST)
-	public String confirmOrder(@RequestParam("order_code") String order_code) {
+	public String confirmOrder(HttpSession session,@RequestParam("order_code") String order_code) {
 	    // 주문을 확정하는 로직을 구현합니다.
 	    // orderId를 사용하여 해당 주문을 확정합니다.
+		// 세션에서 판매자 정보 가져오기
+	    SellerVO sellerVO = (SellerVO) session.getAttribute("seller_id");
+	    if (sellerVO == null) {
+	        // 판매자 정보가 세션에 없으면 로그인 페이지로 리다이렉트 또는 다른 처리를 수행할 수 있음
+	        // 여기에서는 로그인 페이지로 리다이렉트하는 예시를 들겠습니다.
+	        return "redirect:/seller/login";
+	    }
 	    return "redirect:/seller/orderlist"; // 주문 목록 페이지로 리다이렉트합니다.
 	}
 
 	// 주문 취소 컨트롤러
 	@RequestMapping(value = "/cancelOrder", method = RequestMethod.POST)
-	public String cancelOrder(@RequestParam("order_code") String order_code) {
+	public String cancelOrder(HttpSession session,@RequestParam("order_code") String order_code) {
 	    // 주문을 취소하는 로직을 구현합니다.
 	    // orderId를 사용하여 해당 주문을 취소합니다.
+		 // 세션에서 판매자 정보 가져오기
+	    SellerVO sellerVO = (SellerVO) session.getAttribute("seller_id");
+	    if (sellerVO == null) {
+	        // 판매자 정보가 세션에 없으면 로그인 페이지로 리다이렉트 또는 다른 처리를 수행할 수 있음
+	        // 여기에서는 로그인 페이지로 리다이렉트하는 예시를 들겠습니다.
+	        return "redirect:/seller/login";
+	    }
 	    return "redirect:/seller/orderlist"; // 주문 목록 페이지로 리다이렉트합니다.
 	}
 
 	// 주문 환불 컨트롤러
 	@RequestMapping(value = "/refundOrder", method = RequestMethod.POST)
-	public String refundOrder(@RequestParam("order_code") String order_code) {
+	public String refundOrder(HttpSession session,@RequestParam("order_code") String order_code) {
 	    // 주문을 환불하는 로직을 구현합니다.
 	    // orderId를 사용하여 해당 주문을 환불합니다.
+		 // 세션에서 판매자 정보 가져오기
+	    SellerVO sellerVO = (SellerVO) session.getAttribute("seller_id");
+	    if (sellerVO == null) {
+	        // 판매자 정보가 세션에 없으면 로그인 페이지로 리다이렉트 또는 다른 처리를 수행할 수 있음
+	        // 여기에서는 로그인 페이지로 리다이렉트하는 예시를 들겠습니다.
+	        return "redirect:/seller/login";
+	    }
 	    return "redirect:/seller/orderlist"; // 주문 목록 페이지로 리다이렉트합니다.
 	}
 
@@ -763,20 +797,28 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 
 	// 판매자 리뷰페이지 상세페이지
 	// http://localhost:8088/seller/reviewDetail
-	@RequestMapping(value = "/reviewDetail", method = RequestMethod.GET)
-	public String getReviewDetail(ReviewCri cri,@RequestParam("review_code") int review_code, Model model, HttpSession session) throws Exception {
-		logger.debug(" /seller/reviewDetail 호출 ");
-		
-		// 전달 정보 저장
-		logger.debug(" id : "+review_code);
-	    // 특정 리뷰의 상세 정보를 가져옴
-	    ReviewVO review = rService.getReview(review_code);
-	    model.addAttribute("review", review);
-	    
-	    model.addAttribute("cri", cri);
+		@RequestMapping(value = "/reviewDetail", method = RequestMethod.GET)
+		public String getReviewDetail(ReviewCri cri, @RequestParam("review_code") int review_code, Model model, HttpSession session) throws Exception {
+		    logger.debug("/seller/reviewDetail 호출 ");
+		    
+		    // 세션에서 판매자 정보 가져오기
+		    SellerVO sellerVO = (SellerVO) session.getAttribute("seller_id");
+		    if (sellerVO == null) {
+		        // 판매자 정보가 세션에 없으면 로그인 페이지로 리다이렉트 또는 다른 처리를 수행할 수 있음
+		        return "redirect:/seller/login";
+		    }
+		    
+		    // 전달 정보 저장
+		    logger.debug(" id : " + review_code);
+		    // 특정 리뷰의 상세 정보를 가져옴
+		    ReviewVO review = rService.getReview(review_code);
+		    model.addAttribute("review", review);
+		    
+		    model.addAttribute("cri", cri);
 
-	    return "seller/reviewDetail"; // 리뷰 상세 페이지로 이동
-	}
+		    return "seller/reviewDetail"; // 리뷰 상세 페이지로 이동
+		}
+
 	
 	
 /////////////////////////////////////////////////////////////////////
@@ -823,8 +865,15 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	// 판매자 문의페이지
 	//	http://localhost:8088/seller/question
     @RequestMapping(value = "/question", method = RequestMethod.GET)
-	public void questionMain(@RequestParam("product_code") int product_code, Criteria cri, Model model) throws Exception {
-		PageVO pageVO = new PageVO();
+	public void questionMain(HttpSession session,HttpServletResponse response,@RequestParam("product_code") int product_code, Criteria cri, Model model) throws Exception {
+    	// 세션에서 판매자 정보 가져오기
+        SellerVO sellerVO = (SellerVO) session.getAttribute("seller_id");
+        if (sellerVO == null) {
+            // 판매자 정보가 세션에 없으면 로그인 페이지로 리다이렉트 또는 다른 처리를 수행할 수 있음
+        	response.sendRedirect("/seller/login");
+	    	return ;
+        }
+    	PageVO pageVO = new PageVO();
 		pageVO.setCri(cri);
 		pageVO.setTotalCount(qService.questionCount());
 		logger.debug("pagevo" + pageVO);
