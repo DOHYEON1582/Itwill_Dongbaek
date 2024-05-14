@@ -246,7 +246,6 @@ function showStarRating() {
 }
     showStarRating(); // 페이지가 로드될 때 별점 표시
 
-
 $(document).on("click", ".quantity-right-plus", function(e){
     // + 버튼을 클릭하면 수량 증가
     var $quantityInput = $(this).parent().find(".input-number");
@@ -318,6 +317,7 @@ window.onclick = function(event) {
         closeModal(); // 모달 닫기 함수 호출
     }
 }
+
 //문의하기 버튼 클릭 이벤트 핸들러
 $(document).ready(function() {
     $("#writeQuestion").click(function() {
@@ -349,7 +349,66 @@ $(document).ready(function() {
         });
       
     });
+  	//수량을 변경할 때마다 총 가격을 계산하여 보여주는 함수
+    function updateTotalPrice(element) {
+        var quantity = parseInt(element.val()); // 수량을 가져옴
+        var price = parseInt(element.closest('.product-item').find(".price").text().replace(/[^\d]/g, '')); // 상품의 가격을 가져와서 숫자로 변환
+        var totalPrice = quantity * price; // 총 가격 계산
+        element.closest('.product-item').find(".total-price").text(totalPrice.toLocaleString() + "원"); // 총 가격을 화면에 표시
+    }
+
+    // 수량을 감소하는 버튼에 대한 이벤트 처리
+    $(".quantity-left-minus").click(function() {
+        var input = $(this).closest('.product-item').find(".quantity");
+        var currentValue = parseInt(input.val());
+        if (currentValue > 1) {
+            input.val(currentValue - 1);
+            updateTotalPrice(input);
+        }
+    });
+
+    // 수량을 증가하는 버튼에 대한 이벤트 처리
+    $(".quantity-right-plus").click(function() {
+        var input = $(this).closest('.product-item').find(".quantity");
+        var currentValue = parseInt(input.val());
+        input.val(currentValue + 1);
+        updateTotalPrice(input);
+    });
     
+    
+    
+    $(".cart").click(function(){
+    	alert("장바구니에 담으시겠습니까 ?");
+        var productCode = $(this).closest('.product-item').find("#product_code").val();
+        var userId = $(this).closest('.product-item').find("#user_id").val();
+        var quantity = $(this).closest('.product-item').find(".quantity").val();
+        var price = parseInt($(this).closest('.product-item').find(".price").text().replace(/[^\d]/g, ''));
+
+        var totalPrice = quantity * price; // 총 가격 계산
+
+        var cart = {
+            "user_id": userId,
+            "product_code": productCode,
+            "count": quantity,
+            "price": totalPrice
+        };        	
+        
+        $.ajax({
+        	type: "POST",
+        	url: "/market/addCart",
+        	data: JSON.stringify(cart),
+        	contentType: "application/json; charset=UTF-8",
+        	success: function(data){
+        		alert("제품이 장바구니에 추가되었습니다");
+        		location.reload();
+        	},
+            error: function(xhr, status, error) {
+                var errorMessage = xhr.status + ': ' + xhr.statusText;
+                alert('에러가 발생했습니다.\n' + errorMessage);
+                console.log(" error "+ error);
+            }            	
+        });
+    });
 });
 </script>
 
@@ -376,7 +435,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 </script>
-
 </head>
 
 <body>
@@ -388,9 +446,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 <div class="small mb-1">카테고리 : ${product.category }</div>
                 <h1 class="display-5 fw-bolder">${product.product_name }</h1>
                 <div class="fs-5 mb-5">
-                    <span>${product.price }원</span>
+                    <span class="price"><fmt:formatNumber value="${product.price}" pattern="#,##0" />원</span>
                 </div>
+
                 <p class="lead">${product.product_explain }</p>
+
 					<div class="d-flex align-items-center ">
 						<div class="input-group product-qty" style="width: 200px">
 							<span class="input-group-btn">
@@ -405,8 +465,7 @@ document.addEventListener("DOMContentLoaded", function() {
 								</button>
 							</span> 
 						</div>
-						<a href="#" class="nav-link">장바구니<svg width="18" height="18">
-						<use xlink:href="#cart"></use></svg></a>
+						<button class="cart">장바구니<svg width="18" height="18"><use xlink:href="#cart"></use></svg></button>
 					</div>
 				</div>
         </div>
@@ -492,7 +551,16 @@ document.addEventListener("DOMContentLoaded", function() {
     		</tr>
 		<c:forEach var="question" items="${question }">
 			<tr>
-				<td>${question.q_type }</td>
+				<td>
+				<c:choose>
+					<c:when test="${question.q_type eq 1}">
+						배송문의
+	                </c:when>
+	                <c:when test="${question.q_type eq 2}">
+	                    상품문의
+	                </c:when>
+	            </c:choose>
+	            </td>
 				<td>${question.user_id }</td>
 				<td data-q-code = "${question.q_code}">${question.title}</td>
 				<td><fmt:formatDate value="${question.regdate }"/></td>
@@ -538,7 +606,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			</div>
         </div>
     </div>
-
+</div>
 
 <!-- 문의 상세 정보를 표시하는 모달 -->
 <div id="questionDetailModal" class="modal fade" role="dialog">

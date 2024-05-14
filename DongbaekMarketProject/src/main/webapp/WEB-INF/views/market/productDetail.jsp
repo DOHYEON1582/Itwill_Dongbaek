@@ -79,7 +79,7 @@
 	</fieldset>
 	
 	
-	<c:if test="${sessionScope.userVO.user_id == 'admin' }">
+	<c:if test="${sessionScope.userVO.user_id == 'admin2' }">
 		<form action="" method="post" id="answerForm">
 			답글 : <input type="text" name="answer_content" id="answer_content"> <br>
 			작성자 : <input type="text" name="writer" value="${sessionScope.userVO.user_id }" id="writer" readonly="readonly">

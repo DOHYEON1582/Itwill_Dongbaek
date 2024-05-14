@@ -280,7 +280,7 @@ $(document).ready(function() {
 <section class="py-0">
     <div class="container px-4 px-lg-5 my-5">
         <div class="row gx-4 gx-lg-5 align-items-center">
-            <div class="col-md-6"><img class="product-image" src="${pageContext.request.contextPath}/resources/images/${product.img1}" alt="..." /></div>
+            <div class="col-md-6"><img class="product-image" src="${pageContext.request.contextPath}/resources/images/product/${product.img1}" alt="..." /></div>
             <div class="col-md-6">
                 <div class="small mb-1">카테고리 : ${product.category }</div>
                 <h1 class="display-5 fw-bolder">${product.product_name }</h1>
@@ -335,7 +335,17 @@ $(document).ready(function() {
     		</tr>
 		<c:forEach var="question" items="${question }">
 			<tr>
-				<td>${question.q_type }</td>
+<%-- 				<td>${question.q_type }</td> --%>
+				<td>
+				<c:choose>
+					<c:when test="${question.q_type eq 1}">
+						배송문의
+	                </c:when>
+	                <c:when test="${question.q_type eq 2}">
+	                    상품문의
+	                </c:when>
+	            </c:choose>
+				</td>
 				<td>${question.user_id }</td>
 				<td>${question.title }</td>
 				<td><fmt:formatDate value="${question.regdate }"/></td>

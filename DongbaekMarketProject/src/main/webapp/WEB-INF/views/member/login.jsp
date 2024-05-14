@@ -44,8 +44,6 @@
 		<a id="kakao-login-btn" href="javascript:loginWithKakao()">
 			<img src="https://cs.kakao.com/img/cskakaocom/pc/thumb/thumb_kakaotalk.png" alt="kakao" style="width: 100px; height: 100px;">
 		</a> 
-		<div id="naver_id_login" style="text-align:center"><a href="${url}"><img width="223" src="${pageContext.request.contextPath}/resources/img/naver_Bn_Green.PNG"/></a></div>
-		<br>
 	</div>
 	
 </div>
