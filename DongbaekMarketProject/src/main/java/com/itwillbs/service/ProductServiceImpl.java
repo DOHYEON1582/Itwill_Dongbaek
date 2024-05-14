@@ -19,7 +19,7 @@ import com.itwillbs.domain.SellerVO;
 import com.itwillbs.domain.UserVO;
 import com.itwillbs.persistence.ProductDAO;
 
-@Repository
+@Service
 public class ProductServiceImpl implements ProductService {
 	
 	@Inject
@@ -28,7 +28,6 @@ public class ProductServiceImpl implements ProductService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 
-	
 	@Inject
 	private PasswordEncoder pwEncoder;
 	

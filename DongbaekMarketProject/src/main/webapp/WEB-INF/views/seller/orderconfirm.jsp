@@ -264,7 +264,7 @@ body {
 			<div class="row py-3 border-bottom">
 				<div class="col-sm-4 col-lg-3 text-center text-sm-start">
 					<div class="main-logo">
-						<a href="/seller/sellermain"> <img src="/resources/images/logo2.png" alt="logo" class="mylogo2">
+						<a href="/seller/sellermain"> <img src="${pageContext.request.contextPath }/resources/images/logo2.png" alt="logo" class="mylogo2">
 						</a>
 					</div>
 				</div>
@@ -286,21 +286,26 @@ body {
 				</div>
 				<div class="col-sm-8 col-lg-3 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
 				    <div>
-				        <div class="align-items-center">			           
-				            <a href="#" class="join">로그아웃</a>
-				            <a href="#" class="service">고객센터</a>
-				        </div>
+				    	<c:if test="${sessionScope.sellerVO.seller_id == null }">
+					        <div class="align-items-center">
+					            <a href="/seller/login" class="login">로그인</a>
+					            <a href="/seller/register" class="join">회원가입</a>
+					            <a href="#" class="service">고객센터</a>
+					        </div>
+				    	</c:if>
+				    	<c:if test="${sessionScope.sellerVO.seller_id != null }">
+					        <div class="align-items-center">
+					            로그인 id : ${sessionScope.sellerVO.seller_id }
+					            <a href="#" class="service">고객센터</a>
+					            <input type="button" value="로그아웃" onclick="location.href='/member/logout';">
+					        </div>
 				        <ul class="d-flex justify-content-end list-unstyled m-3">
-				            <li><a href="#" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
+				            <li><a href="/seller/info" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
 				                        <use xlink:href="#user"></use></svg>
 				                </a></li>
-				        <!--    <li><a href="#" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
-				                        <use xlink:href="#heart"></use></svg>
-				                </a></li>-->
 				        </ul>
+				    	</c:if>
 				    </div>
-				
-				   
 				</div>
 			</div>
 		</div>

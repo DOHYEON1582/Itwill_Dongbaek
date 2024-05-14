@@ -218,17 +218,31 @@ public class MarketController {
 	    return "redirect:/"; // 기본 페이지로 리다이렉트
 	}
 
-	
-
 	@ResponseBody
 	@RequestMapping(value = "/storeMain", method = RequestMethod.POST, consumes = "application/json")
 	public void storeMainPOST(HttpSession session, @RequestBody MarkVO mvo) throws Exception{
 		logger.debug("storeMainPOST 호출 ");
-		UserVO userVO = (UserVO) session.getAttribute("userVO");
-		String user_id = userVO.getUser_id();
 		mService.markStore(mvo);
 		logger.debug("mvo " + mvo);
 	}
+	
+	// 즐겨찾기 중복 체크
+	@ResponseBody
+	@PostMapping(value = "/checkMark", consumes = "application/json")
+	public ResponseEntity<String> checkDuplicateMark(@RequestBody MarkVO mvo, HttpSession session) throws Exception{ 
+	    UserVO userVO = (UserVO) session.getAttribute("userVO");
+	    String user_id = userVO.getUser_id();
+	    boolean isDuplicate = mService.checkDuplicateMark(mvo.getStore_code(), user_id);
+	    logger.debug("mvo.getstorecode : " + mvo.getStore_code());
+	    logger.debug("user_id : " + user_id);
+	    logger.debug("isDupli : " + isDuplicate);
+	    if (isDuplicate) {
+	        return ResponseEntity.ok("true");
+	    } else {
+	        return ResponseEntity.ok("false");
+	    }
+	}
+
 	
 	@RequestMapping(value = "/product", method = RequestMethod.GET)
 	public String productLsit(@RequestParam(name = "orderBy", required = false, defaultValue = "popularity") String orderBy,
@@ -309,7 +323,6 @@ public class MarketController {
 		logger.debug(" cart >>>>>>>>>>>>> " + cart);
 
 	}
-	
 
 	@GetMapping(value = "/sub")
 	public void marketSub(Model model,HttpSession session)throws Exception{
@@ -317,11 +330,17 @@ public class MarketController {
 		UserVO vo = (UserVO) session.getAttribute("userVO");
 		model.addAttribute("productList", mService.getSubProductList());
 		model.addAttribute("wishList", mService.getUserWish(vo.getUser_id()));
-		
+	}
+	
+	// 제철음식 페이지
+	@RequestMapping(value = "/market/seasonFood", method = RequestMethod.GET)
+	public void seasonFood() throws Exception {
+		logger.debug(" seasonFood() 호출 ");
 	}
 	
 	
-
+	
+	
 	
 	
 	

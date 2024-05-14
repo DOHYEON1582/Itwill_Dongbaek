@@ -1,4 +1,3 @@
-
 package com.itwillbs.persistence;
 
 import java.util.List;
@@ -14,3 +13,4 @@ public interface SaleDAO {
     // 연도별 매출액 조회
     public List<Map<String, Object>> getYearlySales(Map<String, Object> map) throws Exception;
 }
+

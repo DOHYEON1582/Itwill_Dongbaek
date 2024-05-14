@@ -24,3 +24,4 @@ public class DeliveryServiceImpl implements DeliveryService {
         return ddao.updateDeliveryInfo(order_code);
     }
 }
+

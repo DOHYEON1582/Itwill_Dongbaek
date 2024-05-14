@@ -5,6 +5,8 @@ import java.util.List;
 import com.itwillbs.domain.ProductCri;
 import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.SellerVO;
+import com.itwillbs.domain.UserVO;
+
 
 public interface ProductService {
 

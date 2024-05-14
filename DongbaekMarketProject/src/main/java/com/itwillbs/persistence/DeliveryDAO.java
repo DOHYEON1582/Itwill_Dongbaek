@@ -1,3 +1,4 @@
+
 package com.itwillbs.persistence;
 
 import com.itwillbs.domain.Order_infoVO;
@@ -10,3 +11,4 @@ public interface DeliveryDAO {
     public int updateDeliveryInfo(Order_infoVO order_code) throws Exception;
 
 }
+

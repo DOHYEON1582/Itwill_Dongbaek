@@ -8,9 +8,9 @@ import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.QuestionVO;
 
 public interface QuestionService {
-		// 각 상품 정보 들고오기
+	// 각 상품 정보 들고오기
 		public ProductVO eachProduct(int product_code) throws Exception;	
-		// 상품별 문의글 들고오기
+	// 상품별 문의글 들고오기
 		public List<QuestionVO> getQuestion(Map<String, Object> paramMap) throws Exception;
 		
 		// 상품 글 개수 계산

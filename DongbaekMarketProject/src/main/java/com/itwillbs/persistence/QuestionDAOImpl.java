@@ -1,4 +1,3 @@
-
 package com.itwillbs.persistence;
 
 import java.util.List;
@@ -52,6 +51,7 @@ public class QuestionDAOImpl implements QuestionDAO {
 		return sqlSession.selectList(NAMESPACE + ".questionDetail", q_code);
 	}
 	
+	@Override
 	public void qAnswer(AnswerVO avo) throws Exception {
 		logger.debug(" qAnswer(AnswerVO avo) 호출 ");
 		sqlSession.insert(NAMESPACE + ".qAnswer", avo);

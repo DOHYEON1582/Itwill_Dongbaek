@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.itwillbs.persistence.SaleDAO;
@@ -30,3 +31,4 @@ public class SaleServiceImpl implements SaleService {
         return sdao.getYearlySales(map);
     }
 }
+

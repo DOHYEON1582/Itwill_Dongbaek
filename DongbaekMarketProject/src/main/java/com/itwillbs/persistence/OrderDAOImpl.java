@@ -101,7 +101,6 @@ public class OrderDAOImpl implements OrderDAO{
     public int refundOrder(String order_code) throws Exception {
         return sqlSession.update(NAMESPACE + ".refundOrder", order_code);
     }
-
-	
-	
+		
 }
+

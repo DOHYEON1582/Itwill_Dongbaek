@@ -27,3 +27,4 @@ public class DeliveryDAOImpl implements DeliveryDAO {
         return sqlSession.update(NAMESPACE + ".updateDeliveryInfo", order_code);
     }
 }
+

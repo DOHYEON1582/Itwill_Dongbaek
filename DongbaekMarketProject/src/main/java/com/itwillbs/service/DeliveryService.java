@@ -9,3 +9,4 @@ public interface DeliveryService {
     // 배송 정보 업데이트
     public int updateDeliveryInfo(Order_infoVO order_code) throws Exception;
 }
+

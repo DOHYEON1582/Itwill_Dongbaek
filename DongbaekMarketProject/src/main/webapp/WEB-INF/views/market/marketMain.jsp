@@ -339,7 +339,7 @@ function topFunction() {
 		<div class="slider5">
 		<c:forEach var="store" items="${storeList }" >
 	    <div class="slide">
-	    <img src="${pageContext.request.contextPath}/resources/images/${store.img1}">
+	    <img src="${pageContext.request.contextPath}/resources/images/product/${store.img1}">
 	    <a href="storeMain?store_code=${store.store_code}" class="store-link">
 	    <p style="margin: 0;">${store.store_name } 바로가기</p>
 	    </a>
