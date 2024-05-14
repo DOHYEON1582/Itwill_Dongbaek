@@ -82,11 +82,6 @@ public class UserController {
 	    return marketInfo;
 	}
 	
-	@RequestMapping(value = "/introduce", method = RequestMethod.GET)
-	public void introMarket() throws Exception {
-		logger.debug(" introMarket() 호출");
-	}
-	
 	@RequestMapping(value = "member/register", method = RequestMethod.GET)
 	public void registerGET() throws Exception{
 		logger.debug(" registerGET() 호출 ");

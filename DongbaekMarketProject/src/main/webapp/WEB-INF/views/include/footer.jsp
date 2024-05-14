@@ -13,8 +13,8 @@
             <div class="footer-menu">
                 <h5 class="widget-title">소개</h5>
                 <ul class="menu-list list-unstyled">
-                    <li class="menu-item"><a href="introduce" class="nav-link">▶ 동백장터 소개</a></li>
-                    <li class="menu-item"><a href="#" class="nav-link">▶ 동백팀 소개</a></li>
+                    <li class="menu-item"><a href="market/introduce" class="nav-link">▶ 동백장터 소개</a></li>
+                    <li class="menu-item">▶ 동백팀 소개</li>
                 </ul>
             </div>
         </div>
@@ -23,7 +23,7 @@
             <div class="footer-menu">
                 <h5 class="widget-title">고객 문의</h5>
                 <ul class="menu-list list-unstyled">
-                    <li class="menu-item"><a href="#" class="nav-link">▶ FAQ</a></li>
+                    <li class="menu-item">▶ FAQ</li>
                 </ul>
             </div>
         </div>
@@ -32,7 +32,7 @@
             <div class="footer-menu">
                 <h5 class="widget-title">개인정보</h5>
                 <ul class="menu-list list-unstyled">
-                    <li class="menu-item"><a href="#" class="nav-link">▶ 약관확인</a></li>
+                    <li class="menu-item">▶ 약관확인</li>
                 </ul>
             </div>
         </div>
@@ -41,7 +41,7 @@
             <div class="footer-menu">
                 <h5 class="widget-title">Global Site</h5>
                 <ul class="menu-list list-unstyled">
-                    <li class="menu-item"><a href="#" class="nav-link">▶ English</a></li>
+                    <li class="menu-item">▶ English</li>
                 </ul>
             </div>
         </div>
