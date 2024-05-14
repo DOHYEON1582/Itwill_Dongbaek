@@ -400,6 +400,10 @@ body {
             </select>
         </div>
         <div style="margin-bottom: 10px;">
+            <label for="seller_id" style="display: block; margin-bottom: 5px;">판매자 아이디:</label>
+            <input type="text" id="seller_id" name="seller_id" style="width: 100%; padding: 8px;">
+        </div>
+        <div style="margin-bottom: 10px;">
             <label for="product_name" style="display: block; margin-bottom: 5px;">상품명:</label>
             <input type="text" id="product_name" name="product_name" style="width: 100%; padding: 8px;">
         </div>
@@ -456,6 +460,7 @@ $(document).ready(function(){
         formData.append("img3", $("#img3")[0].files[0]);
 
         // 나머지 폼 데이터 추가
+        formData.append("seller_id", $("#seller_id").val());
         formData.append("market_code", $("#market_code").val());
         formData.append("category", $("#category").val());
         formData.append("product_name", $("#product_name").val());

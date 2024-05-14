@@ -18,7 +18,6 @@
         <result property="re_lev" column="re_lev" />
         <result property="re_ref" column="re_ref" />
         <result property="re_seq" column="re_seq" />
-        <result property="seller_id" column="seller_id" />
     </resultMap>
 	<resultMap type="com.itwillbs.domain.ProductVO" id="product">
 		<result property="product_code" column="product_code"/>
@@ -114,14 +113,14 @@
 	
 	<select id="getReviewByParams" parameterType="map" resultMap="review">
         SELECT * FROM review
-        WHERE seller_id = #{seller_id} AND product_code = #{product_code} AND order_code = #{order_code}
+        WHERE user_id = #{user_id} AND product_code = #{product_code} AND order_code = #{order_code}
     </select>
 
  <!-- 답글을 추가하는 쿼리 -->
 	<insert id="addReply" parameterType="com.itwillbs.domain.ReviewVO">
     <!-- 새로운 review_code를 생성하여 삽입 -->
-    INSERT INTO review (product_code, review_code, user_id, title, content, re_ref, re_lev, re_seq, regdate)
-    SELECT r.product_code, (SELECT COALESCE(MAX(review_code), 0) + 10000 FROM review), #{user_id}, r.title, #{content}, MAX(r.re_ref), MAX(r.re_lev)+1, 1, now()
+    INSERT INTO review (product_code, review_code, user_id, title, content, re_ref, re_lev, re_seq, regdate, star)
+    SELECT r.product_code, (SELECT COALESCE(MAX(review_code), 0) + 10000 FROM review), #{user_id}, r.title, #{content}, MAX(r.re_ref), MAX(r.re_lev)+1, 1, now(), 0
     FROM review r
     WHERE r.review_code = #{review_code}
 </insert>

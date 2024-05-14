@@ -36,17 +36,17 @@ public class ReviewReplyServiceImpl implements ReviewReplyService {
         return rdao.countReviews();
     }
 	
-	 public ReviewVO getReview(int review_code) throws Exception {
-	        logger.debug(" getReview(int review_code) 호출 ");
-	        return rdao.getReview(review_code);
-	   }
+	@Override
+	public ReviewVO getReview(int review_code) throws Exception {
+        logger.debug(" getReview(int review_code) 호출 ");
+        return rdao.getReview(review_code);
+    }
 
 	
 	
 	@Override
 	public int checkReplyExist(int review_code) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		return rdao.checkReplyExist(review_code);
 	}
 
 	@Override
@@ -68,6 +68,5 @@ public class ReviewReplyServiceImpl implements ReviewReplyService {
     public ReviewVO getReviewByParams(String userId, int productCode, int orderCode) throws Exception{
         return rdao.getReviewByParams(userId, productCode, orderCode);
     }
-	
 	
 }

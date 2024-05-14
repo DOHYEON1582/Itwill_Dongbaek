@@ -456,6 +456,7 @@ body {
     <!-- 리뷰 답글 작성 폼 -->
     <form action="/seller/reply" method="post" style="width: 80%; margin: 20px auto; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); background-color: #f9f9f9;"> <!-- 폼 스타일 -->
         <input type="hidden" name="review_code" value="${review.review_code}">
+        <input type="hidden" name="user_id" value="${sessionScope.user_id}">
         <textarea name="content" rows="5" cols="50" placeholder="리뷰에 대한 답글을 작성해주세요." style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #ccc; resize: vertical;" required></textarea> <!-- 텍스트 영역 스타일 -->
         <br>
         <input type="submit" value="답글 작성" style="padding: 10px 20px; border: none; border-radius: 5px; background-color: #4CAF50; color: white;"> <!-- 제출 버튼 스타일 -->

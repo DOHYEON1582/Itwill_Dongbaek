@@ -418,6 +418,11 @@ body {
         </tr>
         
     </table>
+    <!-- 답글 버튼 -->
+    <form action="/seller/reviewReply" method="get">
+        <input type="hidden" name="review_code" value="${review.review_code}">
+        <button type="submit" style="margin-top: 20px;">답글 작성</button>
+    </form>
 </div>
 
 

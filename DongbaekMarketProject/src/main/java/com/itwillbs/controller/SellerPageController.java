@@ -738,22 +738,27 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 
 
 		// 리뷰 답글을 작성하는 페이지로 이동
-	    @GetMapping("/reviewReply")
-	    public String reviewReply(@RequestParam("review_code") int review_code, Model model) throws Exception{
-	        // review_code를 이용하여 해당 리뷰 정보를 가져옴
-	        ReviewVO review = rService.getReview(review_code);
-	        model.addAttribute("review", review);
-	        return "seller/reviewReply"; // 리뷰 답글을 작성하는 폼이 있는 JSP 페이지
-	    }
+		@GetMapping("/reviewReply")
+		public String reviewReply(@RequestParam("review_code") int review_code, Model model) throws Exception {
+		    // review_code를 이용하여 해당 리뷰 정보를 가져옴
+		    ReviewVO review = rService.getReview(review_code);
+		    model.addAttribute("review", review);
+		    // 리뷰 답글을 작성하는 폼이 있는 JSP 페이지로 이동
+		    return "seller/reviewReply";
+		}
 
-	    // 리뷰 답글을 작성하는 기능
-	    @PostMapping("/reply")
-	    public String reply(ReviewVO reply) throws Exception {
-	        // 작성된 리뷰 답글을 저장
-	        rService.addReply(reply);
-	        // 작성한 리뷰 답글이 포함된 리뷰 목록 페이지로 이동
-	        return "redirect:/seller/review";
-	    }
+		@PostMapping("/reply")
+		public String reply(ReviewVO reply) throws Exception {
+		    // 작성된 리뷰 답글을 저장하기 전에 사용자 ID를 설정
+		    reply.setUser_id(reply.getUser_id());
+		    // 작성된 리뷰 답글을 저장
+		    rService.addReply(reply);
+		    // 작성한 리뷰 답글이 포함된 리뷰 목록 페이지로 이동
+		    return "redirect:/seller/review";
+		}
+
+
+
 
 
 	// 판매자 리뷰페이지 상세페이지

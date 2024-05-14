@@ -430,10 +430,9 @@ body {
     <thead>
         <tr style="background-color: #f2f2f2;">
             
-            <th style="padding: 10px; border: 1px solid #000;">상품 코드</th>
-            <th style="padding: 10px; border: 1px solid #000;">작성일</th>
             <th style="padding: 10px; border: 1px solid #000;">제목</th>
             <th style="padding: 10px; border: 1px solid #000;">별점</th>
+            <th style="padding: 10px; border: 1px solid #000;">작성일</th>
             <th style="padding: 10px; border: 1px solid #000;">사용자 아이디</th>
             <th style="padding: 10px; border: 1px solid #000;">답글</th>
         </tr>
@@ -443,14 +442,13 @@ body {
         <c:forEach var="review" items="${reviews}">
             <tr>
                 
-                <td style="padding: 10px; border: 1px solid #000;">${review.product_code}</td>
-                <td style="padding: 10px; border: 1px solid #000;">${review.regdate}</td>
                 <td style="padding: 10px; border: 1px solid #000;">
                 <!-- 제목에 링크 추가하여 상세 페이지로 이동 -->
 				    <a href="/seller/reviewDetail?review_code=${review.review_code}" style="text-decoration: none; color: inherit;">
 				        ${review.title}
 				    </a></td>
                 <td style="padding: 10px; border: 1px solid #000;">${review.star}</td>
+                <td style="padding: 10px; border: 1px solid #000;">${review.regdate}</td>
                 <td style="padding: 10px; border: 1px solid #000;">${review.user_id}</td>
                 <td style="padding: 10px; border: 1px solid #000;">
                     <!-- 답글 페이지로의 링크 추가 -->

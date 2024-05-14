@@ -1,4 +1,3 @@
-
 package com.itwillbs.persistence;
 
 import java.util.HashMap;
@@ -25,6 +24,7 @@ public class ReviewReplyDAOImpl implements ReviewReplyDAO {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ReviewReplyDAOImpl.class);
 	private static final String NAMESPACE = "com.itwillbs.mapper.ReviewMapper";
+	
 	@Override
     public List<ReviewVO> getReviewList(UserVO uvo) throws Exception{
 		logger.debug(" getReviewList(UserVO uvo) 실행 ");
@@ -47,28 +47,16 @@ public class ReviewReplyDAOImpl implements ReviewReplyDAO {
 	    return sqlSession.selectOne(NAMESPACE + ".checkReplyExist", review_code);
 	}
 
-//    @Override
-//    public int insertReview(ReviewVO review) throws Exception{
-//    	logger.debug(" insertReview(ReviewVO review) 실행 ");
-//        int result = sqlSession.insert(NAMESPACE + ".insertReview", review);
-//        return result;
-//    }
-
 	@Override
 	public void addReply(ReviewVO rvo) throws Exception {
 	    logger.debug("addReply(ReviewVO reply) 호출");
-	    // DAO를 통해 답글을 추가
 	    sqlSession.insert(NAMESPACE+".addReply",rvo);
 	}
-
-
 
 	@Override
 	public void replyModify(ReviewVO rvo) throws Exception {
 		logger.debug(" replyModify(ReviewVO rvo) 실행 ");
-
 		sqlSession.update(NAMESPACE + ".replyModify", rvo);
-		
 	}
 
 	@Override
@@ -79,7 +67,5 @@ public class ReviewReplyDAOImpl implements ReviewReplyDAO {
         params.put("order_code", orderCode);
         return sqlSession.selectOne(NAMESPACE+".getReviewByParams", params);
     }
-	
-	
 	
 }
