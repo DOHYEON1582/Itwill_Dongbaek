@@ -34,3 +34,4 @@ public class SaleDAOImpl implements SaleDAO {
         return sqlSession.selectList(NAMESPACE + ".getYearlySales", map);
     }
 }
+

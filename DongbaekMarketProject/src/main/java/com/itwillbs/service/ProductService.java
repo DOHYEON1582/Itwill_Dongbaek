@@ -7,9 +7,10 @@ import com.itwillbs.domain.ProductVO;
 import com.itwillbs.domain.SellerVO;
 import com.itwillbs.domain.UserVO;
 
+
 public interface ProductService {
 
-    public ProductVO getProductById(int product_code); // 상품 ID를 기준으로 상품 정보를 조회하는 메서드
+	public ProductVO getProductById(int product_code); // 상품 ID를 기준으로 상품 정보를 조회하는 메서드
 
     public int getTotalCount(String seller_id) throws Exception; // 전체 상품 수 조회
 

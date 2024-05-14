@@ -31,3 +31,4 @@ public class SaleServiceImpl implements SaleService {
         return sdao.getYearlySales(map);
     }
 }
+

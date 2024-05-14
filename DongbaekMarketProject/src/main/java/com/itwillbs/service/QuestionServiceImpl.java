@@ -47,6 +47,7 @@ public class QuestionServiceImpl implements QuestionService {
 	public List<QuestionVO> questionDetail(int q_code) throws Exception {
 		return qdao.questionDetail(q_code);
 	}
+	@Override
 	public void qAnswer(AnswerVO avo) throws Exception {
 		logger.debug(" qAnswer(AnswerVO avo) 실행 ");
 		qdao.qAnswer(avo);
@@ -67,3 +68,4 @@ public class QuestionServiceImpl implements QuestionService {
 		return count > 0;
   }
 }
+
