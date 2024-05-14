@@ -339,7 +339,10 @@ public class MarketController {
 	}
 	
 	
-	
+	@GetMapping(value = "/android")
+	public void android() throws Exception {
+		logger.debug("android 호출");
+	}
 	
 	
 	

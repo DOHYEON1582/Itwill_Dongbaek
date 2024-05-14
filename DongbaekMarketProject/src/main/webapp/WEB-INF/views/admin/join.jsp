@@ -16,7 +16,6 @@
 	<div id="loginBox">
 		<img id="mainImg" src="/resources/images/logo1.png">
 		
-	
 	<div>
 		<form action="">
 			<input class="loginInput" type="text"  name="email" placeholder="이메일 주소">

@@ -133,7 +133,6 @@
 <select id="login" resultType="String">
 	SELECT user_pw FROM user 
 	WHERE user_id = #{user_id}
-
 </select>
 
 
@@ -151,8 +150,6 @@
 			WHERE phone = #{phone}
 		</when>
 	</choose>
-	
-
 </select>
 
 <!-- 회원 주문 정보(모음) 조회 -->
@@ -404,7 +401,7 @@
 <!-- 차트 매출 가져오기 -->
 <select id="totalsell" resultType="String">
 	SELECT SUM(total_price) FROM order_info 
-	WHERE ordr_date LIKE CONCAT('%',#{date},'%') 
+	WHERE order_date LIKE CONCAT('%',#{date},'%') 
 </select>
 
 <!-- 날짜별 고객수 가져오기 -->

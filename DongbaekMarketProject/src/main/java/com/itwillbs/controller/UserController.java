@@ -67,7 +67,7 @@ public class UserController {
 	            return "redirect:/";
 	        }
 	    } else if (type.equals("product")) {
-	        return "redirect:/member/product";
+	        return "redirect:/market/product";
 	    }
 	    return "redirect:/";
 	}

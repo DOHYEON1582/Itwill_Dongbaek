@@ -421,20 +421,6 @@ h3 {
 		</div>
 	</div>
 	<div id="sijang_text" style="display: inline-block; vertical-align: top;">
-		<div class="tit">
-			<div class="sij_name" style="font-size: 30px; font-weight: bold;">▶ ${store.store_name }
-		        <button id="markStore" class="clear-button button button-follow" style="margin-left: 10px;">
-		            <span class="content">
-		                <div class="inner-container">
-		                    <img src="https://front.coupangcdn.com/coupang-store-display/20240415182517/img/ic_heart_dark_outline.ebe809a.svg" width="12" alt="">
-		                    <span class="text">즐겨찾기</span>
-		                </div>
-		            </span>
-		        </button>
-		        <input type="hidden" id="store_code" value="${store.store_code }">
-				<input type="hidden" id="user_id" value="${user_id }">
-		    </div>
-		</div>
 		<div id="sijang_text" style="display: inline-block; vertical-align: top;">
 			<div class="tit">
 				<div class="sij_name" style="font-size: 30px; font-weight: bold;">
