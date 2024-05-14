@@ -345,6 +345,10 @@ public class MarketController {
 		
 	}
 	
+	@RequestMapping(value = "/introduce", method = RequestMethod.GET)
+	public void introMarket() throws Exception {
+		logger.debug(" introMarket() 호출");
+	}
 	
 	
 	
