@@ -319,9 +319,9 @@
 
 <!-- 구독 물품 업로드 -->
 <insert id="insertSubProduct">
-	INSERT INTO product (product_code,store_code,price,product_name,img1,product_explain,seller_id,country,max_account,category,sub_product,unit,market_code) 
+	INSERT INTO product (product_code,store_code,price,product_name,img1,img2,img3,product_explain,seller_id,country,max_account,category,sub_product,unit,market_code) 
 	VALUES ((SELECT product_code FROM (SELECT IFNULL(MAX(product_code), 0) + 1 as product_code FROM product) as t),
-			#{store_code},#{price},#{product_name},#{img1},#{product_explain},#{seller_id},#{country},#{max_account},#{category},#{sub_product},#{unit},1)
+			#{store_code},#{price},#{product_name},#{img1},#{img2},#{img3},#{product_explain},#{seller_id},#{country},#{max_account},#{category},#{sub_product},#{unit},1)
 
 </insert>
 

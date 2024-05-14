@@ -131,8 +131,22 @@
 					<tr>
 						<td colspan="6">
 							<img id="imgFile"  src="">
-	     					<button class="btnFile" id="btnFile" type="button">사진업로드</button>
+	     					<button class="btnFile" id="btnFile" type="button">대표사진 업로드</button>
 	     					<input id="imgFileInput" type="file" name="img1">
+	     				</td>
+					</tr>
+					<tr>
+						<td colspan="6">
+							<img id="imgFile1"  src="">
+	     					<button class="btnFile" id="btnFile1" type="button">상세사진 업로드</button>
+	     					<input id="imgFileInput1" type="file" name="img2">
+	     				</td>
+					</tr>
+					<tr>
+						<td colspan="6">
+							<img id="imgFile2"  src="">
+	     					<button class="btnFile" id="btnFile2" type="button">상세사진 업로드</button>
+	     					<input id="imgFileInput2" type="file" name="img3">
 	     				</td>
 					</tr>
 					<tr>
@@ -171,6 +185,14 @@
         	$('#imgFileInput').click();
         	
     	});
+		$(document).on('click', '#btnFile1', function(){
+	        $('#imgFileInput1').click();
+	        	
+	    });
+		$(document).on('click', '#btnFile2', function(){
+	       	$('#imgFileInput2').click();
+	        	
+	    });
 		
 		// 사진 미리보기 스크립트
 		$(document).on('change', '#imgFileInput', function(){
@@ -182,6 +204,30 @@
 			$('#imgFile').attr('src',imageSrc);
 			$('#btnFile').css('display','none');
 			$('#imgFile').css('display','block');
+			
+		});
+		
+		$(document).on('change', '#imgFileInput1', function(){
+			
+			const fileDOM = document.querySelector('#imgFileInput1');
+			// 업로드 사진의 URL을 가져와서 img src 위치에 삽입
+			const imageSrc1 = URL.createObjectURL(fileDOM.files[0]);
+			console.log(imageSrc1);
+			$('#imgFile1').attr('src',imageSrc1);
+			$('#btnFile1').css('display','none');
+			$('#imgFile1').css('display','block');
+			
+		});
+		
+		$(document).on('change', '#imgFileInput2', function(){
+			
+			const fileDOM = document.querySelector('#imgFileInput2');
+			// 업로드 사진의 URL을 가져와서 img src 위치에 삽입
+			const imageSrc2 = URL.createObjectURL(fileDOM.files[0]);
+			console.log(imageSrc2);
+			$('#imgFile2').attr('src',imageSrc2);
+			$('#btnFile2').css('display','none');
+			$('#imgFile2').css('display','block');
 			
 		});
 		

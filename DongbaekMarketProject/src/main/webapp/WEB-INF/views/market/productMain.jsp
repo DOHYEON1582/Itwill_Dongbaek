@@ -174,18 +174,53 @@
         text-align: left;
         padding: 8px;
     }
+.table-bordered {
+    width: 100%;
+    border-collapse: collapse;
+}
 
-    th {
-        background-color: #f2f2f2;
-    }
+.table-bordered th, .table-bordered td {
+    border: 1px solid #dddddd;
+    padding: 12px; /* 여백을 더 늘렸습니다 */
+}
 
-    tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
+.table-bordered th {
+    background-color: #f2f2f2;
+}
 
-    tr:hover {
-        background-color: #dddddd;
-    }
+.table-bordered tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table-bordered tr:hover {
+    background-color: #dddddd;
+}
+
+/* 특정 열의 너비를 조절합니다 */
+.table-bordered th:nth-child(1), .table-bordered td:nth-child(1) {
+    width: 20%; /* 필요에 따라 조절하세요 */
+}
+
+.table-bordered th:nth-child(2), .table-bordered td:nth-child(2) {
+    width: 10%; /* 필요에 따라 조절하세요 */
+}
+
+.table-bordered th:nth-child(3), .table-bordered td:nth-child(3) {
+    width: 30%; /* 필요에 따라 조절하세요 */
+}
+
+.table-bordered th:nth-child(4), .table-bordered td:nth-child(4) {
+    width: 15%; /* 필요에 따라 조절하세요 */
+}
+
+.table-bordered th:nth-child(5), .table-bordered td:nth-child(5) {
+    width: 15%; /* 필요에 따라 조절하세요 */
+}
+
+.table-bordered th:nth-child(6), .table-bordered td:nth-child(6) {
+    width: 15%; /* 필요에 따라 조절하세요 */
+}
+
 </style>
 <script type="text/javascript">
 // 맨 위로 스크롤되도록 설정
@@ -413,8 +448,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 <div class="fs-5 mb-5">
                     <span class="price"><fmt:formatNumber value="${product.price}" pattern="#,##0" />원</span>
                 </div>
-                <p class="lead">${product.product_explain } 대충 상품 설명</p>
-                <span class="total-price">총 가격</span>
+
+                <p class="lead">${product.product_explain }</p>
+
 					<div class="d-flex align-items-center ">
 						<div class="input-group product-qty" style="width: 200px">
 							<span class="input-group-btn">
@@ -470,7 +506,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 <div class="container">
     <h1 class="page-header" style="margin-bottom: 50px;" id="review1">Review</h1>
-    <table class="table table-bordered">
+    <table class="table table-bordered" id="reviewtable">
     	<tbody>
     		<tr>
 				<th>Title</th>
@@ -492,7 +528,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		                </c:forEach>
 		            </span>
 		        </td>
-				<td><img src="${pageContext.request.contextPath}/resources/images/${review.img1}" style="width: 100px; height: 100px;"></td>
+				<td><img src="${pageContext.request.contextPath}/resources/images/product/${review.img1}" style="width: 100px; height: 100px;"></td>
 				<td><fmt:formatDate value="${review.regdate }"/></td>
 			</tr>
 		</c:forEach>    		
