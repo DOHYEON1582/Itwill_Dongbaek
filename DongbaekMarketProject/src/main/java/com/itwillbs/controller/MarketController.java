@@ -340,17 +340,16 @@ public class MarketController {
 	
 	
 	@GetMapping(value = "/android")
-	public void android() throws Exception {
+	public void android(ProductVO pvo, Model model) throws Exception {
 		logger.debug("android 호출");
-		
+		model.addAttribute("productList",  mService.getProductAll(pvo));
 	}
+	
 	
 	@RequestMapping(value = "/introduce", method = RequestMethod.GET)
 	public void introMarket() throws Exception {
 		logger.debug(" introMarket() 호출");
 	}
-	
-	
 	
 	
 }
