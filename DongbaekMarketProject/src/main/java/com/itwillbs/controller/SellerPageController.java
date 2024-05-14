@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -98,12 +99,12 @@ public class SellerPageController {//판매자 페이지 컨트롤러
     private static final Logger logger = LoggerFactory.getLogger(SellerPageController.class);
     
     
-    @RequestMapping(value = "seller/register", method = RequestMethod.GET)
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
 	public void registerGET() throws Exception{
 		logger.debug(" registerGET() 호출 ");
 		
 	}
-    @RequestMapping(value = "seller/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String registerPOST(SellerVO svo) throws Exception{
 		logger.debug(" registerPOST(UserVO uvo) 호출 ");
 		logger.debug(" 회원가입 정보 : " + svo);
@@ -113,12 +114,12 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 		return "redirect:/seller/login";
 	}
     
-    @RequestMapping(value = "/seller/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public void sellerLogin()throws Exception {
     	logger.debug(" sellerLogin() 호출 "); 
     	
     }
-    @RequestMapping(value = "/seller/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String loginPOST(SellerVO svo, HttpSession session) throws Exception{
 		logger.debug(" loginPOST() 호출 ");
 		
@@ -132,14 +133,14 @@ public class SellerPageController {//판매자 페이지 컨트롤러
             return "/seller/login";
         }
 	}
-    @RequestMapping(value="/seller/callBack", method=RequestMethod.GET)
+    @RequestMapping(value="/callBack", method=RequestMethod.GET)
 	public String callBack(){
 		logger.debug(" callBack() 호출 ");
 		return "/seller/callBack";
 	}
     
     @ResponseBody
-	@RequestMapping(value = "/seller/confirm", method = RequestMethod.POST)
+	@RequestMapping(value = "//confirm", method = RequestMethod.POST)
 	public ResponseEntity<Integer> idCheckPOST(String seller_id) throws Exception {
 	    logger.debug("idCheckPOST(String seller_id) 호출");
 	    int result = 0;
@@ -151,7 +152,7 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	}
     
     // 판매자 정보
-    @RequestMapping(value = "seller/info", method = RequestMethod.GET)
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
 	public void infoGET(Model model, HttpSession session) throws Exception {
 		logger.debug(" infoGET() 실행 ");
 		SellerVO sellerVO = (SellerVO) session.getAttribute("seller_id");
@@ -161,7 +162,7 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	}
    
     // 정보 수정
-    @RequestMapping(value = "seller/update", method = RequestMethod.GET)
+    @RequestMapping(value = "/update", method = RequestMethod.GET)
 	public void sellerUpdateGET(Model model, HttpSession session) throws Exception {
 		logger.debug(" userUpdateGET() 실행 ");
 		SellerVO sellerVO = (SellerVO) session.getAttribute("seller_id");
@@ -169,7 +170,7 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 		logger.debug(" id : " + seller_id);
 		model.addAttribute("SellerInfo", pService.sellerInfo(seller_id));
 	}
-    @RequestMapping(value = "seller/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
 	public String sellerUpdatePOST(SellerVO svo) throws Exception {
 		logger.debug(" sellerUpdatePOST(SellerVO svo) 호출 ");
 		logger.debug("svo : " + svo);
@@ -183,7 +184,7 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	}
     
     // 로그아웃
-    @GetMapping(value = "seller/logout")
+    @GetMapping(value = "/logout")
 	public String logoutGET(HttpSession session) throws Exception{
 		logger.debug(" logoutGET(HttpSession session) 실행 ");
 		session.invalidate();
@@ -191,13 +192,13 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	}
     
   //회원정보 삭제
-  	@RequestMapping(value = "seller/delete", method = RequestMethod.GET)
+  	@RequestMapping(value = "/delete", method = RequestMethod.GET)
   	public String deleteSellerGET() throws Exception {
   		logger.debug(" deleteSellerGET() 호출 ");
   		
   		return "/seller/delete";
   	}
-  	@RequestMapping(value = "seller/delete", method = RequestMethod.POST)
+  	@RequestMapping(value = "/delete", method = RequestMethod.POST)
   	public String deleteSellerPOST(SellerVO svo, HttpSession session) throws Exception {
   		logger.debug(" deleteSellerPOST() 호출 ");
   		logger.debug(" 삭제할 정보 : " + svo);
@@ -215,10 +216,16 @@ public class SellerPageController {//판매자 페이지 컨트롤러
     
     // 판매자 메인페이지
     //  http://localhost:8088/seller/sellermain
-    @RequestMapping(value = "/sellermain",method = RequestMethod.GET)
-    public void main() throws Exception{
-        logger.debug(" sellermain() 실행 ");
-    }
+  	@RequestMapping(value = "/sellermain", method = RequestMethod.GET)
+  	public String main(Model model) throws Exception {
+  	    logger.debug("sellermain() 실행");
+
+  	    // 주문 목록과 리뷰 목록 건수를 모델에 담아서 해당 페이지로 전달
+  	    model.addAttribute("orderCount", oService.getOrderCount());
+  	    model.addAttribute("reviewCount", rService.countReviews());
+
+  	    return "/seller/sellermain"; // 뷰 이름 반환
+  	}
     // 판매자 상품페이지(상품목록)
     //  http://localhost:8088/seller/product
     @RequestMapping(value = "/product", method = RequestMethod.GET)
@@ -501,6 +508,7 @@ public class SellerPageController {//판매자 페이지 컨트롤러
     }
 
     // 판매자 상품 수정 처리
+ // 수정된 productModifySubmit 메서드
     @PostMapping("/productmodifySubmit")
     public ResponseEntity productModifySubmit(@RequestParam("product_name") String product_name,
                                                @RequestParam("price") int price,
@@ -509,25 +517,19 @@ public class SellerPageController {//판매자 페이지 컨트롤러
                                                @RequestParam("unit") String unit,
                                                @RequestParam("category") String category,
                                                @RequestParam("product_explain") String product_explain,
-                                               @RequestParam("img1") MultipartFile img1,
-                                               @RequestParam("img2") MultipartFile img2,
-                                               @RequestParam("img3") MultipartFile img3,
-                                               HttpServletRequest request) throws Exception{
-    	logger.debug("productmodify 호출");
-
-        String uniqueFileName1 = "";
-        String uniqueFileName2 = "";
-        String uniqueFileName3 = "";
+                                               @RequestParam("images") MultipartFile[] images,
+                                               HttpServletRequest request) throws Exception {
+        logger.debug("productmodify 호출");
 
         try {
-          
             String realPath = request.getSession().getServletContext().getRealPath("/resources/upload1");
             logger.debug("실제 경로 : " + realPath);
 
-            uniqueFileName1 = saveFile(img1, realPath);
-            uniqueFileName2 = saveFile(img2, realPath);
-            uniqueFileName3 = saveFile(img3, realPath);
-
+            List<String> imagePaths = new ArrayList<>();
+            for (MultipartFile image : images) {
+                String uniqueFileName = saveFiles(image, realPath);
+                imagePaths.add(uniqueFileName);
+            }
 
             ProductVO product = new ProductVO();
             product.getProduct_code();
@@ -539,14 +541,19 @@ public class SellerPageController {//판매자 페이지 컨트롤러
             product.setCategory(category);
             product.setProduct_explain(product_explain);
             product.setSeller_id("seller");
-            product.setImg1(uniqueFileName1);
-            product.setImg2(uniqueFileName2);
-            product.setImg3(uniqueFileName3);
+
+            // Set image paths only if available
+            if (!imagePaths.isEmpty()) {
+                product.setImg1(imagePaths.get(0));
+                if (imagePaths.size() > 1)
+                    product.setImg2(imagePaths.get(1));
+                if (imagePaths.size() > 2)
+                    product.setImg3(imagePaths.get(2));
+            }
 
             logger.debug("작성한 상품: " + product.toString());
 
-            int success = 0;
-    		success = pService.updateProduct(product);
+            int success = pService.updateProduct(product);
 
             HttpHeaders respHeaders = new HttpHeaders();
             respHeaders.add("Content-Type", "text/html; charset=utf-8");
@@ -576,14 +583,15 @@ public class SellerPageController {//판매자 페이지 컨트롤러
         }
     }
 
-    private String saveFile(MultipartFile file, HttpServletRequest request) throws IOException {
+
+    // 수정된 saveFile 메서드
+    private String saveFiles(MultipartFile file, String realPath) throws IOException {
         String uniqueFileName = "";
 
         if (!file.isEmpty()) {
             String originalFileName = file.getOriginalFilename();
             String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
             uniqueFileName = UUID.randomUUID().toString() + fileExtension; // 중복방지를 위해 파일이름 랜덤값 변경
-            String realPath = request.getSession().getServletContext().getRealPath("/resources/upload1");
             String filePath = realPath + File.separator + uniqueFileName;
             File dest = new File(filePath);
 
@@ -597,6 +605,7 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 
         return uniqueFileName;
     }
+
 
 
 
@@ -636,35 +645,61 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	
 	// 판매자 주문페이지(주문목록)
 	//	http://localhost:8088/seller/orderlist
-	@RequestMapping(value = "/orderlist",method = RequestMethod.GET)
-	public void orderlist() throws Exception{
-		logger.debug(" orderlist() 실행 ");
-		
+	// 판매자 주문페이지(주문목록)
+	// http://localhost:8088/seller/orderlist
+	@RequestMapping(value = "/orderlist", method = RequestMethod.GET)
+	public String orderlist(Model model) {
+	    logger.debug("orderlist() 실행");
+	    try {
+	        // 주문 목록 조회
+	        List<Order_infoVO> orderList = oService.getOrderList("","","","");
+	        model.addAttribute("orderList", orderList);
+	    } catch (Exception e) {
+	        logger.error("주문 목록 조회 중 오류 발생: {}", e.getMessage());
+	        // 오류 페이지로 이동하거나 예외 처리를 위한 코드 추가
+	    }
+	    return "seller/orderlist";
 	}
-	
+
 	// 주문 확정 컨트롤러
 	@RequestMapping(value = "/confirmOrder", method = RequestMethod.POST)
 	public String confirmOrder(@RequestParam("order_code") String order_code) {
-	    // 주문을 확정하는 로직을 구현합니다.
-	    // orderId를 사용하여 해당 주문을 확정합니다.
-	    return "redirect:/seller/orderlist"; // 주문 목록 페이지로 리다이렉트합니다.
+	    try {
+	        // 주문 확정 로직 구현
+	        oService.confirmOrder(order_code);
+	    } catch (Exception e) {
+	        logger.error("주문 확정 중 오류 발생: {}", e.getMessage());
+	        // 오류 처리 코드 추가
+	    }
+	    return "redirect:/seller/orderlist"; // 주문 목록 페이지로 리다이렉트
 	}
 
 	// 주문 취소 컨트롤러
 	@RequestMapping(value = "/cancelOrder", method = RequestMethod.POST)
 	public String cancelOrder(@RequestParam("order_code") String order_code) {
-	    // 주문을 취소하는 로직을 구현합니다.
-	    // orderId를 사용하여 해당 주문을 취소합니다.
-	    return "redirect:/seller/orderlist"; // 주문 목록 페이지로 리다이렉트합니다.
+	    try {
+	        // 주문 취소 로직 구현
+	        oService.cancelOrder(order_code);
+	    } catch (Exception e) {
+	        logger.error("주문 취소 중 오류 발생: {}", e.getMessage());
+	        // 오류 처리 코드 추가
+	    }
+	    return "redirect:/seller/orderlist"; // 주문 목록 페이지로 리다이렉트
 	}
 
 	// 주문 환불 컨트롤러
 	@RequestMapping(value = "/refundOrder", method = RequestMethod.POST)
 	public String refundOrder(@RequestParam("order_code") String order_code) {
-	    // 주문을 환불하는 로직을 구현합니다.
-	    // orderId를 사용하여 해당 주문을 환불합니다.
-	    return "redirect:/seller/orderlist"; // 주문 목록 페이지로 리다이렉트합니다.
+	    try {
+	        // 주문 환불 로직 구현
+	        oService.refundOrder(order_code);
+	    } catch (Exception e) {
+	        logger.error("주문 환불 중 오류 발생: {}", e.getMessage());
+	        // 오류 처리 코드 추가
+	    }
+	    return "redirect:/seller/orderlist"; // 주문 목록 페이지로 리다이렉트
 	}
+
 
 	
 	
@@ -683,31 +718,34 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	
 	// 판매자 배송페이지
 	//	http://localhost:8088/seller/delivery
+
 	@RequestMapping(value = "/delivery", method = RequestMethod.GET)
-	public String delivery(@RequestParam("order_code") int order_code,Model model) throws Exception{
-        logger.debug("delivery() 실행");
-        try {
-            // 배송 정보 조회
-            Order_infoVO deliveryInfo = dService.getDeliveryInfo(order_code); // order_code는 실제로 사용하는 값으로 수정해야 합니다.
-            model.addAttribute("deliveryInfo", deliveryInfo);
-        } catch (Exception e) {
-            logger.error("배송 정보 조회 중 오류 발생: {}", e.getMessage());
-            // 오류 페이지로 이동하거나 예외 처리를 위한 코드 추가
-        }
-        return "seller/delivery";
-    }
+	public String delivery(@RequestParam("order_code") int order_code, Model model) throws Exception {
+	    logger.debug("delivery() 실행");
+	    try {
+	        // 주문 코드를 기반으로 배송 정보 조회
+	        Order_infoVO deliveryInfo = dService.getDeliveryInfo(order_code);
+	        model.addAttribute("deliveryInfo", deliveryInfo);
+	    } catch (Exception e) {
+	        logger.error("배송 정보 조회 중 오류 발생: {}", e.getMessage());
+	        // 오류 처리를 위한 코드 추가
+	    }
+	    return "seller/delivery";
+	}
 
 	// 배송 정보 업데이트
-    @PostMapping("/updateDeliveryInfo")
-    public String updateDeliveryInfo(Order_infoVO deliveryInfo) {
-        try {
-            dService.updateDeliveryInfo(deliveryInfo);
-        } catch (Exception e) {
-            logger.error("배송 정보 업데이트 중 오류 발생: {}", e.getMessage());
-            // 오류 페이지로 이동하거나 예외 처리를 위한 코드 추가
-        }
-        return "redirect:/seller/delivery?order_code=" + deliveryInfo.getOrder_code();
-    }
+	@PostMapping("/updateDelivery")
+	public String updateDelivery(@ModelAttribute("deliveryInfo") Order_infoVO deliveryInfo) throws Exception {
+	    try {
+	        dService.updateDeliveryInfo(deliveryInfo);
+	    } catch (Exception e) {
+	        logger.error("배송 정보 업데이트 중 오류 발생: {}", e.getMessage());
+	        // 오류 처리를 위한 코드 추가
+	    }
+	    return "redirect:/seller/delivery?order_code=" + deliveryInfo.getOrder_code();
+	}
+
+
 	
 	
 	
@@ -791,29 +829,38 @@ public class SellerPageController {//판매자 페이지 컨트롤러
     
 	// 판매자 매출페이지
 	//	http://localhost:8088/seller/sales
-    @RequestMapping(value = "/sales", method = RequestMethod.GET)
-    public String getAllSales(Model model) throws Exception {
-        // 시작일과 종료일을 담은 Map 생성
-        Map<String, Object> dateRange = new HashMap<>();
-        // 여기서 시작일과 종료일을 설정하십시오
-        // 예를 들어, dateRange.put("startDate", "2024-01-01");
-        // dateRange.put("endDate", "2024-12-31");
-        
-        // 일별 매출 조회
-        List<Map<String, Object>> dailySales = sService.getDailySales(dateRange);
-        // 월별 매출 조회
-        List<Map<String, Object>> monthlySales = sService.getMonthlySales(dateRange);
-        // 연도별 매출 조회
-        List<Map<String, Object>> yearlySales = sService.getYearlySales(dateRange);
+	@RequestMapping(value = "/sales", method = RequestMethod.GET)
+	public String getAllSales(Model model) {
+	    try {
+	        // 시작일과 종료일을 담은 Map 생성
+	        Map<String, Object> dateRange = new HashMap<>();
+	        // 시작일과 종료일 설정
+	        LocalDate startDate = LocalDate.now().minusMonths(1); // 한 달 전
+	        LocalDate endDate = LocalDate.now();
+	        dateRange.put("startDate", startDate);
+	        dateRange.put("endDate", endDate);
 
-        // 조회 결과를 모델에 추가하여 JSP로 전달
-        model.addAttribute("dailySales", dailySales);
-        model.addAttribute("monthlySales", monthlySales);
-        model.addAttribute("yearlySales", yearlySales);
+	        // 일별 매출 조회
+	        List<Map<String, Object>> dailySales = sService.getDailySales(dateRange);
+	        // 월별 매출 조회
+	        List<Map<String, Object>> monthlySales = sService.getMonthlySales(dateRange);
+	        // 연도별 매출 조회
+	        List<Map<String, Object>> yearlySales = sService.getYearlySales(dateRange);
 
-        // sales.jsp 페이지로 이동
-        return "seller/sales";
-    }
+	        // 조회 결과를 모델에 추가하여 JSP로 전달
+	        model.addAttribute("dailySales", dailySales);
+	        model.addAttribute("monthlySales", monthlySales);
+	        model.addAttribute("yearlySales", yearlySales);
+	    } catch (Exception e) {
+	        // 오류 발생 시 로그 기록
+	        logger.error("매출 조회 중 오류 발생: {}", e.getMessage());
+	        // 오류 메시지를 모델에 추가하여 JSP로 전달
+	        model.addAttribute("error", "매출 조회 중 오류가 발생했습니다.");
+	    }
+	    // sales.jsp 페이지로 이동
+	    return "seller/sales";
+	}
+
 	
 	// 판매자 문의페이지
 	//	http://localhost:8088/seller/question

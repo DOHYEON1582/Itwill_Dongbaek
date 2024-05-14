@@ -77,6 +77,13 @@ public class OrderServiceImpl implements OrderService {
 		return odao.getOrderList(con, search,startDate,endDate);
 	}
 	
+	
+	@Override
+	public int getOrderCount() throws Exception {
+		logger.debug(" getOrderCount()  호출 ");
+		return odao.getOrderCount();
+	}
+
 	@Override
     public void confirmOrder(String order_code) throws Exception {
         odao.confirmOrder(order_code);

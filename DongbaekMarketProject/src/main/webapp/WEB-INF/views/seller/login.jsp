@@ -8,9 +8,12 @@
 <head>
 
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
-
+<link href="/resources/css/projectCSS.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.2.js" charset="utf-8"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+</head>
+<body>
 <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"
   integrity="sha384-l+xbElFSnPZ2rOaPrU//2FF5B4LB8FiX5q4fXYTlfcG4PGpMkE1vcL7kNXI6Cci0" crossorigin="anonymous"></script>
 <script type="text/javascript">
@@ -26,12 +29,9 @@
 <meta charset="UTF-8">
 <title>동백마켓</title>
 
-</head>
-<body>
-
 <div id="container">
 	<div id="loginBox" style="margin-top: 100px;">
-		<img id="mainImg" src="/resources/images/logo1.png">	
+		<a href="/"><img id="mainImg" src="/resources/images/logo1.png"></a>
 	<div>
 		<form action="/seller/login" method="post">
 			<input class="loginInput" type="text"  name="seller_id" placeholder="아이디">
@@ -41,11 +41,11 @@
 	</div>
 	<br>
 	<hr>
-	<div class="social-icons" style="height: 100px;">
+	<div class="social-icons" style="height: 100px; text-align: center;">
 		<a id="kakao-login-btn" href="javascript:loginWithKakao()">
 			<img src="https://cs.kakao.com/img/cskakaocom/pc/thumb/thumb_kakaotalk.png" alt="kakao" style="width: 100px; height: 100px;">
 		</a> 
-		<div id="naver_id_login" style="text-align:center"><a href="${url}"><img width="223" src="${pageContext.request.contextPath}/resources/img/naver_Bn_Green.PNG"/></a></div>
+
 		<br>
 	</div>
 	

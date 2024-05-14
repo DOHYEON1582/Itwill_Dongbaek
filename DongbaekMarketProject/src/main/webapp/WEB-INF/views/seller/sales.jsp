@@ -290,13 +290,13 @@ body {
 					        <div class="align-items-center">
 					            <a href="/seller/login" class="login">로그인</a>
 					            <a href="/seller/register" class="join">회원가입</a>
-					            <a href="#" class="service">고객센터</a>
+					   
 					        </div>
 				    	</c:if>
 				    	<c:if test="${sessionScope.sellerVO.seller_id != null }">
 					        <div class="align-items-center">
 					            로그인 id : ${sessionScope.sellerVO.seller_id }
-					            <a href="#" class="service">고객센터</a>
+					       
 					            <input type="button" value="로그아웃" onclick="location.href='/seller/logout';">
 					        </div>
 				        <ul class="d-flex justify-content-end list-unstyled m-3">
@@ -325,8 +325,8 @@ body {
 	                            <li class="nav-item active"><a href="/seller/product" class="nav-link">상품관리</a></li>
 	                            <li class="nav-item dropdown"><a href="/seller/orderlist" class="nav-link">주문관리</a></li>
 	                            <li class="nav-item"><a href="/seller/review" class="nav-link">리뷰관리</a></li>
-	                            <li class="nav-item"><a href="/seller/sales" class="nav-link">매출정산</a></li>
-	                            <li class="nav-item"><a href="/seller/question" class="nav-link">문의</a></li>
+
+	                            <li class="nav-item"><a href="/seller/productregist" class="nav-link">상품 등록</a></li>
 	                        </ul>
 	                    </div>
 	                </div>
@@ -359,17 +359,10 @@ body {
       <a href="/seller/orderlist">주문 관리</a>
       <ul>
         <li><a href="/seller/orderlist">주문 목록</a></li>
-		<li><a href="/seller/delivery">배송 관리</a></li>
 	  </ul>
     </li>
     <li>
       <a href="/seller/review">리뷰 관리</a>
-    </li>
-    <li>
-      <a href="/seller/sales">매출 정산</a>
-      <ul>
-        <li><a href="/seller/sales">매출 현황</a></li>
-      </ul>
     </li>
   </ul>
 </aside>
@@ -377,68 +370,68 @@ body {
 	
 	
  <div style="max-width: 800px; margin: 20px auto; padding: 20px; background-color: #fff; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
-        <h1 style="text-align: center; color: #333;">Sales Report</h1>
+    <h1 style="text-align: center; color: #333;">Sales Report</h1>
 
-        <!-- Daily Sales -->
-        <h2 style="text-align: center; color: #333;">Daily Sales</h2>
-        <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-            <thead>
-                <tr style="background-color: #f4f4f4;">
-                    <th style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">Date</th>
-                    <th style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">Total Sales</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- 여기에 일별 매출 데이터 반복하여 표시 -->
-                <c:forEach items="${dailySales}" var="dailySale">
-                    <tr>
-                        <td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">${dailySale.date}</td>
-                        <td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">${dailySale.totalSales}</td>
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
+    <!-- Daily Sales -->
+    <h2 style="text-align: center; color: #333;">Daily Sales</h2>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+        <thead>
+        <tr style="background-color: #f4f4f4;">
+            <th style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">Date</th>
+            <th style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">Total Sales</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- 여기에 일별 매출 데이터 반복하여 표시 -->
+        <c:forEach items="${dailySales}" var="dailySale">
+            <tr>
+                <td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd; background-color: ${dailySale.dateColor};">${dailySale.date}</td>
+                <td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd; background-color: ${dailySale.totalSalesColor};">${dailySale.totalSales}</td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
 
-        <!-- Monthly Sales -->
-        <h2 style="text-align: center; color: #333;">Monthly Sales</h2>
-        <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-            <thead>
-                <tr style="background-color: #f4f4f4;">
-                    <th style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">Month</th>
-                    <th style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">Total Sales</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- 여기에 월별 매출 데이터 반복하여 표시 -->
-                <c:forEach items="${monthlySales}" var="monthlySale">
-                    <tr>
-                        <td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">${monthlySale.date}</td>
-                        <td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">${monthlySale.totalSales}</td>
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
+    <!-- Monthly Sales -->
+    <h2 style="text-align: center; color: #333;">Monthly Sales</h2>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+        <thead>
+        <tr style="background-color: #f4f4f4;">
+            <th style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">Month</th>
+            <th style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">Total Sales</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- 여기에 월별 매출 데이터 반복하여 표시 -->
+        <c:forEach items="${monthlySales}" var="monthlySale">
+            <tr>
+                <td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd; background-color: ${monthlySale.dateColor};">${monthlySale.date}</td>
+                <td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd; background-color: ${monthlySale.totalSalesColor};">${monthlySale.totalSales}</td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
 
-        <!-- Yearly Sales -->
-        <h2 style="text-align: center; color: #333;">Yearly Sales</h2>
-        <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-            <thead>
-                <tr style="background-color: #f4f4f4;">
-                    <th style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">Year</th>
-                    <th style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">Total Sales</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- 여기에 연도별 매출 데이터 반복하여 표시 -->
-                <c:forEach items="${yearlySales}" var="yearlySale">
-                    <tr>
-                        <td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">${yearlySale.date}</td>
-                        <td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">${yearlySale.totalSales}</td>
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
-    </div>	
+    <!-- Yearly Sales -->
+    <h2 style="text-align: center; color: #333;">Yearly Sales</h2>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+        <thead>
+        <tr style="background-color: #f4f4f4;">
+            <th style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">Year</th>
+            <th style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd;">Total Sales</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- 여기에 연도별 매출 데이터 반복하여 표시 -->
+        <c:forEach items="${yearlySales}" var="yearlySale">
+            <tr>
+                <td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd; background-color: ${yearlySale.dateColor};">${yearlySale.date}</td>
+                <td style="padding: 10px; text-align: left; border-bottom: 1px solid #ddd; background-color: ${yearlySale.totalSalesColor};">${yearlySale.totalSales}</td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+</div>
 	
 	
 	

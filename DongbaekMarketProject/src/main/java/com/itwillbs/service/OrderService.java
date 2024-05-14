@@ -29,8 +29,11 @@ public interface OrderService {
 	// cart 주문현황 변경 
 	public void updateStates(String bundle_code) throws Exception;
 	
-	// 업체 주문 정보(list)가져오기
+	//  주문 정보(list)가져오기
 	public List<Order_infoVO> getOrderList(String con, String search,String startDate,String endDate)throws Exception;
+	
+	// 주문 건수
+		public int getOrderCount() throws Exception;
 	
 	// 주문 확정 처리
     public void confirmOrder(String order_code) throws Exception;
