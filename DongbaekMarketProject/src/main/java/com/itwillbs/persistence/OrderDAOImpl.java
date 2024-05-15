@@ -89,9 +89,9 @@ public class OrderDAOImpl implements OrderDAO{
 	
 	
 	@Override
-	public int getOrderCount() throws Exception {
+	public int getOrderCount(int store_code) throws Exception {
 		logger.debug(" getOrderCount() 실행 ");
-		return sqlSession.selectOne(NAMESPACE+".getOrderCount");
+		return sqlSession.selectOne(NAMESPACE+".getOrderCount",store_code);
 	}
 
 	@Override
@@ -108,6 +108,10 @@ public class OrderDAOImpl implements OrderDAO{
     public int refundOrder(String order_code) throws Exception {
         return sqlSession.update(NAMESPACE + ".refundOrder", order_code);
     }
-		
+ // 판매자의 주문 목록 조회
+    @Override
+    public List<Order_infoVO> getSellerOrderList(int store_code) throws Exception {
+        return sqlSession.selectList(NAMESPACE + ".getSellerOrderList", store_code);
+    }	
 }
 

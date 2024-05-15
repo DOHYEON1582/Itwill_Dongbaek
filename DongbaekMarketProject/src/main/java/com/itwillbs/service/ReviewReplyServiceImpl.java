@@ -25,15 +25,15 @@ public class ReviewReplyServiceImpl implements ReviewReplyService {
 	private static final Logger logger = LoggerFactory.getLogger(ReviewReplyServiceImpl.class);
 	
 	@Override
-	public List<ReviewVO> getReviewList(UserVO uvo) throws Exception {
+	public List<ReviewVO> getReviewList(String seller_id) throws Exception {
 		logger.debug(" getAllReviews() 호출 ");
-		return rdao.getReviewList(uvo);
+		return rdao.getReviewList(seller_id);
 	}
 
 	@Override
-    public int countReviews() throws Exception {
+    public int countReviews(String seller_id) throws Exception {
         logger.debug(" countReviews() 호출 ");
-        return rdao.countReviews();
+        return rdao.countReviews(seller_id);
     }
 	
 	 public ReviewVO getReview(int review_code) throws Exception {

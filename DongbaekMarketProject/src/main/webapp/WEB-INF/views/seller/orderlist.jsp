@@ -286,24 +286,19 @@ body {
 				</div>
 				<div class="col-sm-8 col-lg-3 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
 				    <div>
-				    	<c:if test="${sessionScope.sellerVO.seller_id == null }">
+				    	<c:if test="${sessionScope.seller_id == null }">
 					        <div class="align-items-center">
 					            <a href="/seller/login" class="login">로그인</a>
-					            <a href="/seller/register" class="join">회원가입</a>
-					            
+
+					   
 					        </div>
 				    	</c:if>
-				    	<c:if test="${sessionScope.sellerVO.seller_id != null }">
+				    	<c:if test="${sessionScope.seller_id != null }">
 					        <div class="align-items-center">
-					            로그인 id : ${sessionScope.sellerVO.seller_id }
-					
+					            로그인 id : ${sessionScope.seller_id.seller_id }
+
 					            <input type="button" value="로그아웃" onclick="location.href='/seller/logout';">
 					        </div>
-				        <ul class="d-flex justify-content-end list-unstyled m-3">
-				            <li><a href="/seller/info" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
-				                        <use xlink:href="#user"></use></svg>
-				                </a></li>
-				        </ul>
 				    	</c:if>
 				    </div>
 				</div>
@@ -357,9 +352,6 @@ body {
     </li>
     <li>
       <a href="/seller/orderlist">주문 관리</a>
-      <ul>
-        <li><a href="/seller/orderlist">주문 목록</a></li>
-	  </ul>
     </li>
     <li>
       <a href="/seller/review">리뷰 관리</a>
@@ -400,51 +392,20 @@ body {
         </thead>
         <tbody>
             <!-- 주문 목록 데이터를 반복해서 표시하는 부분 -->
-            <c:forEach items="${orderList}" var="order" varStatus="loop">
-                <tr>
-                    <td style="padding: 10px;
-                               text-align: left;
-                               border-bottom: 1px solid #ddd;">${order.order_code}</td>
-                    <td style="padding: 10px;
-                               text-align: left;
-                               border-bottom: 1px solid #ddd;">${order.user_id}</td>
-                    <td style="padding: 10px;
-                               text-align: left;
-                               border-bottom: 1px solid #ddd;">${order.order_date}</td>
+           <c:forEach items="${orderList}" var="order" varStatus="loop">
+    <tr>
+        <td style="padding: 10px;
+                   text-align: left;
+                   border-bottom: 1px solid #ddd;">${order.order_code}</td>
+        <td style="padding: 10px;
+                   text-align: left;
+                   border-bottom: 1px solid #ddd;">${order.user_id}</td>
+        <td style="padding: 10px;
+                   text-align: left;
+                   border-bottom: 1px solid #ddd;">${order.order_date}</td>
+    </tr>
+</c:forEach>
 
-<!--                     <td style="padding: 10px; -->
-<!--                                text-align: left; -->
-<!--                                border-bottom: 1px solid #ddd;"> -->
-<!--                         <form action="/seller/confirmOrder" method="post" style="display: inline-block;"> -->
-<%--                             <input type="hidden" name="order_code" value="${order.order_code}"> --%>
-<!--                             <button type="submit" style="background-color: #4CAF50; -->
-<!--                                                          color: white;  -->
-<!--                                                        padding: 8px 12px;  -->
-<!--                                                         border: none;  -->
-<!--                                                            border-radius: 4px;  -->
-<!--                                                           cursor: pointer;">확정</button> -->
-<!--                         </form> -->
-<!--                         <form action="/seller/cancelOrder" method="post" style="display: inline-block; margin-left: 5px;"> -->
-<%--                             <input type="hidden" name="order_code" value="${order.order_code}"> --%>
-<!--                             <button type="submit" style="background-color: #f44336; -->
-<!--                                                           color: white; -->
-<!--                                                          padding: 8px 12px; -->
-<!--                                                           border: none; -->
-<!--                                                           border-radius: 4px;  -->
-<!--                                                           cursor: pointer;">취소</button> -->
-<!--                         </form> -->
-<!--                         <form action="/seller/refundOrder" method="post" style="display: inline-block; margin-left: 5px;"> -->
-<%--                             <input type="hidden" name="order_code" value="${order.order_code}"> --%>
-<!--                             <button type="submit" style="background-color: #ff9800; -->
-<!--                                                           color: white;  -->
-<!--                                                            padding: 8px 12px;  -->
-<!--                                                          border: none;  -->
-<!--                                                           border-radius: 4px;  -->
-<!--                                                           cursor: pointer;">환불</button> -->
-<!--                         </form> -->
-<!--                     </td> -->
-                </tr>
-            </c:forEach>
         </tbody>
     </table>
 </div>
@@ -471,7 +432,7 @@ body {
 	
 	
 	
-	<footer style="font-family: 'Roboto', sans-serif; padding-bottom: 0;">
+	<footer style="position: fixed; bottom: 0; width: 100%; font-family: 'Roboto', sans-serif; padding-bottom: 0;">
 
     <div class="row justify-content-center" id="r">
         <div class="col-lg-2 col-md-4 col-sm-4" style="padding: 0;">

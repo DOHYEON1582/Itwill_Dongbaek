@@ -11,9 +11,9 @@ import com.itwillbs.domain.UserVO;
 
 public interface ReviewReplyService {
 
-	public List<ReviewVO> getReviewList(UserVO uvo) throws Exception; // 모든 리뷰 목록 가져오기
+	public List<ReviewVO> getReviewList(String seller_id) throws Exception; // 모든 리뷰 목록 가져오기
 	
-	public int countReviews() throws Exception; // 리뷰 총 갯수
+	public int countReviews(String seller_id) throws Exception; // 리뷰 총 갯수
 	public int checkReplyExist(int review_code) throws Exception;
 	public ReviewVO getReview(int review_code) throws Exception; // 상품코드로 리뷰 목록 가져오기
 	

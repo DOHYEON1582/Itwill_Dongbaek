@@ -291,24 +291,19 @@ body {
 				</div>
 				<div class="col-sm-8 col-lg-3 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
 				    <div>
-				    	<c:if test="${sessionScope.sellerVO.seller_id == null }">
+				    	<c:if test="${sessionScope.seller_id == null }">
 					        <div class="align-items-center">
 					            <a href="/seller/login" class="login">로그인</a>
-					            <a href="/seller/register" class="join">회원가입</a>
-					      
+
+					   
 					        </div>
 				    	</c:if>
-				    	<c:if test="${sessionScope.sellerVO.seller_id != null }">
+				    	<c:if test="${sessionScope.seller_id != null }">
 					        <div class="align-items-center">
-					            로그인 id : ${sessionScope.sellerVO.seller_id }
-					
+					            로그인 id : ${sessionScope.seller_id.seller_id }
+
 					            <input type="button" value="로그아웃" onclick="location.href='/seller/logout';">
 					        </div>
-				        <ul class="d-flex justify-content-end list-unstyled m-3">
-				            <li><a href="/seller/info" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
-				                        <use xlink:href="#user"></use></svg>
-				                </a></li>
-				        </ul>
 				    	</c:if>
 				    </div>
 				</div>
@@ -362,9 +357,6 @@ body {
     </li>
     <li>
       <a href="/seller/orderlist">주문 관리</a>
-      <ul>
-        <li><a href="/seller/orderlist">주문 목록</a></li>
-	  </ul>
     </li>
     <li>
       <a href="/seller/review">리뷰 관리</a>
@@ -397,13 +389,13 @@ body {
                                 <a href="/seller/productDetail?product_code=${product.product_code}" style="display: inline-block; padding: 10px; text-decoration: none;"> <!-- 패딩 추가 -->
                                     <c:choose>
 									    <c:when test="${not empty product.img1}">
-									        <img src="/resources/upload1/${product.img1}" alt="상품 이미지" style="max-width: 200px; max-height: 200px;">
+									        <img src="/resources/images/product/${product.img1}" alt="상품 이미지" style="max-width: 200px; max-height: 200px;">
 									    </c:when>
 									    <c:when test="${not empty product.img2}">
-									         <img src="/resources/upload1/${product.img2}" alt="상품 이미지" style="max-width: 200px; max-height: 200px;">
+									         <img src="/resources/images/product/${product.img2}" alt="상품 이미지" style="max-width: 200px; max-height: 200px;">
 									    </c:when>
 									    <c:when test="${not empty product.img3}">
-									         <img src="/resources/upload1/${product.img3}" alt="상품 이미지" style="max-width: 200px; max-height: 200px;">
+									         <img src="/resources/images/product/${product.img3}" alt="상품 이미지" style="max-width: 200px; max-height: 200px;">
 									    </c:when>
 									    <c:otherwise>
 									        <img src="/resources/images/noimg.png" alt="상품 이미지 없음" style="max-width: 100px; max-height: 100px;">
@@ -499,7 +491,7 @@ function confirmDelete(productCode) {
 
 
 
-	<footer style="font-family: 'Roboto', sans-serif; padding-bottom: 0;">
+	<footer style="position: fixed; bottom: 0; width: 100%; font-family: 'Roboto', sans-serif; padding-bottom: 0;">
 
     <div class="row justify-content-center" id="r">
         <div class="col-lg-2 col-md-4 col-sm-4" style="padding: 0;">

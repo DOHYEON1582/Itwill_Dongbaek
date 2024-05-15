@@ -61,9 +61,9 @@ public class ProductServiceImpl implements ProductService {
 
 
 	@Override
-    public int getTotalCount(String seller_id) throws Exception {
+    public int getTotalCount(int store_code) throws Exception {
         logger.debug(" getTotalCount() 호출 ");
-        return pdao.getTotalCount(seller_id);
+        return pdao.getTotalCount(store_code);
     }
 
 
@@ -93,25 +93,48 @@ public class ProductServiceImpl implements ProductService {
 //	}
 	
 	
-		// 회원가입
-		public void SellerInsert(SellerVO svo) throws Exception {
-		    logger.debug(" sellerInsert(SellerVO svo) 호출 ");
-		    
-		    // 비밀번호 암호화
-		    String encodedPassword = pwEncoder.encode(svo.getSeller_pw());
-		    svo.setSeller_pw(encodedPassword);
-		    
-		    pdao.SellerInsert(svo);
-		    logger.debug(" svo.getid : " + svo.getSeller_id());
-		    if(svo.getSeller_id().equals("seller")) {
-		    	String salt = svo.getSalt();
-		    	pdao.sellerAuth(salt);
-		    } else {
-		    	
-		    }
-		    logger.debug(" 회원가입 완료! ");
-		}
-	
+	// 회원가입
+	@Override
+    public void SellerInsert(SellerVO svo) throws Exception {
+        logger.debug(" sellerInsert(SellerVO svo) 호출 ");
+
+        // 임의의 salt 생성
+        String salt = generateSalt();
+
+        // 비밀번호에 salt를 결합하여 해싱
+        String hashedPassword = hashPassword(svo.getSeller_pw(), salt);
+
+        // 암호화된 비밀번호와 salt를 설정
+        svo.setSeller_pw(hashedPassword);
+        svo.setSalt(salt);
+
+        // 데이터베이스에 저장
+        pdao.SellerInsert(svo);
+        
+        logger.debug(" 회원가입 완료! ");
+    }
+	// 임의의 salt 생성 메서드
+    private String generateSalt() {
+        // 임의의 salt를 생성하는 코드를 작성합니다.
+        // 이 예제에서는 단순히 무작위 문자열을 생성하는 것으로 대체합니다.
+        return "random_salt"; // 실제로는 더 강력한 방법으로 임의의 salt를 생성해야 합니다.
+    }
+
+    // 비밀번호 해싱 메서드
+    private String hashPassword(String password, String salt) {
+        String combinedPassword = password + salt;
+        // 여기에 해싱 알고리즘을 사용하여 비밀번호를 해싱하는 코드를 추가합니다.
+        // 이 예제에서는 해싱 알고리즘을 사용하지 않았기 때문에 구체적인 해싱 알고리즘은 여러분의 요구에 따라 선택하셔야 합니다.
+        // 아래는 간단한 예시입니다.
+        return hashFunction(combinedPassword);
+    }
+
+    // 여기에 사용할 해싱 함수를 구현하세요.
+    private String hashFunction(String input) {
+        // 입력값을 해싱하는 코드를 작성합니다.
+        // 실제로는 안전한 해싱 알고리즘을 사용해야 합니다. (예: BCrypt, PBKDF2 등)
+        return input; // 이 부분을 실제 해싱 알고리즘의 결과로 대체해야 합니다.
+    }
 	@Override
 	public int checkSellerId(String seller_id) throws Exception {
 		logger.debug(" checkId(String user_id) 실행 ");

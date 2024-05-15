@@ -45,7 +45,7 @@ a{
 
 /* 사이트의 높이를 5000px로 만들어 스크롤 생성 */
 body {
-  height: 5000px;
+  height: 1000px;
 }
 
 /* 사이드바의 너비와 높이를 변수를 통해 통제 */
@@ -318,21 +318,16 @@ body {
 				    	<c:if test="${sessionScope.seller_id == null }">
 					        <div class="align-items-center">
 					            <a href="/seller/login" class="login">로그인</a>
-					            <a href="/seller/register" class="join">회원가입</a>
+
 					   
 					        </div>
 				    	</c:if>
 				    	<c:if test="${sessionScope.seller_id != null }">
 					        <div class="align-items-center">
-					            로그인 id : ${sessionScope.seller_id }
+					            로그인 id : ${sessionScope.seller_id.seller_id }
 
 					            <input type="button" value="로그아웃" onclick="location.href='/seller/logout';">
 					        </div>
-				        <ul class="d-flex justify-content-end list-unstyled m-3">
-				            <li><a href="/seller/info" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
-				                        <use xlink:href="#user"></use></svg>
-				                </a></li>
-				        </ul>
 				    	</c:if>
 				    </div>
 				</div>
@@ -386,9 +381,6 @@ body {
     </li>
     <li>
       <a href="/seller/orderlist">주문 관리</a>
-      <ul>
-        <li><a href="/seller/orderlist">주문 목록</a></li>
-	  </ul>
     </li>
     <li>
       <a href="/seller/review">리뷰 관리</a>
@@ -400,36 +392,72 @@ body {
 
 
 
-	<div style="overflow: auto; margin-bottom: 40px; max-width: 1200px; margin-left: auto; margin-right: auto;">
-		<div style="float: left; width: 38%; margin-right: 2%;">
-			<!-- 첫 번째 섹션 -->
-			<div style="text-align: left; background-color: #EAE9E8; margin-bottom: 20px;" id="order">
-				<form>
-					<fieldset style="border: none;">
-						<legend style="color: #000; text-decoration: none; text-align: center; border: thin;"><a href="/seller/orderlist">주문 현황</a></legend>
-						<ul style="list-style: none; margin: 0; padding: 0;">
-							<li style="padding: 15px; background-color: #fff; margin-bottom: 10px;"><label><a style="margin-right: 160px; text-decoration: none; color: #000; font-size: 18px;" href="/seller/orderlist">주문 목록</a>${orderCount}건</label></li>
-						
-						</ul>
-					</fieldset>
-				</form>
-			</div>
-		</div>
 
-		<div style="float: right; width: 60%;">
-			<!-- 두 번째 섹션 -->
-			<div style="text-align: left; background-color: #EAE9E8; margin-bottom: 20px;" id="dilivery">
-				<form>
-					<fieldset style="border: none;">
-						<legend style="text-align: center; border: thin;"><a href="/seller/review">리뷰 현황</a></legend>
-						<ul style="list-style: none; margin: 0; padding: 0;">
-							<li style="padding: 15px; background-color: #fff; margin-bottom: 29px;"><label><a style="margin-right: 178px; text-decoration: none; color: #000; font-size: 18px;" href="/seller/review">리뷰 목록</a>${reviewCount}건</label></li>			
-						</ul>
-					</fieldset>
-				</form>
-			</div>
-		</div>
-	</div>
+
+
+<div style="display: flex; justify-content: space-between; margin-bottom: 40px; max-width: 1200px; margin-left: auto; margin-right: auto;">
+    <div style="width: 48%;">
+        <!-- 첫 번째 섹션 -->
+        <div style="text-align: left; background-color: #EAE9E8; margin-bottom: 20px;" id="order">
+            <form>
+                <fieldset style="border: none;">
+                    <legend style="color: #000; text-decoration: none; text-align: center; border: thin;"><a href="/seller/product">상품</a></legend>
+                    <ul style="list-style: none; margin: 0; padding: 0;">
+                        <li style="padding: 15px; background-color: #fff; margin-bottom: 10px; text-align: center;"><a style="text-decoration: none; color: #000; font-size: 18px;" href="/seller/product">상품 목록 바로 가기</a></li>
+                    
+                    </ul>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+    <div style="width: 48%;">
+        <!-- 두 번째 섹션 -->
+        <div style="text-align: left; background-color: #EAE9E8; margin-bottom: 20px;" id="review">
+            <form>
+                <fieldset style="border: none;">
+                    <legend style="text-align: center; border: thin;"><a href="/seller/productregist">상품 등록</a></legend>
+                    <ul style="list-style: none; margin: 0; padding: 0;">
+                        <li style="padding: 15px; background-color: #fff; margin-bottom: 20px; text-align: center;"><a style="text-decoration: none; color: #000; font-size: 18px;" href="/seller/productregist">상품 등록 바로 가기</a></li>           
+                    </ul>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+<div style="display: flex; justify-content: space-between; margin-bottom: 40px; max-width: 1200px; margin-left: auto; margin-right: auto;">
+    <div style="width: 48%;">
+        <!-- 첫 번째 섹션 -->
+        <div style="text-align: left; background-color: #EAE9E8; margin-bottom: 20px;" id="order">
+            <form>
+                <fieldset style="border: none;">
+                    <legend style="color: #000; text-decoration: none; text-align: center; border: thin;"><a href="/seller/orderlist">주문</a></legend>
+                    <ul style="list-style: none; margin: 0; padding: 0;">
+                        <li style="padding: 15px; background-color: #fff; margin-bottom: 10px; text-align: center;"><a style="text-decoration: none; color: #000; font-size: 18px;" href="/seller/orderlist">주문 목록 바로 가기</a></li>
+                    
+                    </ul>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+    <div style="width: 48%;">
+        <!-- 두 번째 섹션 -->
+        <div style="text-align: left; background-color: #EAE9E8; margin-bottom: 20px;" id="review">
+            <form>
+                <fieldset style="border: none;">
+                    <legend style="text-align: center; border: thin;"><a href="/seller/review">리뷰</a></legend>
+                    <ul style="list-style: none; margin: 0; padding: 0;">
+                        <li style="padding: 15px; background-color: #fff; margin-bottom: 20px; text-align: center;"><a style="text-decoration: none; color: #000; font-size: 18px;" href="/seller/review">리뷰 목록 바로 가기</a></li>           
+                    </ul>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
 
 	
 
@@ -447,7 +475,7 @@ body {
 
 
 
-	<footer style="font-family: 'Roboto', sans-serif; padding-bottom: 0;">
+	<footer style="position: fixed; bottom: 0; width: 100%; font-family: 'Roboto', sans-serif; padding-bottom: 0;">
 
     <div class="row justify-content-center" id="r">
         <div class="col-lg-2 col-md-4 col-sm-4" style="padding: 0;">

@@ -69,11 +69,11 @@ public class ProductDAOImpl implements ProductDAO {
 		return 0; // 인증 실패
 	}
 
-	@Override
-	public void sellerAuth(String salt) throws Exception {
-		logger.debug(" sellerAuth(String salt) 호출 ");
-		sqlSession.insert(NAMESPACE + ".SellerAuth", salt);
-	}
+//	@Override
+//	public void sellerAuth(String salt) throws Exception {
+//		logger.debug(" sellerAuth(String salt) 호출 ");
+//		sqlSession.insert(NAMESPACE + ".SellerAuth", salt);
+//	}
 
 	@Override
 	public ProductVO getProductById(int product_code) {
@@ -81,8 +81,8 @@ public class ProductDAOImpl implements ProductDAO {
 	}
 
 	@Override
-    public int getTotalCount(String seller_id) {
-        return sqlSession.selectOne(NAMESPACE + ".getTotalCount", seller_id);
+    public int getTotalCount(int store_code) {
+        return sqlSession.selectOne(NAMESPACE + ".getTotalCount", store_code);
     }
 	
 	@Override

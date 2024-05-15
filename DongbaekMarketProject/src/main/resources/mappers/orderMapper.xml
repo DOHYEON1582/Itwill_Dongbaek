@@ -181,8 +181,15 @@
 	</select>
 	<!-- 주문 총 건수 -->
 	<select id="getOrderCount" resultType="int">
-		SELECT COUNT(*) FROM order_info
+		SELECT COUNT(*) FROM order_info WHERE store_code = #{store_code}
 	</select>
+	
+	<select id="getSellerOrderList" resultMap="order_info">
+        SELECT *
+        FROM order_info
+        WHERE store_code = #{store_code}
+    </select>
+    
 	<!-- 주문 확정 -->
     <update id="confirmOrder">
         UPDATE order_info SET status = 'confirmed' WHERE order_code = #{order_code}

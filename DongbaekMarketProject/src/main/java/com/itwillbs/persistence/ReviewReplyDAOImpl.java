@@ -26,15 +26,17 @@ public class ReviewReplyDAOImpl implements ReviewReplyDAO {
 	private static final Logger logger = LoggerFactory.getLogger(ReviewReplyDAOImpl.class);
 	private static final String NAMESPACE = "com.itwillbs.mapper.ReviewMapper";
 	@Override
-    public List<ReviewVO> getReviewList(UserVO uvo) throws Exception{
-		logger.debug(" getReviewList(UserVO uvo) 실행 ");
-        return sqlSession.selectList(NAMESPACE + ".getReviewList", uvo);
-    }
+	public List<ReviewVO> getReviewList(String seller_id) throws Exception {
+	    logger.debug("getReviewList() 호출");
+	    return sqlSession.selectList(NAMESPACE + ".getReviewList", seller_id);
+	}
+
 
 	@Override
-    public int countReviews() throws Exception {
+    public int countReviews(String seller_id) throws Exception {
         logger.debug(" countReviews() 호출 ");
-        return sqlSession.selectOne(NAMESPACE + ".countReviews");
+        Integer result = sqlSession.selectOne(NAMESPACE + ".countReviews");
+        return (result != null) ? result : 0;
     }
 	
 	@Override

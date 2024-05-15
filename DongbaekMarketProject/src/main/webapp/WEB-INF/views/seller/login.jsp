@@ -39,21 +39,12 @@
 			<input  id="loginBtn" type="submit" value="로그인"/>
 		</form>
 	</div>
-	<br>
-	<hr>
-	<div class="social-icons" style="height: 100px; text-align: center;">
-		<a id="kakao-login-btn" href="javascript:loginWithKakao()">
-			<img src="https://cs.kakao.com/img/cskakaocom/pc/thumb/thumb_kakaotalk.png" alt="kakao" style="width: 100px; height: 100px;">
-		</a> 
 
-		<br>
-	</div>
+
+
 	
-</div>
-	<div id="loginBox2">
-		계정이 없으신가요? <a href="/seller/register">가입하기</a>
-	</div>
-</div>
+	
+
 
 </body>
 </html>

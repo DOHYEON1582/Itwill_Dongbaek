@@ -573,17 +573,17 @@ $(document).ready(function() {
             //$("#clearBtn").click(clearText);
         });
 		
-		console.log("!!!!!!!!!!${sessionScope.sellerVO.seller_id}");
+		console.log("!!!!!!!!!!${sessionScope.seller_id}");
 	 var ws;
 	 var messages = $("#messages");
 	 var room_idx;
-	 var seller_id = "${sessionScope.sellerVO.seller_id}";
+	 var seller_id = "${sessionScope.seller_id}";
 
 		// 처음 방 생성
 		function firstOpenSocket(){
 			
 			$.ajax({
-				url : "/admin/createRoom/${sessionScope.sellerVO.seller_id}",
+				url : "/admin/createRoom/${sessionScope.seller_id}",
 				type : "GET",
 				success : function(data){
 					
@@ -595,7 +595,7 @@ $(document).ready(function() {
 		             return;
 		         }
 		         //웹소켓 객체 만드는 코드
-		         ws = new WebSocket("ws://localhost:8088/chat/"+room_idx+"/${sessionScope.sellerVO.seller_id}");
+		         ws = new WebSocket("ws://localhost:8088/chat/"+room_idx+"/${sessionScope.seller_id}");
 		         
 		         ws.onopen = function(event){
 		             if(event.data === undefined){
@@ -626,7 +626,7 @@ $(document).ready(function() {
 		     return;
 		 }
 		 //웹소켓 객체 만드는 코드
-		 ws = new WebSocket("ws://localhost:8088/chat/"+room_idx+"/${sessionScope.sellerVO.seller_id}");
+		 ws = new WebSocket("ws://localhost:8088/chat/"+room_idx+"/${sessionScope.seller_id}");
 		 
 		 
 		 ws.onopen = function(event){
@@ -649,7 +649,7 @@ $(document).ready(function() {
 		}
 		
 		function send(){
-		 var text = $("#key-chat").val() + ",${sessionScope.sellerVO.seller_id}";
+		 var text = $("#key-chat").val() + ",${sessionScope.seller_id}";
 		 ws.send(text);
 		 $("#key-chat").val("");
 		 $('#key-chat').focus();

@@ -30,7 +30,7 @@ public interface OrderDAO {
 	public void updateStates(String bundle_code) throws Exception;
 	
 	// 주문 건수
-	public int getOrderCount() throws Exception;
+	public int getOrderCount(int store_code) throws Exception;
 	
 	//  주문 정보(list)가져오기
 	public List<Order_infoVO> getOrderList(String con, String search,String startDate,String endDate)throws Exception;
@@ -43,7 +43,8 @@ public interface OrderDAO {
     
     // 주문 환불 처리
     public int refundOrder(String order_code) throws Exception;
-	
+ // 판매자의 주문 목록 조회
+    public List<Order_infoVO> getSellerOrderList(int store_code) throws Exception;
 	
 }
 
