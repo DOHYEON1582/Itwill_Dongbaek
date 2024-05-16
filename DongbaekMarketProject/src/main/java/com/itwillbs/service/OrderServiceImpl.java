@@ -79,9 +79,9 @@ public class OrderServiceImpl implements OrderService {
 	
 	
 	@Override
-	public int getOrderCount() throws Exception {
+	public int getOrderCount(int store_code) throws Exception {
 		logger.debug(" getOrderCount()  호출 ");
-		return odao.getOrderCount();
+		return odao.getOrderCount(store_code);
 	}
 
 	@Override
@@ -97,5 +97,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void refundOrder(String order_code) throws Exception {
     	odao.refundOrder(order_code);
+    }
+    @Override
+    public List<Order_infoVO> getSellerOrderList(int store_code) throws Exception {
+        return odao.getSellerOrderList(store_code);
     }
 }

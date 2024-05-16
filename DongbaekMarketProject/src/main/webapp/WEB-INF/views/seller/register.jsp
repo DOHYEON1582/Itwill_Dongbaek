@@ -16,7 +16,7 @@
             var seller_id = $("#seller_id").val();
             
             $.ajax({
-                url : "./seller/confirm",
+                url : "./confirm",
                 data : {seller_id : seller_id},
                 type : "POST",
                 dataType : "json",
@@ -38,7 +38,7 @@
 	    $("#seller_pw2").on("focusout", function(event){
 	    	var seller_pw = $("#seller_pw").val();
 	    	var seller_pw2 = $("#seller_pw2").val();
-	    	if(user_pw == user_pw2){
+	    	if(seller_pw == seller_pw2){
 	    		$("#label2").css("color", "black").text("비밀번호가 같습니다.");
 	    	} else {
 	    		$("#label2").css("color", "red").text("비밀번호가 다릅니다");
@@ -67,7 +67,6 @@
 					<input class="loginInput" type="text"  name="seller_name" id="seller_name" placeholder="성명" required>
 					<input class="loginInput" type="text"  name="store_addr1" id="store_addr1" placeholder="주소" required>
 					<input class="loginInput" type="text"  name="store_addr2" id="store_addr2" placeholder="상세 주소" required>
-					<input class="loginInput" type="text"  name="store_code" id="store_code" placeholder="가게 번호" required>
 					<input class="loginInput" type="text"  name="bank" id="bank" placeholder="은행" required>
 					<input class="loginInput" type="text"  name="account" id="account" placeholder="계좌 번호" required>
 					<input  id="loginBtn" type="submit" value="가입"/>

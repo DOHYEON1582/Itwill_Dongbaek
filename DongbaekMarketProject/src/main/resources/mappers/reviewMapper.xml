@@ -18,86 +18,31 @@
         <result property="re_lev" column="re_lev" />
         <result property="re_ref" column="re_ref" />
         <result property="re_seq" column="re_seq" />
-
     </resultMap>
-	<resultMap type="com.itwillbs.domain.ProductVO" id="product">
-		<result property="product_code" column="product_code"/>
-		<result property="store_code" column="store_code"/>
-		<result property="price" column="price"/>
-		<result property="product_name" column="product_name"/>
-		<result property="viewcnt" column="viewcnt"/>
-		<result property="img1" column="img1"/>
-		<result property="img2" column="img2"/>
-		<result property="img3" column="img3"/>
-		<result property="product_explain" column="product_explain"/>
-		<result property="seller_id" column="seller_id"/>
-		<result property="country" column="country"/>
-		<result property="max_account" column="max_account"/>
-		<result property="category" column="category"/>
-		<result property="sub_product" column="sub_product"/>
-		<result property="unit" column="unit"/>
-		<collection property="storeVO" resultMap="storeMap"/>
-	</resultMap>
-	
-<!--     모든 리뷰 조회 -->
-<!-- 	<select id="getAllReviews" resultMap="review"> -->
-<!-- 	    SELECT * FROM review -->
-<!-- 	    ORDER BY regdate DESC -->
-<!-- 	    LIMIT #{startRecord}, #{pageSize} -->
-<!-- 	</select> -->
+
+    <!-- 모든 리뷰 조회 -->
+	<select id="getAllReviews" resultMap="review">
+	    SELECT * FROM review
+	    ORDER BY regdate DESC
+	    LIMIT #{startRecord}, #{pageSize}
+	</select>
 
 
-  <!-- 리뷰 총 개수 조회 -->
+	<!-- 리뷰 총 개수 조회 -->
     <select id="countReviews" resultType="int">
         SELECT COUNT(*) FROM review
     </select>
 
-<!--     상품 코드로 리뷰 조회 -->
-<!--     <select id="getReview"  resultMap="review"> -->
-<!--         SELECT * FROM review WHERE product_code = #{product_code} -->
-<!--     </select> -->
-	
-	<!-- 리뷰 목록 -->
-	<select id="getReviewList" resultMap="review">
-	    SELECT *
-	    FROM review r
-	    JOIN product p ON r.product_code = p.product_code
-	    <choose>
-	        <when test="user_id != null and user_id != ''">
-	            WHERE r.user_id = #{user_id}
-	        </when>
-	        <when test="user_name != null and user_name != ''">
-	            WHERE r.user_id = (SELECT user_id FROM user WHERE user_name = #{user_name})
-	        </when>
-	    </choose>
-	    <choose>
-	        <when test="startDate != null  and startDate != '' and endDate != null  and endDate != ''">
-	            AND regdate BETWEEN #{startDate} AND #{endDate}
-	        </when>
-	        <when test="startDate != null  and startDate != '' and (endDate == null  or endDate == '')">
-	            AND <![CDATA[#{startDate} <= regdate]]>
-	        </when>
-	        <when test="(startDate == null  or startDate == '') and endDate != null  and endDate != ''">
-	            AND <![CDATA[regdate <= #{endDate}]]>
-	        </when>
-	    </choose>
-	    ORDER BY re_ref DESC, re_seq ASC, re_lev ASC
-	</select>
-
-
-	<!-- 상세보기 -->
-	<select id="getReview" resultMap="review">
-		SELECT *
-		FROM review r
-		JOIN product p ON r.product_code = p.product_code
-		WHERE review_code = #{review_code}
-	</select>
+    <!-- 리뷰 코드로 리뷰 조회 -->
+    <select id="getReviewByCode" parameterType="int" resultMap="review">
+        SELECT * FROM review WHERE review_code = #{review_code}
+    </select>
 
     <!-- 리뷰 추가 -->
-<!--     <insert id="insertReview" parameterType="com.itwillbs.domain.ReviewVO"> -->
-<!--         INSERT INTO review (product_code, regdate, title, content, star, user_id, img1, img2, img3, order_code, re_lev, re_ref, re_seq) -->
-<!--         VALUES (#{product_code}, #{regdate}, #{title}, #{content}, #{star}, #{user_id}, #{img1}, #{img2}, #{img3}, #{order_code}, #{re_lev}, #{re_ref}, #{re_seq}) -->
-<!--     </insert> -->
+    <insert id="insertReview" parameterType="com.itwillbs.domain.ReviewVO">
+        INSERT INTO review (product_code, regdate, title, content, star, user_id, img1, img2, img3, order_code, re_lev, re_ref, re_seq)
+        VALUES (#{product_code}, #{regdate}, #{title}, #{content}, #{star}, #{user_id}, #{img1}, #{img2}, #{img3}, #{order_code}, #{re_lev}, #{re_ref}, #{re_seq})
+    </insert>
 
 	<!-- 리뷰 답글 추가 -->
 	<!-- 	<insert id="addReply" parameterType="com.itwillbs.domain.ReviewVO"> -->
@@ -114,32 +59,12 @@
 	
 	<select id="getReviewByParams" parameterType="map" resultMap="review">
         SELECT * FROM review
-        WHERE seller_id = #{seller_id} AND product_code = #{product_code} AND order_code = #{order_code}
+        WHERE user_id = #{user_id} AND product_code = #{product_code} AND order_code = #{order_code}
     </select>
 
- <!-- 답글을 추가하는 쿼리 -->
-	<insert id="addReply" parameterType="com.itwillbs.domain.ReviewVO">
-    <!-- 새로운 review_code를 생성하여 삽입 -->
-    INSERT INTO review (product_code, review_code, user_id, title, content, re_ref, re_lev, re_seq, regdate, star)
-    SELECT r.product_code, (SELECT COALESCE(MAX(review_code), 0) + 10000 FROM review), #{user_id}, r.title, #{content}, MAX(r.re_ref), MAX(r.re_lev)+1, 1, now(), 0
-    FROM review r
-    WHERE r.review_code = #{review_code}
-</insert>
-
-
-
-
-
-
-	
-	<!-- 해당 리뷰에 답글이 있는지 확인하는 쿼리 -->
-	<select id="checkReplyExist" parameterType="int" resultType="int">
-	    SELECT COUNT(*) FROM review WHERE re_ref = #{review_code}
-	</select>
-
-
-
-
-
-
+	<!-- 리뷰 답글 추가 -->
+    <insert id="addReply" parameterType="com.itwillbs.domain.ReviewVO">
+        INSERT INTO review (user_id, product_code, order_code, content, star, ...) 
+        VALUES (#{user_id}, #{product_code}, #{order_code}, #{content}, #{star}, ...)
+    </insert>
 </mapper>

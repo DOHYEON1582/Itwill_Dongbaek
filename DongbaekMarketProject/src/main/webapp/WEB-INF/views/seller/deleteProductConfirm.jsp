@@ -292,24 +292,19 @@ body {
 				</div>
 				<div class="col-sm-8 col-lg-3 d-flex justify-content-end gap-5 align-items-center mt-4 mt-sm-0 justify-content-center justify-content-sm-end">
 				    <div>
-				    	<c:if test="${sessionScope.sellerVO.seller_id == null }">
+				    	<c:if test="${sessionScope.seller_id == null }">
 					        <div class="align-items-center">
 					            <a href="/seller/login" class="login">로그인</a>
-					            <a href="/seller/register" class="join">회원가입</a>
-					
+
+					   
 					        </div>
 				    	</c:if>
-				    	<c:if test="${sessionScope.sellerVO.seller_id != null }">
+				    	<c:if test="${sessionScope.seller_id != null }">
 					        <div class="align-items-center">
-					            로그인 id : ${sessionScope.sellerVO.seller_id }
-					      
+					            로그인 id : ${sessionScope.seller_id }
+
 					            <input type="button" value="로그아웃" onclick="location.href='/seller/logout';">
 					        </div>
-				        <ul class="d-flex justify-content-end list-unstyled m-3">
-				            <li><a href="/seller/info" class="rounded-circle bg-light p-2 mx-1"> <svg width="24" height="24" viewBox="0 0 24 24">
-				                        <use xlink:href="#user"></use></svg>
-				                </a></li>
-				        </ul>
 				    	</c:if>
 				    </div>
 				</div>
@@ -363,9 +358,6 @@ body {
     </li>
     <li>
       <a href="/seller/orderlist">주문 관리</a>
-      <ul>
-        <li><a href="/seller/orderlist">주문 목록</a></li>
-	  </ul>
     </li>
     <li>
       <a href="/seller/review">리뷰 관리</a>
@@ -420,7 +412,7 @@ body {
 
 
 
-	<footer style="font-family: 'Roboto', sans-serif; padding-bottom: 0;">
+	<footer style="position: fixed; bottom: 0; width: 100%; font-family: 'Roboto', sans-serif; padding-bottom: 0;">
 
     <div class="row justify-content-center" id="r">
         <div class="col-lg-2 col-md-4 col-sm-4" style="padding: 0;">

@@ -33,7 +33,7 @@ public interface OrderService {
 	public List<Order_infoVO> getOrderList(String con, String search,String startDate,String endDate)throws Exception;
 	
 	// 주문 건수
-		public int getOrderCount() throws Exception;
+		public int getOrderCount(int store_code) throws Exception;
 	
 	// 주문 확정 처리
     public void confirmOrder(String order_code) throws Exception;
@@ -43,5 +43,7 @@ public interface OrderService {
     
     // 주문 환불 처리
     public void refundOrder(String order_code) throws Exception;
+ // 판매자의 주문 목록 조회
+    public List<Order_infoVO> getSellerOrderList(int store_code) throws Exception;
 }
 

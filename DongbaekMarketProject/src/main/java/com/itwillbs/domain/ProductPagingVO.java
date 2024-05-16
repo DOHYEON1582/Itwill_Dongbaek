@@ -30,32 +30,25 @@ public class ProductPagingVO {
 
 	
 	public void pageCalc() {
-		// endPage
-		endPage = (int) Math.ceil(cri.getPage() / (double) pageBlock) * pageBlock;
+	    // endPage
+	    endPage = (int) Math.ceil((double) cri.getPage() / pageBlock) * pageBlock;
 
-		logger.debug(" endPage ",endPage);
-		System.out.println(endPage);
-		System.out.println(totalCount);
-		System.out.println((double) cri.getPageSize());
-		// startPage
-		startPage = (endPage - pageBlock) + 1;
+	    // startPage
+	    startPage = (endPage - pageBlock) + 1;
 
-		int tmpEndPage = (int) Math.ceil(totalCount / (double) cri.getPageSize());
+	    int tmpEndPage = (int) Math.ceil((double) totalCount / cri.getPageSize());
 
-		if (endPage > tmpEndPage) { // 글이 없음
-		    endPage = tmpEndPage;
-		}
+	    if (endPage > tmpEndPage) { // 글이 없음
+	        endPage = tmpEndPage;
+	    }
 
-		System.out.println(endPage);
+	    // prev
+	    prev = startPage != 1;
 
-		// prev
-		// prev = startPage == 1? false : true;
-		prev = startPage != 1;
-
-		// next
-		// next = endPage * cri.getPageSize() >= totalCount? false : true;
-		next = endPage * cri.getPageSize() < totalCount;
+	    // next
+	    next = endPage * cri.getPageSize() < totalCount;
 	}
+
 
 	
 	public int getTotalCount() {
