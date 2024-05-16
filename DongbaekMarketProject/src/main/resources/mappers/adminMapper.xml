@@ -460,7 +460,7 @@
 
 <!-- 가게 정보수정 -->
 <update id="updateStore">
-	UPDATE store SET market_code=#{market_code}, seller_id=#{seller_id}, store_name=#{store_name}, store_value=#{store_value}, store_explain=#{store_explain}, phone=#{phone}, store_addr1=#{store_addr1}, store_addr2=#{store_addr2}
+	UPDATE store SET market_code=#{market_code}, seller_id=#{seller_id}, store_name=#{store_name}, store_value=#{store_value}, phone=#{phone}, store_addr1=#{store_addr1}, store_addr2=#{store_addr2}
 	WHERE store_code = #{store_code}
 
 </update>

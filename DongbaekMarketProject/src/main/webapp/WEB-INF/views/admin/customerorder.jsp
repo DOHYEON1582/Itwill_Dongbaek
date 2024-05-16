@@ -40,7 +40,7 @@
 						alert("주문정보가 없습니다!");
 					}else{
 						$(data).each(function(idx,item){
-							var currentDate = new Date(item.ordr_date);
+							var currentDate = new Date(item.order_date);
 
 							var year = currentDate.getFullYear();
 							var month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
@@ -87,7 +87,7 @@
 					console.log(orderList);
 					console.log(cartList);
 					
-					var currentDate = new Date(orderList.ordr_date);
+					var currentDate = new Date(orderList.order_date);
 					
 					var year = currentDate.getFullYear();
 					var month = ('0' + (currentDate.getMonth() + 1)).slice(-2);

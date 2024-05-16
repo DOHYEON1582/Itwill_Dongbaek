@@ -110,7 +110,6 @@ sellerCountList = ${sellerCountList} --%>
         <tr>
         	<th>글번호</th>
             <th>제목</th>
-            <th>내용</th>
             <th>작성자</th>
             <th>작성일</th>
         </tr>
@@ -120,7 +119,6 @@ sellerCountList = ${sellerCountList} --%>
         	 <tr>
 	            <td>${list.q_code }</td>
 	            <td>${list.title }</td>
-	            <td>${list.content }</td>
 	            <td>${list.user_name }</td>
 	            <td>${list.regdate }</td>
 	        </tr>
