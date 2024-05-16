@@ -431,22 +431,6 @@ body {
 		</div>
 	</div>
 
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	<footer style="font-family: 'Roboto', sans-serif; padding-bottom: 0;">
 
     <div class="row justify-content-center" id="r">

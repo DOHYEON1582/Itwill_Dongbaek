@@ -539,7 +539,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <hr>
 
 <div class="container" style="text-align: center; height: 700px;">
-    <h1 class="page-header" id="qna1">상품 Q&A(최신 문의10개 출력) </h1>
+    <h1 class="page-header" id="qna1">상품 Q&A(최신 문의5개 출력) </h1>
     ${answer }
 	 <table class="table table-bordered">
     	<tbody>
