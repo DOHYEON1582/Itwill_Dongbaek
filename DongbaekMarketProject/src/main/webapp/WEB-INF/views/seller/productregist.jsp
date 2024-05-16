@@ -361,8 +361,9 @@ body {
 </aside>
 
 
-
+seid : ${sessionScope.sellerVO}
 	<div id="productregistform" style="text-align: center; font-size: 24px; margin-bottom: 20px;">상품 등록</div>
+	
     <div style="background-color: white; padding: 20px; max-width: 400px; margin: 0 auto; border: 1px solid #ccc;">
     <form id="productregistSubmit" action="/seller/productregistSubmit" method="post" enctype="multipart/form-data" style="max-width: 400px; margin: 0 auto;">
         <div style="margin-bottom: 10px;">

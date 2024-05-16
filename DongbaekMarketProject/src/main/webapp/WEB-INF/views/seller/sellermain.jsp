@@ -459,7 +459,7 @@ body {
 
 
 
-	
+
 
 
 
@@ -476,6 +476,7 @@ body {
 
 
 	<footer style="position: fixed; bottom: 0; width: 100%; font-family: 'Roboto', sans-serif; padding-bottom: 0;">
+
 
     <div class="row justify-content-center" id="r">
         <div class="col-lg-2 col-md-4 col-sm-4" style="padding: 0;">

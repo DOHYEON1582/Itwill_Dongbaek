@@ -201,7 +201,7 @@
 		select * from question
 		where product_code = #{product_code}
 		order by regdate desc
-		limit 0,10;
+		limit 0,5;
 	</select>
 
 	<!-- 문의 답글 달기 -->
