@@ -33,7 +33,6 @@
 							$('#list-tbody').append(
 											 `<tr><td>`+item.q_code
 											 +`</td><td>`+item.title
-											 +`</td><td>`+item.content
 											 +`</td><td>`+item.user_name
 											 +`</td><td>`+formatDate
 											 +`</td></tr>`);
@@ -233,7 +232,6 @@
         <tr>
         	<th>글번호</th>
             <th>제목</th>
-            <th>내용</th>
             <th>작성자</th>
             <th>작성일</th>
         </tr>

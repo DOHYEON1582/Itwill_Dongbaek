@@ -25,6 +25,6 @@ public class AdminOrderVO {
 	private String add_point;
 
 	private Timestamp reservation;
-	private Timestamp ordr_date;
+	private Timestamp order_date;
 
 }
