@@ -233,7 +233,7 @@ public class SellerPageController {//판매자 페이지 컨트롤러
   	        } else {
   	            // 가게 코드가 없을 때 처리할 코드 추가
   	            model.addAttribute("orderCount", 0); // 예: 기본적으로 주문 수량을 0으로 설정
-  	            model.addAttribute("reviewCount", rService.countReviews(seller_id));
+//  	            model.addAttribute("reviewCount", rService.countReviews(seller_id));
   	        }
   	    }
   	    // 주문 목록과 리뷰 목록 건수를 모델에 담아서 해당 페이지로 전달
@@ -794,62 +794,62 @@ public class SellerPageController {//판매자 페이지 컨트롤러
 	// 판매자 리뷰페이지
 		// http://localhost:8088/seller/review
 		// 리뷰 목록을 보여주는 페이지
-	@GetMapping("/review")
-	public String reviewList(Model model, @RequestParam(name = "review_code", required = false) Integer review_code, HttpSession session) {
-	    String seller_id = (String) session.getAttribute("seller_id");
-	    try {
-	        if (review_code != null) {
-	            model.addAttribute("review", rService.getReview(review_code));
-	            return "seller/reviewDetail"; // 리뷰 상세 페이지로 이동
-	        } else {
-	            model.addAttribute("reviews", rService.getReviewList(seller_id));
-	            return "seller/review"; // 리뷰 목록 페이지로 이동
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace(); // 예외 발생 시 콘솔에 출력
-	        // 예외 처리 로직 추가
-	        return "error"; // 에러 페이지로 이동하도록 수정
-	    }
+	@RequestMapping(value = "/review", method = RequestMethod.GET)
+	public String getAllReviews(@ModelAttribute("cri") ReviewCri cri, Model model) throws Exception {
+	    // 페이지 번호와 페이지당 표시할 리뷰 수를 설정한 ReviewCri 객체를 이용하여 페이징된 리뷰 목록을 가져옴
+	    List<ReviewVO> reviewList = rService.getAllReviews(cri);
+
+	    // 페이징 처리된 리뷰 목록을 모델에 추가
+	    model.addAttribute("reviews", reviewList);
+
+	    // 페이징 정보도 함께 모델에 추가하여 화면에 전달
+	    ReviewPagingVO pagingVO = new ReviewPagingVO();
+	    pagingVO.setCri(cri);
+	    pagingVO.setTotalCount(rService.countReviews()); // 리뷰 총 개수를 가져와 설정
+	    model.addAttribute("pagingVO", pagingVO);
+
+	    return "/seller/review"; // 리뷰 목록 페이지로 이동
 	}
 
 
 
 
-		// 리뷰 답글을 작성하는 페이지로 이동
-	    @GetMapping("/reviewReply")
-	    public String reviewReply(@RequestParam("review_code") int review_code, Model model) throws Exception{
-	        // review_code를 이용하여 해당 리뷰 정보를 가져옴
-	        ReviewVO review = rService.getReview(review_code);
-	        model.addAttribute("review", review);
-	        return "seller/reviewReply"; // 리뷰 답글을 작성하는 폼이 있는 JSP 페이지
-	    }
+//
+//		// 리뷰 답글을 작성하는 페이지로 이동
+//	    @GetMapping("/reviewReply")
+//	    public String reviewReply(@RequestParam("review_code") int review_code, Model model) throws Exception{
+//	        // review_code를 이용하여 해당 리뷰 정보를 가져옴
+//	        ReviewVO review = rService.getReview(review_code);
+//	        model.addAttribute("review", review);
+//	        return "seller/reviewReply"; // 리뷰 답글을 작성하는 폼이 있는 JSP 페이지
+//	    }
+//
+//	    // 리뷰 답글을 작성하는 기능
+//	    @PostMapping("/reply")
+//	    public String reply(ReviewVO reply) throws Exception {
+//	        // 작성된 리뷰 답글을 저장
+//	        rService.addReply(reply);
+//	        // 작성한 리뷰 답글이 포함된 리뷰 목록 페이지로 이동
+//	        return "redirect:/seller/review";
+//	    }
 
-	    // 리뷰 답글을 작성하는 기능
-	    @PostMapping("/reply")
-	    public String reply(ReviewVO reply) throws Exception {
-	        // 작성된 리뷰 답글을 저장
-	        rService.addReply(reply);
-	        // 작성한 리뷰 답글이 포함된 리뷰 목록 페이지로 이동
-	        return "redirect:/seller/review";
-	    }
 
-
-	// 판매자 리뷰페이지 상세페이지
-	// http://localhost:8088/seller/reviewDetail
-	@RequestMapping(value = "/reviewDetail", method = RequestMethod.GET)
-	public String getReviewDetail(ReviewCri cri,@RequestParam("review_code") int review_code, Model model, HttpSession session) throws Exception {
-		logger.debug(" /seller/reviewDetail 호출 ");
-		
-		// 전달 정보 저장
-		logger.debug(" id : "+review_code);
-	    // 특정 리뷰의 상세 정보를 가져옴
-	    ReviewVO review = rService.getReview(review_code);
-	    model.addAttribute("review", review);
-	    
-	    model.addAttribute("cri", cri);
-
-	    return "seller/reviewDetail"; // 리뷰 상세 페이지로 이동
-	}
+//	// 판매자 리뷰페이지 상세페이지
+//	// http://localhost:8088/seller/reviewDetail
+//	@RequestMapping(value = "/reviewDetail", method = RequestMethod.GET)
+//	public String getReviewDetail(ReviewCri cri,@RequestParam("review_code") int review_code, Model model, HttpSession session) throws Exception {
+//		logger.debug(" /seller/reviewDetail 호출 ");
+//		
+//		// 전달 정보 저장
+//		logger.debug(" id : "+review_code);
+//	    // 특정 리뷰의 상세 정보를 가져옴
+//	    ReviewVO review = rService.getReview(review_code);
+//	    model.addAttribute("review", review);
+//	    
+//	    model.addAttribute("cri", cri);
+//
+//	    return "seller/reviewDetail"; // 리뷰 상세 페이지로 이동
+//	}
 	
 	
 /////////////////////////////////////////////////////////////////////

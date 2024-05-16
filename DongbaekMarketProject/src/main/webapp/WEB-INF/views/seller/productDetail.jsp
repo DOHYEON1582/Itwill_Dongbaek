@@ -374,13 +374,13 @@ body {
         <div>
             <c:choose>
                 <c:when test="${not empty product.img1}">
-                    <img src="/resources/upload1/${product.img1}" alt="상품 이미지" style="max-width: 300px; max-height: 300px; margin-right: 20px;">
+                    <img src="/resources/images/product/${product.img1}" alt="상품 이미지" style="max-width: 300px; max-height: 300px; margin-right: 20px;">
                 </c:when>
                 <c:when test="${not empty product.img2}">
-                    <img src="/resources/upload1/${product.img2}" alt="상품 이미지" style="max-width: 300px; max-height: 300px; margin-right: 20px;">
+                    <img src="/resources/images/product/${product.img2}" alt="상품 이미지" style="max-width: 300px; max-height: 300px; margin-right: 20px;">
                 </c:when>
                 <c:when test="${not empty product.img3}">
-                    <img src="/resources/upload1/${product.img3}" alt="상품 이미지" style="max-width: 300px; max-height: 300px; margin-right: 20px;">
+                    <img src="/resources/images/product/${product.img3}" alt="상품 이미지" style="max-width: 300px; max-height: 300px; margin-right: 20px;">
                 </c:when>
                 <c:otherwise>
                     <img src="/resources/images/noimg.png" alt="상품 이미지 없음" style="max-width: 150px; max-height: 150px; margin-right: 20px;">
@@ -401,10 +401,10 @@ body {
     </div>
     <!-- 상품 수정 및 삭제 버튼 -->
     <div style="display: flex; justify-content: center;">
-        <form action="/seller/productmodify" method="GET">
-            <input type="hidden" name="product_code" value="${product.product_code}">
-            <button type="submit" style="font-size: 16px; padding: 10px 20px; margin-right: 10px;">수정</button>
-        </form>
+<!--         <form action="/seller/productmodify" method="GET"> -->
+<%--             <input type="hidden" name="product_code" value="${product.product_code}"> --%>
+<!--             <button type="submit" style="font-size: 16px; padding: 10px 20px; margin-right: 10px;">수정</button> -->
+<!--         </form> -->
         <button onclick="confirmDelete(${product.product_code})" style="font-size: 16px; padding: 10px 20px;">삭제</button>
     </div>
     <!-- 상품 상세 설명 등 다른 정보를 추가할 수 있습니다. -->

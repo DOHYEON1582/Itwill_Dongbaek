@@ -405,7 +405,7 @@ body {
                                         <p style="color: #000">${product.product_name}</p> <!-- 상품 이름에 상단 여백 추가 -->
                                         <p style="color: #000">${product.price}</p>
                                         <p>
-                                            <a href="/seller/productmodify?product_code=${product.product_code}" style="color: #000">수정</a> |
+
                                             <a href="#" onclick="confirmDelete(${product.product_code})" style="color: #000">삭제</a>
                                         </p>
                                         <!-- 필요한 다른 정보를 여기에 추가할 수 있습니다 -->

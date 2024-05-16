@@ -5,9 +5,8 @@ import org.slf4j.LoggerFactory;
 
 public class ReviewPagingVO {
 
-	
-	private static final Logger logger = LoggerFactory.getLogger(ReviewPagingVO.class);
-	
+    private static final Logger logger = LoggerFactory.getLogger(ReviewPagingVO.class);
+
     private int totalCount; // 전체 리뷰 수
     private int startPage; // 시작 페이지 번호
     private int endPage; // 끝 페이지 번호
@@ -24,28 +23,29 @@ public class ReviewPagingVO {
 
     // 페이징 정보를 계산하는 메서드
     public void pageCalc() {
-        // 끝 페이지 번호 계산
-        endPage = (int) Math.ceil(cri.getPage() / (double) pageBlock) * pageBlock;
-        
-        // 시작 페이지 번호 계산
+        if (cri == null || totalCount <= 0) {
+            return; // totalCount와 cri 객체가 설정되지 않은 경우 계산 중단
+        }
+
+        // endPage
+        endPage = (int) Math.ceil((double) cri.getPage() / pageBlock) * pageBlock;
+
+        // startPage
         startPage = (endPage - pageBlock) + 1;
 
-        // 총 페이지 수 계산
-        int totalPages = (int) Math.ceil((double) totalCount / cri.getPageSize());
+        int tmpEndPage = (int) Math.ceil((double) totalCount / cri.getPageSize());
 
-        // 끝 페이지 번호가 총 페이지 수보다 큰 경우 조정
-        if (endPage > totalPages) {
-            endPage = totalPages;
+        if (endPage > tmpEndPage) { // 글이 없음
+            endPage = tmpEndPage;
         }
-        
-        System.out.println(endPage);
-        
-        // 이전 페이지 버튼 활성화 여부 계산
+
+        // prev
         prev = startPage != 1;
 
-        // 다음 페이지 버튼 활성화 여부 계산
+        // next
         next = endPage * cri.getPageSize() < totalCount;
     }
+
 
     // Getter 및 Setter 메서드
     public int getTotalCount() {
@@ -100,7 +100,7 @@ public class ReviewPagingVO {
     public void setCri(ReviewCri cri) {
         this.cri = cri;
         logger.debug(" 페이징 처리에 필요한 정보를 계산 - 시작 ");
-        //pageCalc();
+//        pageCalc();
         logger.debug(" 페이징 처리에 필요한 정보를 계산 - 끝 ");
     }
 
